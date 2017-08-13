@@ -1,6 +1,15 @@
 <resources>
 
     <!-- Base application theme. -->
+
+
+    <style name="MyEditTextTheme">
+        <item name="colorControlNormal">#667dfc</item>
+        <item name="colorControlActivated">#3F51B5</item>
+        <item name="colorControlHighlight">#3f02a7</item>
+        <item name="android:textColorHint">#FF949CCA</item>
+    </style>
+
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
@@ -16,5 +25,6 @@
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
 
 </resources>

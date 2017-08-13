@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_hibiscus"
+            android:icon="@drawable/ic_menu_camera"
+            android:title="Hibiscus" />
+        <item
+            android:id="@+id/nav_myapps"
+            android:icon="@drawable/ic_menu_gallery"
+            android:title="My Apps" />
+        <item
+            android:id="@+id/nav_course"
+            android:icon="@drawable/ic_menu_slideshow"
+            android:title="Courseware" />
+        <item
+            android:id="@+id/nav_comm"
+            android:icon="@drawable/ic_menu_manage"
+            android:title="Common Apps" />
+        <item
+            android:id="@+id/nav_help"
+            android:icon="@drawable/ic_menu_manage"
+            android:title="Help" />
+    </group>
+
+
+</menu>

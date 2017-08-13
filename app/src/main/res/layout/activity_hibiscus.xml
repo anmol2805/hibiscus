@@ -9,7 +9,7 @@
     tools:openDrawer="start">
 
     <include
-        layout="@layout/app_bar_noticeboard"
+        layout="@layout/app_bar_hibiscus"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
@@ -19,7 +19,7 @@
         android:layout_height="match_parent"
         android:layout_gravity="start"
         android:fitsSystemWindows="true"
-        app:headerLayout="@layout/nav_header_noticeboard"
-        app:menu="@menu/activity_noticeboard_drawer" />
+        app:headerLayout="@layout/nav_header_hibiscus"
+        app:menu="@menu/activity_hibiscus_drawer" />
 
 </android.support.v4.widget.DrawerLayout>

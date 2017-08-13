@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.anmol.hibiscus">
-    <uses-permission android:name="android.permission.INTERNET"/>
+
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
@@ -17,12 +18,19 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".LoginActivity" />
+        <activity android:name=".ResetPasswordActivity" />
+        <activity android:name=".SignupActivity" />
+        <activity android:name=".NoticeboardActivity" />
+        <activity android:name=".Verifyemail" />
+        <activity android:name=".Verify" />
+        <activity android:name=".MainActivity" />
         <activity
-            android:name=".NoticeboardActivity"
-            android:label="@string/title_activity_noticeboard"
-            android:theme="@style/AppTheme.NoActionBar">
-
-        </activity>
+            android:name=".HibiscusActivity"
+            android:label="@string/title_activity_hibiscus"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".RoseiActivity" />
+        <activity android:name=".ItsActivity"></activity>
     </application>
 
 </manifest>

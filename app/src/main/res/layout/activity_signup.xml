@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.anmol.hibiscus.SignupActivity">
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+
+        android:gravity="center"
+        android:orientation="vertical"
+        android:padding="16dp"
+        tools:layout_editor_absoluteY="-79dp"
+        tools:layout_editor_absoluteX="595dp">
+
+
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:id="@+id/email"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/email"
+                android:inputType="textEmailAddress"
+                android:maxLines="1"
+                android:singleLine="true"
+                android:textColor="#000" />
+
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:id="@+id/password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:focusableInTouchMode="true"
+                android:hint="@string/hint_password"
+                android:imeActionId="@+id/login"
+                android:imeOptions="actionUnspecified"
+                android:inputType="textPassword"
+                android:maxLines="1"
+                android:singleLine="true"
+                android:textColor="#000" />
+
+        </android.support.design.widget.TextInputLayout>
+
+        <Button
+            android:id="@+id/sign_up_button"
+            style="?android:textAppearanceSmall"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:background="@color/colorAccent"
+            android:text="@string/action_sign_in_short"
+            android:textColor="@android:color/black"
+            android:textStyle="bold"
+            android:visibility="visible" />
+
+
+        <!-- Link to Login Screen -->
+
+        <Button
+            android:id="@+id/sign_in_button"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dip"
+            android:background="@null"
+            android:text="@string/btn_link_to_login"
+            android:textAllCaps="false"
+            android:textColor="@color/colorAccent"
+            android:textSize="15dp" />
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_gravity="center|bottom"
+            android:layout_marginBottom="20dp"
+            android:visibility="gone" />
+
+    </LinearLayout>
+
+
+</android.support.constraint.ConstraintLayout>

@@ -20,29 +20,24 @@ import com.example.anmol.hibiscus.fragments.help;
 import com.example.anmol.hibiscus.fragments.main;
 import com.example.anmol.hibiscus.fragments.myapps;
 
-public class NoticeboardActivity extends AppCompatActivity
+public class HibiscusActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_noticeboard);
+        setContentView(R.layout.activity_hibiscus);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-
-
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
-
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-
         FragmentManager fm = getFragmentManager();
-        fm.beginTransaction().replace(R.id.content_frame,new main()).commit();
+        fm.beginTransaction().replace(R.id.content_hib,new main()).commit();
     }
 
     @Override
@@ -58,7 +53,7 @@ public class NoticeboardActivity extends AppCompatActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.noticeboard, menu);
+        getMenuInflater().inflate(R.menu.hibiscus, menu);
         return true;
     }
 
@@ -83,20 +78,17 @@ public class NoticeboardActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
         FragmentManager fm = getFragmentManager();
-        if (id == R.id.nav_camera) {
-            fm.beginTransaction().replace(R.id.content_frame,new main()).commit();
-        } else if (id == R.id.nav_gallery) {
-            fm.beginTransaction().replace(R.id.content_frame,new myapps()).commit();
-        } else if (id == R.id.nav_slideshow) {
-            fm.beginTransaction().replace(R.id.content_frame,new courseware()).commit();
-        } else if (id == R.id.nav_manage) {
-            fm.beginTransaction().replace(R.id.content_frame,new commapps()).commit();
-        } else if (id == R.id.nav_share) {
-            fm.beginTransaction().replace(R.id.content_frame,new help()).commit();
-        } else if (id == R.id.nav_send) {
-            finish();
+        if (id == R.id.nav_hibiscus) {
+            fm.beginTransaction().replace(R.id.content_hib,new main()).commit();
+        } else if (id == R.id.nav_myapps) {
+            fm.beginTransaction().replace(R.id.content_hib,new myapps()).commit();
+        } else if (id == R.id.nav_course) {
+            fm.beginTransaction().replace(R.id.content_hib,new courseware()).commit();
+        } else if (id == R.id.nav_comm) {
+            fm.beginTransaction().replace(R.id.content_hib,new commapps()).commit();
+        } else if (id == R.id.nav_help) {
+            fm.beginTransaction().replace(R.id.content_hib,new help()).commit();
         }
-
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
