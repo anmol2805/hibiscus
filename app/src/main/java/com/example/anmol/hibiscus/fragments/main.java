@@ -5,24 +5,51 @@ import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
+import com.example.anmol.hibiscus.Adapter.NoticeAdapter;
+import com.example.anmol.hibiscus.Adapter.RecyclerAdapter;
+import com.example.anmol.hibiscus.BackgroundTask;
 import com.example.anmol.hibiscus.Httphandler;
+
+import com.example.anmol.hibiscus.Model.Notice;
 import com.example.anmol.hibiscus.R;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
 
 /**
  * Created by anmol on 2017-07-11.
@@ -32,90 +59,53 @@ public class main extends Fragment {
     private String TAG = main.class.getSimpleName();
     private ProgressDialog pdialog;
     private ListView lv;
-    private static String url = "http://api.androidhive.info/contacts/";
-    ArrayList<HashMap<String, String>> contactList;
-
+    ArrayList<Notice> noticeArrayList;
+    NoticeAdapter adapter;
+    DatabaseReference databaseReference;
+    private List<Notice> notices;
+    RecyclerView noticerecycler;
+    RecyclerView.Adapter radapter;
+    RecyclerView.LayoutManager layoutManager;
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(final LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         View vi = inflater.inflate(R.layout.main,container,false);
-        contactList = new ArrayList<>();
+        notices = new ArrayList<>();
         lv = (ListView) vi.findViewById(R.id.list);
-        new GetContacts().execute();
+        noticerecycler = (RecyclerView)vi.findViewById(R.id.noticerecycler);
+        layoutManager = new LinearLayoutManager(getActivity());
+        noticerecycler.setLayoutManager(layoutManager);
+        noticerecycler.setHasFixedSize(true);
+        BackgroundTask backgroundTask = new BackgroundTask(getActivity());
+        noticeArrayList = backgroundTask.getList();
+        radapter = new RecyclerAdapter(noticeArrayList);
+        noticerecycler.setAdapter(radapter);
+
+//        databaseReference = FirebaseDatabase.getInstance().getReference().child("Notices");
+//        databaseReference.addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(DataSnapshot dataSnapshot) {
+//                Iterator iterator = dataSnapshot.getChildren().iterator();
+//                Set<Notice> set = new HashSet<Notice>();
+//                while (iterator.hasNext()){
+//                    set.add((Notice) ((DataSnapshot) iterator.next()).getValue(Notice.class));
+//                }
+//                notices.clear();
+//                notices.addAll(set);
+//                adapter = new NoticeAdapter(getActivity(),R.layout.notice,notices);
+//                lv.setAdapter(adapter);
+//
+//            }
+//
+//            @Override
+//            public void onCancelled(DatabaseError databaseError) {
+//
+//            }
+//        });
+
+
+
         return vi;
     }
 
-    private class GetContacts extends AsyncTask<Void, Void, Void> {
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            pdialog = new ProgressDialog(getActivity());
-            pdialog.setMessage("Please wait...");
-            pdialog.setCancelable(false);
-            pdialog.show();
-        }
-
-        @Override
-        protected void onPostExecute(Void result) {
-            super.onPostExecute(result);
-            if (pdialog.isShowing())
-                pdialog.dismiss();
-            ListAdapter adapter = new SimpleAdapter(getActivity(), contactList, R.layout.list_notice, new String[]{"name", "email", "mobile"}, new int[]{R.id.name, R.id.email, R.id.mobile});
-            lv.setAdapter(adapter);
-        }
-
-        @Override
-        protected Void doInBackground(Void... voids) {
-            Httphandler sh = new Httphandler();
-            String jsonstr = sh.makeServiceCall(url);
-            Log.e(TAG, "Response from url: " + jsonstr);
-            if (jsonstr != null) {
-                try {
-                    JSONObject jsonobject = new JSONObject(jsonstr);
-                    JSONArray contacts = jsonobject.getJSONArray("contacts");
-                    for (int i = 0; i < contacts.length(); i++) {
-                        JSONObject c = contacts.getJSONObject(i);
-                        String id = c.getString("id");
-                        String name = c.getString("name");
-                        String email = c.getString("email");
-                        String address = c.getString("address");
-                        String gender = c.getString("gender");
-                        JSONObject phone = c.getJSONObject("phone");
-                        String mobile = phone.getString("mobile");
-                        String home = phone.getString("home");
-                        String office = phone.getString("office");
-                        HashMap<String, String> contact = new HashMap<>();
-                        contact.put("id", id);
-                        contact.put("name", name);
-                        contact.put("email", email);
-                        contact.put("mobile", mobile);
-                        contactList.add(contact);
-                    }
-
-                } catch (final JSONException e) {
-                    Log.e(TAG, "Json parsing error: " + e.getMessage());
-                    getActivity().runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            Toast.makeText(getActivity().getApplicationContext(), "Json parsing error:" + e.getMessage(), Toast.LENGTH_LONG).show();
-                        }
-                    });
-                }
-
-            }else{
-                Log.e(TAG, "Couldn't get json from server.");
-                getActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        Toast.makeText(getActivity().getApplicationContext(),
-                                "Couldn't get json from server. Check LogCat for possible errors!",
-                                Toast.LENGTH_LONG)
-                                .show();
-                    }
-                });
-
-            }
-            return null;
-        }
-    }
 }

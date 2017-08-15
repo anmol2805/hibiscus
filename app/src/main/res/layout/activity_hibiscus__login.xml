@@ -1,13 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
-    tools:context="com.example.anmol.hibiscus.LoginActivity"
-    android:background="@color/white"
-    >
+    tools:context="com.example.anmol.hibiscus.Hibiscus_Login">
 
     <LinearLayout
         android:layout_width="fill_parent"
@@ -31,8 +28,7 @@
                 android:inputType="textEmailAddress"
                 android:textColor="#000"
                 android:textColorHint="@android:color/white"
-                android:theme="@style/MyEditTextTheme"
-                />
+                android:theme="@style/MyEditTextTheme" />
         </android.support.design.widget.TextInputLayout>
 
         <android.support.design.widget.TextInputLayout
@@ -48,14 +44,13 @@
                 android:inputType="textPassword"
                 android:textColor="#000"
                 android:textColorHint="@android:color/white"
-                android:theme="@style/MyEditTextTheme"
-                />
+                android:theme="@style/MyEditTextTheme" />
         </android.support.design.widget.TextInputLayout>
 
         <!-- Login Button -->
 
         <Button
-            android:id="@+id/btn_login"
+            android:id="@+id/hiblogin"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dip"
@@ -63,39 +58,8 @@
             android:text="@string/btn_login"
             android:textColor="@color/colorPrimaryDark" />
 
-        <Button
-            android:id="@+id/google_sign_in"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:background="@drawable/common_google_signin_btn_icon_dark_normal"
-            android:textAppearance="@style/TextAppearance.AppCompat"
-            android:visibility="gone" />
-
-
-
-        <Button
-            android:id="@+id/btn_reset_password"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dip"
-            android:background="@drawable/round_button"
-            android:text="@string/btn_forgot_password"
-            android:textAllCaps="false"
-            android:textColor="@color/colorPrimaryDark" />
 
         <!-- Link to Login Screen -->
-
-        <Button
-            android:id="@+id/btn_signup"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dip"
-            android:background="@drawable/round_button"
-            android:text="Sign up"
-            android:textAllCaps="false"
-            android:textColor="@color/colorPrimaryDark"
-            android:textSize="15dp" />
 
         <ProgressBar
             android:id="@+id/progressBar"
@@ -105,6 +69,4 @@
             android:layout_marginBottom="20dp"
             android:visibility="gone" />
     </LinearLayout>
-
-</android.support.design.widget.CoordinatorLayout>
-
+</android.support.constraint.ConstraintLayout>

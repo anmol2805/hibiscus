@@ -3,7 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.anmol.hibiscus.SignupActivity">
+    tools:context="com.example.anmol.hibiscus.SignupActivity"
+    android:background="@color/white"
+    >
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
@@ -24,11 +26,13 @@
                 android:id="@+id/email"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/email"
+                android:hint="StudentID"
                 android:inputType="textEmailAddress"
                 android:maxLines="1"
                 android:singleLine="true"
-                android:textColor="#000" />
+                android:textColor="#000"
+                android:theme="@style/MyEditTextTheme"
+                />
 
         </android.support.design.widget.TextInputLayout>
 
@@ -47,7 +51,9 @@
                 android:inputType="textPassword"
                 android:maxLines="1"
                 android:singleLine="true"
-                android:textColor="#000" />
+                android:textColor="#000"
+                android:theme="@style/MyEditTextTheme"
+                />
 
         </android.support.design.widget.TextInputLayout>
 
@@ -57,9 +63,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:background="@color/colorAccent"
+            android:background="@drawable/round_button"
             android:text="@string/action_sign_in_short"
-            android:textColor="@android:color/black"
+            android:textColor="@color/colorPrimaryDark"
             android:textStyle="bold"
             android:visibility="visible" />
 
@@ -71,10 +77,10 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dip"
-            android:background="@null"
+            android:background="@drawable/round_button"
             android:text="@string/btn_link_to_login"
             android:textAllCaps="false"
-            android:textColor="@color/colorAccent"
+            android:textColor="@color/colorPrimaryDark"
             android:textSize="15dp" />
         <ProgressBar
             android:id="@+id/progressBar"

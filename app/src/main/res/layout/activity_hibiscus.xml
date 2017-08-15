@@ -20,6 +20,8 @@
         android:layout_gravity="start"
         android:fitsSystemWindows="true"
         app:headerLayout="@layout/nav_header_hibiscus"
-        app:menu="@menu/activity_hibiscus_drawer" />
+        app:menu="@menu/activity_hibiscus_drawer"
+
+        />
 
 </android.support.v4.widget.DrawerLayout>

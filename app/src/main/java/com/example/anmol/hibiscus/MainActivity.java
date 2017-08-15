@@ -20,7 +20,7 @@ public class MainActivity extends AppCompatActivity {
         hibiscusb.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this,HibiscusActivity.class));
+                startActivity(new Intent(MainActivity.this,Hibiscus_Login.class));
             }
         });
         rosei.setOnClickListener(new View.OnClickListener() {

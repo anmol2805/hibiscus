@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">login</string>
+    <string name="app_name">IIITcloud</string>
     <string name="action_sign_in_short">Register</string>
     <string name="email">Email</string>
     <string name="minimum_password">Password too short, enter minimum 6 characters!</string>

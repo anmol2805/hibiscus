@@ -52,7 +52,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 
         super.onCreate(savedInstanceState);
         session = new SessionManagement(getApplicationContext());
-
+        setTitle("Login");
         //Get Firebase auth instance
         auth = FirebaseAuth.getInstance();
         if (auth.getCurrentUser() != null) {
