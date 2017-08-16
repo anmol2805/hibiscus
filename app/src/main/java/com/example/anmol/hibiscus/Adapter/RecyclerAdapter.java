@@ -32,6 +32,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
     @Override
     public void onBindViewHolder(RecyclerAdapter.MyViewHolder holder, int position) {
         holder.title.setText(noticeArrayList.get(position).getTitle());
+        holder.date.setText(noticeArrayList.get(position).getDate());
     }
 
     @Override
@@ -40,10 +41,11 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        TextView title;
+        TextView title,date;
         public MyViewHolder(View itemView) {
             super(itemView);
             title = (TextView)itemView.findViewById(R.id.title);
+            date = (TextView)itemView.findViewById(R.id.date);
         }
     }
 }

@@ -154,7 +154,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                                 } else {
                                     if (auth.getCurrentUser().isEmailVerified()){
                                         DatabaseReference ref = FirebaseDatabase.getInstance().getReference().getRoot().child("Students").child(auth.getCurrentUser().getUid());
-                                        Students students = new Students(sid,email,password);
+                                        Students students = new Students(sid,email);
                                         ref.setValue(students);
                                         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

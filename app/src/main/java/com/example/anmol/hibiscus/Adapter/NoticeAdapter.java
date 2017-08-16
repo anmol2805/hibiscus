@@ -39,8 +39,15 @@ public class NoticeAdapter extends ArrayAdapter<Notice> {
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         LayoutInflater inflater = context.getLayoutInflater();
         View v = inflater.inflate(resource,null);
+
         TextView text = (TextView)v.findViewById(R.id.title);
         text.setText(notices.get(position).getTitle());
+        TextView date = (TextView)v.findViewById(R.id.date);
+        date.setText(notices.get(position).getDate());
+        TextView postedby = (TextView)v.findViewById(R.id.posted);
+        postedby.setText(notices.get(position).getPostedby());
+        TextView attention = (TextView)v.findViewById(R.id.attention);
+        attention.setText(notices.get(position).getAttention());
         return v;
     }
 }

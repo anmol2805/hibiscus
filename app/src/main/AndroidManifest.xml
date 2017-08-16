@@ -31,7 +31,8 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".RoseiActivity" />
         <activity android:name=".ItsActivity" />
-        <activity android:name=".Hibiscus_Login"></activity>
+        <activity android:name=".Hibiscus_Login" />
+        <activity android:name=".NoticeDataActivity"></activity>
     </application>
 
 </manifest>

@@ -7,24 +7,18 @@ import java.io.Serializable;
  */
 
 public class Students implements Serializable {
-    String sid,email,password;
+    String sid,email;
 
-    public Students(String sid, String email,String password) {
+    public Students(String sid, String email) {
         this.sid = sid;
         this.email = email;
-        this.password = password;
+
     }
 
     public Students() {
     }
 
-    public String getPassword() {
-        return password;
-    }
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
 
     public String getsid() {
         return sid;
