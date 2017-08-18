@@ -31,6 +31,7 @@ dependencies {
     compile 'com.google.firebase:firebase-auth:10.0.1'
     compile 'com.google.firebase:firebase-database:10.0.1'
     compile 'com.google.android.gms:play-services:10.0.1'
+    compile 'org.jsoup:jsoup:1.10.3'
     compile 'com.android.support:mediarouter-v7:25.3.1'
     compile 'com.android.support:support-vector-drawable:25.3.1'
     compile 'com.android.support:multidex:1.0.1'

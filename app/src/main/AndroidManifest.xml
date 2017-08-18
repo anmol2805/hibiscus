@@ -5,13 +5,16 @@
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
+        android:name=".FireApp"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".SplashActivity">
+        <activity android:name=".SplashActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen"
+            >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -21,14 +24,15 @@
         <activity android:name=".LoginActivity" />
         <activity android:name=".ResetPasswordActivity" />
         <activity android:name=".SignupActivity" />
-        <activity android:name=".NoticeboardActivity" />
-        <activity android:name=".Verifyemail" />
+
         <activity android:name=".Verify" />
         <activity android:name=".MainActivity" />
         <activity
             android:name=".HibiscusActivity"
             android:label="@string/title_activity_hibiscus"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar" >
+
+        </activity>
         <activity android:name=".RoseiActivity" />
         <activity android:name=".ItsActivity" />
         <activity android:name=".Hibiscus_Login" />

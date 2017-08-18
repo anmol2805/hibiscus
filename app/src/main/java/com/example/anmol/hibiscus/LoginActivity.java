@@ -12,6 +12,10 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.example.anmol.hibiscus.Model.Students;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -30,6 +34,9 @@ import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -45,7 +52,9 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     SessionManagement session;
     private static final String TAG = "Login";
     String email,sid,password;
-
+    JSONObject object;
+    String uid,pwd;
+    String url = "http://139.59.23.157/api/hibi/login_test";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,16 +62,28 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         super.onCreate(savedInstanceState);
         session = new SessionManagement(getApplicationContext());
         setTitle("Login");
+        object = new JSONObject();
         //Get Firebase auth instance
         auth = FirebaseAuth.getInstance();
+        uid = getIntent().getStringExtra("uid");
+        pwd = getIntent().getStringExtra("pwd");
+        try {
+            object.put("uid",uid);
+            object.put("pwd",pwd);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
         if (auth.getCurrentUser() != null) {
             if(auth.getCurrentUser().isEmailVerified()){
                 session.createLoginSession(auth.getCurrentUser().getEmail());
-                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                Intent intent = new Intent(LoginActivity.this, Hibiscus_Login.class);
+                intent.putExtra("uid",uid);
+                intent.putExtra("pwd",pwd);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);
                 finish();
+
             }
             else {
                 auth.getCurrentUser().sendEmailVerification()
@@ -73,7 +94,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                                     // email sent
                                     // after email is sent just logout the user and finish this activity
                                     Toast.makeText(LoginActivity.this,"Your Email is not verified",Toast.LENGTH_SHORT).show();
-                                    Toast.makeText(LoginActivity.this,"We have sent you a verification email,verify and login again",Toast.LENGTH_LONG).show();
+                                    Toast.makeText(LoginActivity.this,"We have sent you a verification email at " +auth.getCurrentUser().getEmail()+ ",verify and login again",Toast.LENGTH_LONG).show();
                                 }
                                 else
                                 {
@@ -134,57 +155,77 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                 }
 
                 progressBar.setVisibility(View.VISIBLE);
+                JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, object, new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        try {
+                            if(response.getString("result").equals("success")){
+                                auth.signInWithEmailAndPassword(email, password)
+                                        .addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<AuthResult> task) {
+                                                // If sign in fails, display a message to the user. If sign in succeeds
+                                                // the auth state listener will be notified and logic to handle the
+                                                // signed in user can be handled in the listener.
+                                                progressBar.setVisibility(View.GONE);
+                                                if (!task.isSuccessful()) {
+                                                    // there was an error
+                                                    if (password.length() < 6) {
+                                                        inputPassword.setError(getString(R.string.minimum_password));
+                                                    } else {
+                                                        Toast.makeText(LoginActivity.this, getString(R.string.auth_failed), Toast.LENGTH_LONG).show();
+                                                    }
+                                                } else {
+                                                    if (auth.getCurrentUser().isEmailVerified()){
+                                                        DatabaseReference ref = FirebaseDatabase.getInstance().getReference().getRoot().child("Students").child(auth.getCurrentUser().getUid());
+                                                        Students students = new Students(sid,email);
+                                                        ref.setValue(students);
+                                                        Intent intent = new Intent(LoginActivity.this, Hibiscus_Login.class);
+                                                        intent.putExtra("uid",uid);
+                                                        intent.putExtra("pwd",pwd);
+                                                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                                        startActivity(intent);
+                                                        finish();
+                                                    }
+                                                    else {
+                                                        auth.getCurrentUser().sendEmailVerification()
+                                                                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                                    @Override
+                                                                    public void onComplete(@NonNull Task<Void> task) {
+                                                                        if (task.isSuccessful()) {
+                                                                            // email sent
+                                                                            // after email is sent just logout the user and finish this activity
+                                                                            Toast.makeText(LoginActivity.this,"Your Email is not verified",Toast.LENGTH_SHORT).show();
+                                                                            Toast.makeText(LoginActivity.this,"We have sent you a verification email,verify and login again",Toast.LENGTH_LONG).show();
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                            Toast.makeText(LoginActivity.this,"Failed to send Verification link",Toast.LENGTH_SHORT).show();
+                                                                        }
+                                                                    }
+                                                                });
+                                                    }
+
+
+                                                }
+                                            }
+                                        });
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(LoginActivity.this,"Failed to load data",Toast.LENGTH_SHORT).show();
+                    }
+                });
+                Mysingleton.getInstance(LoginActivity.this).addToRequestqueue(jsonObjectRequest);
 
                 //authenticate user
-                auth.signInWithEmailAndPassword(email, password)
-                        .addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
-                            @Override
-                            public void onComplete(@NonNull Task<AuthResult> task) {
-                                // If sign in fails, display a message to the user. If sign in succeeds
-                                // the auth state listener will be notified and logic to handle the
-                                // signed in user can be handled in the listener.
-                                progressBar.setVisibility(View.GONE);
-                                if (!task.isSuccessful()) {
-                                    // there was an error
-                                    if (password.length() < 6) {
-                                        inputPassword.setError(getString(R.string.minimum_password));
-                                    } else {
-                                        Toast.makeText(LoginActivity.this, getString(R.string.auth_failed), Toast.LENGTH_LONG).show();
-                                    }
-                                } else {
-                                    if (auth.getCurrentUser().isEmailVerified()){
-                                        DatabaseReference ref = FirebaseDatabase.getInstance().getReference().getRoot().child("Students").child(auth.getCurrentUser().getUid());
-                                        Students students = new Students(sid,email);
-                                        ref.setValue(students);
-                                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                        startActivity(intent);
-                                        finish();
-                                    }
-                                    else {
-                                        auth.getCurrentUser().sendEmailVerification()
-                                                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                                    @Override
-                                                    public void onComplete(@NonNull Task<Void> task) {
-                                                        if (task.isSuccessful()) {
-                                                            // email sent
-                                                            // after email is sent just logout the user and finish this activity
-                                                            Toast.makeText(LoginActivity.this,"Your Email is not verified",Toast.LENGTH_SHORT).show();
-                                                            Toast.makeText(LoginActivity.this,"We have sent you a verification email,verify and login again",Toast.LENGTH_LONG).show();
-                                                        }
-                                                        else
-                                                        {
-                                                            Toast.makeText(LoginActivity.this,"Failed to send Verification link",Toast.LENGTH_SHORT).show();
-                                                        }
-                                                    }
-                                                });
-                                    }
 
-
-                                }
-                            }
-                        });
             }
         });
         GoogleLogin();
@@ -276,7 +317,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
             Log.i(TAG,"Login was successful in Firebase");
             Log.i(TAG,"UID "+ user.getUid());
 
-            Intent intent = new Intent(this,HibiscusActivity.class);
+            Intent intent = new Intent(this,Hibiscus_Login.class);
 
 
             startActivity(intent);

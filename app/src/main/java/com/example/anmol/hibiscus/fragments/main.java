@@ -107,13 +107,15 @@ public class main extends Fragment {
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, jsonObject, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
+                DatabaseReference db = FirebaseDatabase.getInstance().getReference().child("Notices");
+
+
 
                 try {
                     int c = 0;
                     while (c<response.getJSONArray("Notices").length()){
                         JSONObject object = response.getJSONArray("Notices").getJSONObject(c);
                         //Toast.makeText(context,object.getString("title"),Toast.LENGTH_SHORT).show();
-                        DatabaseReference db = FirebaseDatabase.getInstance().getReference().child("Notices").child(String.valueOf(c));
                         key = c;
                         title = object.getString("title");
                         date = object.getString("date");
@@ -121,7 +123,7 @@ public class main extends Fragment {
                         attention = object.getString("attention");
                         id = object.getString("id");
                         Notice notice = new Notice(title,date,key,postedby,attention,id);
-                        db.setValue(notice);
+
                         notices.add(notice);
                         c++;
 
@@ -134,6 +136,19 @@ public class main extends Fragment {
 
 
 
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                try {
+                    JSONObject object0 = response.getJSONArray("Notices").getJSONObject(0);
+                    key = 0;
+                    title = object0.getString("title");
+                    date = object0.getString("date");
+                    postedby = object0.getString("posted_by");
+                    attention = object0.getString("attention");
+                    id = object0.getString("id");
+                    Notice notice = new Notice(title,date,key,postedby,attention,id);
+                    db.setValue(notice);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
