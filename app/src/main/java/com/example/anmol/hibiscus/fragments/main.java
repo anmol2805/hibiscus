@@ -1,36 +1,23 @@
 package com.example.anmol.hibiscus.fragments;
 
 import android.app.Fragment;
-import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.support.annotation.Nullable;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.ListAdapter;
 import android.widget.ListView;
-import android.widget.SimpleAdapter;
-import android.widget.TextView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.StringRequest;
 import com.example.anmol.hibiscus.Adapter.NoticeAdapter;
-import com.example.anmol.hibiscus.Adapter.RecyclerAdapter;
-import com.example.anmol.hibiscus.Httphandler;
-
 import com.example.anmol.hibiscus.Model.Notice;
 import com.example.anmol.hibiscus.Mysingleton;
 import com.example.anmol.hibiscus.NoticeDataActivity;
@@ -40,138 +27,143 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Set;
 
 /**
- * Created by anmol on 2017-07-11.
+ * Created by anmol on 2017-08-18.
  */
 
 public class main extends Fragment {
-    private String TAG = main.class.getSimpleName();
-    private ProgressDialog pdialog;
-    private ListView lv;
-    ArrayList<Notice> noticeArrayList;
-    NoticeAdapter adapter;
-    private List<Notice> notices;
-    RecyclerView noticerecycler;
-    RecyclerView.Adapter radapter;
-    RecyclerView.LayoutManager layoutManager;
-    Context context;
-    ArrayList<Notice> arrayList = new ArrayList<>();
     String url = "http://139.59.23.157/api/hibi/notice";
-    DatabaseReference databaseReference;
-    FirebaseAuth auth;
-    JSONObject jsonObject;
-    JSONArray jsonArray1;
-    String title,date,postedby,attention,id;
+    ProgressBar progressBar;
+    String title,date,postedby,id,attention;
+    ArrayList<Notice>notices;
+    NoticeAdapter adapter;
+    ListView lv;
     int key;
+    FirebaseAuth auth;
+    String uid,pwd;
+    DatabaseReference mdatabase;
+
     @Nullable
     @Override
-    public View onCreateView(final LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         View vi = inflater.inflate(R.layout.main,container,false);
-        notices = new ArrayList<>();
-        lv = (ListView) vi.findViewById(R.id.list);
-        noticerecycler = (RecyclerView)vi.findViewById(R.id.noticerecycler);
-        layoutManager = new LinearLayoutManager(getActivity());
-        noticerecycler.setLayoutManager(layoutManager);
-        noticerecycler.setHasFixedSize(true);
-//        BackgroundTask backgroundTask = new BackgroundTask(getActivity());
-//        noticeArrayList = backgroundTask.getList();
-//        radapter = new RecyclerAdapter(noticeArrayList);
-//        noticerecycler.setAdapter(radapter);
-
         auth = FirebaseAuth.getInstance();
-        databaseReference = FirebaseDatabase.getInstance().getReference().child("Students").child(auth.getCurrentUser().getUid()).child("hibiscus");
-        jsonObject = new JSONObject();
-        try {
-            jsonObject.put("uid","b516008");
-            jsonObject.put("pwd","anmol@2805");
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, jsonObject, new Response.Listener<JSONObject>() {
+        mdatabase = FirebaseDatabase.getInstance().getReference().child("Notice");
+        final DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("Students").child(auth.getCurrentUser().getUid()).child("hibiscus");
+        lv = (ListView)vi.findViewById(R.id.list);
+        notices = new ArrayList<>();
+        databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
-            public void onResponse(JSONObject response) {
-                DatabaseReference db = FirebaseDatabase.getInstance().getReference().child("Notices");
-
-
-
-                try {
-                    int c = 0;
-                    while (c<response.getJSONArray("Notices").length()){
-                        JSONObject object = response.getJSONArray("Notices").getJSONObject(c);
-                        //Toast.makeText(context,object.getString("title"),Toast.LENGTH_SHORT).show();
-                        key = c;
-                        title = object.getString("title");
-                        date = object.getString("date");
-                        postedby = object.getString("posted_by");
-                        attention = object.getString("attention");
-                        id = object.getString("id");
-                        Notice notice = new Notice(title,date,key,postedby,attention,id);
-
-                        notices.add(notice);
-                        c++;
-
-                    }
-                    adapter = new NoticeAdapter(getActivity(),R.layout.notice,notices);
-                    lv.setAdapter(adapter);
-                    //Toast.makeText(context,"Please wait...",Toast.LENGTH_LONG).show();
-
-
-
-
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                try {
-                    JSONObject object0 = response.getJSONArray("Notices").getJSONObject(0);
-                    key = 0;
-                    title = object0.getString("title");
-                    date = object0.getString("date");
-                    postedby = object0.getString("posted_by");
-                    attention = object0.getString("attention");
-                    id = object0.getString("id");
-                    Notice notice = new Notice(title,date,key,postedby,attention,id);
-                    db.setValue(notice);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                uid = dataSnapshot.child("sid").getValue().toString();
+                pwd = dataSnapshot.child("pwd").getValue().toString();
+//                final JSONObject jsonObject = new JSONObject();
+//                try {
+//                    jsonObject.put("uid",uid);
+//                    jsonObject.put("pwd",pwd);
+//                } catch (JSONException e) {
+//                    e.printStackTrace();
+//                }
+//                JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, jsonObject, new Response.Listener<JSONObject>() {
+//                    @Override
+//                    public void onResponse(JSONObject response) {
+//                        progressBar.setVisibility(View.GONE);
+//
+//                        try {
+//                            int c = 0;
+//                            while (c<response.getJSONArray("Notices").length()){
+//
+//                                JSONObject object = response.getJSONArray("Notices").getJSONObject(c);
+//
+//                                key = c;
+//                                title = object.getString("title");
+//                                date = object.getString("date");
+//                                postedby = object.getString("posted_by");
+//                                attention = object.getString("attention");
+//                                id = object.getString("id");
+//                                Notice notice = new Notice(title,date,key,postedby,attention,id);
+//                                //notices.add(notice);
+//                                mdatabase.child(String.valueOf(c)).setValue(notice);
+//                                c++;
+//                            }
+//
+//
+//                        } catch (JSONException e) {
+//                            e.printStackTrace();
+//                        }
+//                        try {
+//                            JSONObject object0 = response.getJSONArray("Notices").getJSONObject(0);
+//                            key = 0;
+//                            title = object0.getString("title");
+//                            date = object0.getString("date");
+//                            postedby = object0.getString("posted_by");
+//                            attention = object0.getString("attention");
+//                            id = object0.getString("id");
+//                            Notice notice = new Notice(title,date,key,postedby,attention,id);
+//                            FirebaseDatabase.getInstance().getReference().child("Notices").setValue(notice);
+//                        } catch (JSONException e) {
+//                            e.printStackTrace();
+//                        }
+//                    }
+//                }, new Response.ErrorListener() {
+//                    @Override
+//                    public void onErrorResponse(VolleyError error) {
+//                        progressBar.setVisibility(View.GONE);
+//                        Toast.makeText(getActivity(),"Error refreshing Notices",Toast.LENGTH_SHORT).show();
+//                    }
+//                });
+//                Mysingleton.getInstance(getActivity()).addToRequestqueue(jsonObjectRequest);
             }
-        }, new Response.ErrorListener() {
+
             @Override
-            public void onErrorResponse(VolleyError error) {
-               Toast.makeText(getActivity(),"error",Toast.LENGTH_SHORT).show();
+            public void onCancelled(DatabaseError databaseError) {
+
             }
         });
-        Mysingleton.getInstance(context).addToRequestqueue(jsonObjectRequest);
+        mdatabase.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for(int i=0;i<50;i++){
+                    String title = dataSnapshot.child(String.valueOf(i)).child("title").getValue().toString();
+                    String attention = dataSnapshot.child(String.valueOf(i)).child("attention").getValue().toString();
+                    String posted_by = dataSnapshot.child(String.valueOf(i)).child("posted_by").getValue().toString();
+                    String date = dataSnapshot.child(String.valueOf(i)).child("date").getValue().toString();
+                    String id = dataSnapshot.child(String.valueOf(i)).child("id").getValue().toString();
+                    Notice notice = new Notice(title,date,i,posted_by,attention,id);
+                    notices.add(notice);
 
+                }
+                adapter = new NoticeAdapter(getActivity(),R.layout.notice,notices);
+                adapter.notifyDataSetChanged();
+                lv.setAdapter(adapter);
+
+
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent i = new Intent(getActivity(),NoticeDataActivity.class);
                 i.putExtra("id",notices.get(position).getId());
+                i.putExtra("uid",uid);
+                i.putExtra("pwd",pwd);
                 startActivity(i);
             }
         });
 
-
         return vi;
     }
-
 }

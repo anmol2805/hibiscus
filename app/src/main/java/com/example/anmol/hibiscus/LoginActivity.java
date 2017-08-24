@@ -67,18 +67,12 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         auth = FirebaseAuth.getInstance();
         uid = getIntent().getStringExtra("uid");
         pwd = getIntent().getStringExtra("pwd");
-        try {
-            object.put("uid",uid);
-            object.put("pwd",pwd);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+
         if (auth.getCurrentUser() != null) {
             if(auth.getCurrentUser().isEmailVerified()){
                 session.createLoginSession(auth.getCurrentUser().getEmail());
-                Intent intent = new Intent(LoginActivity.this, Hibiscus_Login.class);
-                intent.putExtra("uid",uid);
-                intent.putExtra("pwd",pwd);
+                Intent intent = new Intent(LoginActivity.this, SplashActivity.class);
+
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);
@@ -155,6 +149,12 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                 }
 
                 progressBar.setVisibility(View.VISIBLE);
+                try {
+                    object.put("uid",sid);
+                    object.put("pwd",password);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
                 JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, object, new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
@@ -177,12 +177,14 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                                                     }
                                                 } else {
                                                     if (auth.getCurrentUser().isEmailVerified()){
-                                                        DatabaseReference ref = FirebaseDatabase.getInstance().getReference().getRoot().child("Students").child(auth.getCurrentUser().getUid());
-                                                        Students students = new Students(sid,email);
+                                                        if(FirebaseDatabase.getInstance().getReference().getRoot().child("Students").child(auth.getCurrentUser().getUid())!=null){
+                                                            FirebaseDatabase.getInstance().getReference().getRoot().child("Students").child(auth.getCurrentUser().getUid()).removeValue();
+                                                        }
+                                                        DatabaseReference ref = FirebaseDatabase.getInstance().getReference().getRoot().child("Students").child(auth.getCurrentUser().getUid()).child("hibiscus");
+                                                        Students students = new Students(sid,password,true);
                                                         ref.setValue(students);
-                                                        Intent intent = new Intent(LoginActivity.this, Hibiscus_Login.class);
-                                                        intent.putExtra("uid",uid);
-                                                        intent.putExtra("pwd",pwd);
+                                                        Intent intent = new Intent(LoginActivity.this, SplashActivity.class);
+
                                                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                                         startActivity(intent);
@@ -219,7 +221,9 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                 }, new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
+                        progressBar.setVisibility(View.GONE);
                         Toast.makeText(LoginActivity.this,"Failed to load data",Toast.LENGTH_SHORT).show();
+
                     }
                 });
                 Mysingleton.getInstance(LoginActivity.this).addToRequestqueue(jsonObjectRequest);
@@ -317,7 +321,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
             Log.i(TAG,"Login was successful in Firebase");
             Log.i(TAG,"UID "+ user.getUid());
 
-            Intent intent = new Intent(this,Hibiscus_Login.class);
+            Intent intent = new Intent(this,SplashActivity.class);
 
 
             startActivity(intent);

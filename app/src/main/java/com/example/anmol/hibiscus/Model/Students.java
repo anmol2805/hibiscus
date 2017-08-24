@@ -7,11 +7,13 @@ import java.io.Serializable;
  */
 
 public class Students implements Serializable {
-    String sid,email;
+    String sid,pwd;
+    Boolean status;
 
-    public Students(String sid, String email) {
+    public Students(String sid, String pwd,Boolean status) {
         this.sid = sid;
-        this.email = email;
+        this.pwd = pwd;
+        this.status = status;
 
     }
 
@@ -19,20 +21,27 @@ public class Students implements Serializable {
     }
 
 
+    public Boolean getStatus() {
+        return status;
+    }
 
-    public String getsid() {
+    public void setStatus(Boolean status) {
+        this.status = status;
+    }
+
+    public String getSid() {
         return sid;
     }
 
-    public void setsid(String sid) {
+    public void setSid(String sid) {
         this.sid = sid;
     }
 
-    public String getEmail() {
-        return email;
+    public String getPwd() {
+        return pwd;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setPwd(String pwd) {
+        this.pwd = pwd;
     }
 }

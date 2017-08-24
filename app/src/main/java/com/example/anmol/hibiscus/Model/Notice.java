@@ -7,11 +7,11 @@ import java.io.Serializable;
  */
 
 public class Notice implements Serializable {
-    String title,date,postedby,attention,id;
+    String title,date,posted_by,attention,id;
     int key;
 
-    public Notice(String title,String date,int key,String postedby,String attention,String id) {
-        this.title = title;this.date = date;this.key = key;this.postedby = postedby;this.attention = attention;
+    public Notice(String title,String date,int key,String posted_by,String attention,String id) {
+        this.title = title;this.date = date;this.key = key;this.posted_by = posted_by;this.attention = attention;
         this.id = id;
     }
 
@@ -23,12 +23,12 @@ public class Notice implements Serializable {
         this.id = id;
     }
 
-    public String getPostedby() {
-        return postedby;
+    public String getPosted_by() {
+        return posted_by;
     }
 
-    public void setPostedby(String postedby) {
-        this.postedby = postedby;
+    public void setPosted_by(String posted_by) {
+        this.posted_by = posted_by;
     }
 
     public String getAttention() {

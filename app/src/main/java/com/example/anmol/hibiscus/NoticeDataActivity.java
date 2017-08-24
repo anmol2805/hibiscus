@@ -15,6 +15,12 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.example.anmol.hibiscus.Model.Noticedata;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -23,7 +29,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 
 public class NoticeDataActivity extends AppCompatActivity {
-    String id;
+    String id,uid,pwd;
     JSONObject object;
     String url = "http://139.59.23.157/api/hibi/notice_data";
     TextView data;
@@ -53,10 +59,14 @@ public class NoticeDataActivity extends AppCompatActivity {
         nd.getSettings().setTextZoom(50);
 
         id = getIntent().getStringExtra("id");
+        uid = getIntent().getStringExtra("uid");
+        pwd = getIntent().getStringExtra("pwd");
+        final DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("NoticeData").child(id);
+
         object = new JSONObject();
         try {
-            object.put("uid","b516008");
-            object.put("pwd","anmol@2805");
+            object.put("uid",uid);
+            object.put("pwd",pwd);
             object.put("id",id);
         } catch (JSONException e) {
             e.printStackTrace();
@@ -65,11 +75,11 @@ public class NoticeDataActivity extends AppCompatActivity {
             @Override
             public void onResponse(JSONObject response) {
                 try {
+                    String notice = response.getJSONArray("Notices").getJSONObject(0).getString("notice_data");
+                    Noticedata noticedata = new Noticedata(notice);
+                    databaseReference.setValue(noticedata);
+                    //nd.loadData(response.getJSONArray("Notices").getJSONObject(0).getString("notice_data"), "text/html; charset=utf-8", "UTF-8");
 
-//                    Document document = Jsoup.parse(response.getJSONArray("Notices").getJSONObject(0).getString("notice_data"));
-//                    Elements elements = document.getAllElements();
-                    nd.loadData(response.getJSONArray("Notices").getJSONObject(0).getString("notice_data"), "text/html; charset=utf-8", "UTF-8");
-                    //data.setText(response.getJSONArray("Notices").getJSONObject(0).getString("notice_data"));
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -77,10 +87,45 @@ public class NoticeDataActivity extends AppCompatActivity {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(NoticeDataActivity.this,"error",Toast.LENGTH_SHORT).show();
+
             }
         });
         Mysingleton.getInstance(context).addToRequestqueue(jsonObjectRequest);
+        FirebaseDatabase.getInstance().getReference().child("NoticeData").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if(dataSnapshot.hasChild(id)){
+                    nd.loadData(dataSnapshot.child(id).child("notice").getValue().toString(), "text/html; charset=utf-8", "UTF-8");
+                }
+                else{
+                    JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, object, new Response.Listener<JSONObject>() {
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            try {
+                                String notice = response.getJSONArray("Notices").getJSONObject(0).getString("notice_data");
+                                Noticedata noticedata = new Noticedata(notice);
+                                databaseReference.setValue(noticedata);
+                                //nd.loadData(response.getJSONArray("Notices").getJSONObject(0).getString("notice_data"), "text/html; charset=utf-8", "UTF-8");
 
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }, new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+
+                        }
+                    });
+                    Mysingleton.getInstance(context).addToRequestqueue(jsonObjectRequest);
+                }
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 }

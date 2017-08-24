@@ -45,7 +45,7 @@ public class NoticeAdapter extends ArrayAdapter<Notice> {
         TextView date = (TextView)v.findViewById(R.id.date);
         date.setText(notices.get(position).getDate());
         TextView postedby = (TextView)v.findViewById(R.id.posted);
-        postedby.setText(notices.get(position).getPostedby());
+        postedby.setText(notices.get(position).getPosted_by());
         TextView attention = (TextView)v.findViewById(R.id.attention);
         attention.setText(notices.get(position).getAttention());
         return v;
