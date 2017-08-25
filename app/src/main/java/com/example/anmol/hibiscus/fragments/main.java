@@ -131,18 +131,24 @@ public class main extends Fragment {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for(int i=0;i<50;i++){
-                    String title = dataSnapshot.child(String.valueOf(i)).child("title").getValue().toString();
-                    String attention = dataSnapshot.child(String.valueOf(i)).child("attention").getValue().toString();
-                    String posted_by = dataSnapshot.child(String.valueOf(i)).child("posted_by").getValue().toString();
-                    String date = dataSnapshot.child(String.valueOf(i)).child("date").getValue().toString();
-                    String id = dataSnapshot.child(String.valueOf(i)).child("id").getValue().toString();
-                    Notice notice = new Notice(title,date,i,posted_by,attention,id);
-                    notices.add(notice);
+                    if(dataSnapshot.hasChild(String.valueOf(i))){
+                        String title = dataSnapshot.child(String.valueOf(i)).child("title").getValue().toString();
+                        String attention = dataSnapshot.child(String.valueOf(i)).child("attention").getValue().toString();
+                        String posted_by = dataSnapshot.child(String.valueOf(i)).child("posted_by").getValue().toString();
+                        String date = dataSnapshot.child(String.valueOf(i)).child("date").getValue().toString();
+                        String id = dataSnapshot.child(String.valueOf(i)).child("id").getValue().toString();
+                        Notice notice = new Notice(title,date,i,posted_by,attention,id);
+                        notices.add(notice);
+
+                    }
 
                 }
-                adapter = new NoticeAdapter(getActivity(),R.layout.notice,notices);
-                adapter.notifyDataSetChanged();
-                lv.setAdapter(adapter);
+                if(getActivity()!=null){
+                    adapter = new NoticeAdapter(getActivity(),R.layout.notice,notices);
+                    adapter.notifyDataSetChanged();
+                    lv.setAdapter(adapter);
+
+                }
 
 
 
@@ -165,5 +171,6 @@ public class main extends Fragment {
         });
 
         return vi;
+
     }
 }

@@ -1,4 +1,4 @@
-package com.example.anmol.hibiscus;
+package com.example.anmol.hibiscus.services;
 
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -9,6 +9,8 @@ import android.net.Uri;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
 
+import com.example.anmol.hibiscus.MainActivity;
+import com.example.anmol.hibiscus.R;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
@@ -30,9 +32,9 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService{
     private void showNotification(Map<String, String> payload) {
         Uri alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
-        builder.setSmallIcon(R.mipmap.ic_launcher);
-        builder.setContentTitle(payload.get("username"));
-        builder.setContentText(payload.get("email"));
+        builder.setSmallIcon(R.drawable.hibif);
+        builder.setContentTitle(payload.get("title"));
+        builder.setContentText(payload.get("body"));
         builder.setSound(alarmSound);
         Intent resultIntent = new Intent(this,MainActivity.class);
         TaskStackBuilder stackbuilder = TaskStackBuilder.create(this);

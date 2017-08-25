@@ -16,6 +16,7 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
 import com.example.anmol.hibiscus.Model.Students;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -33,6 +34,8 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -183,6 +186,22 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                                                         DatabaseReference ref = FirebaseDatabase.getInstance().getReference().getRoot().child("Students").child(auth.getCurrentUser().getUid()).child("hibiscus");
                                                         Students students = new Students(sid,password,true);
                                                         ref.setValue(students);
+                                                        FirebaseMessaging.getInstance().subscribeToTopic("IIITstudents");
+                                                        DatabaseReference db = FirebaseDatabase.getInstance().getReference().getRoot().child("token");
+                                                        db.child("token").setValue(FirebaseInstanceId.getInstance().getToken());
+//                                                        String url = "https://iid.googleapis.com/iid/v1/"+FirebaseInstanceId.getInstance().getToken()+"/rel/topics/IIITstudents";
+//                                                        JsonObjectRequest stringRequest = new JsonObjectRequest(Request.Method.POST, url,null ,new Response.Listener<JSONObject>() {
+//                                                            @Override
+//                                                            public void onResponse(JSONObject response) {
+//                                                                Toast.makeText(LoginActivity.this,FirebaseInstanceId.getInstance().getToken(),Toast.LENGTH_SHORT).show();
+//                                                            }
+//                                                        }, new Response.ErrorListener() {
+//                                                            @Override
+//                                                            public void onErrorResponse(VolleyError error) {
+//                                                                Toast.makeText(LoginActivity.this,"errort",Toast.LENGTH_SHORT).show();
+//                                                            }
+//                                                        });
+//                                                        Mysingleton.getInstance(LoginActivity.this).addToRequestqueue(stringRequest);
                                                         Intent intent = new Intent(LoginActivity.this, SplashActivity.class);
 
                                                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

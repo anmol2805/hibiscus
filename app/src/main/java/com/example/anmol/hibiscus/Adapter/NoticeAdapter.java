@@ -1,6 +1,7 @@
 package com.example.anmol.hibiscus.Adapter;
 
 import android.app.Activity;
+import android.content.Context;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -37,7 +38,8 @@ public class NoticeAdapter extends ArrayAdapter<Notice> {
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-        LayoutInflater inflater = context.getLayoutInflater();
+        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        //LayoutInflater inflater = context.getLayoutInflater();
         View v = inflater.inflate(resource,null);
 
         TextView text = (TextView)v.findViewById(R.id.title);
