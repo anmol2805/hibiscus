@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
@@ -95,6 +96,8 @@ public class NoticeDataActivity extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if(dataSnapshot.hasChild(id)){
+
+                    Log.i("NoticeDataActivity",dataSnapshot.child(id).child("notice").getValue().toString());
                     nd.loadData(dataSnapshot.child(id).child("notice").getValue().toString(), "text/html; charset=utf-8", "UTF-8");
                 }
                 else{

@@ -139,7 +139,6 @@ public class main extends Fragment {
                         String id = dataSnapshot.child(String.valueOf(i)).child("id").getValue().toString();
                         Notice notice = new Notice(title,date,i,posted_by,attention,id);
                         notices.add(notice);
-
                     }
 
                 }
