@@ -57,8 +57,8 @@ public class NoticeDataActivity extends AppCompatActivity {
         nd.getSettings().setAppCacheEnabled(true);
         nd.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
         nd.getSettings().setUseWideViewPort(true);
-        nd.getSettings().setTextZoom(50);
-
+        nd.getSettings().setTextZoom(150);
+        nd.setInitialScale(1);
         id = getIntent().getStringExtra("id");
         uid = getIntent().getStringExtra("uid");
         pwd = getIntent().getStringExtra("pwd");

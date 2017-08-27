@@ -14,6 +14,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.anmol.hibiscus.fragments.commapps;
@@ -21,9 +22,19 @@ import com.example.anmol.hibiscus.fragments.courseware;
 import com.example.anmol.hibiscus.fragments.help;
 import com.example.anmol.hibiscus.fragments.main;
 import com.example.anmol.hibiscus.fragments.myapps;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class HibiscusActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+
+    String sid;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,10 +48,17 @@ public class HibiscusActivity extends AppCompatActivity
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
+
+        String url = getIntent().getStringExtra("url");
+        String uidu = getIntent().getStringExtra("uidu");
+        setTitle("IIITcloud");
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+
         View header = navigationView.getHeaderView(0);
-        ImageView imageView = (ImageView)header.findViewById(R.id.dph);
-        Glide.with(HibiscusActivity.this).load("https://hib.iiit-bh.ac.in/Hibiscus/docs/iiit/Photos/B516008.jpg").into(imageView);
+        CircleImageView imageView = (CircleImageView) header.findViewById(R.id.dph);
+        Glide.with(HibiscusActivity.this).load(url).into(imageView);
+        TextView sid = (TextView)header.findViewById(R.id.sid);
+        sid.setText(uidu);
         navigationView.setNavigationItemSelectedListener(this);
         FragmentManager fm = getFragmentManager();
         fm.beginTransaction().replace(R.id.content_hib,new main()).commit();

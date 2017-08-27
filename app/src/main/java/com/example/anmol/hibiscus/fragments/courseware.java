@@ -18,6 +18,8 @@ public class courseware extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         View vi = inflater.inflate(R.layout.courseware,container,false);
+        getActivity().setTitle("My Courses");
         return vi;
+
     }
 }

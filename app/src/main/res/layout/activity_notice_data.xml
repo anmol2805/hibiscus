@@ -4,10 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.anmol.hibiscus.NoticeDataActivity">
+    tools:context="com.example.anmol.hibiscus.NoticeDataActivity"
+    android:background="#fff"
+    >
 
     <WebView
         android:id="@+id/nd"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:layout_marginLeft="30dp"
+        />
 </RelativeLayout>

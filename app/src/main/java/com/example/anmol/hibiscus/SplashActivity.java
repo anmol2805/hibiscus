@@ -81,63 +81,14 @@ public class SplashActivity extends AppCompatActivity {
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         uid = dataSnapshot.child("sid").getValue().toString();
                         pwd = dataSnapshot.child("pwd").getValue().toString();
-                        final JSONObject jsonObject = new JSONObject();
-                        try {
-                            jsonObject.put("uid",uid);
-                            jsonObject.put("pwd",pwd);
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, jsonObject, new Response.Listener<JSONObject>() {
-                            @Override
-                            public void onResponse(JSONObject response) {
-                                progressBar.setVisibility(View.GONE);
-                                try {
-                                    int c = 0;
-                                    while (c<response.getJSONArray("Notices").length()){
+                        final String uidu = uid.toUpperCase();
+                        final String url = "https://hib.iiit-bh.ac.in/Hibiscus/docs/iiit/Photos/" + uidu + ".jpg";
+                        Toast.makeText(SplashActivity.this, uidu, Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(SplashActivity.this, HibiscusActivity.class);
+                        intent.putExtra("url", url);
+                        intent.putExtra("uidu", uidu);
+                        startActivity(intent);
 
-                                        JSONObject object = response.getJSONArray("Notices").getJSONObject(c);
-
-                                        key = c;
-                                        title = object.getString("title");
-                                        date = object.getString("date");
-                                        postedby = object.getString("posted_by");
-                                        attention = object.getString("attention");
-                                        id = object.getString("id");
-                                        Notice notice = new Notice(title,date,key,postedby,attention,id);
-                                        //notices.add(notice);
-                                        mdatabase.child(String.valueOf(c)).setValue(notice);
-                                        c++;
-                                    }
-
-
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                }
-                                try {
-                                    JSONObject object0 = response.getJSONArray("Notices").getJSONObject(0);
-                                    key = 0;
-                                    title = object0.getString("title");
-                                    date = object0.getString("date");
-                                    postedby = object0.getString("posted_by");
-                                    attention = object0.getString("attention");
-                                    id = object0.getString("id");
-                                    Notice notice = new Notice(title,date,key,postedby,attention,id);
-                                    FirebaseDatabase.getInstance().getReference().child("Notices").setValue(notice);
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                }
-                                startActivity(new Intent(SplashActivity.this,HibiscusActivity.class));
-                            }
-                        }, new Response.ErrorListener() {
-                            @Override
-                            public void onErrorResponse(VolleyError error) {
-                                progressBar.setVisibility(View.GONE);
-                                startActivity(new Intent(SplashActivity.this,HibiscusActivity.class));
-                                Toast.makeText(SplashActivity.this,"Error refreshing Notices",Toast.LENGTH_SHORT).show();
-                            }
-                        });
-                        Mysingleton.getInstance(SplashActivity.this).addToRequestqueue(jsonObjectRequest);
                     }
 
                     @Override

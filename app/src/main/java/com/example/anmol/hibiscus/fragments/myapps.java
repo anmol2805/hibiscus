@@ -49,6 +49,7 @@ public class myapps extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         View vi = inflater.inflate(R.layout.myapps,container,false);
+        getActivity().setTitle("Attendance");
         progressBar = (ProgressBar)vi.findViewById(R.id.loadatt);
         listView = (ListView)vi.findViewById(R.id.listatt);
         attendances = new ArrayList<>();
@@ -110,7 +111,7 @@ public class myapps extends Fragment {
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                for(int i=0;i<100.;i++){
+                for(int i=0;i<80;i++){
                     if(dataSnapshot.hasChild(String.valueOf(i))){
                         String attend = dataSnapshot.child(String.valueOf(i)).child("attend").getValue().toString();
                         String subcode = dataSnapshot.child(String.valueOf(i)).child("subcode").getValue().toString();
@@ -118,7 +119,6 @@ public class myapps extends Fragment {
                         String sub = dataSnapshot.child(String.valueOf(i)).child("sub").getValue().toString();
                         Attendance attendance = new Attendance(subcode,sub,name,attend);
                         attendances.add(attendance);
-
                     }
 
                 }
