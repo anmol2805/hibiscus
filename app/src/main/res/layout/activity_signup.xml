@@ -30,8 +30,9 @@
                 android:inputType="textEmailAddress"
                 android:maxLines="1"
                 android:singleLine="true"
-                android:textColor="#000"
+                android:textColor="@color/colorPrimary"
                 android:theme="@style/MyEditTextTheme"
+                android:textAlignment="center"
                 />
 
         </android.support.design.widget.TextInputLayout>
@@ -51,7 +52,8 @@
                 android:inputType="textPassword"
                 android:maxLines="1"
                 android:singleLine="true"
-                android:textColor="#000"
+                android:textColor="@color/colorPrimary"
+                android:textAlignment="center"
                 android:theme="@style/MyEditTextTheme"
                 />
 
@@ -60,35 +62,40 @@
         <Button
             android:id="@+id/sign_up_button"
             style="?android:textAppearanceSmall"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:background="@drawable/round_button"
             android:text="@string/action_sign_in_short"
-            android:textColor="@color/colorPrimaryDark"
+            android:textColor="@color/white"
             android:textStyle="bold"
-            android:visibility="visible" />
+            android:visibility="visible"
+
+            />
 
 
         <!-- Link to Login Screen -->
 
         <Button
             android:id="@+id/sign_in_button"
-            android:layout_width="fill_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dip"
-            android:background="@drawable/round_button"
+            android:background="@drawable/signbtnround"
             android:text="@string/btn_link_to_login"
             android:textAllCaps="false"
             android:textColor="@color/colorPrimaryDark"
             android:textSize="15dp" />
+
         <ProgressBar
             android:id="@+id/progressBar"
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_gravity="center|bottom"
             android:layout_marginBottom="20dp"
-            android:visibility="gone" />
+            android:visibility="invisible"
+            android:layout_marginTop="20dp"
+            />
 
     </LinearLayout>
 

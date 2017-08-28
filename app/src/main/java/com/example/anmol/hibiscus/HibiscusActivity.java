@@ -1,9 +1,12 @@
 package com.example.anmol.hibiscus;
 
 import android.app.FragmentManager;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.view.Gravity;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -15,6 +18,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.anmol.hibiscus.fragments.commapps;
@@ -22,6 +26,8 @@ import com.example.anmol.hibiscus.fragments.courseware;
 import com.example.anmol.hibiscus.fragments.help;
 import com.example.anmol.hibiscus.fragments.main;
 import com.example.anmol.hibiscus.fragments.myapps;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -35,6 +41,8 @@ public class HibiscusActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     String sid;
+    private static long back_pressed;
+    DrawerLayout drawer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,11 +51,14 @@ public class HibiscusActivity extends AppCompatActivity
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+
+        toolbar.setTitleTextColor(getResources().getColor(R.color.colorPrimary));
+        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
+        toggle.setDrawerIndicatorEnabled(false);
 
         String url = getIntent().getStringExtra("url");
         String uidu = getIntent().getStringExtra("uidu");
@@ -66,11 +77,16 @@ public class HibiscusActivity extends AppCompatActivity
 
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
-        } else {
+
+        if (drawer.isDrawerOpen(GravityCompat.END)) {
+            drawer.closeDrawer(GravityCompat.END);
+        } else if(back_pressed + 2000 > System.currentTimeMillis()) {
             super.onBackPressed();
+            finish();
+            overridePendingTransition(R.anim.still,R.anim.slide_out_down);
+        }else {
+            Toast.makeText(getBaseContext(), "Press once again to exit!", Toast.LENGTH_SHORT).show();
+            back_pressed = System.currentTimeMillis();
         }
     }
 
@@ -90,6 +106,12 @@ public class HibiscusActivity extends AppCompatActivity
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            if(drawer.isDrawerOpen(Gravity.RIGHT)){
+                drawer.closeDrawer(Gravity.RIGHT);
+            }
+            else{
+                drawer.openDrawer(Gravity.RIGHT);
+            }
             return true;
         }
 
@@ -111,10 +133,13 @@ public class HibiscusActivity extends AppCompatActivity
         } else if (id == R.id.nav_comm) {
             fm.beginTransaction().replace(R.id.content_hib,new commapps()).commit();
         } else if (id == R.id.nav_help) {
-            fm.beginTransaction().replace(R.id.content_hib,new help()).commit();
+            FirebaseAuth.getInstance().signOut();
+            startActivity(new Intent(HibiscusActivity.this,LoginActivity.class));
+            overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_down);
         }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
+        drawer.closeDrawer(GravityCompat.END);
         return true;
     }
+
 }

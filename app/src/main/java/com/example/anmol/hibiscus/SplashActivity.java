@@ -20,6 +20,9 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.example.anmol.hibiscus.Model.Notice;
+import com.example.anmol.hibiscus.services.RequestService;
+import com.example.anmol.hibiscus.services.RequestServiceAttendance;
+import com.example.anmol.hibiscus.services.RequestServiceGrades;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -52,52 +55,64 @@ public class SplashActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
         auth = FirebaseAuth.getInstance();
-        mdatabase = FirebaseDatabase.getInstance().getReference().child("Notice");
-        final DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("Students").child(auth.getCurrentUser().getUid()).child("hibiscus");
-        progressBar = (ProgressBar)findViewById(R.id.load);
-        progressBar.setVisibility(View.VISIBLE);
-        notices = new ArrayList<>();
+        if(auth.getCurrentUser()==null){
+            startActivity(new Intent(SplashActivity.this,LoginActivity.class));
+        }
+        else{
+            Intent intent = new Intent(this, RequestService.class);
+            startService(intent);
+            mdatabase = FirebaseDatabase.getInstance().getReference().child("Notice");
+            final DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("Students").child(auth.getCurrentUser().getUid()).child("hibiscus");
+            progressBar = (ProgressBar)findViewById(R.id.load);
+            progressBar.setVisibility(View.VISIBLE);
+            notices = new ArrayList<>();
 
-        text = (TextView)findViewById(R.id.textView5);
-        text.setVisibility(View.INVISIBLE);
-        img = (ImageView)findViewById(R.id.imageView2);
-        animFadein = AnimationUtils.loadAnimation(getApplicationContext(),
-                R.anim.fade_in);
-        zoomin = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.zoom_in);
-        img.startAnimation(zoomin);
-        Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
+            text = (TextView)findViewById(R.id.textView5);
+            text.setVisibility(View.INVISIBLE);
+            img = (ImageView)findViewById(R.id.imageView2);
+            animFadein = AnimationUtils.loadAnimation(getApplicationContext(),
+                    R.anim.fade_in);
+            zoomin = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.zoom_in);
+            img.startAnimation(zoomin);
+            Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    Intent intent = new Intent(SplashActivity.this, RequestServiceAttendance.class);
+                    startService(intent);
+                    text.startAnimation(animFadein);
 
-                text.startAnimation(animFadein);
-            }
-        },1000);
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                databaseReference.addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        uid = dataSnapshot.child("sid").getValue().toString();
-                        pwd = dataSnapshot.child("pwd").getValue().toString();
-                        final String uidu = uid.toUpperCase();
-                        final String url = "https://hib.iiit-bh.ac.in/Hibiscus/docs/iiit/Photos/" + uidu + ".jpg";
-                        Toast.makeText(SplashActivity.this, uidu, Toast.LENGTH_SHORT).show();
-                        Intent intent = new Intent(SplashActivity.this, HibiscusActivity.class);
-                        intent.putExtra("url", url);
-                        intent.putExtra("uidu", uidu);
-                        startActivity(intent);
+                }
+            },1000);
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    databaseReference.addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            uid = dataSnapshot.child("sid").getValue().toString();
+                            pwd = dataSnapshot.child("pwd").getValue().toString();
+                            final String uidu = uid.toUpperCase();
+                            final String url = "https://hib.iiit-bh.ac.in/Hibiscus/docs/iiit/Photos/" + uidu + ".jpg";
 
-                    }
+                            Intent intent = new Intent(SplashActivity.this, HibiscusActivity.class);
+                            intent.putExtra("url", url);
+                            intent.putExtra("uidu", uidu);
+                            startActivity(intent);
+                            overridePendingTransition(R.anim.still,R.anim.slide_in_up);
+                        }
 
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
 
-                    }
-                });
-            }
-        },2000);
+                        }
+                    });
+                    Intent intent = new Intent(SplashActivity.this, RequestServiceGrades.class);
+                    startService(intent);
+                }
+            },2000);
+
+        }
 
 
     }
@@ -108,5 +123,6 @@ public class SplashActivity extends AppCompatActivity {
         // TODO Auto-generated method stub
         super.onPause();
         finish();
+        overridePendingTransition(R.anim.still,R.anim.slide_in_up);
     }
 }

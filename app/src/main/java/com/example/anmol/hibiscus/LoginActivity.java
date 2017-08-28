@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -48,7 +49,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     private EditText inputEmail, inputPassword;
     private FirebaseAuth auth;
     private ProgressBar progressBar;
-    private Button btnSignup, btnLogin, btnReset;
+    private Button  btnLogin, btnReset;
     private Button googleSignIn;
     private static final int RC_SIGN_IN = 9001;
     private GoogleApiClient mGoogleApiClient;
@@ -58,6 +59,8 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     JSONObject object;
     String uid,pwd;
     String url = "http://139.59.23.157/api/hibi/login_test";
+    private static long back_pressed;
+    TextView btnSignup;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,6 +83,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);
                 finish();
+                overridePendingTransition(R.anim.slide_in_up,R.anim.slide_in_up);
 
             }
             else {
@@ -111,7 +115,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         inputEmail = (EditText) findViewById(R.id.email);
         inputPassword = (EditText) findViewById(R.id.password);
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
-        btnSignup = (Button) findViewById(R.id.btn_signup);
+        btnSignup = (TextView) findViewById(R.id.btn_signup);
         btnLogin = (Button) findViewById(R.id.btn_login);
         btnReset = (Button) findViewById(R.id.btn_reset_password);
 
@@ -124,6 +128,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(LoginActivity.this, SignupActivity.class));
+                overridePendingTransition(R.anim.slide_out_right,R.anim.still);
             }
         });
 
@@ -131,6 +136,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(LoginActivity.this, ResetPasswordActivity.class));
+                overridePendingTransition(R.anim.slide_out_right,R.anim.still);
             }
         });
 
@@ -170,7 +176,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                                                 // If sign in fails, display a message to the user. If sign in succeeds
                                                 // the auth state listener will be notified and logic to handle the
                                                 // signed in user can be handled in the listener.
-                                                progressBar.setVisibility(View.GONE);
+                                                progressBar.setVisibility(View.INVISIBLE);
                                                 if (!task.isSuccessful()) {
                                                     // there was an error
                                                     if (password.length() < 6) {
@@ -208,6 +214,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                                                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                                         startActivity(intent);
                                                         finish();
+                                                        overridePendingTransition(R.anim.still,R.anim.slide_in_up);
                                                     }
                                                     else {
                                                         auth.getCurrentUser().sendEmailVerification()
@@ -240,7 +247,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                 }, new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        progressBar.setVisibility(View.GONE);
+                        progressBar.setVisibility(View.INVISIBLE);
                         Toast.makeText(LoginActivity.this,"Failed to load data",Toast.LENGTH_SHORT).show();
 
                     }
@@ -257,7 +264,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 
         googleSignIn = (Button) findViewById(R.id.google_sign_in);
 
-        googleSignIn.setVisibility(View.GONE);
+        googleSignIn.setVisibility(View.INVISIBLE);
 
         // Configure Google Sign In
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -356,6 +363,18 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        if(back_pressed + 2000 > System.currentTimeMillis()) {
+            super.onBackPressed();
+            finish();
+            overridePendingTransition(R.anim.still,R.anim.slide_out_down);
+        }else {
+            Toast.makeText(getBaseContext(), "Press once again to exit!", Toast.LENGTH_SHORT).show();
+            back_pressed = System.currentTimeMillis();
+        }
     }
 }
 

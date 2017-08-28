@@ -3,8 +3,17 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#eff0f1"
     >
+
+    <ImageButton
+        android:id="@+id/refresh"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_gravity="end"
+        android:layout_margin="10dp"
+        android:background="#00000000"
+        app:srcCompat="@drawable/refresh" />
+
 
     <ProgressBar
         android:id="@+id/loadatt"
@@ -17,18 +26,20 @@
 
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
-        android:layout_marginTop="15dp"
-        app:cardCornerRadius="0dp"
+
+        app:cardCornerRadius="@dimen/activity_horizontal_margin"
         app:cardElevation="48dp">
 
         <ListView
             android:id="@+id/listatt"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:visibility="visible">
+            android:visibility="visible"
+            android:layout_marginBottom="50dp"
+            >
 
         </ListView>
     </android.support.v7.widget.CardView>

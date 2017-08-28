@@ -14,14 +14,14 @@
         <activity android:name=".SplashActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen"
             >
-
-        </activity>
-        <activity android:name=".LoginActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity android:name=".LoginActivity" >
+
         </activity>
         <activity android:name=".ResetPasswordActivity" />
         <activity android:name=".SignupActivity" />
@@ -43,6 +43,9 @@
                 <action android:name="com.google.firebase.MESSAGING_EVENT"/>
             </intent-filter>
         </service>
+        <service android:name=".services.RequestService"/>
+        <service android:name=".services.RequestServiceAttendance"/>
+        <service android:name=".services.RequestServiceGrades"/>
 
     </application>
 

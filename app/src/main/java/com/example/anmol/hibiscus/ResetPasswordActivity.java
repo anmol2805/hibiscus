@@ -38,6 +38,7 @@ public class ResetPasswordActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 finish();
+                overridePendingTransition(R.anim.still,R.anim.slide_out_down);
             }
         });
 

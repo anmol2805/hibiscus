@@ -51,6 +51,7 @@ public class SignupActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 finish();
+                overridePendingTransition(R.anim.slide_in_left,R.anim.still);
             }
         });
 
@@ -95,7 +96,7 @@ public class SignupActivity extends AppCompatActivity {
                                             @Override
                                             public void onComplete(@NonNull Task<AuthResult> task) {
                                                 Toast.makeText(SignupActivity.this, "createUserWithEmail:onComplete:" + task.isSuccessful(), Toast.LENGTH_SHORT).show();
-                                                progressBar.setVisibility(View.GONE);
+                                                progressBar.setVisibility(View.INVISIBLE);
                                                 // If sign in fails, display a message to the user. If sign in succeeds
                                                 // the auth state listener will be notified and logic to handle the
                                                 // signed in user can be handled in the listener.
@@ -108,6 +109,7 @@ public class SignupActivity extends AppCompatActivity {
                                                     intent.putExtra("pwd",password);
                                                     startActivity(intent);
                                                     finish();
+                                                    overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_down);
                                                 }
                                             }
                                         });
@@ -133,6 +135,6 @@ public class SignupActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        progressBar.setVisibility(View.GONE);
+        progressBar.setVisibility(View.INVISIBLE);
     }
 }

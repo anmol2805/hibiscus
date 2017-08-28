@@ -57,7 +57,7 @@ public class NoticeDataActivity extends AppCompatActivity {
         nd.getSettings().setAppCacheEnabled(true);
         nd.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
         nd.getSettings().setUseWideViewPort(true);
-        nd.getSettings().setTextZoom(150);
+        nd.getSettings().setTextZoom(175);
         nd.setInitialScale(1);
         id = getIntent().getStringExtra("id");
         uid = getIntent().getStringExtra("uid");
@@ -130,5 +130,12 @@ public class NoticeDataActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
+        overridePendingTransition(R.anim.still,R.anim.slide_out_down);
     }
 }

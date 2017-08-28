@@ -21,6 +21,7 @@ import com.example.anmol.hibiscus.HibiscusActivity;
 import com.example.anmol.hibiscus.Mysingleton;
 import com.example.anmol.hibiscus.R;
 import com.example.anmol.hibiscus.SplashActivity;
+import com.example.anmol.hibiscus.services.RequestServiceGrades;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -45,6 +46,8 @@ public class commapps extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         View vi = inflater.inflate(R.layout.commapps,container,false);
+        Intent intent = new Intent(getActivity(), RequestServiceGrades.class);
+        getActivity().startService(intent);
         getActivity().setTitle("Grades");
         grd = (WebView)vi.findViewById(R.id.grd);
 
@@ -80,24 +83,24 @@ public class commapps extends Fragment {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-                JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, object, new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        try {
-                            String html = response.getJSONArray("Notices").getJSONObject(0).getString("html");
-                            Grades grades = new Grades(html);
-                            mdatabase.setValue(grades);
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }, new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(getActivity(),"error",Toast.LENGTH_SHORT).show();
-                    }
-                });
-                Mysingleton.getInstance(getActivity()).addToRequestqueue(jsonObjectRequest);
+//                JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, object, new Response.Listener<JSONObject>() {
+//                    @Override
+//                    public void onResponse(JSONObject response) {
+//                        try {
+//                            String html = response.getJSONArray("Notices").getJSONObject(0).getString("html");
+//                            Grades grades = new Grades(html);
+//                            //mdatabase.setValue(grades);
+//                        } catch (JSONException e) {
+//                            e.printStackTrace();
+//                        }
+//                    }
+//                }, new Response.ErrorListener() {
+//                    @Override
+//                    public void onErrorResponse(VolleyError error) {
+//                        Toast.makeText(getActivity(),"error",Toast.LENGTH_SHORT).show();
+//                    }
+//                });
+//                Mysingleton.getInstance(getActivity()).addToRequestqueue(jsonObjectRequest);
             }
 
             @Override
