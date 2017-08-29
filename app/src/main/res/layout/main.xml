@@ -5,15 +5,34 @@
     android:layout_height="match_parent"
 
     >
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
 
-    <ImageButton
-        android:id="@+id/refresh"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        app:srcCompat="@drawable/refresh"
-        android:layout_margin="10dp"
-        android:background="#00000000"
-        android:layout_gravity="end"/>
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_gravity="start"
+            app:srcCompat="@drawable/logo"
+            android:layout_margin="10dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true" />
+
+        <ImageButton
+            android:id="@+id/refresh"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_gravity="right"
+            android:background="#00000000"
+            app:srcCompat="@drawable/ref25"
+            android:layout_margin="10dp"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true" />
+    </RelativeLayout>
+
 
     <ProgressBar
         android:id="@+id/load"
@@ -27,10 +46,10 @@
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
 
-        app:cardCornerRadius="@dimen/activity_horizontal_margin"
+        app:cardCornerRadius="8dp"
         app:cardElevation="48dp"
 
         >

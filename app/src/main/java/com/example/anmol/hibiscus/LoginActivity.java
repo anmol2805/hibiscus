@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
@@ -60,7 +61,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     String uid,pwd;
     String url = "http://139.59.23.157/api/hibi/login_test";
     private static long back_pressed;
-    TextView btnSignup;
+    Button btnSignup;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -110,16 +111,16 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         // set the view now
         setContentView(R.layout.activity_login);
 
-
+        this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
         inputEmail = (EditText) findViewById(R.id.email);
         inputPassword = (EditText) findViewById(R.id.password);
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
-        btnSignup = (TextView) findViewById(R.id.btn_signup);
+        btnSignup = (Button) findViewById(R.id.btn_signup);
         btnLogin = (Button) findViewById(R.id.btn_login);
         btnReset = (Button) findViewById(R.id.btn_reset_password);
 
-        Toast.makeText(getApplicationContext(), "User Login Status: " + session.isLoggedIn(), Toast.LENGTH_LONG).show();
+
 
         //Get Firebase auth instance
         auth = FirebaseAuth.getInstance();
@@ -128,7 +129,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(LoginActivity.this, SignupActivity.class));
-                overridePendingTransition(R.anim.slide_out_right,R.anim.still);
+                overridePendingTransition(R.anim.slide_in_up,R.anim.still);
             }
         });
 
@@ -240,6 +241,10 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                                             }
                                         });
                             }
+                            else{
+                                Toast.makeText(LoginActivity.this,"Please Enter Correct password",Toast.LENGTH_SHORT).show();
+                                progressBar.setVisibility(View.INVISIBLE);
+                            }
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -248,7 +253,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         progressBar.setVisibility(View.INVISIBLE);
-                        Toast.makeText(LoginActivity.this,"Failed to load data",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(LoginActivity.this,"Connection Error...Please try again!!!",Toast.LENGTH_SHORT).show();
 
                     }
                 });

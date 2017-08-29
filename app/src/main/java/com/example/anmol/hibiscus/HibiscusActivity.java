@@ -3,6 +3,7 @@ package com.example.anmol.hibiscus;
 import android.app.FragmentManager;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -122,24 +123,50 @@ public class HibiscusActivity extends AppCompatActivity
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
+        Handler handler = new Handler();
         int id = item.getItemId();
-        FragmentManager fm = getFragmentManager();
+        final FragmentManager fm = getFragmentManager();
         if (id == R.id.nav_hibiscus) {
-            fm.beginTransaction().replace(R.id.content_hib,new main()).commit();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    fm.beginTransaction().replace(R.id.content_hib,new main()).commit();
+                }
+            },200);
+
         } else if (id == R.id.nav_myapps) {
-            fm.beginTransaction().replace(R.id.content_hib,new myapps()).commit();
-        } else if (id == R.id.nav_course) {
-            fm.beginTransaction().replace(R.id.content_hib,new courseware()).commit();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    fm.beginTransaction().replace(R.id.content_hib,new myapps()).commit();
+                }
+            },200);
+
         } else if (id == R.id.nav_comm) {
-            fm.beginTransaction().replace(R.id.content_hib,new commapps()).commit();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    fm.beginTransaction().replace(R.id.content_hib,new commapps()).commit();
+                }
+            },250);
+
         } else if (id == R.id.nav_help) {
             FirebaseAuth.getInstance().signOut();
-            startActivity(new Intent(HibiscusActivity.this,LoginActivity.class));
-            overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_down);
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    startActivity(new Intent(HibiscusActivity.this,LoginActivity.class));
+                    overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_down);
+                }
+            },200);
+
         }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.END);
         return true;
     }
+
+
+
 
 }

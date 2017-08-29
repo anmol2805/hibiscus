@@ -184,8 +184,12 @@ public class main extends Fragment {
                 i.putExtra("id",notices.get(position).getId());
                 i.putExtra("uid",uid);
                 i.putExtra("pwd",pwd);
+                i.putExtra("title",notices.get(position).getTitle());
+                i.putExtra("date",notices.get(position).getDate());
+                i.putExtra("att",notices.get(position).getAttention());
+                i.putExtra("posted",notices.get(position).getPosted_by());
                 startActivity(i);
-                getActivity().overridePendingTransition(R.anim.slide_out_right,R.anim.still);
+                getActivity().overridePendingTransition(R.anim.slide_in_up,R.anim.still);
             }
         });
 

@@ -22,7 +22,7 @@
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:scaleType="centerCrop"
-        app:civ_border_color="@color/colorAccent"
+        app:civ_border_color="#2F4F4F"
         app:civ_border_width="5dp"
         android:elevation="16dp"
         />

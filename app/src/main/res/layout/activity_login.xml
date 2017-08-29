@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -18,9 +19,19 @@
         android:padding="@dimen/activity_horizontal_margin">
 
 
+        <ImageView
+            android:id="@+id/imageView4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:srcCompat="@drawable/hibif"
+
+            />
+
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            >
 
             <EditText
                 android:id="@+id/email"
@@ -29,10 +40,11 @@
                 android:layout_marginBottom="10dp"
                 android:hint="StudentID"
                 android:inputType="textEmailAddress"
-                android:textColor="@color/colorAccent"
+                android:textColor="#000"
                 android:textColorHint="@color/colorPrimary"
                 android:theme="@style/MyEditTextTheme"
                 android:textAlignment="center"
+
                 />
         </android.support.design.widget.TextInputLayout>
 
@@ -47,7 +59,7 @@
                 android:layout_marginBottom="10dp"
                 android:hint="@string/hint_password"
                 android:inputType="textPassword"
-                android:textColor="@color/colorAccent"
+                android:textColor="#000"
                 android:textColorHint="@color/colorPrimary"
                 android:theme="@style/MyEditTextTheme"
                 android:textAlignment="center"
@@ -60,11 +72,12 @@
             android:id="@+id/btn_login"
             android:layout_width="200dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dip"
+            android:layout_marginTop="10dip"
             android:background="@drawable/round_button"
             android:text="@string/btn_login"
             android:textStyle="bold"
-            android:textColor="@color/white" />
+            android:textColor="@color/white"
+            />
 
         <Button
             android:id="@+id/google_sign_in"
@@ -99,7 +112,7 @@
             android:layout_margin="10dp"
             />
 
-        <TextView
+        <Button
             android:id="@+id/btn_signup"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -107,7 +120,9 @@
             android:layout_gravity="center"
             android:textStyle="italic"
             android:textColor="@color/colorPrimary"
-            android:clickable="true"
+            android:background="@color/white"
+            android:paddingRight="10dp"
+            android:paddingLeft="10dp"
 
             />
 

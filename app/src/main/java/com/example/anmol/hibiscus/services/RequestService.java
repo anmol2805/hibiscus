@@ -111,7 +111,7 @@ public class RequestService extends IntentService {
                 }, new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(getApplicationContext(),"Error refreshing Notices",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(),"No updates available",Toast.LENGTH_SHORT).show();
                     }
                 });
                 Mysingleton.getInstance(getApplicationContext()).addToRequestqueue(jsonObjectRequest);

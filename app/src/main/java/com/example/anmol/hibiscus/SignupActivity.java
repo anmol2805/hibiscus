@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
@@ -36,6 +37,7 @@ public class SignupActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
+        this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
         setTitle("Signup");
         //Get Firebase auth instance
         auth = FirebaseAuth.getInstance();
@@ -51,7 +53,7 @@ public class SignupActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 finish();
-                overridePendingTransition(R.anim.slide_in_left,R.anim.still);
+                overridePendingTransition(R.anim.still,R.anim.slide_out_down);
             }
         });
 
@@ -109,11 +111,15 @@ public class SignupActivity extends AppCompatActivity {
                                                     intent.putExtra("pwd",password);
                                                     startActivity(intent);
                                                     finish();
-                                                    overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_down);
+                                                    overridePendingTransition(R.anim.still,R.anim.slide_out_down);
                                                 }
                                             }
                                         });
 
+                            }
+                            else{
+                                Toast.makeText(SignupActivity.this,"Please Enter Correct password",Toast.LENGTH_SHORT).show();
+                                progressBar.setVisibility(View.INVISIBLE);
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -123,6 +129,7 @@ public class SignupActivity extends AppCompatActivity {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         Toast.makeText(SignupActivity.this,"Connection Error...Please Try Again",Toast.LENGTH_SHORT).show();
+                        progressBar.setVisibility(View.INVISIBLE);
                     }
                 });
                 Mysingleton.getInstance(SignupActivity.this).addToRequestqueue(jsonObjectRequest);

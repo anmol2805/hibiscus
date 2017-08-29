@@ -10,10 +10,10 @@
             android:id="@+id/nav_myapps"
             android:icon="@drawable/attendance"
             android:title="Attendance" />
-        <item
-            android:id="@+id/nav_course"
-            android:icon="@drawable/coursesh"
-            android:title="Courseware" />
+        <!--<item-->
+            <!--android:id="@+id/nav_course"-->
+            <!--android:icon="@drawable/coursesh"-->
+            <!--android:title="Courseware" />-->
         <item
             android:id="@+id/nav_comm"
             android:icon="@drawable/grades"

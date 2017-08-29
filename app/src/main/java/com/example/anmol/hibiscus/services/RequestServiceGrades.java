@@ -157,7 +157,7 @@ public class RequestServiceGrades extends IntentService {
                 }, new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(getApplicationContext(),"error",Toast.LENGTH_SHORT).show();
+
                     }
                 });
                 Mysingleton.getInstance(getApplicationContext()).addToRequestqueue(jsonObjectRequestg);

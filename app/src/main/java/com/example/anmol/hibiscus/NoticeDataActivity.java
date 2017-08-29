@@ -28,20 +28,27 @@ import org.json.JSONObject;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
+import org.w3c.dom.Text;
 
 public class NoticeDataActivity extends AppCompatActivity {
-    String id,uid,pwd;
+    String id,uid,pwd,title,date,att,post;
     JSONObject object;
     String url = "http://139.59.23.157/api/hibi/notice_data";
     TextView data;
     Context context;
     WebView nd;
+    TextView d,a,p,t;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_notice_data);
+        setTitle("Notices");
         //data = (TextView)findViewById(R.id.data);
         nd = (WebView)findViewById(R.id.nd);
+        d = (TextView)findViewById(R.id.date);
+        a = (TextView)findViewById(R.id.attention);
+        p = (TextView)findViewById(R.id.posted);
+        t = (TextView)findViewById(R.id.title);
 
         nd.setFocusable(true);
         nd.setFocusableInTouchMode(true);
@@ -62,6 +69,14 @@ public class NoticeDataActivity extends AppCompatActivity {
         id = getIntent().getStringExtra("id");
         uid = getIntent().getStringExtra("uid");
         pwd = getIntent().getStringExtra("pwd");
+        title = getIntent().getStringExtra("title");
+        date = getIntent().getStringExtra("date");
+        att = getIntent().getStringExtra("att");
+        post = getIntent().getStringExtra("posted");
+        d.setText(date);
+        p.setText(post);
+        a.setText(att);
+        t.setText(title);
         final DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("NoticeData").child(id);
 
         object = new JSONObject();

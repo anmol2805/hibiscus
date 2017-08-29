@@ -14,12 +14,11 @@
             android:id="@+id/subname"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-
-            android:layout_marginBottom="5dp"
+            android:textSize="14sp"
             android:layout_marginLeft="10dp"
             android:layout_weight="1"
             android:text="TextView"
-            android:textColor="@color/colorPrimary"
+            android:textColor="#000"
             android:textStyle="bold"
 
 
@@ -29,13 +28,11 @@
             android:id="@+id/att"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
-            android:layout_marginTop="10dp"
             android:text="TextView"
-            android:textColor="#000"
-            android:textSize="17sp"
+            android:textColor="#708090"
+            android:textSize="13sp"
             android:layout_gravity="end"
             />
 
@@ -48,12 +45,11 @@
             android:layout_alignParentStart="true"
             android:layout_below="@+id/title"
             android:layout_marginLeft="10dp"
-            android:layout_marginTop="5dp"
             android:layout_weight="1"
-            android:layout_marginBottom="5dp"
             android:text="TextView"
             android:textStyle="italic"
-            android:textColor="@color/colorAccent"
+            android:textSize="13sp"
+            android:textColor="#2F4F4F"
             />
 
 
