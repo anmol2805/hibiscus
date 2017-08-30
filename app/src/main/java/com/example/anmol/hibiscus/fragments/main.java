@@ -59,6 +59,8 @@ public class main extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         View vi = inflater.inflate(R.layout.main,container,false);
         getActivity().setTitle("Notice Board");
+        Intent intent = new Intent(getActivity(), RequestService.class);
+        getActivity().startService(intent);
         final ImageButton refresh = (ImageButton)vi.findViewById(R.id.refresh);
         rotate = AnimationUtils.loadAnimation(getActivity(),R.anim.rotate);
         refresh.setOnClickListener(new View.OnClickListener() {
@@ -149,16 +151,16 @@ public class main extends Fragment {
         mdatabase.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                for(int i=0;i<50;i++){
-                    if(dataSnapshot.hasChild(String.valueOf(i))){
-                        String title = dataSnapshot.child(String.valueOf(i)).child("title").getValue().toString();
-                        String attention = dataSnapshot.child(String.valueOf(i)).child("attention").getValue().toString();
-                        String posted_by = dataSnapshot.child(String.valueOf(i)).child("posted_by").getValue().toString();
-                        String date = dataSnapshot.child(String.valueOf(i)).child("date").getValue().toString();
-                        String id = dataSnapshot.child(String.valueOf(i)).child("id").getValue().toString();
-                        Notice notice = new Notice(title,date,i,posted_by,attention,id);
+                for(DataSnapshot data:dataSnapshot.getChildren()){
+
+                        String title = data.child("title").getValue().toString();
+                        String attention = data.child("attention").getValue().toString();
+                        String posted_by = data.child("posted_by").getValue().toString();
+                        String date = data.child("date").getValue().toString();
+                        String id = data.child("id").getValue().toString();
+                        Notice notice = new Notice(title,date,posted_by,attention,id);
                         notices.add(notice);
-                    }
+
 
                 }
                 if(getActivity()!=null){

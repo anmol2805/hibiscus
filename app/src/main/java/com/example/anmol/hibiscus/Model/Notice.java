@@ -8,10 +8,10 @@ import java.io.Serializable;
 
 public class Notice implements Serializable {
     String title,date,posted_by,attention,id;
-    int key;
 
-    public Notice(String title,String date,int key,String posted_by,String attention,String id) {
-        this.title = title;this.date = date;this.key = key;this.posted_by = posted_by;this.attention = attention;
+
+    public Notice(String title,String date,String posted_by,String attention,String id) {
+        this.title = title;this.date = date;this.posted_by = posted_by;this.attention = attention;
         this.id = id;
     }
 
@@ -39,13 +39,6 @@ public class Notice implements Serializable {
         this.attention = attention;
     }
 
-    public int getKey() {
-        return key;
-    }
-
-    public void setKey(int key) {
-        this.key = key;
-    }
 
     public String getDate() {
         return date;

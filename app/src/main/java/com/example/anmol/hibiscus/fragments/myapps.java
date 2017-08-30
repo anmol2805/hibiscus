@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.ProgressBar;
@@ -50,6 +51,7 @@ public class myapps extends Fragment {
     FirebaseAuth auth;
     String uid,pwd;
     Animation rotate;
+    Button retry;
     String url = "http://139.59.23.157/api/hibi/attendence";
 
     @Nullable
@@ -57,8 +59,11 @@ public class myapps extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         View vi = inflater.inflate(R.layout.myapps,container,false);
         getActivity().setTitle("Attendance");
+        Intent intent = new Intent(getActivity(), RequestServiceAttendance.class);
+        getActivity().startService(intent);
         progressBar = (ProgressBar)vi.findViewById(R.id.loadatt);
         listView = (ListView)vi.findViewById(R.id.listatt);
+        retry = (Button)vi.findViewById(R.id.retry);
         attendances = new ArrayList<>();
         auth = FirebaseAuth.getInstance();
         final ImageButton refresh = (ImageButton)vi.findViewById(R.id.refresh);
@@ -71,6 +76,14 @@ public class myapps extends Fragment {
                 getActivity().startService(intent);
                 Toast.makeText(getActivity(),"Please Wait...",Toast.LENGTH_SHORT).show();
                 refresh.startAnimation(rotate);
+            }
+        });
+        retry.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), RequestServiceAttendance.class);
+                getActivity().startService(intent);
+                Toast.makeText(getActivity(),"Please Wait...",Toast.LENGTH_SHORT).show();
             }
         });
         databaseReference = FirebaseDatabase.getInstance().getReference().child("Students").child(auth.getCurrentUser().getUid()).child("attendance");
@@ -130,21 +143,29 @@ public class myapps extends Fragment {
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                for(int i=0;i<80;i++){
-                    if(dataSnapshot.hasChild(String.valueOf(i))){
-                        String attend = dataSnapshot.child(String.valueOf(i)).child("attend").getValue().toString();
-                        String subcode = dataSnapshot.child(String.valueOf(i)).child("subcode").getValue().toString();
-                        String name = dataSnapshot.child(String.valueOf(i)).child("name").getValue().toString();
-                        String sub = dataSnapshot.child(String.valueOf(i)).child("sub").getValue().toString();
+                for(DataSnapshot data:dataSnapshot.getChildren()){
+
+                        String attend = data.child("attend").getValue().toString();
+                        String subcode = data.child("subcode").getValue().toString();
+                        String name = data.child("name").getValue().toString();
+                        String sub = data.child("sub").getValue().toString();
                         Attendance attendance = new Attendance(subcode,sub,name,attend);
                         attendances.add(attendance);
-                    }
+
 
                 }
                 if(getActivity()!=null){
                     attendanceAdapter = new AttendanceAdapter(getActivity(),R.layout.attendance,attendances);
                     attendanceAdapter.notifyDataSetChanged();
-                    listView.setAdapter(attendanceAdapter);
+                    if(!attendanceAdapter.isEmpty()){
+                        retry.setVisibility(View.GONE);
+                        listView.setAdapter(attendanceAdapter);
+
+                    }
+                    else{
+                        retry.setVisibility(View.VISIBLE);
+                        Toast.makeText(getActivity(),"adapter empty",Toast.LENGTH_SHORT).show();
+                    }
 
                 }
 

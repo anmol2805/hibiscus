@@ -114,6 +114,9 @@ public class commapps extends Fragment {
                 if(dataSnapshot.hasChild("grades")){
                     String html = dataSnapshot.child("grades").child("html").getValue().toString();
                     grd.loadData(html, "text/html; charset=utf-8", "UTF-8");
+                }else{
+                    Intent intent = new Intent(getActivity(), RequestServiceGrades.class);
+                    getActivity().startService(intent);
                 }
             }
 

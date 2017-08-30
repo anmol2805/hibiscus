@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <group android:checkableBehavior="single">
+    <group
+        android:id="@+id/menu_top"
+        android:checkableBehavior="single">
         <item
             android:id="@+id/nav_hibiscus"
             android:icon="@drawable/hibh"
@@ -10,14 +12,20 @@
             android:id="@+id/nav_myapps"
             android:icon="@drawable/attendance"
             android:title="Attendance" />
-        <!--<item-->
-            <!--android:id="@+id/nav_course"-->
-            <!--android:icon="@drawable/coursesh"-->
-            <!--android:title="Courseware" />-->
+        <item
+            android:id="@+id/nav_course"
+            android:icon="@drawable/coursesh"
+            android:title="Courseware" />
         <item
             android:id="@+id/nav_comm"
             android:icon="@drawable/grades"
             android:title="Grades" />
+
+    </group>
+    <group
+        android:id="@+id/menu_bottom"
+        android:checkableBehavior="none"
+        >
         <item
             android:id="@+id/nav_help"
             android:icon="@drawable/logh"

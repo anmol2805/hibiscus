@@ -10,7 +10,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.example.anmol.hibiscus.Adapter.Grades;
-import com.example.anmol.hibiscus.Model.Attendance;
+import com.example.anmol.hibiscus.Model.Mycourse;
 import com.example.anmol.hibiscus.Model.Notice;
 import com.example.anmol.hibiscus.Mysingleton;
 import com.google.firebase.auth.FirebaseAuth;
@@ -30,18 +30,19 @@ import java.util.List;
  * Created by anmol on 2017-08-28.
  */
 
-public class RequestServiceAttendance extends IntentService {
+public class RequestServiceCourses extends IntentService {
     FirebaseAuth auth;
-    DatabaseReference databaseReference,noticedatabase,attendancedatabase,gradesdatabase;
+    DatabaseReference databaseReference,noticedatabase,attendancedatabase,gradesdatabase,coursedatabse;
     String url1 = "http://139.59.23.157/api/hibi/notice";
     String url2 = "http://139.59.23.157/api/hibi/notice_data";
     String url3 = "http://139.59.23.157/api/hibi/view_grades";
     String url4 = "http://139.59.23.157/api/hibi/attendence";
+    String url5 = "http://139.59.23.157/api/hibi/mycourse";
     String uid,pwd;
     int key;
 
     String title,postedby,attention,date,id;
-    public RequestServiceAttendance() {
+    public RequestServiceCourses() {
         super("RequestService");
     }
     List<Notice> notices;
@@ -54,6 +55,7 @@ public class RequestServiceAttendance extends IntentService {
         noticedatabase = FirebaseDatabase.getInstance().getReference().child("Notice");
         gradesdatabase = FirebaseDatabase.getInstance().getReference().child("Students").child(auth.getCurrentUser().getUid()).child("grades");
         attendancedatabase = FirebaseDatabase.getInstance().getReference().child("Students").child(auth.getCurrentUser().getUid()).child("attendance");
+        coursedatabse = FirebaseDatabase.getInstance().getReference().child("Students").child(auth.getCurrentUser().getUid()).child("mycourses");
         databaseReference.child("Students").child(auth.getCurrentUser().getUid()).child("hibiscus").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -113,20 +115,19 @@ public class RequestServiceAttendance extends IntentService {
 //                    }
 //                });
 //                Mysingleton.getInstance(getApplicationContext()).addToRequestqueue(jsonObjectRequest);
-                JsonObjectRequest jsonObjectRequesta = new JsonObjectRequest(Request.Method.POST, url4, jsonObject, new Response.Listener<JSONObject>() {
+                JsonObjectRequest jsonObjectRequestc = new JsonObjectRequest(Request.Method.POST, url5, jsonObject, new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
                         try {
                             int c = 0;
                             while (c<response.getJSONArray("Notices").length()){
-
                                 JSONObject object = response.getJSONArray("Notices").getJSONObject(c);
-                                String subcode = object.getString("subcode");
-                                String sub = object.getString("sub");
                                 String name = object.getString("name");
-                                String attend = object.getString("attendance");
-                                Attendance attendance = new Attendance(subcode,sub,name,attend);
-                                attendancedatabase.child(String.valueOf(c)).setValue(attendance);
+                                String professor = object.getString("professor");
+                                String credits = object.getString("credits");
+                                String id = object.getString("id");
+                                Mycourse mycourse = new Mycourse(name,professor,credits,id);
+                                coursedatabse.child(String.valueOf(c)).setValue(mycourse);
                                 c++;
                             }
 
@@ -142,8 +143,8 @@ public class RequestServiceAttendance extends IntentService {
 
                     }
                 });
-                Mysingleton.getInstance(getApplicationContext()).addToRequestqueue(jsonObjectRequesta);
-//                JsonObjectRequest jsonObjectRequestg = new JsonObjectRequest(Request.Method.POST, url3, jsonObject, new Response.Listener<JSONObject>() {
+                Mysingleton.getInstance(getApplicationContext()).addToRequestqueue(jsonObjectRequestc);
+//                JsonObjectRequest jsonObjectRequestg = new JsonObjectRequest(Request.Method.POST, url5, jsonObject, new Response.Listener<JSONObject>() {
 //                    @Override
 //                    public void onResponse(JSONObject response) {
 //                        try {
@@ -157,7 +158,7 @@ public class RequestServiceAttendance extends IntentService {
 //                }, new Response.ErrorListener() {
 //                    @Override
 //                    public void onErrorResponse(VolleyError error) {
-//                        Toast.makeText(getApplicationContext(),"error",Toast.LENGTH_SHORT).show();
+//
 //                    }
 //                });
 //                Mysingleton.getInstance(getApplicationContext()).addToRequestqueue(jsonObjectRequestg);

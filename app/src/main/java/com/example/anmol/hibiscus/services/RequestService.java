@@ -78,13 +78,13 @@ public class RequestService extends IntentService {
 
                                 JSONObject object = response.getJSONArray("Notices").getJSONObject(c);
 
-                                key = c;
+
                                 title = object.getString("title");
                                 date = object.getString("date");
                                 postedby = object.getString("posted_by");
                                 attention = object.getString("attention");
                                 id = object.getString("id");
-                                Notice notice = new Notice(title,date,key,postedby,attention,id);
+                                Notice notice = new Notice(title,date,postedby,attention,id);
                                 //notices.add(notice);
                                 noticedatabase.child(String.valueOf(c)).setValue(notice);
                                 c++;
@@ -96,13 +96,13 @@ public class RequestService extends IntentService {
                         }
                         try {
                             JSONObject object0 = response.getJSONArray("Notices").getJSONObject(0);
-                            key = 0;
+
                             title = object0.getString("title");
                             date = object0.getString("date");
                             postedby = object0.getString("posted_by");
                             attention = object0.getString("attention");
                             id = object0.getString("id");
-                            Notice notice = new Notice(title,date,key,postedby,attention,id);
+                            Notice notice = new Notice(title,date,postedby,attention,id);
                             FirebaseDatabase.getInstance().getReference().child("Notices").setValue(notice);
                         } catch (JSONException e) {
                             e.printStackTrace();

@@ -142,6 +142,14 @@ public class HibiscusActivity extends AppCompatActivity
                 }
             },200);
 
+        } else if (id == R.id.nav_course) {
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    fm.beginTransaction().replace(R.id.content_hib,new courseware()).commit();
+                }
+            },200);
+
         } else if (id == R.id.nav_comm) {
             handler.postDelayed(new Runnable() {
                 @Override
@@ -158,7 +166,7 @@ public class HibiscusActivity extends AppCompatActivity
                     startActivity(new Intent(HibiscusActivity.this,LoginActivity.class));
                     overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_down);
                 }
-            },200);
+            },100);
 
         }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

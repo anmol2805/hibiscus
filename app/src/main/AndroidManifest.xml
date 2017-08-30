@@ -46,6 +46,7 @@
         <service android:name=".services.RequestService"/>
         <service android:name=".services.RequestServiceAttendance"/>
         <service android:name=".services.RequestServiceGrades"/>
+        <service android:name=".services.RequestServiceCourses"/>
 
     </application>
 

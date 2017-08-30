@@ -22,6 +22,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.example.anmol.hibiscus.Model.Notice;
 import com.example.anmol.hibiscus.services.RequestService;
 import com.example.anmol.hibiscus.services.RequestServiceAttendance;
+import com.example.anmol.hibiscus.services.RequestServiceCourses;
 import com.example.anmol.hibiscus.services.RequestServiceGrades;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -87,6 +88,16 @@ public class SplashActivity extends AppCompatActivity {
             handler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
+                    Intent intent = new Intent(SplashActivity.this, RequestServiceCourses.class);
+                    startService(intent);
+                    text.startAnimation(animFadein);
+
+                }
+            },2000);
+
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
                     progressBar.setVisibility(View.INVISIBLE);
                     databaseReference.addValueEventListener(new ValueEventListener() {
                         @Override
@@ -111,7 +122,7 @@ public class SplashActivity extends AppCompatActivity {
                     Intent intent = new Intent(SplashActivity.this, RequestServiceGrades.class);
                     startService(intent);
                 }
-            },2000);
+            },3000);
 
         }
 
