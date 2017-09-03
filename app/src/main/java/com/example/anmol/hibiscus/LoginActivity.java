@@ -116,7 +116,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         inputEmail = (EditText) findViewById(R.id.email);
         inputPassword = (EditText) findViewById(R.id.password);
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
-        btnSignup = (Button) findViewById(R.id.btn_signup);
+
         btnLogin = (Button) findViewById(R.id.btn_login);
         btnReset = (Button) findViewById(R.id.btn_reset_password);
 
@@ -125,21 +125,21 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         //Get Firebase auth instance
         auth = FirebaseAuth.getInstance();
 
-        btnSignup.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(LoginActivity.this, SignupActivity.class));
-                overridePendingTransition(R.anim.slide_in_up,R.anim.still);
-            }
-        });
+//        btnSignup.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                startActivity(new Intent(LoginActivity.this, SplashActivity.class));
+//                overridePendingTransition(R.anim.slide_in_up,R.anim.still);
+//            }
+//        });
 
-        btnReset.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(LoginActivity.this, ResetPasswordActivity.class));
-                overridePendingTransition(R.anim.slide_out_right,R.anim.still);
-            }
-        });
+//        btnReset.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                startActivity(new Intent(LoginActivity.this, ResetPasswordActivity.class));
+//                overridePendingTransition(R.anim.slide_out_right,R.anim.still);
+//            }
+//        });
 
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -149,7 +149,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                 password = inputPassword.getText().toString();
 
                 if (TextUtils.isEmpty(email)) {
-                    Toast.makeText(getApplicationContext(), "Enter email address!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "Enter Student ID!", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
@@ -183,32 +183,47 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                                                     if (password.length() < 6) {
                                                         inputPassword.setError(getString(R.string.minimum_password));
                                                     } else {
-                                                        Toast.makeText(LoginActivity.this, getString(R.string.auth_failed), Toast.LENGTH_LONG).show();
+                                                        auth.createUserWithEmailAndPassword(email, password)
+                                                                .addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
+                                                                    @Override
+                                                                    public void onComplete(@NonNull Task<AuthResult> task) {
+
+                                                                        progressBar.setVisibility(View.INVISIBLE);
+                                                                        // If sign in fails, display a message to the user. If sign in succeeds
+                                                                        // the auth state listener will be notified and logic to handle the
+                                                                        // signed in user can be handled in the listener.
+                                                                        if (!task.isSuccessful()) {
+                                                                            Toast.makeText(LoginActivity.this, "Authentication failed.Check your Network Connection",
+                                                                                    Toast.LENGTH_SHORT).show();
+                                                                        } else {
+                                                                            if(FirebaseDatabase.getInstance().getReference().getRoot().child("Students").child(auth.getCurrentUser().getUid())!=null) {
+                                                                                FirebaseDatabase.getInstance().getReference().getRoot().child("Students").child(auth.getCurrentUser().getUid()).removeValue();
+                                                                            }
+                                                                            DatabaseReference ref = FirebaseDatabase.getInstance().getReference().getRoot().child("Students").child(auth.getCurrentUser().getUid()).child("hibiscus");
+                                                                            Students students = new Students(sid,password,true);
+                                                                            ref.setValue(students);
+                                                                            FirebaseMessaging.getInstance().subscribeToTopic("IIITstudents");
+                                                                            sendVerificationEmail();
+                                                                            Intent intent = new Intent(LoginActivity.this, SplashActivity.class);
+
+                                                                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                                                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                                                            startActivity(intent);
+                                                                            finish();
+                                                                            overridePendingTransition(R.anim.still,R.anim.slide_in_up);
+                                                                        }
+                                                                    }
+                                                                });
                                                     }
                                                 } else {
-                                                    if (auth.getCurrentUser().isEmailVerified()){
-                                                        if(FirebaseDatabase.getInstance().getReference().getRoot().child("Students").child(auth.getCurrentUser().getUid())!=null){
+                                                        if(FirebaseDatabase.getInstance().getReference().getRoot().child("Students").child(auth.getCurrentUser().getUid())!=null) {
                                                             FirebaseDatabase.getInstance().getReference().getRoot().child("Students").child(auth.getCurrentUser().getUid()).removeValue();
                                                         }
                                                         DatabaseReference ref = FirebaseDatabase.getInstance().getReference().getRoot().child("Students").child(auth.getCurrentUser().getUid()).child("hibiscus");
                                                         Students students = new Students(sid,password,true);
                                                         ref.setValue(students);
                                                         FirebaseMessaging.getInstance().subscribeToTopic("IIITstudents");
-                                                        DatabaseReference db = FirebaseDatabase.getInstance().getReference().getRoot().child("token");
-                                                        db.child("token").setValue(FirebaseInstanceId.getInstance().getToken());
-//                                                        String url = "https://iid.googleapis.com/iid/v1/"+FirebaseInstanceId.getInstance().getToken()+"/rel/topics/IIITstudents";
-//                                                        JsonObjectRequest stringRequest = new JsonObjectRequest(Request.Method.POST, url,null ,new Response.Listener<JSONObject>() {
-//                                                            @Override
-//                                                            public void onResponse(JSONObject response) {
-//                                                                Toast.makeText(LoginActivity.this,FirebaseInstanceId.getInstance().getToken(),Toast.LENGTH_SHORT).show();
-//                                                            }
-//                                                        }, new Response.ErrorListener() {
-//                                                            @Override
-//                                                            public void onErrorResponse(VolleyError error) {
-//                                                                Toast.makeText(LoginActivity.this,"errort",Toast.LENGTH_SHORT).show();
-//                                                            }
-//                                                        });
-//                                                        Mysingleton.getInstance(LoginActivity.this).addToRequestqueue(stringRequest);
+                                                        sendVerificationEmail();
                                                         Intent intent = new Intent(LoginActivity.this, SplashActivity.class);
 
                                                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -216,25 +231,8 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                                                         startActivity(intent);
                                                         finish();
                                                         overridePendingTransition(R.anim.still,R.anim.slide_in_up);
-                                                    }
-                                                    else {
-                                                        auth.getCurrentUser().sendEmailVerification()
-                                                                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                                                    @Override
-                                                                    public void onComplete(@NonNull Task<Void> task) {
-                                                                        if (task.isSuccessful()) {
-                                                                            // email sent
-                                                                            // after email is sent just logout the user and finish this activity
-                                                                            Toast.makeText(LoginActivity.this,"Your Email is not verified",Toast.LENGTH_SHORT).show();
-                                                                            Toast.makeText(LoginActivity.this,"We have sent you a verification email,verify and login again",Toast.LENGTH_LONG).show();
-                                                                        }
-                                                                        else
-                                                                        {
-                                                                            Toast.makeText(LoginActivity.this,"Failed to send Verification link",Toast.LENGTH_SHORT).show();
-                                                                        }
-                                                                    }
-                                                                });
-                                                    }
+
+
 
 
                                                 }
@@ -381,5 +379,24 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
             back_pressed = System.currentTimeMillis();
         }
     }
+    private void sendVerificationEmail()
+    {
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+        user.sendEmailVerification()
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            Toast.makeText(LoginActivity.this,"Email sent...",Toast.LENGTH_SHORT).show();
+                        }
+                        else
+                        {
+                            Toast.makeText(LoginActivity.this,"Failed to send E-mail!!!",Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+    }
+
 }
 

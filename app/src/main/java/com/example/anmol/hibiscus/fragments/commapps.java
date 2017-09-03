@@ -71,43 +71,7 @@ public class commapps extends Fragment {
         mdatabase = FirebaseDatabase.getInstance().getReference().child("Students").child(auth.getCurrentUser().getUid()).child("grades");
         gradesdatabse = FirebaseDatabase.getInstance().getReference().child("Students").child(auth.getCurrentUser().getUid());
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("Students").child(auth.getCurrentUser().getUid()).child("hibiscus");
-        databaseReference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                uid = dataSnapshot.child("sid").getValue().toString();
-                pwd = dataSnapshot.child("pwd").getValue().toString();
-                object = new JSONObject();
-                try {
-                    object.put("uid",uid);
-                    object.put("pwd",pwd);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-//                JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, object, new Response.Listener<JSONObject>() {
-//                    @Override
-//                    public void onResponse(JSONObject response) {
-//                        try {
-//                            String html = response.getJSONArray("Notices").getJSONObject(0).getString("html");
-//                            Grades grades = new Grades(html);
-//                            //mdatabase.setValue(grades);
-//                        } catch (JSONException e) {
-//                            e.printStackTrace();
-//                        }
-//                    }
-//                }, new Response.ErrorListener() {
-//                    @Override
-//                    public void onErrorResponse(VolleyError error) {
-//                        Toast.makeText(getActivity(),"error",Toast.LENGTH_SHORT).show();
-//                    }
-//                });
-//                Mysingleton.getInstance(getActivity()).addToRequestqueue(jsonObjectRequest);
-            }
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
         gradesdatabse.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {

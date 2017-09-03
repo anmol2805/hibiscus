@@ -9,6 +9,10 @@
             android:icon="@drawable/hibh"
             android:title="Hibiscus" />
         <item
+            android:id="@+id/nav_others"
+            android:icon="@drawable/note5"
+            android:title="Student Noticeboard" />
+        <item
             android:id="@+id/nav_myapps"
             android:icon="@drawable/attendance"
             android:title="Attendance" />

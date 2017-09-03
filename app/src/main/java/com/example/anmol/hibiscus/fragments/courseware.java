@@ -48,6 +48,7 @@ public class courseware extends Fragment {
         coursedatabase.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                mycourses.clear();
                 for(DataSnapshot data:dataSnapshot.getChildren()){
                     String subject = data.child("name").getValue().toString();
                     String credits = data.child("credits").getValue().toString();

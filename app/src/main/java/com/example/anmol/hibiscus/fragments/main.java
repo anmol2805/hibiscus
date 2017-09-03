@@ -4,6 +4,7 @@ import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.provider.ContactsContract;
+import android.provider.Settings;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -80,74 +81,7 @@ public class main extends Fragment {
         final DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("Students").child(auth.getCurrentUser().getUid()).child("hibiscus");
         lv = (ListView)vi.findViewById(R.id.list);
         notices = new ArrayList<>();
-        databaseReference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                uid = dataSnapshot.child("sid").getValue().toString();
-                pwd = dataSnapshot.child("pwd").getValue().toString();
-                final JSONObject jsonObject = new JSONObject();
-                try {
-                    jsonObject.put("uid",uid);
-                    jsonObject.put("pwd",pwd);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-//                JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, jsonObject, new Response.Listener<JSONObject>() {
-//                    @Override
-//                    public void onResponse(JSONObject response) {
-//                        progressBar.setVisibility(View.GONE);
-//
-//                        try {
-//                            int c = 0;
-//                            while (c<response.getJSONArray("Notices").length()){
-//
-//                                JSONObject object = response.getJSONArray("Notices").getJSONObject(c);
-//
-//                                key = c;
-//                                title = object.getString("title");
-//                                date = object.getString("date");
-//                                postedby = object.getString("posted_by");
-//                                attention = object.getString("attention");
-//                                id = object.getString("id");
-//                                Notice notice = new Notice(title,date,key,postedby,attention,id);
-//                                //notices.add(notice);
-//                                //mdatabase.child(String.valueOf(c)).setValue(notice);
-//                                c++;
-//                            }
-//
-//
-//                        } catch (JSONException e) {
-//                            e.printStackTrace();
-//                        }
-//                        try {
-//                            JSONObject object0 = response.getJSONArray("Notices").getJSONObject(0);
-//                            key = 0;
-//                            title = object0.getString("title");
-//                            date = object0.getString("date");
-//                            postedby = object0.getString("posted_by");
-//                            attention = object0.getString("attention");
-//                            id = object0.getString("id");
-//                            Notice notice = new Notice(title,date,key,postedby,attention,id);
-//                            FirebaseDatabase.getInstance().getReference().child("Notices").setValue(notice);
-//                        } catch (JSONException e) {
-//                            e.printStackTrace();
-//                        }
-//                    }
-//                }, new Response.ErrorListener() {
-//                    @Override
-//                    public void onErrorResponse(VolleyError error) {
-//                        progressBar.setVisibility(View.GONE);
-//                       // Toast.makeText(getActivity(),"Error refreshing Notices",Toast.LENGTH_SHORT).show();
-//                    }
-//                });
-//                Mysingleton.getInstance(getActivity()).addToRequestqueue(jsonObjectRequest);
-            }
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
         mdatabase.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -186,6 +120,7 @@ public class main extends Fragment {
                 i.putExtra("id",notices.get(position).getId());
                 i.putExtra("uid",uid);
                 i.putExtra("pwd",pwd);
+
                 i.putExtra("title",notices.get(position).getTitle());
                 i.putExtra("date",notices.get(position).getDate());
                 i.putExtra("att",notices.get(position).getAttention());

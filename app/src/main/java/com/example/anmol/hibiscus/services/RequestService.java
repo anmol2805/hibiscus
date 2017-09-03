@@ -59,110 +59,65 @@ public class RequestService extends IntentService {
         databaseReference.child("Students").child(auth.getCurrentUser().getUid()).child("hibiscus").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                uid = dataSnapshot.child("sid").getValue().toString();
-                pwd = dataSnapshot.child("pwd").getValue().toString();
-                final JSONObject jsonObject = new JSONObject();
-                try {
-                    jsonObject.put("uid",uid);
-                    jsonObject.put("pwd",pwd);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url1, jsonObject, new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
+                if(dataSnapshot!=null && dataSnapshot.child("sid").getValue()!=null && dataSnapshot.child("pwd").getValue()!=null){
+                    uid = dataSnapshot.child("sid").getValue().toString();
+                    pwd = dataSnapshot.child("pwd").getValue().toString();
+                    final JSONObject jsonObject = new JSONObject();
+                    try {
+                        jsonObject.put("uid",uid);
+                        jsonObject.put("pwd",pwd);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url1, jsonObject, new Response.Listener<JSONObject>() {
+                        @Override
+                        public void onResponse(JSONObject response) {
 
-                        try {
-                            int c = 0;
-                            while (c<response.getJSONArray("Notices").length()){
+                            try {
+                                int c = 0;
+                                while (c<response.getJSONArray("Notices").length()){
 
-                                JSONObject object = response.getJSONArray("Notices").getJSONObject(c);
+                                    JSONObject object = response.getJSONArray("Notices").getJSONObject(c);
 
 
-                                title = object.getString("title");
-                                date = object.getString("date");
-                                postedby = object.getString("posted_by");
-                                attention = object.getString("attention");
-                                id = object.getString("id");
-                                Notice notice = new Notice(title,date,postedby,attention,id);
-                                //notices.add(notice);
-                                noticedatabase.child(String.valueOf(c)).setValue(notice);
-                                c++;
+                                    title = object.getString("title");
+                                    date = object.getString("date");
+                                    postedby = object.getString("posted_by");
+                                    attention = object.getString("attention");
+                                    id = object.getString("id");
+                                    Notice notice = new Notice(title,date,postedby,attention,id);
+                                    //notices.add(notice);
+                                    noticedatabase.child(String.valueOf(c)).setValue(notice);
+                                    c++;
+                                }
+
+
+                            } catch (JSONException e) {
+                                e.printStackTrace();
                             }
+                            try {
+                                JSONObject object0 = response.getJSONArray("Notices").getJSONObject(0);
 
-
-                        } catch (JSONException e) {
-                            e.printStackTrace();
+                                title = object0.getString("title");
+                                date = object0.getString("date");
+                                postedby = object0.getString("posted_by");
+                                attention = object0.getString("attention");
+                                id = object0.getString("id");
+                                Notice notice = new Notice(title,date,postedby,attention,id);
+                                FirebaseDatabase.getInstance().getReference().child("Notices").setValue(notice);
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
                         }
-                        try {
-                            JSONObject object0 = response.getJSONArray("Notices").getJSONObject(0);
+                    }, new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
 
-                            title = object0.getString("title");
-                            date = object0.getString("date");
-                            postedby = object0.getString("posted_by");
-                            attention = object0.getString("attention");
-                            id = object0.getString("id");
-                            Notice notice = new Notice(title,date,postedby,attention,id);
-                            FirebaseDatabase.getInstance().getReference().child("Notices").setValue(notice);
-                        } catch (JSONException e) {
-                            e.printStackTrace();
                         }
-                    }
-                }, new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(getApplicationContext(),"No updates available",Toast.LENGTH_SHORT).show();
-                    }
-                });
-                Mysingleton.getInstance(getApplicationContext()).addToRequestqueue(jsonObjectRequest);
-//                JsonObjectRequest jsonObjectRequesta = new JsonObjectRequest(Request.Method.POST, url4, jsonObject, new Response.Listener<JSONObject>() {
-//                    @Override
-//                    public void onResponse(JSONObject response) {
-//                        try {
-//                            int c = 0;
-//                            while (c<response.getJSONArray("Notices").length()){
-//
-//                                JSONObject object = response.getJSONArray("Notices").getJSONObject(c);
-//                                String subcode = object.getString("subcode");
-//                                String sub = object.getString("sub");
-//                                String name = object.getString("name");
-//                                String attend = object.getString("attendance");
-//                                Attendance attendance = new Attendance(subcode,sub,name,attend);
-//                                attendancedatabase.child(String.valueOf(c)).setValue(attendance);
-//                                c++;
-//                            }
-//
-//
-//                        } catch (JSONException e) {
-//                            e.printStackTrace();
-//                        }
-//
-//                    }
-//                }, new Response.ErrorListener() {
-//                    @Override
-//                    public void onErrorResponse(VolleyError error) {
-//                        Toast.makeText(getApplicationContext(),"No updates available",Toast.LENGTH_SHORT).show();
-//                    }
-//                });
-//                Mysingleton.getInstance(getApplicationContext()).addToRequestqueue(jsonObjectRequesta);
-//                JsonObjectRequest jsonObjectRequestg = new JsonObjectRequest(Request.Method.POST, url3, jsonObject, new Response.Listener<JSONObject>() {
-//                    @Override
-//                    public void onResponse(JSONObject response) {
-//                        try {
-//                            String html = response.getJSONArray("Notices").getJSONObject(0).getString("html");
-//                            Grades grades = new Grades(html);
-//                            gradesdatabase.setValue(grades);
-//                        } catch (JSONException e) {
-//                            e.printStackTrace();
-//                        }
-//                    }
-//                }, new Response.ErrorListener() {
-//                    @Override
-//                    public void onErrorResponse(VolleyError error) {
-//                        Toast.makeText(getApplicationContext(),"error",Toast.LENGTH_SHORT).show();
-//                    }
-//                });
-//                Mysingleton.getInstance(getApplicationContext()).addToRequestqueue(jsonObjectRequestg);
+                    });
+                    Mysingleton.getInstance(getApplicationContext()).addToRequestqueue(jsonObjectRequest);
+                }
+
             }
 
             @Override

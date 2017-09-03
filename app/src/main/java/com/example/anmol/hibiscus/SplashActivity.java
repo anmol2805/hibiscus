@@ -47,7 +47,7 @@ public class SplashActivity extends AppCompatActivity {
     ArrayList<Notice> notices;
     int key;
     FirebaseAuth auth;
-    String uid,pwd;
+    String uid,pwd,urlid,uidu;
     DatabaseReference mdatabase;
 
 
@@ -102,13 +102,16 @@ public class SplashActivity extends AppCompatActivity {
                     databaseReference.addValueEventListener(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
-                            uid = dataSnapshot.child("sid").getValue().toString();
-                            pwd = dataSnapshot.child("pwd").getValue().toString();
-                            final String uidu = uid.toUpperCase();
-                            final String url = "https://hib.iiit-bh.ac.in/Hibiscus/docs/iiit/Photos/" + uidu + ".jpg";
+                            if(dataSnapshot!=null && dataSnapshot.child("sid").getValue()!=null && dataSnapshot.child("pwd").getValue()!=null){
+                                uid = dataSnapshot.child("sid").getValue().toString();
+                                pwd = dataSnapshot.child("pwd").getValue().toString();
+                                uidu = uid.toUpperCase();
+                                urlid = "https://hib.iiit-bh.ac.in/Hibiscus/docs/iiit/Photos/" + uidu + ".jpg";
+
+                            }
 
                             Intent intent = new Intent(SplashActivity.this, HibiscusActivity.class);
-                            intent.putExtra("url", url);
+                            intent.putExtra("url", urlid);
                             intent.putExtra("uidu", uidu);
                             startActivity(intent);
                             overridePendingTransition(R.anim.still,R.anim.slide_in_up);

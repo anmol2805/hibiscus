@@ -89,60 +89,11 @@ public class myapps extends Fragment {
         databaseReference = FirebaseDatabase.getInstance().getReference().child("Students").child(auth.getCurrentUser().getUid()).child("attendance");
         hibdatabase = FirebaseDatabase.getInstance().getReference().child("Students").child(auth.getCurrentUser().getUid()).child("hibiscus");
 
-        hibdatabase.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                uid = dataSnapshot.child("sid").getValue().toString();
-                pwd = dataSnapshot.child("pwd").getValue().toString();
-                final JSONObject jsonObject = new JSONObject();
-                try {
-                    jsonObject.put("uid",uid);
-                    jsonObject.put("pwd",pwd);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-//                JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, jsonObject, new Response.Listener<JSONObject>() {
-//                    @Override
-//                    public void onResponse(JSONObject response) {
-//                        progressBar.setVisibility(View.GONE);
-//                        try {
-//                            int c = 0;
-//                            while (c<response.getJSONArray("Notices").length()){
-//
-//                                JSONObject object = response.getJSONArray("Notices").getJSONObject(c);
-//                                String subcode = object.getString("subcode");
-//                                String sub = object.getString("sub");
-//                                String name = object.getString("name");
-//                                String attend = object.getString("attendance");
-//                                Attendance attendance = new Attendance(subcode,sub,name,attend);
-//                                //databaseReference.child(String.valueOf(c)).setValue(attendance);
-//                                c++;
-//                            }
-//
-//
-//                        } catch (JSONException e) {
-//                            e.printStackTrace();
-//                        }
-//
-//                    }
-//                }, new Response.ErrorListener() {
-//                    @Override
-//                    public void onErrorResponse(VolleyError error) {
-//                        progressBar.setVisibility(View.GONE);
-//                        Toast.makeText(getActivity(),"No updates available",Toast.LENGTH_SHORT).show();
-//                    }
-//                });
-//                Mysingleton.getInstance(getActivity()).addToRequestqueue(jsonObjectRequest);
-            }
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                attendances.clear();
                 for(DataSnapshot data:dataSnapshot.getChildren()){
 
                         String attend = data.child("attend").getValue().toString();
