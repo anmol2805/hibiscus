@@ -9,6 +9,7 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
 import com.example.anmol.hibiscus.Adapter.Grades;
 import com.example.anmol.hibiscus.Model.Attendance;
 import com.example.anmol.hibiscus.Model.Notice;
@@ -39,7 +40,8 @@ public class RequestServiceAttendance extends IntentService {
     String url4 = "http://139.59.23.157/api/hibi/attendence";
     String uid,pwd;
     int key;
-
+    String dep;
+    String decrypt = "https://us-central1-iiitcloud-e9d6b.cloudfunctions.net/dcryptr?pass=";
     String title,postedby,attention,date,id;
     public RequestServiceAttendance() {
         super("RequestService");
@@ -54,41 +56,54 @@ public class RequestServiceAttendance extends IntentService {
         noticedatabase = FirebaseDatabase.getInstance().getReference().child("Notice");
         gradesdatabase = FirebaseDatabase.getInstance().getReference().child("Students").child(auth.getCurrentUser().getUid()).child("grades");
         attendancedatabase = FirebaseDatabase.getInstance().getReference().child("Students").child(auth.getCurrentUser().getUid()).child("attendance");
+        final JSONObject jsonObject = new JSONObject();
         databaseReference.child("Students").child(auth.getCurrentUser().getUid()).child("hibiscus").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if(dataSnapshot!=null && dataSnapshot.child("sid").getValue()!=null && dataSnapshot.child("pwd").getValue()!=null){
                     uid = dataSnapshot.child("sid").getValue().toString();
                     pwd = dataSnapshot.child("pwd").getValue().toString();
-                    final JSONObject jsonObject = new JSONObject();
-                    try {
-                        jsonObject.put("uid",uid);
-                        jsonObject.put("pwd",pwd);
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                    JsonObjectRequest jsonObjectRequesta = new JsonObjectRequest(Request.Method.POST, url4, jsonObject, new Response.Listener<JSONObject>() {
+                    StringRequest stringRequest = new StringRequest(Request.Method.POST, decrypt + pwd, new Response.Listener<String>() {
                         @Override
-                        public void onResponse(JSONObject response) {
+                        public void onResponse(String response) {
+                            dep = response;
+
                             try {
-                                int c = 0;
-                                while (c<response.getJSONArray("Notices").length()){
-
-                                    JSONObject object = response.getJSONArray("Notices").getJSONObject(c);
-                                    String subcode = object.getString("subcode");
-                                    String sub = object.getString("sub");
-                                    String name = object.getString("name");
-                                    String attend = object.getString("attendance");
-                                    Attendance attendance = new Attendance(subcode,sub,name,attend);
-                                    attendancedatabase.child(String.valueOf(c)).setValue(attendance);
-                                    c++;
-                                }
-
-
+                                jsonObject.put("uid",uid);
+                                jsonObject.put("pwd",dep);
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
+                            JsonObjectRequest jsonObjectRequesta = new JsonObjectRequest(Request.Method.POST, url4, jsonObject, new Response.Listener<JSONObject>() {
+                                @Override
+                                public void onResponse(JSONObject response) {
+                                    try {
+                                        int c = 0;
+                                        while (c<response.getJSONArray("Notices").length()){
 
+                                            JSONObject object = response.getJSONArray("Notices").getJSONObject(c);
+                                            String subcode = object.getString("subcode");
+                                            String sub = object.getString("sub");
+                                            String name = object.getString("name");
+                                            String attend = object.getString("attendance");
+                                            Attendance attendance = new Attendance(subcode,sub,name,attend);
+                                            attendancedatabase.child(String.valueOf(c)).setValue(attendance);
+                                            c++;
+                                        }
+
+
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+
+                                }
+                            }, new Response.ErrorListener() {
+                                @Override
+                                public void onErrorResponse(VolleyError error) {
+
+                                }
+                            });
+                            Mysingleton.getInstance(getApplicationContext()).addToRequestqueue(jsonObjectRequesta);
                         }
                     }, new Response.ErrorListener() {
                         @Override
@@ -96,7 +111,10 @@ public class RequestServiceAttendance extends IntentService {
 
                         }
                     });
-                    Mysingleton.getInstance(getApplicationContext()).addToRequestqueue(jsonObjectRequesta);
+                    Mysingleton.getInstance(getApplicationContext()).addToRequestqueue(stringRequest);
+
+
+
                 }
 
             }

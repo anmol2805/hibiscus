@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -42,6 +43,7 @@ public class commapps extends Fragment {
     JSONObject object;
     DatabaseReference mdatabase,gradesdatabse;
     String url = "http://139.59.23.157/api/hibi/view_grades";
+    ProgressBar progressBar;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
@@ -50,7 +52,8 @@ public class commapps extends Fragment {
         getActivity().startService(intent);
         getActivity().setTitle("Grades");
         grd = (WebView)vi.findViewById(R.id.grd);
-
+        progressBar = (ProgressBar)vi.findViewById(R.id.webl);
+        progressBar.setVisibility(View.VISIBLE);
         grd.setFocusable(true);
         grd.setFocusableInTouchMode(true);
         grd.getSettings().setJavaScriptEnabled(true);
@@ -77,6 +80,7 @@ public class commapps extends Fragment {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if(dataSnapshot.hasChild("grades")){
                     String html = dataSnapshot.child("grades").child("html").getValue().toString();
+                    progressBar.setVisibility(View.GONE);
                     grd.loadData(html, "text/html; charset=utf-8", "UTF-8");
                 }else{
                     Intent intent = new Intent(getActivity(), RequestServiceGrades.class);

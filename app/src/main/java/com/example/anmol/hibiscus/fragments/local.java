@@ -12,6 +12,7 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.anmol.hibiscus.Adapter.NoticeAdapterl;
@@ -39,6 +40,7 @@ public class local extends Fragment {
     ListView listView;
     NoticeAdapterl noticeAdapterl;
     int size = 0;
+    ProgressBar pg;
 
     @Nullable
     @Override
@@ -48,6 +50,8 @@ public class local extends Fragment {
         post = (FloatingActionButton)vi.findViewById(R.id.postnotice);
         post.setVisibility(View.GONE);
         listView = (ListView)vi.findViewById(R.id.list);
+        pg = (ProgressBar)vi.findViewById(R.id.load);
+        pg.setVisibility(View.VISIBLE);
         noticels = new ArrayList<>();
         auth = FirebaseAuth.getInstance();
         studentdatabase = FirebaseDatabase.getInstance().getReference().child("Studentnotice");
@@ -91,6 +95,7 @@ public class local extends Fragment {
 
                 }
                 if(getActivity()!=null){
+                    pg.setVisibility(View.GONE);
                     noticeAdapterl = new NoticeAdapterl(getActivity(),R.layout.notice,noticels);
                     noticeAdapterl.notifyDataSetChanged();
                     listView.setAdapter(noticeAdapterl);

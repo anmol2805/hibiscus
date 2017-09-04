@@ -9,7 +9,7 @@ import android.net.Uri;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
 
-import com.example.anmol.hibiscus.MainActivity;
+import com.example.anmol.hibiscus.HibiscusActivity;
 import com.example.anmol.hibiscus.R;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
@@ -36,7 +36,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService{
         builder.setContentTitle(payload.get("title"));
         builder.setContentText(payload.get("body"));
         builder.setSound(alarmSound);
-        Intent resultIntent = new Intent(this,MainActivity.class);
+        Intent resultIntent = new Intent(this,HibiscusActivity.class);
         TaskStackBuilder stackbuilder = TaskStackBuilder.create(this);
         stackbuilder.addNextIntent(resultIntent);
         PendingIntent resultPendingIntent = stackbuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);

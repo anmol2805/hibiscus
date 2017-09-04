@@ -40,7 +40,7 @@ public class SplashActivity extends AppCompatActivity {
 
     Animation animFadein,zoomin;
     ImageView img;
-    TextView text;
+
     String url = "http://139.59.23.157/api/hibi/notice";
     ProgressBar progressBar;
     String title,date,postedby,id,attention;
@@ -68,8 +68,6 @@ public class SplashActivity extends AppCompatActivity {
             progressBar.setVisibility(View.VISIBLE);
             notices = new ArrayList<>();
 
-            text = (TextView)findViewById(R.id.textView5);
-            text.setVisibility(View.INVISIBLE);
             img = (ImageView)findViewById(R.id.imageView2);
             animFadein = AnimationUtils.loadAnimation(getApplicationContext(),
                     R.anim.fade_in);
@@ -81,7 +79,7 @@ public class SplashActivity extends AppCompatActivity {
                 public void run() {
                     Intent intent = new Intent(SplashActivity.this, RequestServiceAttendance.class);
                     startService(intent);
-                    text.startAnimation(animFadein);
+
 
                 }
             },1000);
@@ -90,7 +88,7 @@ public class SplashActivity extends AppCompatActivity {
                 public void run() {
                     Intent intent = new Intent(SplashActivity.this, RequestServiceCourses.class);
                     startService(intent);
-                    text.startAnimation(animFadein);
+
 
                 }
             },2000);

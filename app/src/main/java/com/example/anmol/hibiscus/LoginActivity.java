@@ -54,7 +54,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     private Button googleSignIn;
     private static final int RC_SIGN_IN = 9001;
     private GoogleApiClient mGoogleApiClient;
-    SessionManagement session;
+
     private static final String TAG = "Login";
     String email,sid,password;
     JSONObject object;
@@ -62,12 +62,14 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     String url = "http://139.59.23.157/api/hibi/login_test";
     private static long back_pressed;
     Button btnSignup;
+    String crypt = "https://us-central1-iiitcloud-e9d6b.cloudfunctions.net/cryptr?pass=";
+    String dep;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        session = new SessionManagement(getApplicationContext());
+
         setTitle("Login");
         object = new JSONObject();
         //Get Firebase auth instance
@@ -77,7 +79,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 
         if (auth.getCurrentUser() != null) {
             if(auth.getCurrentUser().isEmailVerified()){
-                session.createLoginSession(auth.getCurrentUser().getEmail());
+
                 Intent intent = new Intent(LoginActivity.this, SplashActivity.class);
 
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -183,6 +185,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                                                     if (password.length() < 6) {
                                                         inputPassword.setError(getString(R.string.minimum_password));
                                                     } else {
+
                                                         auth.createUserWithEmailAndPassword(email, password)
                                                                 .addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
                                                                     @Override
@@ -196,14 +199,27 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                                                                             Toast.makeText(LoginActivity.this, "Authentication failed.Check your Network Connection",
                                                                                     Toast.LENGTH_SHORT).show();
                                                                         } else {
+                                                                            final DatabaseReference ref = FirebaseDatabase.getInstance().getReference().getRoot().child("Students").child(auth.getCurrentUser().getUid()).child("hibiscus");
                                                                             if(FirebaseDatabase.getInstance().getReference().getRoot().child("Students").child(auth.getCurrentUser().getUid())!=null) {
                                                                                 FirebaseDatabase.getInstance().getReference().getRoot().child("Students").child(auth.getCurrentUser().getUid()).removeValue();
                                                                             }
-                                                                            DatabaseReference ref = FirebaseDatabase.getInstance().getReference().getRoot().child("Students").child(auth.getCurrentUser().getUid()).child("hibiscus");
-                                                                            Students students = new Students(sid,password,true);
-                                                                            ref.setValue(students);
+                                                                            StringRequest str = new StringRequest(Request.Method.POST, crypt + password, new Response.Listener<String>() {
+                                                                                @Override
+                                                                                public void onResponse(String response) {
+
+                                                                                    Students students = new Students(sid,response,true);
+                                                                                    ref.setValue(students);
+
+                                                                                }
+                                                                            }, new Response.ErrorListener() {
+                                                                                @Override
+                                                                                public void onErrorResponse(VolleyError error) {
+
+                                                                                }
+                                                                            });
+                                                                            Mysingleton.getInstance(LoginActivity.this).addToRequestqueue(str);
+
                                                                             FirebaseMessaging.getInstance().subscribeToTopic("IIITstudents");
-                                                                            sendVerificationEmail();
                                                                             Intent intent = new Intent(LoginActivity.this, SplashActivity.class);
 
                                                                             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -219,11 +235,24 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                                                         if(FirebaseDatabase.getInstance().getReference().getRoot().child("Students").child(auth.getCurrentUser().getUid())!=null) {
                                                             FirebaseDatabase.getInstance().getReference().getRoot().child("Students").child(auth.getCurrentUser().getUid()).removeValue();
                                                         }
-                                                        DatabaseReference ref = FirebaseDatabase.getInstance().getReference().getRoot().child("Students").child(auth.getCurrentUser().getUid()).child("hibiscus");
-                                                        Students students = new Students(sid,password,true);
-                                                        ref.setValue(students);
+                                                        final DatabaseReference ref = FirebaseDatabase.getInstance().getReference().getRoot().child("Students").child(auth.getCurrentUser().getUid()).child("hibiscus");
+                                                    StringRequest str = new StringRequest(Request.Method.POST, crypt + password, new Response.Listener<String>() {
+                                                        @Override
+                                                        public void onResponse(String response) {
+                                                            Students students = new Students(sid,response,true);
+                                                            ref.setValue(students);
+                                                        }
+                                                    }, new Response.ErrorListener() {
+                                                        @Override
+                                                        public void onErrorResponse(VolleyError error) {
+
+                                                        }
+                                                    });
+                                                    Mysingleton.getInstance(LoginActivity.this).addToRequestqueue(str);
+
+
                                                         FirebaseMessaging.getInstance().subscribeToTopic("IIITstudents");
-                                                        sendVerificationEmail();
+
                                                         Intent intent = new Intent(LoginActivity.this, SplashActivity.class);
 
                                                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -260,9 +289,15 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                 //authenticate user
 
             }
+
+
         });
         GoogleLogin();
     }
+
+
+
+
     private void GoogleLogin(){
 
         googleSignIn = (Button) findViewById(R.id.google_sign_in);
@@ -379,24 +414,8 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
             back_pressed = System.currentTimeMillis();
         }
     }
-    private void sendVerificationEmail()
-    {
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
-        user.sendEmailVerification()
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        if (task.isSuccessful()) {
-                            Toast.makeText(LoginActivity.this,"Email sent...",Toast.LENGTH_SHORT).show();
-                        }
-                        else
-                        {
-                            Toast.makeText(LoginActivity.this,"Failed to send E-mail!!!",Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
-    }
+
 
 }
 

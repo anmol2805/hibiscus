@@ -69,9 +69,7 @@ public class HibiscusActivity extends AppCompatActivity
 
         String url = getIntent().getStringExtra("url");
         String uidu = getIntent().getStringExtra("uidu");
-        if(!auth.getCurrentUser().isEmailVerified()){
-            alert();
-        }
+
         setTitle("IIITcloud");
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
 
@@ -91,31 +89,7 @@ public class HibiscusActivity extends AppCompatActivity
         fm.beginTransaction().replace(R.id.content_hib,new main()).commit();
     }
 
-    private void alert() {
-        final AlertDialog.Builder builder;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            builder = new AlertDialog.Builder(this, android.R.style.Theme_Material_Dialog_Alert);
-        } else {
-            builder = new AlertDialog.Builder(this);
-        }
-        builder.setTitle("Email Verification")
-                .setMessage("We have sent you an E-mail to "+auth.getCurrentUser().getEmail()+".Click on the received link and verify your E-mail to continue")
-                .setPositiveButton("Already Verified", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        if(!auth.getCurrentUser().isEmailVerified()){
-                            alert();
-                        }
-                    }
-                })
-                .setNegativeButton("Resend E-mail", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        sendVerificationEmail();
-                    }
-                })
-                .setIcon(android.R.drawable.ic_dialog_alert)
-                .setCancelable(false)
-                .show();
-    }
+
 
     @Override
     public void onBackPressed() {
@@ -127,6 +101,8 @@ public class HibiscusActivity extends AppCompatActivity
             finish();
             overridePendingTransition(R.anim.still,R.anim.slide_out_down);
         }else {
+            FragmentManager fm = getFragmentManager();
+            fm.beginTransaction().replace(R.id.content_hib,new main()).commit();
             Toast.makeText(getBaseContext(), "Double tap to exit!", Toast.LENGTH_SHORT).show();
             back_pressed = System.currentTimeMillis();
         }

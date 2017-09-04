@@ -7,12 +7,14 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 
 import com.example.anmol.hibiscus.Adapter.CourseAdapter;
+import com.example.anmol.hibiscus.Courselistnotice;
 import com.example.anmol.hibiscus.Model.Mycourse;
 import com.example.anmol.hibiscus.R;
-import com.example.anmol.hibiscus.services.RequestService;
 import com.example.anmol.hibiscus.services.RequestServiceCourses;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -34,6 +36,7 @@ public class courseware extends Fragment {
     ListView courselist;
     List<Mycourse> mycourses;
     CourseAdapter courseAdapter;
+    ProgressBar cl;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
@@ -41,6 +44,8 @@ public class courseware extends Fragment {
         getActivity().setTitle("My Courses");
         Intent intent = new Intent(getActivity(), RequestServiceCourses.class);
         getActivity().startService(intent);
+        cl = (ProgressBar)vi.findViewById(R.id.cl);
+        cl.setVisibility(View.VISIBLE);
         mycourses = new ArrayList<>();
         courselist = (ListView)vi.findViewById(R.id.listcourses);
         auth = FirebaseAuth.getInstance();
@@ -58,6 +63,7 @@ public class courseware extends Fragment {
                     mycourses.add(mycourse);
                 }
                 if(getActivity()!=null){
+                    cl.setVisibility(View.GONE);
                     courseAdapter = new CourseAdapter(getActivity(),R.layout.courses,mycourses);
                     courseAdapter.notifyDataSetChanged();
                     courselist.setAdapter(courseAdapter);
@@ -68,6 +74,16 @@ public class courseware extends Fragment {
             @Override
             public void onCancelled(DatabaseError databaseError) {
 
+            }
+        });
+        courselist.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                String id = mycourses.get(i).getId();
+                Intent intent1 = new Intent(getActivity(),Courselistnotice.class);
+                intent1.putExtra("id",id);
+                startActivity(intent1);
+                getActivity().overridePendingTransition(R.anim.slide_in_up,R.anim.still);
             }
         });
         return vi;

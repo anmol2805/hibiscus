@@ -36,6 +36,7 @@ public class NoticeDataActivity extends AppCompatActivity {
     Context context;
     WebView nd;
     TextView d,a,p,t;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

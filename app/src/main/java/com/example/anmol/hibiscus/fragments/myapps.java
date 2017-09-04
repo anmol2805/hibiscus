@@ -54,6 +54,7 @@ public class myapps extends Fragment {
     Button retry;
     String url = "http://139.59.23.157/api/hibi/attendence";
 
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
@@ -62,6 +63,7 @@ public class myapps extends Fragment {
         Intent intent = new Intent(getActivity(), RequestServiceAttendance.class);
         getActivity().startService(intent);
         progressBar = (ProgressBar)vi.findViewById(R.id.loadatt);
+        progressBar.setVisibility(View.VISIBLE);
         listView = (ListView)vi.findViewById(R.id.listatt);
         retry = (Button)vi.findViewById(R.id.retry);
         attendances = new ArrayList<>();
@@ -109,13 +111,15 @@ public class myapps extends Fragment {
                     attendanceAdapter = new AttendanceAdapter(getActivity(),R.layout.attendance,attendances);
                     attendanceAdapter.notifyDataSetChanged();
                     if(!attendanceAdapter.isEmpty()){
+                        progressBar.setVisibility(View.GONE);
                         retry.setVisibility(View.GONE);
                         listView.setAdapter(attendanceAdapter);
 
                     }
                     else{
+                        progressBar.setVisibility(View.GONE);
                         retry.setVisibility(View.VISIBLE);
-                        Toast.makeText(getActivity(),"adapter empty",Toast.LENGTH_SHORT).show();
+
                     }
 
                 }

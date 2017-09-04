@@ -21,6 +21,7 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
 import com.example.anmol.hibiscus.Adapter.NoticeAdapter;
 import com.example.anmol.hibiscus.Model.Notice;
 import com.example.anmol.hibiscus.Mysingleton;
@@ -55,6 +56,8 @@ public class main extends Fragment {
     String uid,pwd;
     DatabaseReference mdatabase;
     Animation rotate;
+    String dep;
+    String decrypt = "https://us-central1-iiitcloud-e9d6b.cloudfunctions.net/dcryptr?pass=";
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
@@ -78,7 +81,35 @@ public class main extends Fragment {
         auth = FirebaseAuth.getInstance();
         mdatabase = FirebaseDatabase.getInstance().getReference().child("Notice");
         progressBar = (ProgressBar)vi.findViewById(R.id.load);
+        progressBar.setVisibility(View.VISIBLE);
         final DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("Students").child(auth.getCurrentUser().getUid()).child("hibiscus");
+        databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if(dataSnapshot!=null && dataSnapshot.child("sid").getValue()!=null && dataSnapshot.child("pwd").getValue()!=null) {
+                    uid = dataSnapshot.child("sid").getValue().toString();
+                    pwd = dataSnapshot.child("pwd").getValue().toString();
+                    StringRequest stringRequest = new StringRequest(Request.Method.POST, decrypt + pwd, new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String response) {
+                            dep = response;
+
+                        }
+                    }, new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+
+                        }
+                    });
+                    Mysingleton.getInstance(getActivity()).addToRequestqueue(stringRequest);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
         lv = (ListView)vi.findViewById(R.id.list);
         notices = new ArrayList<>();
 
@@ -98,6 +129,7 @@ public class main extends Fragment {
 
                 }
                 if(getActivity()!=null){
+                    progressBar.setVisibility(View.GONE);
                     adapter = new NoticeAdapter(getActivity(),R.layout.notice,notices);
                     adapter.notifyDataSetChanged();
                     lv.setAdapter(adapter);
@@ -119,7 +151,7 @@ public class main extends Fragment {
                 Intent i = new Intent(getActivity(),NoticeDataActivity.class);
                 i.putExtra("id",notices.get(position).getId());
                 i.putExtra("uid",uid);
-                i.putExtra("pwd",pwd);
+                i.putExtra("pwd",dep);
 
                 i.putExtra("title",notices.get(position).getTitle());
                 i.putExtra("date",notices.get(position).getDate());
@@ -133,4 +165,6 @@ public class main extends Fragment {
         return vi;
 
     }
+
+
 }

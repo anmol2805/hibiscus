@@ -1,21 +1,20 @@
-package com.example.anmol.hibiscus.services;
+package com.example.anmol.hibiscus;
 
-import android.app.IntentService;
-import android.content.Context;
 import android.content.Intent;
-import android.support.annotation.Nullable;
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
 import android.view.View;
-import android.widget.Toast;
+import android.widget.AdapterView;
+import android.widget.ListView;
+import android.widget.ProgressBar;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
-import com.example.anmol.hibiscus.Adapter.Grades;
-import com.example.anmol.hibiscus.Model.Attendance;
-import com.example.anmol.hibiscus.Model.Notice;
-import com.example.anmol.hibiscus.Mysingleton;
+import com.example.anmol.hibiscus.Adapter.CourseNoticeAdapter;
+import com.example.anmol.hibiscus.Model.Coursenotice;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -29,38 +28,32 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by anmol on 2017-08-28.
- */
-
-public class RequestService extends IntentService {
+public class Courselistnotice extends AppCompatActivity {
+    String id;
     FirebaseAuth auth;
-    DatabaseReference databaseReference,noticedatabase,attendancedatabase,gradesdatabase;
-    String url1 = "http://139.59.23.157/api/hibi/notice";
-    String url2 = "http://139.59.23.157/api/hibi/notice_data";
-    String url3 = "http://139.59.23.157/api/hibi/view_grades";
-    String url4 = "http://139.59.23.157/api/hibi/attendence";
-    String uid,pwd;
-
-    int key;
-    String dep;
+    String uid,pwd,dep;
+    DatabaseReference databaseReference,cnd;
+    JSONObject jsonObject = new JSONObject();
+    String url1 = "http://139.59.23.157/api/hibi/course_notice";
     String decrypt = "https://us-central1-iiitcloud-e9d6b.cloudfunctions.net/dcryptr?pass=";
-    String title,postedby,attention,date,id;
-    public RequestService() {
-        super("RequestService");
-    }
-    List<Notice> notices;
-
+    String title,date,link;
+    List<Coursenotice>coursenotices;
+    ListView listView;
+    CourseNoticeAdapter courseNoticeAdapter;
+    ProgressBar ld;
     @Override
-    protected void onHandleIntent(@Nullable Intent intent) {
-        notices = new ArrayList<>();
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_coursenotice);
+        getSupportActionBar().hide();
         auth = FirebaseAuth.getInstance();
-        databaseReference = FirebaseDatabase.getInstance().getReference().getRoot();
-        noticedatabase = FirebaseDatabase.getInstance().getReference().child("Notice");
-        gradesdatabase = FirebaseDatabase.getInstance().getReference().child("Students").child(auth.getCurrentUser().getUid()).child("grades");
-        attendancedatabase = FirebaseDatabase.getInstance().getReference().child("Students").child(auth.getCurrentUser().getUid()).child("attendance");
-        final JSONObject jsonObject = new JSONObject();
-        databaseReference.child("Students").child(auth.getCurrentUser().getUid()).child("hibiscus").addValueEventListener(new ValueEventListener() {
+        cnd = FirebaseDatabase.getInstance().getReference().child("Students").child(auth.getCurrentUser().getUid()).child("hibiscus");
+        id = getIntent().getStringExtra("id");
+        coursenotices = new ArrayList<>();
+        ld = (ProgressBar)findViewById(R.id.loadnd);
+        ld.setVisibility(View.VISIBLE);
+        listView = (ListView)findViewById(R.id.list);
+        cnd.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if(dataSnapshot!=null && dataSnapshot.child("sid").getValue()!=null && dataSnapshot.child("pwd").getValue()!=null){
@@ -72,6 +65,7 @@ public class RequestService extends IntentService {
                             dep = response;
 
                             try {
+                                jsonObject.put("id",id);
                                 jsonObject.put("uid",uid);
                                 jsonObject.put("pwd",dep);
                             } catch (JSONException e) {
@@ -80,9 +74,10 @@ public class RequestService extends IntentService {
                             JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url1, jsonObject, new Response.Listener<JSONObject>() {
                                 @Override
                                 public void onResponse(JSONObject response) {
-
+                                    ld.setVisibility(View.GONE);
                                     try {
-                                        int c = 0;
+                                        int c = 1;
+                                        coursenotices.clear();
                                         while (c<response.getJSONArray("Notices").length()){
 
                                             JSONObject object = response.getJSONArray("Notices").getJSONObject(c);
@@ -90,37 +85,27 @@ public class RequestService extends IntentService {
 
                                             title = object.getString("title");
                                             date = object.getString("date");
-                                            postedby = object.getString("posted_by");
-                                            attention = object.getString("attention");
-                                            id = object.getString("id");
-                                            Notice notice = new Notice(title,date,postedby,attention,id);
-                                            //notices.add(notice);
-                                            noticedatabase.child(String.valueOf(c)).setValue(notice);
+                                            link = object.getString("link_id");
+                                            Coursenotice coursenotice = new Coursenotice(date,title,link);
+                                            coursenotices.add(coursenotice);
                                             c++;
+                                        }
+                                        if(getApplicationContext()!=null){
+                                            courseNoticeAdapter = new CourseNoticeAdapter(Courselistnotice.this,R.layout.cn,coursenotices);
+                                            courseNoticeAdapter.notifyDataSetChanged();
+                                            listView.setAdapter(courseNoticeAdapter);
                                         }
 
 
                                     } catch (JSONException e) {
                                         e.printStackTrace();
                                     }
-                                    try {
-                                        JSONObject object0 = response.getJSONArray("Notices").getJSONObject(0);
 
-                                        title = object0.getString("title");
-                                        date = object0.getString("date");
-                                        postedby = object0.getString("posted_by");
-                                        attention = object0.getString("attention");
-                                        id = object0.getString("id");
-                                        Notice notice = new Notice(title,date,postedby,attention,id);
-                                        FirebaseDatabase.getInstance().getReference().child("Notices").setValue(notice);
-                                    } catch (JSONException e) {
-                                        e.printStackTrace();
-                                    }
                                 }
                             }, new Response.ErrorListener() {
                                 @Override
                                 public void onErrorResponse(VolleyError error) {
-
+                                    ld.setVisibility(View.GONE);
                                 }
                             });
                             Mysingleton.getInstance(getApplicationContext()).addToRequestqueue(jsonObjectRequest);
@@ -136,7 +121,6 @@ public class RequestService extends IntentService {
 
 
                 }
-
             }
 
             @Override
@@ -144,5 +128,21 @@ public class RequestService extends IntentService {
 
             }
         });
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Intent intent = new Intent(Courselistnotice.this,CourseData.class);
+                intent.putExtra("link",coursenotices.get(i).getLink_id());
+                startActivity(intent);
+                overridePendingTransition(R.anim.slide_in_up,R.anim.still);
+            }
+        });
+
+    }
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
+        overridePendingTransition(R.anim.still,R.anim.slide_out_down);
     }
 }
