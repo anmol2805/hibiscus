@@ -116,6 +116,7 @@ public class main extends Fragment {
         mdatabase.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                notices.clear();
                 for(DataSnapshot data:dataSnapshot.getChildren()){
 
                         String title = data.child("title").getValue().toString();

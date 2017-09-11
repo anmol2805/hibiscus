@@ -85,6 +85,8 @@ public class myapps extends Fragment {
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), RequestServiceAttendance.class);
                 getActivity().startService(intent);
+                retry.setVisibility(View.INVISIBLE);
+                progressBar.setVisibility(View.VISIBLE);
                 Toast.makeText(getActivity(),"Please Wait...",Toast.LENGTH_SHORT).show();
             }
         });

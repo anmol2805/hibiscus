@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -11,13 +11,24 @@
     >
 
     <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
 
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
         android:gravity="center"
         android:orientation="vertical"
         android:padding="@dimen/activity_horizontal_margin">
 
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:layout_gravity="center|bottom"
+            android:layout_marginBottom="20dp"
+            android:layout_marginTop="20dp"
+            android:visibility="invisible" />
 
         <ImageView
             android:id="@+id/imageView4"
@@ -30,8 +41,7 @@
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            >
+            android:layout_marginTop="10dp">
 
             <EditText
                 android:id="@+id/email"
@@ -40,10 +50,10 @@
                 android:layout_marginBottom="10dp"
                 android:hint="StudentID"
                 android:inputType="textEmailAddress"
+                android:textAlignment="center"
                 android:textColor="#000"
                 android:textColorHint="@color/colorPrimary"
                 android:theme="@style/MyEditTextTheme"
-                android:textAlignment="center"
 
                 />
         </android.support.design.widget.TextInputLayout>
@@ -59,11 +69,10 @@
                 android:layout_marginBottom="10dp"
                 android:hint="@string/hint_password"
                 android:inputType="textPassword"
+                android:textAlignment="center"
                 android:textColor="#000"
                 android:textColorHint="@color/colorPrimary"
-                android:theme="@style/MyEditTextTheme"
-                android:textAlignment="center"
-                />
+                android:theme="@style/MyEditTextTheme" />
         </android.support.design.widget.TextInputLayout>
 
         <!-- Login Button -->
@@ -75,9 +84,8 @@
             android:layout_marginTop="10dip"
             android:background="@drawable/round_button"
             android:text="@string/btn_login"
-            android:textStyle="bold"
             android:textColor="@color/white"
-            />
+            android:textStyle="bold" />
 
         <Button
             android:id="@+id/google_sign_in"
@@ -102,16 +110,7 @@
 
         <!-- Link to Login Screen -->
 
-        <ProgressBar
-            android:id="@+id/progressBar"
-            android:layout_width="match_parent"
-            android:layout_height="30dp"
-            android:layout_gravity="center|bottom"
-            android:layout_marginBottom="20dp"
-            android:visibility="invisible"
-            android:layout_marginTop="20dp"
-            />
     </LinearLayout>
 
-</android.support.design.widget.CoordinatorLayout>
+</RelativeLayout>
 

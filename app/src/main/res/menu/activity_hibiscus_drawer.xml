@@ -24,6 +24,15 @@
             android:id="@+id/nav_comm"
             android:icon="@drawable/grades"
             android:title="Grades" />
+        <item
+            android:id="@+id/nav_lib"
+            android:icon="@drawable/library"
+            android:title="Library" />
+        <item
+            android:id="@+id/nav_elib"
+            android:icon="@drawable/ebook"
+            android:title="E-books" />
+
 
     </group>
     <group

@@ -10,7 +10,9 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:id="@+id/ref"
-        >
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:layout_width="25dp"
@@ -22,17 +24,6 @@
             android:layout_alignParentStart="true"
             android:layout_margin="10dp"
             />
-        <ImageButton
-            android:id="@+id/refresh"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:layout_gravity="right"
-            android:background="#00000000"
-            app:srcCompat="@drawable/ref25"
-            android:layout_margin="10dp"
-            android:layout_centerVertical="true"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true" />
     </RelativeLayout>
 
 
@@ -57,7 +48,7 @@
                 android:layout_width="25dp"
                 android:layout_height="25dp"
                 android:layout_below="@+id/list"
-                android:layout_centerHorizontal="true"
+                android:layout_centerInParent="true"
                 android:visibility="gone" />
 
             <android.support.design.widget.FloatingActionButton

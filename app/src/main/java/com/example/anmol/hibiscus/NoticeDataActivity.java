@@ -89,12 +89,16 @@ public class NoticeDataActivity extends AppCompatActivity {
         FirebaseDatabase.getInstance().getReference().child("NoticeData").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                if(dataSnapshot.hasChild(id)){
+                if(dataSnapshot.hasChild(id)&&!dataSnapshot.child(id).getValue().toString().contains("null")){
+                    if(dataSnapshot.child(id).getValue()!=null){
+                        Log.i("NoticeDataActivity",dataSnapshot.child(id).child("notice").getValue().toString());
+                        nd.loadData(dataSnapshot.child(id).child("notice").getValue().toString(), "text/html; charset=utf-8", "UTF-8");
+                    }
 
-                    Log.i("NoticeDataActivity",dataSnapshot.child(id).child("notice").getValue().toString());
-                    nd.loadData(dataSnapshot.child(id).child("notice").getValue().toString(), "text/html; charset=utf-8", "UTF-8");
+
                 }
                 else{
+                    Toast.makeText(NoticeDataActivity.this,"Please wait...",Toast.LENGTH_SHORT).show();
                     JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, object, new Response.Listener<JSONObject>() {
                         @Override
                         public void onResponse(JSONObject response) {
