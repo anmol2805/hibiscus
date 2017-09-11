@@ -1,19 +1,18 @@
 package com.example.anmol.hibiscus.fragments;
 
 import android.app.Fragment;
+import android.content.Intent;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -21,10 +20,10 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
-import com.example.anmol.hibiscus.Adapter.CourseNoticeAdapter;
+import com.example.anmol.hibiscus.Adapter.ELibraryAdapter;
 import com.example.anmol.hibiscus.Adapter.LibraryAdapter;
-import com.example.anmol.hibiscus.Courselistnotice;
-import com.example.anmol.hibiscus.Model.Coursenotice;
+import com.example.anmol.hibiscus.Ebooksdata;
+import com.example.anmol.hibiscus.Model.ELibrary;
 import com.example.anmol.hibiscus.Model.Library;
 import com.example.anmol.hibiscus.Mysingleton;
 import com.example.anmol.hibiscus.R;
@@ -45,28 +44,28 @@ import java.util.List;
  * Created by anmol on 9/11/2017.
  */
 
-public class library extends Fragment {
+public class ebooks extends Fragment {
     ImageButton search;
     EditText books;
     ListView lv;
-    List<Library> libraries;
+    List<ELibrary> eLibraries;
     ProgressBar progressBar;
     String bookn;
     DatabaseReference hibdatabase;
     FirebaseAuth auth;
     String uid,pwd,dep,title,id,author,publisher,year,edition,status;
     JSONObject jsonObject;
-    LibraryAdapter libraryAdapter;
+    ELibraryAdapter eLibraryAdapter;
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, final Bundle savedInstanceState) {
-        View vi = inflater.inflate(R.layout.library,container,false);
-        getActivity().setTitle("Library");
+    public View onCreateView(final LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
+        View vi = inflater.inflate(R.layout.ebooks,container,false);
+        getActivity().setTitle("E-books");
         search = (ImageButton)vi.findViewById(R.id.search);
         books = (EditText)vi.findViewById(R.id.books);
         lv = (ListView)vi.findViewById(R.id.list);
         progressBar = (ProgressBar)vi.findViewById(R.id.load);
-        libraries = new ArrayList<>();
+        eLibraries = new ArrayList<>();
         jsonObject = new JSONObject();
         auth = FirebaseAuth.getInstance();
         hibdatabase = FirebaseDatabase.getInstance().getReference().child("Students").child(auth.getCurrentUser().getUid()).child("hibiscus");
@@ -95,13 +94,13 @@ public class library extends Fragment {
                                         } catch (JSONException e) {
                                             e.printStackTrace();
                                         }
-                                        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, getResources().getString(R.string.library_url), jsonObject, new Response.Listener<JSONObject>() {
+                                        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, getResources().getString(R.string.ebooks_url), jsonObject, new Response.Listener<JSONObject>() {
                                             @Override
                                             public void onResponse(JSONObject response) {
 
                                                 try {
                                                     int c = 0;
-                                                    libraries.clear();
+                                                    eLibraries.clear();
                                                     while (c<response.getJSONArray("Notices").length()){
 
                                                         JSONObject object = response.getJSONArray("Notices").getJSONObject(c);
@@ -111,17 +110,17 @@ public class library extends Fragment {
                                                         id = object.getString("id");
                                                         author = object.getString("author");
                                                         publisher = object.getString("publiser");
-                                                        edition = object.getString("edition");
+
                                                         year = object.getString("year");
-                                                        status = object.getString("status");
-                                                        Library library = new Library(id,title,author,publisher,year,edition,status);
-                                                        libraries.add(library);
+
+                                                        ELibrary eLibrary = new ELibrary(id,title,author,publisher,year);
+                                                        eLibraries.add(eLibrary);
                                                         c++;
                                                     }
                                                     if(getActivity()!=null){
-                                                        libraryAdapter = new LibraryAdapter(getActivity(),R.layout.lib,libraries);
-                                                        libraryAdapter.notifyDataSetChanged();
-                                                        lv.setAdapter(libraryAdapter);
+                                                        eLibraryAdapter = new ELibraryAdapter(getActivity(),R.layout.elib,eLibraries);
+                                                        eLibraryAdapter.notifyDataSetChanged();
+                                                        lv.setAdapter(eLibraryAdapter);
                                                         progressBar.setVisibility(View.GONE);
                                                     }
 
@@ -165,7 +164,15 @@ public class library extends Fragment {
                 }
             }
         });
+        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Intent intent = new Intent(getActivity(),Ebooksdata.class);
+                intent.putExtra("id",eLibraries.get(i).getId());
+                getActivity().startActivity(intent);
+                getActivity().overridePendingTransition(R.anim.slide_in_up,R.anim.still);
+            }
+        });
         return vi;
-
     }
 }

@@ -38,8 +38,9 @@
         <service android:name=".services.RequestServiceGrades" />
         <service android:name=".services.RequestServiceCourses" />
 
-        <activity android:name=".Courselistnotice"></activity>
-        <activity android:name=".CourseData"></activity>
+        <activity android:name=".Courselistnotice" />
+        <activity android:name=".CourseData" />
+        <activity android:name=".Ebooksdata"></activity>
     </application>
 
 </manifest>

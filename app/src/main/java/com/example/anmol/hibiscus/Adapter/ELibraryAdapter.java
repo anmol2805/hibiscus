@@ -11,7 +11,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-import com.example.anmol.hibiscus.Model.Coursenotice;
+import com.example.anmol.hibiscus.Model.ELibrary;
 import com.example.anmol.hibiscus.Model.Library;
 import com.example.anmol.hibiscus.R;
 
@@ -21,16 +21,16 @@ import java.util.List;
  * Created by anmol on 2017-08-14.
  */
 
-public class LibraryAdapter extends ArrayAdapter<Library> {
+public class ELibraryAdapter extends ArrayAdapter<ELibrary> {
     private Activity context;
     private int resource;
-    private List<Library> libraries;
+    private List<ELibrary> eLibraries;
 
-    public LibraryAdapter(@NonNull Activity context, @LayoutRes int resource, @NonNull List<Library> objects){
+    public ELibraryAdapter(@NonNull Activity context, @LayoutRes int resource, @NonNull List<ELibrary> objects){
         super(context,resource,objects);
         this.context = context;
         this.resource = resource;
-        libraries = objects;
+        eLibraries = objects;
     }
 
     @NonNull
@@ -41,26 +41,15 @@ public class LibraryAdapter extends ArrayAdapter<Library> {
         View v = inflater.inflate(resource,null);
 
         TextView text = (TextView)v.findViewById(R.id.title);
-        text.setText(libraries.get(position).getTitle());
+        text.setText(eLibraries.get(position).getTitle());
         TextView author = (TextView)v.findViewById(R.id.author);
-        author.setText(libraries.get(position).getAuthor());
+        author.setText(eLibraries.get(position).getAuthor());
         TextView publish = (TextView)v.findViewById(R.id.publish);
-        publish.setText(libraries.get(position).getPubliser());
-        TextView edit = (TextView)v.findViewById(R.id.edition);
-        edit.setText(libraries.get(position).getEdition());
+        publish.setText(eLibraries.get(position).getPubliser());
         TextView year = (TextView)v.findViewById(R.id.year);
-        year.setText(libraries.get(position).getYear());
-        TextView status = (TextView)v.findViewById(R.id.status);
-        if(libraries.get(position).getStatus().contains("A")){
-            status.setText("Available");
-            status.setTextColor(context.getResources().getColor(R.color.available));
-        }
-        else {
-            status.setText("Issued");
-            status.setTextColor(context.getResources().getColor(R.color.colorPrimary));
-        }
+        year.setText(eLibraries.get(position).getYear());
         TextView id = (TextView)v.findViewById(R.id.id);
-        id.setText(libraries.get(position).getId());
+        id.setText(eLibraries.get(position).getId());
 
 
         return v;
