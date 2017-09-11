@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:layout_margin="5dp"
+    >
+
+    <TextView
+        android:id="@+id/id"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="B516008"
+        android:textColor="#000"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        android:layout_margin="5dp"
+        />
+
+    <TextView
+        android:id="@+id/name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:text="Anmol Saxena"
+        android:textColor="#2F4F4F"
+        android:textSize="14sp"
+        android:textStyle="italic"
+        android:layout_margin="5dp"
+        />
+</LinearLayout>
