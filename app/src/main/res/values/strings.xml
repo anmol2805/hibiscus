@@ -36,6 +36,7 @@
     <string name="library_url">http://139.59.23.157/api/hibi/library_books</string>
     <string name="ebooks_url">http://139.59.23.157/api/hibi/ebooks</string>
     <string name="ebooksdata_url">http://139.59.23.157/api/hibi/ebook_data</string>
+    <string name="fees_url">http://139.59.23.157/api/hibi/fee</string>
     <string name="dcrypter">https://us-central1-iiitcloud-e9d6b.cloudfunctions.net/dcryptr?pass=</string>
 
 </resources>
