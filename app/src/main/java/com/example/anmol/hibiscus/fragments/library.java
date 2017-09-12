@@ -75,7 +75,8 @@ public class library extends Fragment {
             public void onClick(View view) {
                 bookn = books.getText().toString();
                 if(!TextUtils.isEmpty(bookn)){
-                    Toast.makeText(getActivity(),"Please wait...",Toast.LENGTH_SHORT).show();
+                    libraries.clear();
+
                     progressBar.setVisibility(View.VISIBLE);
                     hibdatabase.addValueEventListener(new ValueEventListener() {
                         @Override

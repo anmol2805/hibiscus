@@ -1,5 +1,6 @@
 package com.example.anmol.hibiscus.fragments;
 
+import android.app.Dialog;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -7,9 +8,11 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.RadioButton;
@@ -20,6 +23,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
+import com.bumptech.glide.Glide;
 import com.example.anmol.hibiscus.Adapter.ELibraryAdapter;
 import com.example.anmol.hibiscus.Adapter.SearchAdapter;
 import com.example.anmol.hibiscus.Model.ELibrary;
@@ -71,6 +75,8 @@ public class students extends Fragment {
         student = (EditText)vi.findViewById(R.id.books);
         progressBar = (ProgressBar)vi.findViewById(R.id.load);
         jsonObject = new JSONObject();
+        rid.setChecked(true);
+        method = "ID";
         rid.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -92,8 +98,9 @@ public class students extends Fragment {
             public void onClick(View view) {
                 studentdet = student.getText().toString();
                 if(!TextUtils.isEmpty(studentdet)){
+                    searches.clear();
                     studentdet = studentdet.toUpperCase();
-                    Toast.makeText(getActivity(),"Please wait...",Toast.LENGTH_SHORT).show();
+
                     progressBar.setVisibility(View.VISIBLE);
                     databaseReference.addValueEventListener(new ValueEventListener() {
                         @Override
@@ -180,7 +187,18 @@ public class students extends Fragment {
                 }
             }
         });
-
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                String id = searches.get(i).getId();
+                String url = getResources().getString(R.string.photo_url) + id + ".jpg";
+                Dialog dialog = new Dialog(getActivity());
+                dialog.setContentView(R.layout.stimage);
+                ImageView img = (ImageView)dialog.findViewById(R.id.img);
+                Glide.with(getActivity()).load(url).into(img);
+                dialog.show();
+            }
+        });
         return vi;
     }
 }
