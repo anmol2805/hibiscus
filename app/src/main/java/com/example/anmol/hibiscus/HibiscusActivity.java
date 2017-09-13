@@ -28,6 +28,7 @@ import com.example.anmol.hibiscus.fragments.local;
 import com.example.anmol.hibiscus.fragments.main;
 import com.example.anmol.hibiscus.fragments.myapps;
 import com.example.anmol.hibiscus.fragments.students;
+import com.example.anmol.hibiscus.fragments.subgrades;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -176,6 +177,8 @@ public class HibiscusActivity extends AppCompatActivity
 
         }else if(id == R.id.nav_lib){
             fm.beginTransaction().replace(R.id.content_hib,new library()).commit();
+        }else if(id == R.id.nav_viewgrades){
+            fm.beginTransaction().replace(R.id.content_hib,new subgrades()).commit();
         }else if(id == R.id.nav_elib){
             fm.beginTransaction().replace(R.id.content_hib,new ebooks()).commit();
         }else if(id == R.id.nav_students){

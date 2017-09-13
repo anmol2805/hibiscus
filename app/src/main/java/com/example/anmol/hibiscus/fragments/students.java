@@ -16,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.RadioButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -195,7 +196,11 @@ public class students extends Fragment {
                 Dialog dialog = new Dialog(getActivity());
                 dialog.setContentView(R.layout.stimage);
                 ImageView img = (ImageView)dialog.findViewById(R.id.img);
+                TextView sid = (TextView)dialog.findViewById(R.id.sid);
+                TextView sname = (TextView)dialog.findViewById(R.id.sname);
                 Glide.with(getActivity()).load(url).into(img);
+                sid.setText(searches.get(i).getId());
+                sname.setText(searches.get(i).getName());
                 dialog.show();
             }
         });

@@ -39,6 +39,18 @@
     <string name="fees_url">http://139.59.23.157/api/hibi/fee</string>
     <string name="search_url">http://139.59.23.157/api/hibi/student</string>
     <string name="photo_url">https://hib.iiit-bh.ac.in/Hibiscus/docs/iiit/Photos/</string>
+    <string name="course_url">http://139.59.23.157/api/hibi/mycourse</string>
     <string name="dcrypter">https://us-central1-iiitcloud-e9d6b.cloudfunctions.net/dcryptr?pass=</string>
+    <string-array name="semester">
+        <item>Select semester</item>
+        <item>1st semester</item>
+        <item>2nd semester</item>
+        <item>3rd semester</item>
+        <item>4th semester</item>
+        <item>5th semester</item>
+        <item>6th semester</item>
+        <item>7th semester</item>
+        <item>8th semester</item>
+    </string-array>
 
 </resources>
