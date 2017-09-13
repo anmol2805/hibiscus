@@ -20,7 +20,7 @@
             android:textColor="#000"
             android:textSize="14sp"
             android:textStyle="bold"
-            android:layout_gravity="center"
+
 
             />
 
@@ -103,22 +103,17 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:text="F.A."
+
                 android:textColor="#708090"
                 android:textSize="12sp" />
-
-            <View
-                android:layout_width="1dp"
-                android:layout_height="match_parent"
-                android:layout_marginLeft="4dp"
-                android:background="#2F4F4F" />
 
             <TextView
                 android:id="@+id/textView13"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="11dp"
+                android:layout_marginLeft="15dp"
                 android:text="Total"
-                android:textColor="#708090"
+                android:textColor="#2F4F4F"
                 android:textSize="12sp" />
 
 
@@ -128,7 +123,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp"
                 android:text="G.P.A"
-                android:textColor="#708090"
+                android:textColor="#2F4F4F"
                 android:textSize="12sp" />
 
         </LinearLayout>
@@ -148,6 +143,7 @@
                 android:layout_marginLeft="10dp"
                 android:paddingLeft="3dp"
                 android:text="5.60"
+                android:textColor="#000"
                 android:textSize="14sp"
 
                 />
@@ -160,9 +156,8 @@
                 android:layout_marginLeft="4dp"
                 android:paddingLeft="3dp"
                 android:text="5.60"
-                android:textSize="14sp"
-
-                />
+                android:textColor="#000"
+                android:textSize="14sp" />
 
             <TextView
                 android:id="@+id/ms"
@@ -170,14 +165,16 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:text="50.00"
+                android:textColor="#000"
                 android:textSize="14sp" />
 
             <TextView
                 android:id="@+id/es"
-                android:layout_width="wrap_content"
+                android:layout_width="36dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="30dp"
                 android:text="50.00"
+                android:textColor="#000"
                 android:textSize="14sp" />
 
             <TextView
@@ -186,14 +183,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="12dp"
                 android:text="5.00"
+                android:textColor="#000"
                 android:textSize="14sp" />
-
-            <View
-                android:layout_width="1dp"
-                android:layout_height="match_parent"
-                android:background="#2F4F4F">
-
-            </View>
 
             <TextView
                 android:id="@+id/tot"
@@ -201,7 +192,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="4dp"
                 android:text="100.00"
-                android:textColor="#000" />
+                android:textAlignment="center"
+                android:textColor="#FF53ABFC"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/gp"
@@ -209,7 +202,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
                 android:text="10.00"
-                android:textColor="#2F4F4F" />
+                android:textColor="#000"
+                android:textStyle="italic" />
 
         </LinearLayout>
 
