@@ -33,6 +33,11 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.Calendar;
+import java.util.HashMap;
+import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -43,6 +48,7 @@ public class HibiscusActivity extends AppCompatActivity
     private static long back_pressed;
     DrawerLayout drawer;
     FirebaseAuth auth;
+    int sem;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -75,6 +81,23 @@ public class HibiscusActivity extends AppCompatActivity
         TextView sid = (TextView)header.findViewById(R.id.sid);
         if(uidu!=null){
             sid.setText(uidu);
+            String yr = String.valueOf(uidu.charAt(2)) + String.valueOf(uidu.charAt(3));
+            int y = Integer.parseInt(yr);
+            Calendar c = Calendar.getInstance();
+            int year = c.get(Calendar.YEAR);
+            String cr = String.valueOf(year);
+            int month = c.get(Calendar.MONTH);
+            String cyr = String.valueOf(cr.charAt(2)) + String.valueOf(cr.charAt(3));
+            year = Integer.parseInt(cyr);
+            if(month>6){
+                sem = 2*(year - y) + 1;
+            }
+            else{
+                sem = 2*(year - y);
+            }
+            Map<String,Object> map = new HashMap<>();
+            map.put("semester",sem);
+            FirebaseDatabase.getInstance().getReference().child("Students").child(auth.getCurrentUser().getUid()).child("hibiscus").updateChildren(map);
         }
 
         navigationView.setNavigationItemSelectedListener(this);
