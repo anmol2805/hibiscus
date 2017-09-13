@@ -19,6 +19,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.example.anmol.hibiscus.Adapter.CourseAdapter;
 import com.example.anmol.hibiscus.Model.Mycourse;
+import com.example.anmol.hibiscus.Model.Search;
 import com.example.anmol.hibiscus.Mysingleton;
 import com.example.anmol.hibiscus.R;
 import com.google.firebase.auth.FirebaseAuth;
@@ -66,7 +67,7 @@ public class subgrades extends Fragment{
         spinner.setAdapter(arrayAdapter);
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+            public void onItemSelected(AdapterView<?> adapterView, View view, final int i, long l) {
                 String sem = adapterView.getItemAtPosition(i).toString();
                 if(sem.contains("Select semester")){
                     cl.setVisibility(View.VISIBLE);
@@ -130,29 +131,72 @@ public class subgrades extends Fragment{
                         }
                     });
                 }
-                else if(sem.contains("1st semester")){
+                else {
+                    final String a = String.valueOf(sem.charAt(0));
+                    cl.setVisibility(View.VISIBLE);
+                    databaseReference.addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            if(dataSnapshot!=null && dataSnapshot.child("sid").getValue()!=null && dataSnapshot.child("pwd").getValue()!=null) {
+                                uid = dataSnapshot.child("sid").getValue().toString();
+                                pwd = dataSnapshot.child("pwd").getValue().toString();
+                            }
+                            try {
+                                jsonObject.put("pass","encrypt");
+                                jsonObject.put("uid",uid);
+                                jsonObject.put("pwd",pwd);
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                            JsonObjectRequest jsonObjectRequestc = new JsonObjectRequest(Request.Method.POST, getResources().getString(R.string.course_url), jsonObject, new Response.Listener<JSONObject>() {
+                                @Override
+                                public void onResponse(JSONObject response) {
+                                    try {
+                                        mycourses.clear();
+                                        int c = 0;
+                                        while (c<response.getJSONArray("Notices").length()){
+                                            JSONObject object = response.getJSONArray("Notices").getJSONObject(c);
+                                            String name,professor,credits;
+                                            String id = object.getString("id");
+                                            char s = id.charAt(5);
+                                            if(String.valueOf(s).equals(a)){
+                                                name = object.getString("name");
+                                                professor = object.getString("professor");
+                                                credits = object.getString("credits");
+                                                Mycourse mycourse = new Mycourse(name,professor,credits,id);
+                                                mycourses.add(mycourse);
+                                            }
+                                            c++;
+                                        }
+                                        if(getActivity()!=null){
+                                            cl.setVisibility(View.GONE);
+                                            courseAdapter = new CourseAdapter(getActivity(),R.layout.courses,mycourses);
+                                            courseAdapter.notifyDataSetChanged();
+                                            courselist.setAdapter(courseAdapter);
 
-                }
-                else if(sem.contains("2nd semester")){
+                                        }
 
-                }
-                else if(sem.contains("3rd semester")){
 
-                }
-                else if(sem.contains("4th semester")){
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
 
-                }
-                else if(sem.contains("5th semester")){
+                                }
+                            }, new Response.ErrorListener() {
+                                @Override
+                                public void onErrorResponse(VolleyError error) {
+                                    Toast.makeText(getActivity(),"Network Error!!!",Toast.LENGTH_SHORT).show();
+                                    cl.setVisibility(View.GONE);
+                                }
+                            });
+                            Mysingleton.getInstance(getActivity()).addToRequestqueue(jsonObjectRequestc);
+                        }
 
-                }
-                else if(sem.contains("6th semester")){
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
 
-                }
-                else if(sem.contains("7th semester")){
-
-                }
-                else if(sem.contains("8th semester")){
-
+                        }
+                    });
                 }
             }
 
