@@ -16,6 +16,7 @@ import com.example.anmol.hibiscus.Adapter.Grades;
 import com.example.anmol.hibiscus.Model.Attendance;
 import com.example.anmol.hibiscus.Model.Notice;
 import com.example.anmol.hibiscus.Mysingleton;
+import com.example.anmol.hibiscus.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -66,64 +67,52 @@ public class RequestService extends IntentService {
                 if(dataSnapshot!=null && dataSnapshot.child("sid").getValue()!=null && dataSnapshot.child("pwd").getValue()!=null){
                     uid = dataSnapshot.child("sid").getValue().toString();
                     pwd = dataSnapshot.child("pwd").getValue().toString();
-                    StringRequest stringRequest = new StringRequest(Request.Method.POST, decrypt + pwd, new Response.Listener<String>() {
+                    try {
+                        jsonObject.put("uid",uid);
+                        jsonObject.put("pwd",pwd);
+                        jsonObject.put("pass","encrypt");
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, getResources().getString(R.string.notice_url), jsonObject, new Response.Listener<JSONObject>() {
                         @Override
-                        public void onResponse(String response) {
-                            dep = response;
+                        public void onResponse(JSONObject response) {
 
                             try {
-                                jsonObject.put("uid",uid);
-                                jsonObject.put("pwd",dep);
+                                int c = 0;
+                                while (c<response.getJSONArray("Notices").length()){
+
+                                    JSONObject object = response.getJSONArray("Notices").getJSONObject(c);
+
+
+                                    title = object.getString("title");
+                                    date = object.getString("date");
+                                    postedby = object.getString("posted_by");
+                                    attention = object.getString("attention");
+                                    id = object.getString("id");
+                                    Notice notice = new Notice(title,date,postedby,attention,id);
+                                    //notices.add(notice);
+                                    noticedatabase.child(String.valueOf(c)).setValue(notice);
+                                    c++;
+                                }
+
+
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
-                            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url1, jsonObject, new Response.Listener<JSONObject>() {
-                                @Override
-                                public void onResponse(JSONObject response) {
+                            try {
+                                JSONObject object0 = response.getJSONArray("Notices").getJSONObject(0);
 
-                                    try {
-                                        int c = 0;
-                                        while (c<response.getJSONArray("Notices").length()){
-
-                                            JSONObject object = response.getJSONArray("Notices").getJSONObject(c);
-
-
-                                            title = object.getString("title");
-                                            date = object.getString("date");
-                                            postedby = object.getString("posted_by");
-                                            attention = object.getString("attention");
-                                            id = object.getString("id");
-                                            Notice notice = new Notice(title,date,postedby,attention,id);
-                                            //notices.add(notice);
-                                            noticedatabase.child(String.valueOf(c)).setValue(notice);
-                                            c++;
-                                        }
-
-
-                                    } catch (JSONException e) {
-                                        e.printStackTrace();
-                                    }
-                                    try {
-                                        JSONObject object0 = response.getJSONArray("Notices").getJSONObject(0);
-
-                                        title = object0.getString("title");
-                                        date = object0.getString("date");
-                                        postedby = object0.getString("posted_by");
-                                        attention = object0.getString("attention");
-                                        id = object0.getString("id");
-                                        Notice notice = new Notice(title,date,postedby,attention,id);
-                                        FirebaseDatabase.getInstance().getReference().child("Notices").setValue(notice);
-                                    } catch (JSONException e) {
-                                        e.printStackTrace();
-                                    }
-                                }
-                            }, new Response.ErrorListener() {
-                                @Override
-                                public void onErrorResponse(VolleyError error) {
-
-                                }
-                            });
-                            Mysingleton.getInstance(getApplicationContext()).addToRequestqueue(jsonObjectRequest);
+                                title = object0.getString("title");
+                                date = object0.getString("date");
+                                postedby = object0.getString("posted_by");
+                                attention = object0.getString("attention");
+                                id = object0.getString("id");
+                                Notice notice = new Notice(title,date,postedby,attention,id);
+                                FirebaseDatabase.getInstance().getReference().child("Notices").setValue(notice);
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
                         }
                     }, new Response.ErrorListener() {
                         @Override
@@ -131,7 +120,7 @@ public class RequestService extends IntentService {
 
                         }
                     });
-                    Mysingleton.getInstance(getApplicationContext()).addToRequestqueue(stringRequest);
+                    Mysingleton.getInstance(getApplicationContext()).addToRequestqueue(jsonObjectRequest);
 
 
 

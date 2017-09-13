@@ -59,64 +59,51 @@ public class Courselistnotice extends AppCompatActivity {
                 if(dataSnapshot!=null && dataSnapshot.child("sid").getValue()!=null && dataSnapshot.child("pwd").getValue()!=null){
                     uid = dataSnapshot.child("sid").getValue().toString();
                     pwd = dataSnapshot.child("pwd").getValue().toString();
-                    StringRequest stringRequest = new StringRequest(Request.Method.POST, decrypt + pwd, new Response.Listener<String>() {
+                    try {
+                        jsonObject.put("id",id);
+                        jsonObject.put("uid",uid);
+                        jsonObject.put("pwd",pwd);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, getResources().getString(R.string.cn_url), jsonObject, new Response.Listener<JSONObject>() {
                         @Override
-                        public void onResponse(String response) {
-                            dep = response;
-
+                        public void onResponse(JSONObject response) {
+                            ld.setVisibility(View.GONE);
                             try {
-                                jsonObject.put("id",id);
-                                jsonObject.put("uid",uid);
-                                jsonObject.put("pwd",dep);
+                                int c = 1;
+                                coursenotices.clear();
+                                while (c<response.getJSONArray("Notices").length()){
+
+                                    JSONObject object = response.getJSONArray("Notices").getJSONObject(c);
+
+
+                                    title = object.getString("title");
+                                    date = object.getString("date");
+                                    link = object.getString("link_id");
+                                    Coursenotice coursenotice = new Coursenotice(date,title,link);
+                                    coursenotices.add(coursenotice);
+                                    c++;
+                                }
+                                if(getApplicationContext()!=null){
+                                    courseNoticeAdapter = new CourseNoticeAdapter(Courselistnotice.this,R.layout.cn,coursenotices);
+                                    courseNoticeAdapter.notifyDataSetChanged();
+                                    listView.setAdapter(courseNoticeAdapter);
+                                }
+
+
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
-                            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url1, jsonObject, new Response.Listener<JSONObject>() {
-                                @Override
-                                public void onResponse(JSONObject response) {
-                                    ld.setVisibility(View.GONE);
-                                    try {
-                                        int c = 1;
-                                        coursenotices.clear();
-                                        while (c<response.getJSONArray("Notices").length()){
 
-                                            JSONObject object = response.getJSONArray("Notices").getJSONObject(c);
-
-
-                                            title = object.getString("title");
-                                            date = object.getString("date");
-                                            link = object.getString("link_id");
-                                            Coursenotice coursenotice = new Coursenotice(date,title,link);
-                                            coursenotices.add(coursenotice);
-                                            c++;
-                                        }
-                                        if(getApplicationContext()!=null){
-                                            courseNoticeAdapter = new CourseNoticeAdapter(Courselistnotice.this,R.layout.cn,coursenotices);
-                                            courseNoticeAdapter.notifyDataSetChanged();
-                                            listView.setAdapter(courseNoticeAdapter);
-                                        }
-
-
-                                    } catch (JSONException e) {
-                                        e.printStackTrace();
-                                    }
-
-                                }
-                            }, new Response.ErrorListener() {
-                                @Override
-                                public void onErrorResponse(VolleyError error) {
-                                    ld.setVisibility(View.GONE);
-                                }
-                            });
-                            Mysingleton.getInstance(getApplicationContext()).addToRequestqueue(jsonObjectRequest);
                         }
                     }, new Response.ErrorListener() {
                         @Override
                         public void onErrorResponse(VolleyError error) {
-
+                            ld.setVisibility(View.GONE);
                         }
                     });
-                    Mysingleton.getInstance(getApplicationContext()).addToRequestqueue(stringRequest);
+                    Mysingleton.getInstance(getApplicationContext()).addToRequestqueue(jsonObjectRequest);
 
 
 

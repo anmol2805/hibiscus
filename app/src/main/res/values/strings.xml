@@ -41,7 +41,15 @@
     <string name="photo_url">https://hib.iiit-bh.ac.in/Hibiscus/docs/iiit/Photos/</string>
     <string name="course_url">http://14.139.198.171/api/hibi/mycourse</string>
     <string name="subgrades_url">http://14.139.198.171/api/hibi/sub_grades</string>
+    <string name="notice_url">http://14.139.198.171/api/hibi/notice</string>
+    <string name="noticedata_url">http://14.139.198.171/api/hibi/notice_data</string>
+    <string name="view_grades_url">http://14.139.198.171/api/hibi/view_grades</string>
+    <string name="att_url">http://14.139.198.171/api/hibi/attendence</string>
+    <string name="cnd_url">http://14.139.198.171/api/hibi/course_notice_data</string>
     <string name="dcrypter">https://us-central1-iiitcloud-e9d6b.cloudfunctions.net/dcryptr?pass=</string>
+    <string name="cn_url">http://14.139.198.171/api/hibi/course_notice</string>
+    <string name="login_url">http://14.139.198.171/api/hibi/login_test</string>
+
     <string-array name="semester">
         <item>Select semester</item>
         <item>1st semester</item>

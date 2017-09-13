@@ -14,6 +14,7 @@ import com.example.anmol.hibiscus.Adapter.Grades;
 import com.example.anmol.hibiscus.Model.Mycourse;
 import com.example.anmol.hibiscus.Model.Notice;
 import com.example.anmol.hibiscus.Mysingleton;
+import com.example.anmol.hibiscus.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -65,55 +66,42 @@ public class RequestServiceCourses extends IntentService {
                 if(dataSnapshot!=null && dataSnapshot.child("sid").getValue()!=null && dataSnapshot.child("pwd").getValue()!=null) {
                     uid = dataSnapshot.child("sid").getValue().toString();
                     pwd = dataSnapshot.child("pwd").getValue().toString();
-                    StringRequest stringRequest = new StringRequest(Request.Method.POST, decrypt + pwd, new Response.Listener<String>() {
+                    try {
+                        jsonObject.put("uid", uid);
+                        jsonObject.put("pwd", pwd);
+                        jsonObject.put("pass","encrypt");
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    JsonObjectRequest jsonObjectRequestc = new JsonObjectRequest(Request.Method.POST, getResources().getString(R.string.course_url), jsonObject, new Response.Listener<JSONObject>() {
                         @Override
-                        public void onResponse(String response) {
-                            dep = response;
-
+                        public void onResponse(JSONObject response) {
                             try {
-                                jsonObject.put("uid", uid);
-                                jsonObject.put("pwd", dep);
+                                int c = 0;
+                                while (c<response.getJSONArray("Notices").length()){
+                                    JSONObject object = response.getJSONArray("Notices").getJSONObject(c);
+                                    String name = object.getString("name");
+                                    String professor = object.getString("professor");
+                                    String credits = object.getString("credits");
+                                    String id = object.getString("id");
+                                    Mycourse mycourse = new Mycourse(name,professor,credits,id);
+                                    coursedatabse.child(String.valueOf(c)).setValue(mycourse);
+                                    c++;
+                                }
+
+
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
-                            JsonObjectRequest jsonObjectRequestc = new JsonObjectRequest(Request.Method.POST, url5, jsonObject, new Response.Listener<JSONObject>() {
-                                @Override
-                                public void onResponse(JSONObject response) {
-                                    try {
-                                        int c = 0;
-                                        while (c<response.getJSONArray("Notices").length()){
-                                            JSONObject object = response.getJSONArray("Notices").getJSONObject(c);
-                                            String name = object.getString("name");
-                                            String professor = object.getString("professor");
-                                            String credits = object.getString("credits");
-                                            String id = object.getString("id");
-                                            Mycourse mycourse = new Mycourse(name,professor,credits,id);
-                                            coursedatabse.child(String.valueOf(c)).setValue(mycourse);
-                                            c++;
-                                        }
 
-
-                                    } catch (JSONException e) {
-                                        e.printStackTrace();
-                                    }
-
-                                }
-                            }, new Response.ErrorListener() {
-                                @Override
-                                public void onErrorResponse(VolleyError error) {
-
-                                }
-                            });
-                            Mysingleton.getInstance(getApplicationContext()).addToRequestqueue(jsonObjectRequestc);
                         }
-
                     }, new Response.ErrorListener() {
                         @Override
                         public void onErrorResponse(VolleyError error) {
 
                         }
                     });
-                    Mysingleton.getInstance(getApplicationContext()).addToRequestqueue(stringRequest);
+                    Mysingleton.getInstance(getApplicationContext()).addToRequestqueue(jsonObjectRequestc);
 
 
                 }

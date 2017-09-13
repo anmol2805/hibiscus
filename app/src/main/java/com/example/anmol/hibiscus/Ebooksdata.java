@@ -52,51 +52,38 @@ public class Ebooksdata extends AppCompatActivity {
                 if(dataSnapshot!=null && dataSnapshot.child("sid").getValue()!=null && dataSnapshot.child("pwd").getValue()!=null){
                     uid = dataSnapshot.child("sid").getValue().toString();
                     pwd = dataSnapshot.child("pwd").getValue().toString();
-                    StringRequest stringRequest = new StringRequest(Request.Method.POST, getResources().getString(R.string.dcrypter) + pwd, new Response.Listener<String>() {
+                    try {
+                        object.put("id",getIntent().getStringExtra("id"));
+                        object.put("uid",uid);
+                        object.put("pwd",pwd);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, getResources().getString(R.string.ebooksdata_url), object, new Response.Listener<JSONObject>() {
                         @Override
-                        public void onResponse(String response) {
-                            dep = response;
-
+                        public void onResponse(JSONObject response) {
+                            progressBar.setVisibility(View.GONE);
                             try {
-                                object.put("id",getIntent().getStringExtra("id"));
-                                object.put("uid",uid);
-                                object.put("pwd",dep);
+                                JSONObject object = response.getJSONArray("Notices").getJSONObject(0);
+                                name.setText(object.getString("name"));
+                                author.setText(object.getString("author"));
+                                publisher.setText(object.getString("publiser"));
+                                link.setText(object.getString("link"));
+                                descript.setText(object.getString("description"));
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
-                            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, getResources().getString(R.string.ebooksdata_url), object, new Response.Listener<JSONObject>() {
-                                @Override
-                                public void onResponse(JSONObject response) {
-                                    progressBar.setVisibility(View.GONE);
-                                    try {
-                                        JSONObject object = response.getJSONArray("Notices").getJSONObject(0);
-                                        name.setText(object.getString("name"));
-                                        author.setText(object.getString("author"));
-                                        publisher.setText(object.getString("publiser"));
-                                        link.setText(object.getString("link"));
-                                        descript.setText(object.getString("description"));
-                                    } catch (JSONException e) {
-                                        e.printStackTrace();
-                                    }
 
 
-                                }
-                            }, new Response.ErrorListener() {
-                                @Override
-                                public void onErrorResponse(VolleyError error) {
-                                    Toast.makeText(Ebooksdata.this,"Network Error!!!",Toast.LENGTH_SHORT).show();
-                                    progressBar.setVisibility(View.GONE);
-                                }
-                            });
-                            Mysingleton.getInstance(Ebooksdata.this).addToRequestqueue(jsonObjectRequest);
                         }
                     }, new Response.ErrorListener() {
                         @Override
                         public void onErrorResponse(VolleyError error) {
-
+                            Toast.makeText(Ebooksdata.this,"Network Error!!!",Toast.LENGTH_SHORT).show();
+                            progressBar.setVisibility(View.GONE);
                         }
                     });
-                    Mysingleton.getInstance(Ebooksdata.this).addToRequestqueue(stringRequest);
+                    Mysingleton.getInstance(Ebooksdata.this).addToRequestqueue(jsonObjectRequest);
 
 
 

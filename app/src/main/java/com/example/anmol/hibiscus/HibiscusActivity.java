@@ -95,9 +95,12 @@ public class HibiscusActivity extends AppCompatActivity
             else{
                 sem = 2*(year - y);
             }
-            Map<String,Object> map = new HashMap<>();
-            map.put("semester",sem);
-            FirebaseDatabase.getInstance().getReference().child("Students").child(auth.getCurrentUser().getUid()).child("hibiscus").updateChildren(map);
+            if(sem<9){
+                Map<String,Object> map = new HashMap<>();
+                map.put("semester",sem);
+                FirebaseDatabase.getInstance().getReference().child("Students").child(auth.getCurrentUser().getUid()).child("hibiscus").updateChildren(map);
+            }
+
         }
 
         navigationView.setNavigationItemSelectedListener(this);

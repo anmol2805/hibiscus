@@ -89,19 +89,7 @@ public class main extends Fragment {
                 if(dataSnapshot!=null && dataSnapshot.child("sid").getValue()!=null && dataSnapshot.child("pwd").getValue()!=null) {
                     uid = dataSnapshot.child("sid").getValue().toString();
                     pwd = dataSnapshot.child("pwd").getValue().toString();
-                    StringRequest stringRequest = new StringRequest(Request.Method.POST, decrypt + pwd, new Response.Listener<String>() {
-                        @Override
-                        public void onResponse(String response) {
-                            dep = response;
 
-                        }
-                    }, new Response.ErrorListener() {
-                        @Override
-                        public void onErrorResponse(VolleyError error) {
-
-                        }
-                    });
-                    Mysingleton.getInstance(getActivity()).addToRequestqueue(stringRequest);
                 }
             }
 
@@ -152,7 +140,7 @@ public class main extends Fragment {
                 Intent i = new Intent(getActivity(),NoticeDataActivity.class);
                 i.putExtra("id",notices.get(position).getId());
                 i.putExtra("uid",uid);
-                i.putExtra("pwd",dep);
+                i.putExtra("pwd",pwd);
 
                 i.putExtra("title",notices.get(position).getTitle());
                 i.putExtra("date",notices.get(position).getDate());

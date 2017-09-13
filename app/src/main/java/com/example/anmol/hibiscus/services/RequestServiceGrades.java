@@ -14,6 +14,7 @@ import com.example.anmol.hibiscus.Adapter.Grades;
 import com.example.anmol.hibiscus.Model.Attendance;
 import com.example.anmol.hibiscus.Model.Notice;
 import com.example.anmol.hibiscus.Mysingleton;
+import com.example.anmol.hibiscus.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -63,35 +64,23 @@ public class RequestServiceGrades extends IntentService {
                 if(dataSnapshot!=null && dataSnapshot.child("sid").getValue()!=null && dataSnapshot.child("pwd").getValue()!=null){
                     uid = dataSnapshot.child("sid").getValue().toString();
                     pwd = dataSnapshot.child("pwd").getValue().toString();
-                    StringRequest stringRequest = new StringRequest(Request.Method.POST, decrypt + pwd, new Response.Listener<String>() {
+                    try {
+                        jsonObject.put("uid",uid);
+                        jsonObject.put("pwd",pwd);
+                        jsonObject.put("pass","encrypt");
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    JsonObjectRequest jsonObjectRequestg = new JsonObjectRequest(Request.Method.POST, getResources().getString(R.string.view_grades_url), jsonObject, new Response.Listener<JSONObject>() {
                         @Override
-                        public void onResponse(String response) {
-                            dep = response;
-
+                        public void onResponse(JSONObject response) {
                             try {
-                                jsonObject.put("uid",uid);
-                                jsonObject.put("pwd",dep);
+                                String html = response.getJSONArray("Notices").getJSONObject(0).getString("html");
+                                Grades grades = new Grades(html);
+                                gradesdatabase.setValue(grades);
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
-                            JsonObjectRequest jsonObjectRequestg = new JsonObjectRequest(Request.Method.POST, url3, jsonObject, new Response.Listener<JSONObject>() {
-                                @Override
-                                public void onResponse(JSONObject response) {
-                                    try {
-                                        String html = response.getJSONArray("Notices").getJSONObject(0).getString("html");
-                                        Grades grades = new Grades(html);
-                                        gradesdatabase.setValue(grades);
-                                    } catch (JSONException e) {
-                                        e.printStackTrace();
-                                    }
-                                }
-                            }, new Response.ErrorListener() {
-                                @Override
-                                public void onErrorResponse(VolleyError error) {
-
-                                }
-                            });
-                            Mysingleton.getInstance(getApplicationContext()).addToRequestqueue(jsonObjectRequestg);
                         }
                     }, new Response.ErrorListener() {
                         @Override
@@ -99,7 +88,7 @@ public class RequestServiceGrades extends IntentService {
 
                         }
                     });
-                    Mysingleton.getInstance(getApplicationContext()).addToRequestqueue(stringRequest);
+                    Mysingleton.getInstance(getApplicationContext()).addToRequestqueue(jsonObjectRequestg);
 
 
 

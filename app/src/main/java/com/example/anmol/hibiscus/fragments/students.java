@@ -109,68 +109,56 @@ public class students extends Fragment {
                             if(dataSnapshot!=null && dataSnapshot.child("sid").getValue()!=null && dataSnapshot.child("pwd").getValue()!=null){
                                 uid = dataSnapshot.child("sid").getValue().toString();
                                 pwd = dataSnapshot.child("pwd").getValue().toString();
-                                StringRequest stringRequest = new StringRequest(Request.Method.POST, getResources().getString(R.string.dcrypter) + pwd, new Response.Listener<String>() {
+                                try {
+                                    jsonObject.put("method",method);
+                                    jsonObject.put("uid",uid);
+                                    jsonObject.put("pwd",pwd);
+                                    jsonObject.put("query",studentdet);
+                                    jsonObject.put("pass","encrypt");
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                                JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, getResources().getString(R.string.search_url), jsonObject, new Response.Listener<JSONObject>() {
                                     @Override
-                                    public void onResponse(String response) {
-                                        dep = response;
+                                    public void onResponse(JSONObject response) {
 
                                         try {
-                                            jsonObject.put("method",method);
-                                            jsonObject.put("uid",uid);
-                                            jsonObject.put("pwd",dep);
-                                            jsonObject.put("query",studentdet);
+                                            int c = 0;
+                                            searches.clear();
+                                            while (c<response.getJSONArray("Notices").length()){
+
+                                                JSONObject object = response.getJSONArray("Notices").getJSONObject(c);
+
+
+                                                title = object.getString("name");
+                                                id = object.getString("id");
+
+                                                Search search = new Search(id,title);
+                                                searches.add(search);
+                                                c++;
+                                            }
+                                            if(getActivity()!=null){
+                                                searchAdapter = new SearchAdapter(getActivity(),R.layout.search,searches);
+                                                searchAdapter.notifyDataSetChanged();
+                                                listView.setAdapter(searchAdapter);
+                                                progressBar.setVisibility(View.GONE);
+                                            }
+
+
                                         } catch (JSONException e) {
                                             e.printStackTrace();
                                         }
-                                        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, getResources().getString(R.string.search_url), jsonObject, new Response.Listener<JSONObject>() {
-                                            @Override
-                                            public void onResponse(JSONObject response) {
-
-                                                try {
-                                                    int c = 0;
-                                                    searches.clear();
-                                                    while (c<response.getJSONArray("Notices").length()){
-
-                                                        JSONObject object = response.getJSONArray("Notices").getJSONObject(c);
 
 
-                                                        title = object.getString("name");
-                                                        id = object.getString("id");
-
-                                                        Search search = new Search(id,title);
-                                                        searches.add(search);
-                                                        c++;
-                                                    }
-                                                    if(getActivity()!=null){
-                                                        searchAdapter = new SearchAdapter(getActivity(),R.layout.search,searches);
-                                                        searchAdapter.notifyDataSetChanged();
-                                                        listView.setAdapter(searchAdapter);
-                                                        progressBar.setVisibility(View.GONE);
-                                                    }
-
-
-                                                } catch (JSONException e) {
-                                                    e.printStackTrace();
-                                                }
-
-
-                                            }
-                                        }, new Response.ErrorListener() {
-                                            @Override
-                                            public void onErrorResponse(VolleyError error) {
-                                                Toast.makeText(getActivity(),"Network Error!!!",Toast.LENGTH_SHORT).show();
-                                                progressBar.setVisibility(View.GONE);
-                                            }
-                                        });
-                                        Mysingleton.getInstance(getActivity()).addToRequestqueue(jsonObjectRequest);
                                     }
                                 }, new Response.ErrorListener() {
                                     @Override
                                     public void onErrorResponse(VolleyError error) {
-
+                                        Toast.makeText(getActivity(),"Network Error!!!",Toast.LENGTH_SHORT).show();
+                                        progressBar.setVisibility(View.GONE);
                                     }
                                 });
-                                Mysingleton.getInstance(getActivity()).addToRequestqueue(stringRequest);
+                                Mysingleton.getInstance(getActivity()).addToRequestqueue(jsonObjectRequest);
 
 
 

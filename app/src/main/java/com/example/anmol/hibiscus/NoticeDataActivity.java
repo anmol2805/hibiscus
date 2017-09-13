@@ -99,7 +99,7 @@ public class NoticeDataActivity extends AppCompatActivity {
                 }
                 else{
                     Toast.makeText(NoticeDataActivity.this,"Please wait...",Toast.LENGTH_SHORT).show();
-                    JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, object, new Response.Listener<JSONObject>() {
+                    JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, getResources().getString(R.string.noticedata_url), object, new Response.Listener<JSONObject>() {
                         @Override
                         public void onResponse(JSONObject response) {
                             try {

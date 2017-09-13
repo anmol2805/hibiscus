@@ -133,6 +133,13 @@ public class GradesAdapter extends ArrayAdapter<Mycourse> {
 
                             float total = m1+m2+m3+m4+m5;
                             tot.setText(String.valueOf(total));
+                            if(response.getJSONArray("Notices")==null){
+                                Toast.makeText(context,"null",Toast.LENGTH_SHORT).show();
+                                lg.setVisibility(View.GONE);
+                                load.setVisibility(View.VISIBLE);
+                                l1.setVisibility(View.GONE);
+                                l2.setVisibility(View.GONE);
+                            }
 
                         } catch (JSONException e) {
                             e.printStackTrace();
