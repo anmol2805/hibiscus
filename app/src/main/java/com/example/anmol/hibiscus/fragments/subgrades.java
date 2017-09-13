@@ -18,6 +18,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.example.anmol.hibiscus.Adapter.CourseAdapter;
+import com.example.anmol.hibiscus.Adapter.GradesAdapter;
 import com.example.anmol.hibiscus.Model.Mycourse;
 import com.example.anmol.hibiscus.Model.Search;
 import com.example.anmol.hibiscus.Mysingleton;
@@ -46,7 +47,7 @@ public class subgrades extends Fragment{
     DatabaseReference databaseReference;
     ListView courselist;
     List<Mycourse> mycourses;
-    CourseAdapter courseAdapter;
+    GradesAdapter gradesAdapter;
     ProgressBar cl;
     String uid,pwd;
     JSONObject jsonObject;
@@ -103,9 +104,9 @@ public class subgrades extends Fragment{
                                         }
                                         if(getActivity()!=null){
                                             cl.setVisibility(View.GONE);
-                                            courseAdapter = new CourseAdapter(getActivity(),R.layout.courses,mycourses);
-                                            courseAdapter.notifyDataSetChanged();
-                                            courselist.setAdapter(courseAdapter);
+                                            gradesAdapter = new GradesAdapter(getActivity(),R.layout.grades,mycourses);
+                                            gradesAdapter.notifyDataSetChanged();
+                                            courselist.setAdapter(gradesAdapter);
 
                                         }
 
@@ -170,9 +171,9 @@ public class subgrades extends Fragment{
                                         }
                                         if(getActivity()!=null){
                                             cl.setVisibility(View.GONE);
-                                            courseAdapter = new CourseAdapter(getActivity(),R.layout.courses,mycourses);
-                                            courseAdapter.notifyDataSetChanged();
-                                            courselist.setAdapter(courseAdapter);
+                                            gradesAdapter = new GradesAdapter(getActivity(),R.layout.grades,mycourses);
+                                            gradesAdapter.notifyDataSetChanged();
+                                            courselist.setAdapter(gradesAdapter);
 
                                         }
 

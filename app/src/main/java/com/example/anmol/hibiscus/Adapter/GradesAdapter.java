@@ -9,6 +9,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.anmol.hibiscus.Model.Mycourse;
@@ -41,12 +44,22 @@ public class GradesAdapter extends ArrayAdapter<Mycourse> {
 
         TextView text = (TextView)v.findViewById(R.id.subject);
         text.setText(mycourses.get(position).getName());
-        TextView credits = (TextView)v.findViewById(R.id.credits);
-        credits.setText(mycourses.get(position).getCredits());
-        TextView postedby = (TextView)v.findViewById(R.id.prof);
-        postedby.setText(mycourses.get(position).getProfessor());
-        TextView id = (TextView)v.findViewById(R.id.id);
-        id.setText(mycourses.get(position).getId());
+
+        LinearLayout l1 = (LinearLayout)v.findViewById(R.id.l1);
+        LinearLayout l2 = (LinearLayout)v.findViewById(R.id.l2);
+        l1.setVisibility(View.GONE);
+        l2.setVisibility(View.GONE);
+        Button load = (Button)v.findViewById(R.id.pg);
+        load.setVisibility(View.VISIBLE);
+        ProgressBar lg = (ProgressBar)v.findViewById(R.id.lg);
+        load.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+        
+
 
         return v;
     }

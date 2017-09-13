@@ -9,6 +9,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.anmol.hibiscus.Model.Mycourse;
@@ -47,6 +49,8 @@ public class CourseAdapter extends ArrayAdapter<Mycourse> {
         postedby.setText(mycourses.get(position).getProfessor());
         TextView id = (TextView)v.findViewById(R.id.id);
         id.setText(mycourses.get(position).getId());
+
+
 
         return v;
     }
