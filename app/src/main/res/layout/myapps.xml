@@ -19,7 +19,7 @@
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             android:layout_margin="10dp"
-            />
+            android:id="@+id/circleImageView2" />
         <ImageButton
             android:id="@+id/refresh"
             android:layout_width="25dp"
@@ -31,6 +31,16 @@
             android:layout_centerVertical="true"
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true" />
+
+        <Spinner
+            android:id="@+id/spinner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toStartOf="@+id/refresh"
+            android:layout_toLeftOf="@+id/refresh"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="10dp"
+            />
 
     </RelativeLayout>
 

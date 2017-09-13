@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -63,6 +64,7 @@ public class Courselistnotice extends AppCompatActivity {
                         jsonObject.put("id",id);
                         jsonObject.put("uid",uid);
                         jsonObject.put("pwd",pwd);
+                        jsonObject.put("pass","encrypt");
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -101,6 +103,7 @@ public class Courselistnotice extends AppCompatActivity {
                         @Override
                         public void onErrorResponse(VolleyError error) {
                             ld.setVisibility(View.GONE);
+                            Toast.makeText(Courselistnotice.this,"Network Error!!!",Toast.LENGTH_SHORT).show();
                         }
                     });
                     Mysingleton.getInstance(getApplicationContext()).addToRequestqueue(jsonObjectRequest);

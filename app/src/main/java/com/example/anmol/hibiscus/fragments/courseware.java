@@ -8,8 +8,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.Spinner;
 
 import com.example.anmol.hibiscus.Adapter.CourseAdapter;
 import com.example.anmol.hibiscus.Courselistnotice;
@@ -31,12 +33,16 @@ import java.util.List;
  */
 
 public class courseware extends Fragment {
-    FirebaseAuth auth;
+    FirebaseAuth auth = FirebaseAuth.getInstance();
     DatabaseReference coursedatabase;
     ListView courselist;
     List<Mycourse> mycourses;
     CourseAdapter courseAdapter;
     ProgressBar cl;
+    Spinner spinner;
+    DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("Students").child(auth.getCurrentUser().getUid()).child("hibiscus");
+    ArrayList<String> arrayList = new ArrayList<>();
+    ArrayAdapter<String> arrayAdapter;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
@@ -48,27 +54,20 @@ public class courseware extends Fragment {
         cl.setVisibility(View.VISIBLE);
         mycourses = new ArrayList<>();
         courselist = (ListView)vi.findViewById(R.id.listcourses);
-        auth = FirebaseAuth.getInstance();
-        coursedatabase = FirebaseDatabase.getInstance().getReference().child("Students").child(auth.getCurrentUser().getUid()).child("mycourses");
-        coursedatabase.addValueEventListener(new ValueEventListener() {
+
+        spinner = (Spinner)vi.findViewById(R.id.spinner);
+        databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                mycourses.clear();
-                for(DataSnapshot data:dataSnapshot.getChildren()){
-                    String subject = data.child("name").getValue().toString();
-                    String credits = data.child("credits").getValue().toString();
-                    String professor = data.child("professor").getValue().toString();
-                    String id = data.child("id").getValue().toString();
-                    Mycourse mycourse = new Mycourse(subject,professor,credits,id);
-                    mycourses.add(mycourse);
-                }
-                if(getActivity()!=null){
-                    cl.setVisibility(View.GONE);
-                    courseAdapter = new CourseAdapter(getActivity(),R.layout.courses,mycourses);
-                    courseAdapter.notifyDataSetChanged();
-                    courselist.setAdapter(courseAdapter);
+                int semester = Integer.parseInt(dataSnapshot.child("semester").getValue().toString());
 
+                for(int i = semester;i>0;i--){
+                    arrayList.add("Semester " + String.valueOf(i));
                 }
+                arrayAdapter = new ArrayAdapter<>(getActivity(),android.R.layout.simple_spinner_item,arrayList);
+                arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                spinner.setAdapter(arrayAdapter);
+
             }
 
             @Override
@@ -76,6 +75,53 @@ public class courseware extends Fragment {
 
             }
         });
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                String sem = adapterView.getItemAtPosition(i).toString();
+                final String a = String.valueOf(sem.charAt(9));
+                mycourses.clear();
+                cl.setVisibility(View.VISIBLE);
+                coursedatabase = FirebaseDatabase.getInstance().getReference().child("Students").child(auth.getCurrentUser().getUid()).child("mycourses");
+                coursedatabase.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+
+                        for(DataSnapshot data:dataSnapshot.getChildren()){
+
+                            String id = data.child("id").getValue().toString();
+                            char s = id.charAt(5);
+                            if(String.valueOf(s).equals(a)){
+                                String subject = data.child("name").getValue().toString();
+                                String credits = data.child("credits").getValue().toString();
+                                String professor = data.child("professor").getValue().toString();
+                                Mycourse mycourse = new Mycourse(subject,professor,credits,id);
+                                mycourses.add(mycourse);
+                            }
+
+                        }
+                        if(getActivity()!=null){
+                            cl.setVisibility(View.GONE);
+                            courseAdapter = new CourseAdapter(getActivity(),R.layout.courses,mycourses);
+                            courseAdapter.notifyDataSetChanged();
+                            courselist.setAdapter(courseAdapter);
+
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
         courselist.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {

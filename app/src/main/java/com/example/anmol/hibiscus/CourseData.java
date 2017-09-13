@@ -79,6 +79,7 @@ public class CourseData extends AppCompatActivity {
                         jsonObject.put("link",link);
                         jsonObject.put("uid",uid);
                         jsonObject.put("pwd",pwd);
+                        jsonObject.put("pass","encrypt");
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }

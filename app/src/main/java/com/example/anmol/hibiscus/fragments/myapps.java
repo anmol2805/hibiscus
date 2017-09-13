@@ -9,10 +9,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -21,6 +24,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.example.anmol.hibiscus.Adapter.AttendanceAdapter;
 import com.example.anmol.hibiscus.Model.Attendance;
+import com.example.anmol.hibiscus.Model.Mycourse;
 import com.example.anmol.hibiscus.Mysingleton;
 import com.example.anmol.hibiscus.R;
 import com.example.anmol.hibiscus.services.RequestService;
@@ -48,11 +52,15 @@ public class myapps extends Fragment {
     List<Attendance> attendances;
     AttendanceAdapter attendanceAdapter;
     DatabaseReference databaseReference,hibdatabase;
-    FirebaseAuth auth;
+    FirebaseAuth auth = FirebaseAuth.getInstance();
     String uid,pwd;
     Animation rotate;
     Button retry;
     String url = "http://139.59.23.157/api/hibi/attendence";
+    Spinner spinner;
+    DatabaseReference db = FirebaseDatabase.getInstance().getReference().child("Students").child(auth.getCurrentUser().getUid()).child("hibiscus");
+    ArrayList<String> arrayList = new ArrayList<>();
+    ArrayAdapter<String> arrayAdapter;
 
 
     @Nullable
@@ -67,7 +75,7 @@ public class myapps extends Fragment {
         listView = (ListView)vi.findViewById(R.id.listatt);
         retry = (Button)vi.findViewById(R.id.retry);
         attendances = new ArrayList<>();
-        auth = FirebaseAuth.getInstance();
+        databaseReference = FirebaseDatabase.getInstance().getReference().child("Students").child(auth.getCurrentUser().getUid()).child("attendance");
         final ImageButton refresh = (ImageButton)vi.findViewById(R.id.refresh);
         rotate = AnimationUtils.loadAnimation(getActivity(),R.anim.rotate);
         refresh.setOnClickListener(new View.OnClickListener() {
@@ -90,43 +98,18 @@ public class myapps extends Fragment {
                 Toast.makeText(getActivity(),"Please Wait...",Toast.LENGTH_SHORT).show();
             }
         });
-        databaseReference = FirebaseDatabase.getInstance().getReference().child("Students").child(auth.getCurrentUser().getUid()).child("attendance");
-        hibdatabase = FirebaseDatabase.getInstance().getReference().child("Students").child(auth.getCurrentUser().getUid()).child("hibiscus");
-
-
-        databaseReference.addValueEventListener(new ValueEventListener() {
+        spinner = (Spinner)vi.findViewById(R.id.spinner);
+        db.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                attendances.clear();
-                for(DataSnapshot data:dataSnapshot.getChildren()){
+                int semester = Integer.parseInt(dataSnapshot.child("semester").getValue().toString());
 
-                        String attend = data.child("attend").getValue().toString();
-                        String subcode = data.child("subcode").getValue().toString();
-                        String name = data.child("name").getValue().toString();
-                        String sub = data.child("sub").getValue().toString();
-                        Attendance attendance = new Attendance(subcode,sub,name,attend);
-                        attendances.add(attendance);
-
-
+                for(int i = semester;i>0;i--){
+                    arrayList.add("Semester " + String.valueOf(i));
                 }
-                if(getActivity()!=null){
-                    attendanceAdapter = new AttendanceAdapter(getActivity(),R.layout.attendance,attendances);
-                    attendanceAdapter.notifyDataSetChanged();
-                    if(!attendanceAdapter.isEmpty()){
-                        progressBar.setVisibility(View.GONE);
-                        retry.setVisibility(View.GONE);
-                        listView.setAdapter(attendanceAdapter);
-
-                    }
-                    else{
-                        progressBar.setVisibility(View.GONE);
-                        retry.setVisibility(View.VISIBLE);
-
-                    }
-
-                }
-
-
+                arrayAdapter = new ArrayAdapter<>(getActivity(),android.R.layout.simple_spinner_item,arrayList);
+                arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                spinner.setAdapter(arrayAdapter);
 
             }
 
@@ -135,6 +118,72 @@ public class myapps extends Fragment {
 
             }
         });
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                String sem = adapterView.getItemAtPosition(i).toString();
+                final String a = String.valueOf(sem.charAt(9));
+                attendances.clear();
+                progressBar.setVisibility(View.VISIBLE);
+                databaseReference.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+
+                        for(DataSnapshot data:dataSnapshot.getChildren()){
+
+
+                            String subcode = data.child("subcode").getValue().toString();
+
+                            char s = subcode.charAt(5);
+                            if(String.valueOf(s).equals(a)){
+                                String attend = data.child("attend").getValue().toString();
+                                String name = data.child("name").getValue().toString();
+                                String sub = data.child("sub").getValue().toString();
+                                Attendance attendance = new Attendance(subcode,sub,name,attend);
+                                attendances.add(attendance);
+                            }
+
+
+
+                        }
+                        if(getActivity()!=null){
+                            attendanceAdapter = new AttendanceAdapter(getActivity(),R.layout.attendance,attendances);
+                            attendanceAdapter.notifyDataSetChanged();
+                            if(!attendanceAdapter.isEmpty()){
+                                progressBar.setVisibility(View.GONE);
+                                retry.setVisibility(View.GONE);
+                                listView.setAdapter(attendanceAdapter);
+
+                            }
+                            else{
+                                progressBar.setVisibility(View.GONE);
+                                retry.setVisibility(View.VISIBLE);
+
+                            }
+
+                        }
+
+
+
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+
+
+
+
         return vi;
     }
 }
