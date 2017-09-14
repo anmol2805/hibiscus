@@ -50,6 +50,10 @@
             android:id="@+id/fees"
             android:icon="@drawable/fees"
             android:title="Fees" />
+        <item
+            android:id="@+id/nav_comp"
+            android:icon="@drawable/complains"
+            android:title="Complains" />
 
 
 

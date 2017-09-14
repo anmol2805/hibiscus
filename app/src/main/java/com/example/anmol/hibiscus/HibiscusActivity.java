@@ -19,6 +19,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.example.anmol.hibiscus.fragments.complaints;
 import com.example.anmol.hibiscus.fragments.ebooks;
 import com.example.anmol.hibiscus.fragments.fees;
 import com.example.anmol.hibiscus.fragments.library;
@@ -214,6 +215,8 @@ public class HibiscusActivity extends AppCompatActivity
             fm.beginTransaction().replace(R.id.content_hib,new fees()).commit();
         }else if(id == R.id.nav_moocs){
             fm.beginTransaction().replace(R.id.content_hib,new moocs()).commit();
+        }else if(id == R.id.nav_comp){
+            fm.beginTransaction().replace(R.id.content_hib,new complaints()).commit();
         } else if (id == R.id.nav_help) {
             FirebaseAuth.getInstance().signOut();
             handler.postDelayed(new Runnable() {
