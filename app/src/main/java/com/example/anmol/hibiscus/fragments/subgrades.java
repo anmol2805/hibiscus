@@ -56,6 +56,7 @@ public class subgrades extends Fragment{
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         View vi = inflater.inflate(R.layout.subgrades,container,false);
+        getActivity().setTitle("Subject Grades");
         cl = (ProgressBar)vi.findViewById(R.id.load);
 
         mycourses = new ArrayList<>();

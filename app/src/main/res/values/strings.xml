@@ -49,7 +49,7 @@
     <string name="dcrypter">https://us-central1-iiitcloud-e9d6b.cloudfunctions.net/dcryptr?pass=</string>
     <string name="cn_url">http://14.139.198.171/api/hibi/course_notice</string>
     <string name="login_url">http://14.139.198.171/api/hibi/login_test</string>
-
+    <string name="moocs_url">http://14.139.198.171/api/hibi/moocs</string>
     <string-array name="semester">
         <item>Select semester</item>
         <item>1st semester</item>
