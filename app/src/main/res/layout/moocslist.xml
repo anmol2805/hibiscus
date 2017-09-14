@@ -10,21 +10,21 @@
         android:textStyle="bold"
         android:textColor="#000"
         android:textSize="14sp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
 
         />
 
     <Button
         android:id="@+id/enter"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Enter Course"
+        android:layout_height="25dp"
         android:layout_gravity="center"
-        android:textSize="12sp"
         android:background="#00000000"
-        android:textStyle="italic"
+        android:text="Enter Course"
         android:textColor="@color/colorPrimary"
+        android:textSize="12sp"
+        android:textStyle="italic"
 
         />
 

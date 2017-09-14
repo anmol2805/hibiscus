@@ -40,7 +40,7 @@
 
         <Button
             android:id="@+id/pg"
-            android:layout_width="25dp"
+            android:layout_width="wrap_content"
             android:layout_height="25dp"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
@@ -49,7 +49,11 @@
             android:layout_weight="1"
             android:layout_marginTop="5dp"
             android:layout_marginBottom="5dp"
-            android:background="@drawable/reset25"
+            android:text="View Grades"
+            android:textColor="@color/colorPrimary"
+            android:textSize="12sp"
+            android:textStyle="italic"
+            android:background="#00000000"
             android:visibility="visible" />
 
         <LinearLayout

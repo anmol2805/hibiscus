@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="350dp"
+    android:layout_height="match_parent"
+    android:layout_gravity="center"
+    >
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+
+        <EditText
+            android:id="@+id/prob"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:hint="Problem Description"
+            android:inputType="text"
+            android:textAlignment="center"
+            android:textColor="#000"
+            android:textColorHint="@color/colorPrimary"
+            android:theme="@style/MyEditTextTheme"
+
+            />
+
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+
+        <EditText
+            android:id="@+id/rn"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:hint="Room No."
+            android:inputType="text"
+            android:textAlignment="center"
+            android:textColor="#000"
+            android:textColorHint="@color/colorPrimary"
+            android:theme="@style/MyEditTextTheme"
+
+
+            />
+
+    </android.support.design.widget.TextInputLayout>
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+
+        <EditText
+            android:id="@+id/dn"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:autoLink="web"
+            android:clickable="true"
+            android:hint="Department Name"
+            android:inputType="text"
+            android:textAlignment="center"
+            android:textColor="#000"
+            android:textColorHint="@color/colorPrimary"
+            android:theme="@style/MyEditTextTheme"
+
+            />
+
+    </android.support.design.widget.TextInputLayout>
+
+
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+
+        <EditText
+            android:id="@+id/lc"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:autoLink="web"
+            android:clickable="true"
+            android:hint="Location"
+            android:inputType="text"
+            android:textAlignment="center"
+            android:textColor="#000"
+            android:textColorHint="@color/colorPrimary"
+            android:theme="@style/MyEditTextTheme"
+
+            />
+
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+
+        <EditText
+            android:id="@+id/at"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:hint="Available time"
+            android:inputType="text"
+            android:textAlignment="center"
+            android:textColor="#000"
+            android:textColorHint="@color/colorPrimary"
+            android:theme="@style/MyEditTextTheme"
+
+            />
+
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+
+        <EditText
+            android:id="@+id/ct"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:hint="Contact No:"
+            android:inputType="text"
+            android:textAlignment="center"
+            android:textColor="#000"
+            android:textColorHint="@color/colorPrimary"
+            android:theme="@style/MyEditTextTheme"
+
+            />
+
+    </android.support.design.widget.TextInputLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/canceled"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            android:layout_weight="1"
+            android:background="@color/white"
+            android:text="Cancel" />
+
+        <Button
+            android:id="@+id/postn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            android:layout_weight="1"
+            android:background="@drawable/signbtnround"
+            android:text="Post" />
+    </LinearLayout>
+
+
+</LinearLayout>
