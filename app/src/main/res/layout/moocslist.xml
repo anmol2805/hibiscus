@@ -20,7 +20,7 @@
         android:layout_width="wrap_content"
         android:layout_height="25dp"
         android:layout_gravity="center"
-        android:background="#00000000"
+        android:background="#ffc"
         android:text="Enter Course"
         android:textColor="@color/colorPrimary"
         android:textSize="12sp"

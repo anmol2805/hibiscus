@@ -1,9 +1,12 @@
 package com.example.anmol.hibiscus;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.provider.ContactsContract;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -31,7 +34,9 @@ public class Ebooksdata extends AppCompatActivity {
     DatabaseReference databaseReference;
     FirebaseAuth auth;
     JSONObject object;
+    Button dwnld;
     ProgressBar progressBar;
+    String linked;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,6 +48,7 @@ public class Ebooksdata extends AppCompatActivity {
         link = (TextView)findViewById(R.id.link);
         descript = (TextView)findViewById(R.id.desc);
         progressBar = (ProgressBar)findViewById(R.id.pg);
+        dwnld = (Button)findViewById(R.id.linkbtn);
         object = new JSONObject();
         auth = FirebaseAuth.getInstance();
         databaseReference = FirebaseDatabase.getInstance().getReference().child("Students").child(auth.getCurrentUser().getUid()).child("hibiscus");
@@ -56,6 +62,7 @@ public class Ebooksdata extends AppCompatActivity {
                         object.put("id",getIntent().getStringExtra("id"));
                         object.put("uid",uid);
                         object.put("pwd",pwd);
+                        object.put("pass","encrypt");
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -70,6 +77,7 @@ public class Ebooksdata extends AppCompatActivity {
                                 publisher.setText(object.getString("publiser"));
                                 link.setText(object.getString("link"));
                                 descript.setText(object.getString("description"));
+                                linked = object.getString("link");
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
@@ -93,6 +101,15 @@ public class Ebooksdata extends AppCompatActivity {
             @Override
             public void onCancelled(DatabaseError databaseError) {
 
+            }
+        });
+        dwnld.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent viewIntent =
+                        new Intent("android.intent.action.VIEW",
+                                Uri.parse(linked));
+                startActivity(viewIntent);
             }
         });
 

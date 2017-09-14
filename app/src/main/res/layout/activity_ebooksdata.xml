@@ -58,6 +58,19 @@
                 android:textSize="13sp"
                 />
 
+            <Button
+                android:id="@+id/linkbtn"
+                android:layout_width="wrap_content"
+                android:layout_height="25dp"
+                android:text="Download E-books"
+                android:textColor="@color/colorPrimary"
+                android:textSize="12sp"
+                android:textStyle="italic"
+                android:background="#ffc"
+                android:layout_margin="5dp"
+                android:layout_gravity="center"
+                />
+
             <TextView
                 android:id="@+id/link"
                 android:layout_width="wrap_content"
@@ -71,7 +84,7 @@
                 android:textStyle="italic"
 
 
-                />
+                android:visibility="gone" />
             <View
                 android:layout_width="match_parent"
                 android:layout_height="2dp"
