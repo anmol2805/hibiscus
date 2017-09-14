@@ -1,72 +1,113 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    >
+    <item android:title="NoticeBoards">
+        <menu>
+            <group
+                android:id="@+id/menu_top"
+                android:checkableBehavior="single">
+                <item
+                    android:id="@+id/nav_hibiscus"
+                    android:icon="@drawable/hibh"
+                    android:title="Mandaar" />
+                <item
+                    android:id="@+id/nav_others"
+                    android:icon="@drawable/note5"
+                    android:title="Student Noticeboard" />
+            </group>
+        </menu>
+    </item>
+    <item android:title="My Apps">
+        <menu>
+            <group
+                android:id="@+id/menumy"
+                android:checkableBehavior="single"
+                >
+                <item
+                    android:id="@+id/nav_myapps"
+                    android:icon="@drawable/attendance"
+                    android:title="Attendance" />
+                <item
+                    android:id="@+id/nav_viewgrades"
+                    android:icon="@drawable/quiz"
+                    android:title="Subject Grades" />
+                <item
+                    android:id="@+id/nav_comm"
+                    android:icon="@drawable/grades"
+                    android:title="Final Grades" />
+                <item
+                    android:id="@+id/nav_course"
+                    android:icon="@drawable/coursesh"
+                    android:title="Courseware" />
+                <item
+                    android:id="@+id/fees"
+                    android:icon="@drawable/fees"
+                    android:title="Fees" />
 
-    <group
-        android:id="@+id/menu_top"
-        android:checkableBehavior="single">
-        <item
-            android:id="@+id/nav_hibiscus"
-            android:icon="@drawable/hibh"
-            android:title="Hibiscus" />
-        <item
-            android:id="@+id/nav_others"
-            android:icon="@drawable/note5"
-            android:title="Student Noticeboard" />
-        <item
-            android:id="@+id/nav_myapps"
-            android:icon="@drawable/attendance"
-            android:title="Attendance" />
-        <item
-            android:id="@+id/nav_viewgrades"
-            android:icon="@drawable/quiz"
-            android:title="Subject Grades" />
-        <item
-            android:id="@+id/nav_course"
-            android:icon="@drawable/coursesh"
-            android:title="Courseware" />
-        <item
-            android:id="@+id/nav_comm"
-            android:icon="@drawable/grades"
-            android:title="Grades" />
-        <item
-            android:id="@+id/nav_lib"
-            android:icon="@drawable/library"
-            android:title="Library" />
-        <item
-            android:id="@+id/nav_elib"
-            android:icon="@drawable/ebook"
-            android:title="E-books" />
-        <item
-            android:id="@+id/nav_moocs"
-            android:icon="@drawable/moocs"
-            android:title="Moocs" />
+            </group>
 
-        <item
-            android:id="@+id/nav_students"
-            android:icon="@drawable/students"
-            android:title="Students" />
-
-        <item
-            android:id="@+id/fees"
-            android:icon="@drawable/fees"
-            android:title="Fees" />
-        <item
-            android:id="@+id/nav_comp"
-            android:icon="@drawable/complains"
-            android:title="Complains" />
+        </menu>
+    </item>
+    <item android:title="Common Apps">
+        <menu>
+            <group android:checkableBehavior="single"
+                android:id="@+id/menuapps">
+                <item
+                    android:id="@+id/nav_lib"
+                    android:icon="@drawable/library"
+                    android:title="Library" />
+                <item
+                    android:id="@+id/nav_elib"
+                    android:icon="@drawable/ebook"
+                    android:title="E-books" />
+                <item
+                    android:id="@+id/nav_students"
+                    android:icon="@drawable/students"
+                    android:title="Students" />
 
 
+                <item
+                    android:id="@+id/nav_comp"
+                    android:icon="@drawable/complains"
+                    android:title="Complains" />
 
-    </group>
-    <group
-        android:id="@+id/menu_bottom"
-        android:checkableBehavior="none"
-        >
-        <item
-            android:id="@+id/nav_help"
-            android:icon="@drawable/logh"
-            android:title="Logout" />
-    </group>
+            </group>
+
+        </menu>
+
+
+    </item>
+
+    <item android:title="Intranet">
+        <menu>
+            <group android:id="@+id/intra"
+                android:checkableBehavior="single">
+                <item
+                    android:id="@+id/nav_moocs"
+                    android:icon="@drawable/moocs"
+                    android:title="Moocs" />
+
+            </group>
+
+
+        </menu>
+    </item>
+    <item android:title="Settings">
+        <menu>
+            <group
+                android:id="@+id/menu_bottom"
+                android:checkableBehavior="none"
+                >
+                <item
+                    android:id="@+id/nav_help"
+                    android:icon="@drawable/logh"
+                    android:title="Logout" />
+            </group>
+
+        </menu>
+    </item>
+
+
 
 
 </menu>
