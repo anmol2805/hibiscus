@@ -155,12 +155,11 @@ public class complaints extends Fragment {
                         String con = ct.getText().toString();
                         Calendar c = Calendar.getInstance();
                         System.out.println("Current time => " + c.getTime());
-
                         SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
                         SimpleDateFormat tf = new SimpleDateFormat("HH:mm:ss");
                         String formattedDate = df.format(c.getTime());
                         String formattime = tf.format(c.getTime());
-                        JSONObject jsonObject = new JSONObject();
+                        final JSONObject jsonObject = new JSONObject();
                         try {
                             jsonObject.put("time",formattime);
                             jsonObject.put("date",formattedDate);
@@ -173,18 +172,40 @@ public class complaints extends Fragment {
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
-                        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, jsonObject, new Response.Listener<JSONObject>() {
+                        databaseReference.addValueEventListener(new ValueEventListener() {
                             @Override
-                            public void onResponse(JSONObject response) {
-                                Toast.makeText(getActivity(),"Notice Posted Successfully",Toast.LENGTH_SHORT).show();
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                if(dataSnapshot!=null && dataSnapshot.child("sid").getValue()!=null && dataSnapshot.child("pwd").getValue()!=null){
+                                    uid = dataSnapshot.child("sid").getValue().toString();
+                                    pwd = dataSnapshot.child("pwd").getValue().toString();
+                                    try {
+                                        jsonObject.put("uid",uid);
+                                        jsonObject.put("pwd",pwd);
+                                        jsonObject.put("pass","encrypt");
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+                                    JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, getResources().getString(R.string.pc_url), jsonObject, new Response.Listener<JSONObject>() {
+                                        @Override
+                                        public void onResponse(JSONObject response) {
+                                            Toast.makeText(getActivity(),"Notice Posted Successfully",Toast.LENGTH_SHORT).show();
+                                        }
+                                    }, new Response.ErrorListener() {
+                                        @Override
+                                        public void onErrorResponse(VolleyError error) {
+                                            Toast.makeText(getActivity(),"Network Error!!!",Toast.LENGTH_SHORT).show();
+                                        }
+                                    });
+                                    Mysingleton.getInstance(getActivity()).addToRequestqueue(jsonObjectRequest);
+                                }
                             }
-                        }, new Response.ErrorListener() {
+
                             @Override
-                            public void onErrorResponse(VolleyError error) {
-                                Toast.makeText(getActivity(),"Network Error!!!",Toast.LENGTH_SHORT).show();
+                            public void onCancelled(DatabaseError databaseError) {
+
                             }
                         });
-                        Mysingleton.getInstance(getActivity()).addToRequestqueue(jsonObjectRequest);
+
                         dialog.dismiss();
                     }
                 });

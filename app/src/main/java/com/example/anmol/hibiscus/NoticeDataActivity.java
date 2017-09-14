@@ -9,6 +9,7 @@ import android.view.View;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -36,7 +37,7 @@ public class NoticeDataActivity extends AppCompatActivity {
     Context context;
     WebView nd;
     TextView d,a,p,t;
-
+    ProgressBar pn;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,7 +49,8 @@ public class NoticeDataActivity extends AppCompatActivity {
         a = (TextView)findViewById(R.id.attention);
         p = (TextView)findViewById(R.id.posted);
         t = (TextView)findViewById(R.id.title);
-
+        pn = (ProgressBar)findViewById(R.id.pn);
+        pn.setVisibility(View.VISIBLE);
         nd.setFocusable(true);
         nd.setFocusableInTouchMode(true);
         nd.getSettings().setJavaScriptEnabled(true);
@@ -83,6 +85,7 @@ public class NoticeDataActivity extends AppCompatActivity {
             object.put("uid",uid);
             object.put("pwd",pwd);
             object.put("id",id);
+            object.put("pass","encrypt");
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -93,11 +96,13 @@ public class NoticeDataActivity extends AppCompatActivity {
                     if(dataSnapshot.child(id).getValue()!=null){
                         Log.i("NoticeDataActivity",dataSnapshot.child(id).child("notice").getValue().toString());
                         nd.loadData(dataSnapshot.child(id).child("notice").getValue().toString(), "text/html; charset=utf-8", "UTF-8");
+                        pn.setVisibility(View.GONE);
                     }
 
 
                 }
                 else{
+                    pn.setVisibility(View.VISIBLE);
                     Toast.makeText(NoticeDataActivity.this,"Please wait...",Toast.LENGTH_SHORT).show();
                     JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, getResources().getString(R.string.noticedata_url), object, new Response.Listener<JSONObject>() {
                         @Override
@@ -115,7 +120,8 @@ public class NoticeDataActivity extends AppCompatActivity {
                     }, new Response.ErrorListener() {
                         @Override
                         public void onErrorResponse(VolleyError error) {
-
+                            pn.setVisibility(View.GONE);
+                            Toast.makeText(NoticeDataActivity.this,"Network Error!!!",Toast.LENGTH_SHORT).show();
                         }
                     });
                     Mysingleton.getInstance(NoticeDataActivity.this).addToRequestqueue(jsonObjectRequest);

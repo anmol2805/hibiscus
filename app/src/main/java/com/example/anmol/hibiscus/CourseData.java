@@ -63,6 +63,7 @@ public class CourseData extends AppCompatActivity {
         cd.getSettings().setCacheMode(WebSettings.LOAD_CACHE_ONLY);
         cd.getSettings().setDomStorageEnabled(true);
         cd.getSettings().setDatabaseEnabled(true);
+        cd.getSettings().setBlockNetworkImage(true);
         cd.getSettings().setAppCacheEnabled(true);
         cd.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
         cd.getSettings().setUseWideViewPort(true);

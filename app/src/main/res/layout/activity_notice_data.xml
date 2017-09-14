@@ -84,6 +84,14 @@
             android:background="@color/colorPrimary"
             />
 
+        <ProgressBar
+            android:id="@+id/pn"
+            style="?android:attr/progressBarStyle"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_gravity="center"
+            android:visibility="gone" />
+
     </LinearLayout>
 
 

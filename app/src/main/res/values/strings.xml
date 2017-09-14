@@ -51,7 +51,7 @@
     <string name="login_url">http://14.139.198.171/api/hibi/login_test</string>
     <string name="moocs_url">http://14.139.198.171/api/hibi/moocs</string>
     <string name="complains_url">http://14.139.198.171/api/hibi/complaint</string>
-
+    <string name="pc_url">http://14.139.198.171/api/hibi/complaint_post</string>
     <string-array name="semester">
         <item>Select semester</item>
         <item>1st semester</item>

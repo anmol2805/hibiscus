@@ -40,7 +40,8 @@
 
         <activity android:name=".Courselistnotice" />
         <activity android:name=".CourseData" />
-        <activity android:name=".Ebooksdata"></activity>
+        <activity android:name=".Ebooksdata" />
+        <activity android:name=".MoocsWeb"></activity>
     </application>
 
 </manifest>
