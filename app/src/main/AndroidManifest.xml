@@ -14,6 +14,7 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".SplashActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -21,12 +22,16 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".LoginActivity" />
+        <activity android:name=".LoginActivity"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".HibiscusActivity"
+            android:screenOrientation="portrait"
             android:label="@string/title_activity_hibiscus"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".NoticeDataActivity" />
+        <activity android:name=".NoticeDataActivity"
+            android:screenOrientation="portrait"
+            />
 
         <service android:name=".services.MyFirebaseMessagingService">
             <intent-filter>
@@ -38,10 +43,20 @@
         <service android:name=".services.RequestServiceGrades" />
         <service android:name=".services.RequestServiceCourses" />
 
-        <activity android:name=".Courselistnotice" />
-        <activity android:name=".CourseData" />
-        <activity android:name=".Ebooksdata" />
-        <activity android:name=".MoocsWeb"></activity>
+        <activity android:name=".Courselistnotice"
+            android:screenOrientation="portrait"
+            />
+        <activity android:name=".CourseData"
+            android:screenOrientation="portrait"
+            />
+        <activity android:name=".Ebooksdata"
+            android:screenOrientation="portrait"
+            />
+        <activity android:name=".MoocsWeb"
+            android:screenOrientation="portrait"
+            >
+
+        </activity>
     </application>
 
 </manifest>

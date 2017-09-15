@@ -207,9 +207,11 @@ public class HibiscusActivity extends AppCompatActivity
             fm.beginTransaction().replace(R.id.content_hib,new library()).commit();
         }else if(id == R.id.nav_viewgrades){
             fm.beginTransaction().replace(R.id.content_hib,new subgrades()).commit();
-        }else if(id == R.id.nav_elib){
-            fm.beginTransaction().replace(R.id.content_hib,new ebooks()).commit();
-        }else if(id == R.id.nav_students){
+        }
+//        else if(id == R.id.nav_elib){
+//            fm.beginTransaction().replace(R.id.content_hib,new ebooks()).commit();
+//        }
+        else if(id == R.id.nav_students){
             fm.beginTransaction().replace(R.id.content_hib,new students()).commit();
         } else if(id == R.id.fees){
             fm.beginTransaction().replace(R.id.content_hib,new fees()).commit();
