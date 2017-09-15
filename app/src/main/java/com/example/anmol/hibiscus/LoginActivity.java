@@ -218,8 +218,8 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                                                                                 }
                                                                             });
                                                                             Mysingleton.getInstance(LoginActivity.this).addToRequestqueue(str);
-
-                                                                            FirebaseMessaging.getInstance().subscribeToTopic("IIITstudents");
+                                                                            String yr = String.valueOf(email.charAt(2)) + String.valueOf(email.charAt(3));
+                                                                            FirebaseMessaging.getInstance().subscribeToTopic(yr);
                                                                             Intent intent = new Intent(LoginActivity.this, SplashActivity.class);
 
                                                                             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -249,9 +249,8 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                                                         }
                                                     });
                                                     Mysingleton.getInstance(LoginActivity.this).addToRequestqueue(str);
-
-
-                                                        FirebaseMessaging.getInstance().subscribeToTopic("IIITstudents");
+                                                    String yr = String.valueOf(email.charAt(2)) + String.valueOf(email.charAt(3));
+                                                    FirebaseMessaging.getInstance().subscribeToTopic(yr);
 
                                                         Intent intent = new Intent(LoginActivity.this, SplashActivity.class);
 
