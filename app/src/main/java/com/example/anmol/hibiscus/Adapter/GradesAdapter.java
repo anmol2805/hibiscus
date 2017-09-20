@@ -113,28 +113,48 @@ public class GradesAdapter extends ArrayAdapter<Mycourse> {
                                     String q3s = object.getString("midsem");
                                     String q4s = object.getString("endsem");
                                     String q5s = object.getString("faculty_assessment");
-                                    q1.setText(q1s);
-                                    q2.setText(q2s);
-                                    ms.setText(q3s);
-                                    es.setText(q4s);
-                                    fa.setText(q5s);
-                                    cgpa.setText(object.getString("grade_point"));
-                                    if(!q1s.isEmpty()){
-                                        m1 = Float.parseFloat(q1s);
-                                    }
-                                    if(!q2s.isEmpty()){
-                                        m2 = Float.parseFloat(q2s);
-                                    }
-                                    if(!q3s.isEmpty()){
-                                        m3 = Float.parseFloat(q3s);
-                                    }
-                                    if(!q4s.isEmpty()){
-                                        m4 = Float.parseFloat(q4s);
-                                    }
-                                    if(!q5s.isEmpty()){
-                                        m5 = Float.parseFloat(q5s);
-                                    }
 
+
+
+
+
+
+                                    cgpa.setText(object.getString("grade_point"));
+                                    if(!q1s.isEmpty() && !Character.isLetter(q1s.charAt(0))){
+                                        m1 = Float.parseFloat(q1s);
+                                        q1.setText(q1s);
+                                    }
+                                    else{
+                                        m1 = 0;
+                                    }
+                                    if(!q2s.isEmpty() && !Character.isLetter(q2s.charAt(0))){
+                                        m2 = Float.parseFloat(q2s);
+                                        q2.setText(q2s);
+                                    }
+                                    else{
+                                        m2 = 0;
+                                    }
+                                    if(!q3s.isEmpty()&& !Character.isLetter(q3s.charAt(0))){
+                                        m3 = Float.parseFloat(q3s);
+                                        ms.setText(q3s);
+                                    }
+                                    else{
+                                        m3 = 0;
+                                    }
+                                    if(!q4s.isEmpty()&& !Character.isLetter(q4s.charAt(0))){
+                                        m4 = Float.parseFloat(q4s);
+                                        es.setText(q4s);
+                                    }
+                                    else{
+                                        m4 = 0;
+                                    }
+                                    if(!q5s.isEmpty()&& !Character.isLetter(q5s.charAt(0))){
+                                        m5 = Float.parseFloat(q5s);
+                                        fa.setText(q5s);
+                                    }
+                                    else{
+                                        m5 = 0;
+                                    }
 
                                     float total = m1+m2+m3+m4+m5;
                                     tot.setText(String.valueOf(total));

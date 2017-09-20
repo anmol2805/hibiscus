@@ -99,6 +99,10 @@
                 android:checkableBehavior="none"
                 >
                 <item
+                    android:id="@+id/nav_con"
+                    android:icon="@drawable/support"
+                    android:title="Help &amp; Support" />
+                <item
                     android:id="@+id/nav_help"
                     android:icon="@drawable/logh"
                     android:title="Logout" />

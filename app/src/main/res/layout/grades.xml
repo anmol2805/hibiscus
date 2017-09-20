@@ -146,7 +146,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:paddingLeft="3dp"
-                android:text="5.60"
+
                 android:textColor="#000"
                 android:textSize="14sp"
 
@@ -159,7 +159,7 @@
                 android:layout_gravity="right"
                 android:layout_marginLeft="4dp"
                 android:paddingLeft="3dp"
-                android:text="5.60"
+
                 android:textColor="#000"
                 android:textSize="14sp" />
 
@@ -168,7 +168,7 @@
                 android:layout_width="40dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
-                android:text="50.00"
+
                 android:textColor="#000"
                 android:textSize="14sp" />
 
@@ -177,7 +177,6 @@
                 android:layout_width="36dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="30dp"
-                android:text="50.00"
                 android:textColor="#000"
                 android:textSize="14sp" />
 
@@ -186,7 +185,7 @@
                 android:layout_width="30dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="12dp"
-                android:text="5.00"
+
                 android:textColor="#000"
                 android:textSize="14sp" />
 
@@ -195,7 +194,7 @@
                 android:layout_width="45dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="4dp"
-                android:text="100.00"
+
                 android:textAlignment="center"
                 android:textColor="#FF53ABFC"
                 android:textStyle="bold" />
@@ -205,7 +204,7 @@
                 android:layout_width="40dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
-                android:text="10.00"
+
                 android:textColor="#000"
                 android:textStyle="italic" />
 
