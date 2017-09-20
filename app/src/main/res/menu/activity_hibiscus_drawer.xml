@@ -100,8 +100,8 @@
                 >
                 <item
                     android:id="@+id/nav_con"
-                    android:icon="@drawable/support"
-                    android:title="Help &amp; Support" />
+                    android:icon="@drawable/dev"
+                    android:title="Developers" />
                 <item
                     android:id="@+id/nav_help"
                     android:icon="@drawable/logh"

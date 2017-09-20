@@ -24,6 +24,7 @@ public class mypage extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         View vi = inflater.inflate(R.layout.mypage,container,false);
+        getActivity().setTitle("Developers");
         CircleImageView anmol = (CircleImageView)vi.findViewById(R.id.anmol);
         CircleImageView ankit = (CircleImageView)vi.findViewById(R.id.ankit);
         Glide.with(getActivity()).load(R.drawable.anmol).into(anmol);
