@@ -72,32 +72,6 @@
                 android:textColor="#000"
                 android:textStyle="italic" />
 
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
-                android:layout_marginTop="10dp">
-
-                <Button
-                    android:id="@+id/gitanmol"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-
-                    android:background="@drawable/github" />
-
-
-                <Button
-                    android:id="@+id/lanmol"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:layout_alignParentEnd="true"
-                    android:layout_alignParentRight="true"
-                    android:background="@drawable/linkedin" />
-
-            </RelativeLayout>
-
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -110,8 +84,10 @@
 
         <View
             android:layout_width="1dp"
-            android:layout_height="325dp"
-            android:background="#eee" />
+            android:layout_height="225dp"
+            android:background="#eee"
+
+            android:layout_marginBottom="25dp"/>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -161,32 +137,6 @@
                     android:textColor="#000"
                     android:textStyle="italic" />
 
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="10dp"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginRight="20dp"
-                    android:layout_marginTop="10dp">
-
-                    <Button
-                        android:id="@+id/gitankit"
-                        android:layout_width="50dp"
-                        android:layout_height="50dp"
-
-                        android:background="@drawable/github" />
-
-
-                    <Button
-                        android:id="@+id/lankit"
-                        android:layout_width="50dp"
-                        android:layout_height="50dp"
-                        android:layout_alignParentEnd="true"
-                        android:layout_alignParentRight="true"
-                        android:background="@drawable/linkedin" />
-
-                </RelativeLayout>
-
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -210,4 +160,63 @@
         android:background="@drawable/gmail1"
         android:layout_below="@+id/linearLayout"
         android:layout_centerHorizontal="true" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/linearLayout"
+        android:layout_toEndOf="@+id/ganmol"
+        android:layout_toRightOf="@+id/ganmol"
+
+        android:layout_marginRight="25dp"
+        android:layout_marginLeft="25dp">
+
+        <Button
+            android:id="@+id/gitankit"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:background="@drawable/github" />
+
+
+        <Button
+            android:id="@+id/lankit"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+
+            android:background="@drawable/linkedin" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/ganmol"
+        android:layout_alignBottom="@+id/ganmol"
+        android:layout_toLeftOf="@+id/ganmol"
+        android:layout_toStartOf="@+id/ganmol"
+        android:layout_marginRight="25dp"
+        android:layout_marginLeft="25dp"
+        >
+
+        <Button
+            android:id="@+id/gitanmol"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:background="@drawable/github" />
+
+
+        <Button
+            android:id="@+id/lanmol"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:background="@drawable/linkedin" />
+
+    </RelativeLayout>
 </RelativeLayout>

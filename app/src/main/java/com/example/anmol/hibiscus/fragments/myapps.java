@@ -128,7 +128,7 @@ public class myapps extends Fragment {
                 databaseReference.addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
-
+                        attendances.clear();
                         for(DataSnapshot data:dataSnapshot.getChildren()){
 
 
