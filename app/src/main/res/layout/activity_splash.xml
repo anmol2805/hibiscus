@@ -24,7 +24,90 @@
         style="?android:attr/progressBarStyle"
         android:layout_width="25dp"
         android:layout_height="25dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="19dp" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="19dp" />
+
+        android:orientation="horizontal"
+        android:id="@+id/linearLayout2">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/sanmol"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_margin="5dp" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="20dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Anmol Saxena"
+                android:textColor="#000"
+                android:textStyle="italic"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:text="(B516008)" />
+        </LinearLayout>
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/sankit"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_margin="5dp" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginLeft="30dp"
+            android:orientation="vertical"
+
+            >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Ankit Choudhary"
+                android:textColor="#000"
+                android:textStyle="italic"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:text="(B216008)" />
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/textView14"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/linearLayout2"
+        android:layout_centerHorizontal="true"
+        android:text="Developed By:"
+        android:textStyle="bold"
+        android:textColor="#000"
+        android:textSize="17sp"
+        />
 </RelativeLayout>
