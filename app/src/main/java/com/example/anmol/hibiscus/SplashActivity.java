@@ -19,11 +19,13 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.bumptech.glide.Glide;
 import com.example.anmol.hibiscus.Model.Notice;
 import com.example.anmol.hibiscus.services.RequestService;
 import com.example.anmol.hibiscus.services.RequestServiceAttendance;
 import com.example.anmol.hibiscus.services.RequestServiceCourses;
 import com.example.anmol.hibiscus.services.RequestServiceGrades;
+import com.google.android.gms.wearable.CapabilityInfo;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -35,6 +37,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class SplashActivity extends AppCompatActivity {
 
@@ -49,12 +53,16 @@ public class SplashActivity extends AppCompatActivity {
     FirebaseAuth auth;
     String uid,pwd,urlid,uidu;
     DatabaseReference mdatabase;
-
+    CircleImageView sanmol,sankit;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
+        sanmol = (CircleImageView)findViewById(R.id.sanmol);
+        sankit = (CircleImageView)findViewById(R.id.sankit);
+        Glide.with(this).load(R.drawable.anmol).into(sanmol);
+        Glide.with(this).load(R.drawable.ankit).into(sankit);
         auth = FirebaseAuth.getInstance();
         if(auth.getCurrentUser()==null){
             startActivity(new Intent(SplashActivity.this,LoginActivity.class));
