@@ -96,7 +96,7 @@
         <menu>
             <group
                 android:id="@+id/menu_bottom"
-                android:checkableBehavior="none"
+                android:checkableBehavior="single"
                 >
                 <item
                     android:id="@+id/nav_con"
