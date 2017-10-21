@@ -1,0 +1,115 @@
+{
+  "project_info": {
+    "project_number": "651547037700",
+    "firebase_url": "https://iiitcloud-e9d6b.firebaseio.com",
+    "project_id": "iiitcloud-e9d6b",
+    "storage_bucket": "iiitcloud-e9d6b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:651547037700:android:f420b96c0e151564",
+        "android_client_info": {
+          "package_name": "com.example.anmol.hibiscus"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "651547037700-qkorsb1cf76680sfht4vcjufia5holl1.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.anmol.hibiscus",
+            "certificate_hash": "34b96318831da91a55cfc5aec7fc8ca64a04c83c"
+          }
+        },
+        {
+          "client_id": "651547037700-2hue4k855anben70jt5g82u5cqvjdlmh.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.anmol.hibiscus",
+            "certificate_hash": "ba9264b48d3394be944bebe0b2b21f9de17bf290"
+          }
+        },
+        {
+          "client_id": "651547037700-t98u3l4vfrqa233e3b6mi3tiqv8cbugo.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.anmol.hibiscus",
+            "certificate_hash": "ad881bce75a03ca90edb9a7c9198df31cd8cceab"
+          }
+        },
+        {
+          "client_id": "651547037700-2l5sha925vhbcjppropq56vrd6vb06f9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD4ME4yu1tMtPOOBDwX8uQSaVINGS3zAng"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "651547037700-2l5sha925vhbcjppropq56vrd6vb06f9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:651547037700:android:8ddce8e0a1d64f9d",
+        "android_client_info": {
+          "package_name": "com.anmol.hibiscus"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "651547037700-ne5teti4rt9fv88m33kj1dv67v8n2fsv.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.anmol.hibiscus",
+            "certificate_hash": "34b96318831da91a55cfc5aec7fc8ca64a04c83c"
+          }
+        },
+        {
+          "client_id": "651547037700-2l5sha925vhbcjppropq56vrd6vb06f9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD4ME4yu1tMtPOOBDwX8uQSaVINGS3zAng"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "651547037700-2l5sha925vhbcjppropq56vrd6vb06f9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
