@@ -58,6 +58,15 @@
                 android:layout_gravity="center"
 
                 android:visibility="gone" />
+            <ImageView
+                android:id="@+id/fail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:srcCompat="@drawable/sadcloud"
+                android:layout_marginTop="100dp"
+                android:visibility="gone"
+                />
+
 
             <ListView
                 android:id="@+id/list"

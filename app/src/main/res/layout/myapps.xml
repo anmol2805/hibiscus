@@ -74,6 +74,15 @@
                 android:layout_centerInParent="true"
                 android:text="retry"
                 android:visibility="gone" />
+            <ImageView
+                android:id="@+id/fail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:srcCompat="@drawable/sadcloud"
+                android:layout_marginTop="100dp"
+                android:visibility="gone"
+                />
+
 
             <ListView
                 android:id="@+id/listatt"
