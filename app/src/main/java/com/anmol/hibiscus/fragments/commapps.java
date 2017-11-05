@@ -159,8 +159,6 @@ public class commapps extends Fragment {
                             Mysingleton.getInstance(getActivity()).addToRequestqueue(jsonObjectRequestg);
                         }
                     });
-
-
                 }
 
             }
