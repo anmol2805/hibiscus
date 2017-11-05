@@ -68,8 +68,8 @@ public class SplashActivity extends AppCompatActivity {
             startActivity(new Intent(SplashActivity.this,LoginActivity.class));
         }
         else{
-            Intent intent = new Intent(this, RequestService.class);
-            startService(intent);
+//            Intent intent = new Intent(this, RequestService.class);
+//            startService(intent);
             mdatabase = FirebaseDatabase.getInstance().getReference().child("Notice");
             final DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("Students").child(auth.getCurrentUser().getUid()).child("hibiscus");
             progressBar = (ProgressBar)findViewById(R.id.load);
@@ -82,24 +82,24 @@ public class SplashActivity extends AppCompatActivity {
             zoomin = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.zoom_in);
             img.startAnimation(zoomin);
             Handler handler = new Handler();
-            handler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    Intent intent = new Intent(SplashActivity.this, RequestServiceAttendance.class);
-                    startService(intent);
-
-
-                }
-            },1000);
-            handler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    Intent intent = new Intent(SplashActivity.this, RequestServiceCourses.class);
-                    startService(intent);
-
-
-                }
-            },2000);
+//            handler.postDelayed(new Runnable() {
+//                @Override
+//                public void run() {
+//                    Intent intent = new Intent(SplashActivity.this, RequestServiceAttendance.class);
+//                    startService(intent);
+//
+//
+//                }
+//            },1000);
+//            handler.postDelayed(new Runnable() {
+//                @Override
+//                public void run() {
+//                    Intent intent = new Intent(SplashActivity.this, RequestServiceCourses.class);
+//                    startService(intent);
+//
+//
+//                }
+//            },2000);
 
             handler.postDelayed(new Runnable() {
                 @Override
@@ -128,8 +128,8 @@ public class SplashActivity extends AppCompatActivity {
 
                         }
                     });
-                    Intent intent = new Intent(SplashActivity.this, RequestServiceGrades.class);
-                    startService(intent);
+//                    Intent intent = new Intent(SplashActivity.this, RequestServiceGrades.class);
+//                    startService(intent);
                 }
             },3000);
 

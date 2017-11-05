@@ -75,19 +75,44 @@ public class commapps extends Fragment {
         FirebaseAuth auth = FirebaseAuth.getInstance();
         mdatabase = FirebaseDatabase.getInstance().getReference().child("Students").child(auth.getCurrentUser().getUid()).child("grades");
         gradesdatabse = FirebaseDatabase.getInstance().getReference().child("Students").child(auth.getCurrentUser().getUid());
-        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("Students").child(auth.getCurrentUser().getUid()).child("hibiscus");
-
-        gradesdatabse.addValueEventListener(new ValueEventListener() {
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().getRoot();
+        final JSONObject jsonObject = new JSONObject();
+        databaseReference.child("Students").child(auth.getCurrentUser().getUid()).child("hibiscus").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                if(dataSnapshot.hasChild("grades")){
-                    String html = dataSnapshot.child("grades").child("html").getValue().toString();
-                    progressBar.setVisibility(View.GONE);
-                    grd.loadData(html, "text/html; charset=utf-8", "UTF-8");
-                }else{
-                    Intent intent = new Intent(getActivity(), RequestServiceGrades.class);
-                    getActivity().startService(intent);
+                if(dataSnapshot!=null && dataSnapshot.child("sid").getValue()!=null && dataSnapshot.child("pwd").getValue()!=null){
+                    uid = dataSnapshot.child("sid").getValue().toString();
+                    pwd = dataSnapshot.child("pwd").getValue().toString();
+                    try {
+                        jsonObject.put("uid",uid);
+                        jsonObject.put("pwd",pwd);
+                        jsonObject.put("pass","encrypt");
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    JsonObjectRequest jsonObjectRequestg = new JsonObjectRequest(Request.Method.POST, getResources().getString(R.string.view_grades_url), jsonObject, new Response.Listener<JSONObject>() {
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            try {
+                                String html = response.getJSONArray("Notices").getJSONObject(0).getString("html");
+                                progressBar.setVisibility(View.GONE);
+                                grd.loadData(html, "text/html; charset=utf-8", "UTF-8");
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }, new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+
+                        }
+                    });
+                    Mysingleton.getInstance(getActivity()).addToRequestqueue(jsonObjectRequestg);
+
+
+
                 }
+
             }
 
             @Override
@@ -95,6 +120,7 @@ public class commapps extends Fragment {
 
             }
         });
+
 
         return vi;
     }

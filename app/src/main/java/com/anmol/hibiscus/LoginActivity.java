@@ -226,7 +226,8 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                                                                             } catch (UnsupportedEncodingException e) {
                                                                                 e.printStackTrace();
                                                                             }
-                                                                                                                                                        String yr = String.valueOf(email.charAt(2)) + String.valueOf(email.charAt(3));
+
+                                                                            String yr = String.valueOf(email.charAt(2)) + String.valueOf(email.charAt(3));
                                                                             FirebaseMessaging.getInstance().subscribeToTopic(yr);
                                                                             Intent intent = new Intent(LoginActivity.this, SplashActivity.class);
 
