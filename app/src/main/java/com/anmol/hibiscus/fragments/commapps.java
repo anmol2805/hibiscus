@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
+import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -22,6 +23,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.anmol.hibiscus.Adapter.Grades;
 import com.anmol.hibiscus.HibiscusActivity;
 import com.anmol.hibiscus.Mysingleton;
+import com.anmol.hibiscus.NoticeDataActivity;
 import com.anmol.hibiscus.R;
 import com.anmol.hibiscus.SplashActivity;
 import com.anmol.hibiscus.services.RequestServiceGrades;
@@ -46,6 +48,8 @@ public class commapps extends Fragment {
     DatabaseReference mdatabase,gradesdatabse;
     String url = "http://139.59.23.157/api/hibi/view_grades";
     ProgressBar progressBar;
+    Button retry;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
@@ -72,6 +76,8 @@ public class commapps extends Fragment {
         grd.getSettings().setUseWideViewPort(true);
         grd.getSettings().setTextZoom(175);
         grd.setInitialScale(1);
+        retry = (Button)vi.findViewById(R.id.retry);
+        retry.setVisibility(View.GONE);
         FirebaseAuth auth = FirebaseAuth.getInstance();
         mdatabase = FirebaseDatabase.getInstance().getReference().child("Students").child(auth.getCurrentUser().getUid()).child("grades");
         gradesdatabse = FirebaseDatabase.getInstance().getReference().child("Students").child(auth.getCurrentUser().getUid());
@@ -95,8 +101,16 @@ public class commapps extends Fragment {
                         public void onResponse(JSONObject response) {
                             try {
                                 String html = response.getJSONArray("Notices").getJSONObject(0).getString("html");
-                                progressBar.setVisibility(View.GONE);
-                                grd.loadData(html, "text/html; charset=utf-8", "UTF-8");
+                                if(!html.isEmpty()){
+                                    progressBar.setVisibility(View.GONE);
+                                    grd.loadData(html, "text/html; charset=utf-8", "UTF-8");
+                                }
+                                else {
+                                    progressBar.setVisibility(View.GONE);
+                                    retry.setVisibility(View.VISIBLE);
+                                    Toast.makeText(getActivity(),"Network Error",Toast.LENGTH_SHORT).show();
+                                }
+
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
@@ -104,11 +118,47 @@ public class commapps extends Fragment {
                     }, new Response.ErrorListener() {
                         @Override
                         public void onErrorResponse(VolleyError error) {
-
+                            progressBar.setVisibility(View.GONE);
+                            retry.setVisibility(View.VISIBLE);
+                            Toast.makeText(getActivity(),"Network Error",Toast.LENGTH_SHORT).show();
                         }
                     });
                     Mysingleton.getInstance(getActivity()).addToRequestqueue(jsonObjectRequestg);
+                    retry.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            retry.setVisibility(View.GONE);
+                            progressBar.setVisibility(View.VISIBLE);
+                            JsonObjectRequest jsonObjectRequestg = new JsonObjectRequest(Request.Method.POST, getResources().getString(R.string.view_grades_url), jsonObject, new Response.Listener<JSONObject>() {
+                                @Override
+                                public void onResponse(JSONObject response) {
+                                    try {
+                                        String html = response.getJSONArray("Notices").getJSONObject(0).getString("html");
+                                        if(!html.isEmpty()){
+                                            progressBar.setVisibility(View.GONE);
+                                            grd.loadData(html, "text/html; charset=utf-8", "UTF-8");
+                                        }
+                                        else {
+                                            progressBar.setVisibility(View.GONE);
+                                            retry.setVisibility(View.VISIBLE);
+                                            Toast.makeText(getActivity(),"Network Error",Toast.LENGTH_SHORT).show();
+                                        }
 
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            }, new Response.ErrorListener() {
+                                @Override
+                                public void onErrorResponse(VolleyError error) {
+                                    progressBar.setVisibility(View.GONE);
+                                    retry.setVisibility(View.VISIBLE);
+                                    Toast.makeText(getActivity(),"Network Error",Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                            Mysingleton.getInstance(getActivity()).addToRequestqueue(jsonObjectRequestg);
+                        }
+                    });
 
 
                 }
