@@ -16,6 +16,7 @@
         android:layout_height="25dp"
         android:layout_gravity="center" />
 
+
     <TextView
         android:id="@+id/head"
         android:layout_width="wrap_content"
@@ -48,6 +49,23 @@
         android:layout_marginRight="15dp"
         android:background="@color/colorPrimary"
         />
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/retry"
+        android:text="retry"
+        android:layout_gravity="center"
+        android:visibility="gone"
+        />
+    <ImageView
+        android:id="@+id/fail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:srcCompat="@drawable/sadcloud"
+        android:layout_marginTop="100dp"
+        android:visibility="gone"
+        />
+
 
 
     <WebView
