@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
@@ -47,6 +48,7 @@ public class moocs extends Fragment {
     JSONObject jsonObject =  new JSONObject();
     FirebaseAuth auth = FirebaseAuth.getInstance();
     Button retry;
+    ImageView fail;
     DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("Students").child(auth.getCurrentUser().getUid()).child("hibiscus");
     @Nullable
     @Override
@@ -58,6 +60,7 @@ public class moocs extends Fragment {
         lv = (ListView)vi.findViewById(R.id.list);
         progressBar = (ProgressBar)vi.findViewById(R.id.load);
         progressBar.setVisibility(View.VISIBLE);
+        fail = (ImageView)vi.findViewById(R.id.fail);
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, getResources().getString(R.string.moocs_url), null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
@@ -95,6 +98,7 @@ public class moocs extends Fragment {
             @Override
             public void onErrorResponse(VolleyError error) {
                 retry.setVisibility(View.VISIBLE);
+                fail.setVisibility(View.VISIBLE);
                 progressBar.setVisibility(View.GONE);
             }
         });
@@ -103,6 +107,7 @@ public class moocs extends Fragment {
             @Override
             public void onClick(View v) {
                 retry.setVisibility(View.GONE);
+                fail.setVisibility(View.GONE);
                 progressBar.setVisibility(View.VISIBLE);
                 JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, getResources().getString(R.string.moocs_url), null, new Response.Listener<JSONObject>() {
                     @Override
@@ -130,10 +135,12 @@ public class moocs extends Fragment {
                                     lv.setAdapter(moocsAdapter);
                                     progressBar.setVisibility(View.GONE);
                                     retry.setVisibility(View.GONE);
+                                    fail.setVisibility(View.GONE);
                                 }
                                 else {
                                     progressBar.setVisibility(View.GONE);
                                     retry.setVisibility(View.VISIBLE);
+                                    fail.setVisibility(View.VISIBLE);
                                 }
 
                             }
@@ -149,6 +156,7 @@ public class moocs extends Fragment {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         retry.setVisibility(View.VISIBLE);
+                        fail.setVisibility(View.VISIBLE);
                         progressBar.setVisibility(View.GONE);
                     }
                 });

@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
@@ -54,6 +55,7 @@ public class subgrades extends Fragment{
     JSONObject jsonObject;
     ArrayList<String> arrayList = new ArrayList<>();
     Button retry;
+    ImageView fail;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
@@ -67,6 +69,7 @@ public class subgrades extends Fragment{
         auth = FirebaseAuth.getInstance();
         databaseReference = FirebaseDatabase.getInstance().getReference().child("Students").child(auth.getCurrentUser().getUid()).child("hibiscus");
         spinner = (Spinner)vi.findViewById(R.id.spinner);
+        fail = (ImageView)vi.findViewById(R.id.fail);
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -152,6 +155,7 @@ public class subgrades extends Fragment{
                                 @Override
                                 public void onErrorResponse(VolleyError error) {
                                     retry.setVisibility(View.VISIBLE);
+                                    fail.setVisibility(View.VISIBLE);
                                     cl.setVisibility(View.GONE);
                                 }
                             });
@@ -160,6 +164,7 @@ public class subgrades extends Fragment{
                                 @Override
                                 public void onClick(View v) {
                                     retry.setVisibility(View.GONE);
+                                    fail.setVisibility(View.GONE);
                                     cl.setVisibility(View.VISIBLE);
                                     JsonObjectRequest jsonObjectRequestc = new JsonObjectRequest(Request.Method.POST, getResources().getString(R.string.course_url), jsonObject, new Response.Listener<JSONObject>() {
                                         @Override
@@ -189,9 +194,11 @@ public class subgrades extends Fragment{
                                                         courselist.setAdapter(gradesAdapter);
                                                         cl.setVisibility(View.GONE);
                                                         retry.setVisibility(View.GONE);
+                                                        fail.setVisibility(View.GONE);
                                                     }
                                                     else {
                                                         retry.setVisibility(View.VISIBLE);
+                                                        fail.setVisibility(View.VISIBLE);
                                                         cl.setVisibility(View.GONE);
                                                     }
 
@@ -208,6 +215,7 @@ public class subgrades extends Fragment{
                                         @Override
                                         public void onErrorResponse(VolleyError error) {
                                             retry.setVisibility(View.VISIBLE);
+                                            fail.setVisibility(View.VISIBLE);
                                             cl.setVisibility(View.GONE);
                                         }
                                     });

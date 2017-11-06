@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -45,6 +46,7 @@ public class fees extends Fragment {
     DatabaseReference hibdatabase;
     String uid,pwd,dep;
     Button retry;
+    ImageView fail;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
@@ -54,6 +56,7 @@ public class fees extends Fragment {
         retry = (Button)vi.findViewById(R.id.retry);
         progressBar = (ProgressBar)vi.findViewById(R.id.webl);
         progressBar.setVisibility(View.VISIBLE);
+        fail = (ImageView)vi.findViewById(R.id.fail);
         grd.setFocusable(true);
         grd.setFocusableInTouchMode(true);
         grd.getSettings().setJavaScriptEnabled(true);
@@ -100,6 +103,7 @@ public class fees extends Fragment {
                                 else {
                                     progressBar.setVisibility(View.GONE);
                                     retry.setVisibility(View.VISIBLE);
+                                    fail.setVisibility(View.VISIBLE);
                                     Toast.makeText(getActivity(),"Network Error",Toast.LENGTH_SHORT).show();
                                 }
 
@@ -116,6 +120,7 @@ public class fees extends Fragment {
 
                             progressBar.setVisibility(View.GONE);
                             retry.setVisibility(View.VISIBLE);
+                            fail.setVisibility(View.VISIBLE);
                         }
                     });
                     Mysingleton.getInstance(getActivity()).addToRequestqueue(jsonObjectRequest);
@@ -123,6 +128,7 @@ public class fees extends Fragment {
                         @Override
                         public void onClick(View v) {
                             retry.setVisibility(View.GONE);
+                            fail.setVisibility(View.GONE);
                             progressBar.setVisibility(View.VISIBLE);
                             JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, getResources().getString(R.string.fees_url), jsonObject, new Response.Listener<JSONObject>() {
                                 @Override
@@ -138,6 +144,7 @@ public class fees extends Fragment {
                                         else {
                                             progressBar.setVisibility(View.GONE);
                                             retry.setVisibility(View.VISIBLE);
+                                            fail.setVisibility(View.VISIBLE);
                                             Toast.makeText(getActivity(),"Network Error",Toast.LENGTH_SHORT).show();
                                         }
 
@@ -154,6 +161,7 @@ public class fees extends Fragment {
 
                                     progressBar.setVisibility(View.GONE);
                                     retry.setVisibility(View.VISIBLE);
+                                    fail.setVisibility(View.VISIBLE);
                                 }
                             });
                             Mysingleton.getInstance(getActivity()).addToRequestqueue(jsonObjectRequest);

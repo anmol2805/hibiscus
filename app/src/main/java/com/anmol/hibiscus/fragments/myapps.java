@@ -13,6 +13,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
@@ -58,6 +59,7 @@ public class myapps extends Fragment {
     Button retry;
     String url = "http://139.59.23.157/api/hibi/attendence";
     Spinner spinner;
+    ImageView fail;
     DatabaseReference db = FirebaseDatabase.getInstance().getReference().child("Students").child(auth.getCurrentUser().getUid()).child("hibiscus");
     ArrayList<String> arrayList = new ArrayList<>();
     ArrayAdapter<String> arrayAdapter;
@@ -74,6 +76,7 @@ public class myapps extends Fragment {
         progressBar.setVisibility(View.VISIBLE);
         listView = (ListView)vi.findViewById(R.id.listatt);
         retry = (Button)vi.findViewById(R.id.retry);
+        fail = (ImageView)vi.findViewById(R.id.fail);
         attendances = new ArrayList<>();
         databaseReference = FirebaseDatabase.getInstance().getReference().child("Students").child(auth.getCurrentUser().getUid()).child("attendance");
         final ImageButton refresh = (ImageButton)vi.findViewById(R.id.refresh);
@@ -94,6 +97,7 @@ public class myapps extends Fragment {
                 Intent intent = new Intent(getActivity(), RequestServiceAttendance.class);
                 getActivity().startService(intent);
                 retry.setVisibility(View.INVISIBLE);
+                fail.setVisibility(View.GONE);
                 progressBar.setVisibility(View.VISIBLE);
                 Toast.makeText(getActivity(),"Please Wait...",Toast.LENGTH_SHORT).show();
             }
@@ -158,13 +162,14 @@ public class myapps extends Fragment {
                             if(!attendanceAdapter.isEmpty()){
                                 progressBar.setVisibility(View.GONE);
                                 retry.setVisibility(View.GONE);
+                                fail.setVisibility(View.GONE);
                                 listView.setAdapter(attendanceAdapter);
 
                             }
                             else{
                                 progressBar.setVisibility(View.GONE);
                                 retry.setVisibility(View.VISIBLE);
-
+                                fail.setVisibility(View.VISIBLE);
                             }
 
                         }

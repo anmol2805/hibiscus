@@ -62,6 +62,7 @@ public class students extends Fragment {
     String title,id;
     SearchAdapter searchAdapter;
     Button retry;
+    ImageView empty;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, final Bundle savedInstanceState) {
@@ -159,6 +160,7 @@ public class students extends Fragment {
                                         Toast.makeText(getActivity(),"Network Error!!!",Toast.LENGTH_SHORT).show();
                                         progressBar.setVisibility(View.GONE);
                                         retry.setVisibility(View.VISIBLE);
+
                                     }
                                 });
                                 Mysingleton.getInstance(getActivity()).addToRequestqueue(jsonObjectRequest);

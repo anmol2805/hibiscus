@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
@@ -43,6 +44,7 @@ public class courseware extends Fragment {
     CourseAdapter courseAdapter;
     ProgressBar cl;
     Spinner spinner;
+    ImageView fail;
     DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("Students").child(auth.getCurrentUser().getUid()).child("hibiscus");
     ArrayList<String> arrayList = new ArrayList<>();
     ArrayAdapter<String> arrayAdapter;
@@ -56,6 +58,7 @@ public class courseware extends Fragment {
         getActivity().startService(intent);
         cl = (ProgressBar)vi.findViewById(R.id.cl);
         cl.setVisibility(View.VISIBLE);
+        fail = (ImageView)vi.findViewById(R.id.fail);
         mycourses = new ArrayList<>();
         courselist = (ListView)vi.findViewById(R.id.listcourses);
         retry = (Button)vi.findViewById(R.id.retry);
@@ -117,12 +120,14 @@ public class courseware extends Fragment {
                             if(!courseAdapter.isEmpty()){
                                 cl.setVisibility(View.GONE);
                                 retry.setVisibility(View.GONE);
+                                fail.setVisibility(View.GONE);
                                 courselist.setAdapter(courseAdapter);
 
                             }
                             else {
                                 retry.setVisibility(View.VISIBLE);
                                 cl.setVisibility(View.GONE);
+                                fail.setVisibility(View.VISIBLE);
                             }
 
                         }
@@ -146,6 +151,7 @@ public class courseware extends Fragment {
                 Intent intent = new Intent(getActivity(), RequestServiceCourses.class);
                 getActivity().startService(intent);
                 retry.setVisibility(View.GONE);
+                fail.setVisibility(View.GONE);
                 cl.setVisibility(View.VISIBLE);
                 Toast.makeText(getActivity(),"Please Wait...",Toast.LENGTH_SHORT).show();
             }

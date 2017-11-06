@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
@@ -56,6 +57,7 @@ public class complaints extends Fragment {
     String date,title,status;
     ImageButton post;
     Button retry;
+    ImageView fail;
     String url = "https://hib.iiit-bh.ac.in/Hibiscus/complain/compProcess.php?cmd=NEW&trid=";
     @Nullable
     @Override
@@ -66,6 +68,7 @@ public class complaints extends Fragment {
         listView = (ListView)vi.findViewById(R.id.list);
         progressBar = (ProgressBar)vi.findViewById(R.id.load);
         post = (ImageButton)vi.findViewById(R.id.refresh);
+        fail = (ImageView)vi.findViewById(R.id.fail);
         progressBar.setVisibility(View.VISIBLE);
         retry = (Button)vi.findViewById(R.id.retry);
         databaseReference.addValueEventListener(new ValueEventListener() {
@@ -116,6 +119,7 @@ public class complaints extends Fragment {
                         @Override
                         public void onErrorResponse(VolleyError error) {
                             retry.setVisibility(View.VISIBLE);
+                            fail.setVisibility(View.VISIBLE);
                             progressBar.setVisibility(View.GONE);
                         }
                     });
@@ -124,6 +128,7 @@ public class complaints extends Fragment {
                         @Override
                         public void onClick(View v) {
                             retry.setVisibility(View.GONE);
+                            fail.setVisibility(View.GONE);
                             progressBar.setVisibility(View.VISIBLE);
                             JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, getResources().getString(R.string.complains_url), jsonObject, new Response.Listener<JSONObject>() {
                                 @Override
@@ -149,10 +154,12 @@ public class complaints extends Fragment {
                                                 listView.setAdapter(complainAdapter);
                                                 progressBar.setVisibility(View.GONE);
                                                 retry.setVisibility(View.GONE);
+                                                fail.setVisibility(View.GONE);
                                             }
                                             else {
                                                 progressBar.setVisibility(View.GONE);
                                                 retry.setVisibility(View.VISIBLE);
+                                                fail.setVisibility(View.VISIBLE);
                                             }
 
                                         }
@@ -168,6 +175,7 @@ public class complaints extends Fragment {
                                 @Override
                                 public void onErrorResponse(VolleyError error) {
                                     retry.setVisibility(View.VISIBLE);
+                                    fail.setVisibility(View.VISIBLE);
                                     progressBar.setVisibility(View.GONE);
                                 }
                             });

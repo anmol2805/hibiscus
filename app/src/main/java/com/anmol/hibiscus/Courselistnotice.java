@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
@@ -45,6 +46,7 @@ public class Courselistnotice extends AppCompatActivity {
     CourseNoticeAdapter courseNoticeAdapter;
     ProgressBar ld;
     Button retry;
+    ImageView fail;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
