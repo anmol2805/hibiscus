@@ -145,8 +145,16 @@ public class complaints extends Fragment {
                                         if(getActivity()!=null){
                                             complainAdapter = new ComplainAdapter(getActivity(),R.layout.comp,complainses);
                                             complainAdapter.notifyDataSetChanged();
-                                            listView.setAdapter(complainAdapter);
-                                            progressBar.setVisibility(View.GONE);
+                                            if(!complainAdapter.isEmpty()){
+                                                listView.setAdapter(complainAdapter);
+                                                progressBar.setVisibility(View.GONE);
+                                                retry.setVisibility(View.GONE);
+                                            }
+                                            else {
+                                                progressBar.setVisibility(View.GONE);
+                                                retry.setVisibility(View.VISIBLE);
+                                            }
+
                                         }
 
 

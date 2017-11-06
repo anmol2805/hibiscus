@@ -182,10 +182,19 @@ public class subgrades extends Fragment{
                                                     c++;
                                                 }
                                                 if(getActivity()!=null){
-                                                    cl.setVisibility(View.GONE);
+
                                                     gradesAdapter = new GradesAdapter(getActivity(),R.layout.grades,mycourses);
                                                     gradesAdapter.notifyDataSetChanged();
-                                                    courselist.setAdapter(gradesAdapter);
+                                                    if(!gradesAdapter.isEmpty()){
+                                                        courselist.setAdapter(gradesAdapter);
+                                                        cl.setVisibility(View.GONE);
+                                                        retry.setVisibility(View.GONE);
+                                                    }
+                                                    else {
+                                                        retry.setVisibility(View.VISIBLE);
+                                                        cl.setVisibility(View.GONE);
+                                                    }
+
 
                                                 }
 

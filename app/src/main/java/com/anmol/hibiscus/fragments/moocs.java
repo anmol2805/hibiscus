@@ -126,8 +126,16 @@ public class moocs extends Fragment {
                             if(getActivity()!=null){
                                 moocsAdapter = new MoocsAdapter(getActivity(),R.layout.moocslist,moocses);
                                 moocsAdapter.notifyDataSetChanged();
-                                lv.setAdapter(moocsAdapter);
-                                progressBar.setVisibility(View.GONE);
+                                if(!moocsAdapter.isEmpty()){
+                                    lv.setAdapter(moocsAdapter);
+                                    progressBar.setVisibility(View.GONE);
+                                    retry.setVisibility(View.GONE);
+                                }
+                                else {
+                                    progressBar.setVisibility(View.GONE);
+                                    retry.setVisibility(View.VISIBLE);
+                                }
+
                             }
 
 
