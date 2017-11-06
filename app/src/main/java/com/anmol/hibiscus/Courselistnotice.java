@@ -58,6 +58,7 @@ public class Courselistnotice extends AppCompatActivity {
         ld.setVisibility(View.VISIBLE);
         listView = (ListView)findViewById(R.id.list);
         retry = (Button)findViewById(R.id.retry);
+
         cnd.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
