@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
@@ -52,13 +53,14 @@ public class subgrades extends Fragment{
     String uid,pwd;
     JSONObject jsonObject;
     ArrayList<String> arrayList = new ArrayList<>();
+    Button retry;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         View vi = inflater.inflate(R.layout.subgrades,container,false);
         getActivity().setTitle("Subject Grades");
         cl = (ProgressBar)vi.findViewById(R.id.load);
-
+        retry = (Button)vi.findViewById(R.id.retry);
         mycourses = new ArrayList<>();
         courselist = (ListView)vi.findViewById(R.id.list);
         jsonObject = new JSONObject();
@@ -149,11 +151,60 @@ public class subgrades extends Fragment{
                             }, new Response.ErrorListener() {
                                 @Override
                                 public void onErrorResponse(VolleyError error) {
-
+                                    retry.setVisibility(View.VISIBLE);
                                     cl.setVisibility(View.GONE);
                                 }
                             });
                             Mysingleton.getInstance(getActivity()).addToRequestqueue(jsonObjectRequestc);
+                            retry.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    retry.setVisibility(View.GONE);
+                                    cl.setVisibility(View.VISIBLE);
+                                    JsonObjectRequest jsonObjectRequestc = new JsonObjectRequest(Request.Method.POST, getResources().getString(R.string.course_url), jsonObject, new Response.Listener<JSONObject>() {
+                                        @Override
+                                        public void onResponse(JSONObject response) {
+                                            try {
+
+                                                int c = 0;
+                                                while (c<response.getJSONArray("Notices").length()){
+                                                    JSONObject object = response.getJSONArray("Notices").getJSONObject(c);
+                                                    String name,professor,credits;
+                                                    String id = object.getString("id");
+                                                    char s = id.charAt(5);
+                                                    if(String.valueOf(s).equals(a)){
+                                                        name = object.getString("name");
+                                                        professor = object.getString("professor");
+                                                        credits = object.getString("credits");
+                                                        Mycourse mycourse = new Mycourse(name,professor,credits,id);
+                                                        mycourses.add(mycourse);
+                                                    }
+                                                    c++;
+                                                }
+                                                if(getActivity()!=null){
+                                                    cl.setVisibility(View.GONE);
+                                                    gradesAdapter = new GradesAdapter(getActivity(),R.layout.grades,mycourses);
+                                                    gradesAdapter.notifyDataSetChanged();
+                                                    courselist.setAdapter(gradesAdapter);
+
+                                                }
+
+
+                                            } catch (JSONException e) {
+                                                e.printStackTrace();
+                                            }
+
+                                        }
+                                    }, new Response.ErrorListener() {
+                                        @Override
+                                        public void onErrorResponse(VolleyError error) {
+                                            retry.setVisibility(View.VISIBLE);
+                                            cl.setVisibility(View.GONE);
+                                        }
+                                    });
+                                    Mysingleton.getInstance(getActivity()).addToRequestqueue(jsonObjectRequestc);
+                                }
+                            });
                         }
 
                         @Override

@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
+import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -43,12 +44,14 @@ public class fees extends Fragment {
     FirebaseAuth auth;
     DatabaseReference hibdatabase;
     String uid,pwd,dep;
+    Button retry;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         View vi = inflater.inflate(R.layout.fee,container,false);
         getActivity().setTitle("Fee-Ledger");
         grd = (WebView)vi.findViewById(R.id.grd);
+        retry = (Button)vi.findViewById(R.id.retry);
         progressBar = (ProgressBar)vi.findViewById(R.id.webl);
         progressBar.setVisibility(View.VISIBLE);
         grd.setFocusable(true);
@@ -89,8 +92,17 @@ public class fees extends Fragment {
 
                             try {
                                 JSONObject object = response.getJSONArray("Notices").getJSONObject(0);
-                                progressBar.setVisibility(View.GONE);
-                                grd.loadData(object.getString("html"), "text/html; charset=utf-8", "UTF-8");
+
+                                if(!object.getString("html").isEmpty()){
+                                    progressBar.setVisibility(View.GONE);
+                                    grd.loadData(object.getString("html"), "text/html; charset=utf-8", "UTF-8");
+                                }
+                                else {
+                                    progressBar.setVisibility(View.GONE);
+                                    retry.setVisibility(View.VISIBLE);
+                                    Toast.makeText(getActivity(),"Network Error",Toast.LENGTH_SHORT).show();
+                                }
+
                                 //Toast.makeText(getActivity(),object.getString("html"),Toast.LENGTH_SHORT).show();
                             } catch (JSONException e) {
                                 e.printStackTrace();
@@ -103,10 +115,50 @@ public class fees extends Fragment {
                         public void onErrorResponse(VolleyError error) {
 
                             progressBar.setVisibility(View.GONE);
+                            retry.setVisibility(View.VISIBLE);
                         }
                     });
                     Mysingleton.getInstance(getActivity()).addToRequestqueue(jsonObjectRequest);
+                    retry.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            retry.setVisibility(View.GONE);
+                            progressBar.setVisibility(View.VISIBLE);
+                            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, getResources().getString(R.string.fees_url), jsonObject, new Response.Listener<JSONObject>() {
+                                @Override
+                                public void onResponse(JSONObject response) {
 
+                                    try {
+                                        JSONObject object = response.getJSONArray("Notices").getJSONObject(0);
+
+                                        if(!object.getString("html").isEmpty()){
+                                            progressBar.setVisibility(View.GONE);
+                                            grd.loadData(object.getString("html"), "text/html; charset=utf-8", "UTF-8");
+                                        }
+                                        else {
+                                            progressBar.setVisibility(View.GONE);
+                                            retry.setVisibility(View.VISIBLE);
+                                            Toast.makeText(getActivity(),"Network Error",Toast.LENGTH_SHORT).show();
+                                        }
+
+                                        //Toast.makeText(getActivity(),object.getString("html"),Toast.LENGTH_SHORT).show();
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+
+
+                                }
+                            }, new Response.ErrorListener() {
+                                @Override
+                                public void onErrorResponse(VolleyError error) {
+
+                                    progressBar.setVisibility(View.GONE);
+                                    retry.setVisibility(View.VISIBLE);
+                                }
+                            });
+                            Mysingleton.getInstance(getActivity()).addToRequestqueue(jsonObjectRequest);
+                        }
+                    });
 
 
                 }

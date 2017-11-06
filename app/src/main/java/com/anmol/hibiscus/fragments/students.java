@@ -61,12 +61,14 @@ public class students extends Fragment {
     JSONObject jsonObject;
     String title,id;
     SearchAdapter searchAdapter;
+    Button retry;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, final Bundle savedInstanceState) {
         View vi = inflater.inflate(R.layout.students,container,false);
         getActivity().setTitle("Students");
         searches = new ArrayList<>();
+        retry = (Button)vi.findViewById(R.id.retry);
         auth = FirebaseAuth.getInstance();
         databaseReference = FirebaseDatabase.getInstance().getReference().child("Students").child(auth.getCurrentUser().getUid()).child("hibiscus");
         listView = (ListView)vi.findViewById(R.id.list);
@@ -156,10 +158,59 @@ public class students extends Fragment {
                                     public void onErrorResponse(VolleyError error) {
                                         Toast.makeText(getActivity(),"Network Error!!!",Toast.LENGTH_SHORT).show();
                                         progressBar.setVisibility(View.GONE);
+                                        retry.setVisibility(View.VISIBLE);
                                     }
                                 });
                                 Mysingleton.getInstance(getActivity()).addToRequestqueue(jsonObjectRequest);
+                                retry.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        retry.setVisibility(View.GONE);
+                                        progressBar.setVisibility(View.VISIBLE);
+                                        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, getResources().getString(R.string.search_url), jsonObject, new Response.Listener<JSONObject>() {
+                                            @Override
+                                            public void onResponse(JSONObject response) {
 
+                                                try {
+                                                    int c = 0;
+                                                    searches.clear();
+                                                    while (c<response.getJSONArray("Notices").length()){
+
+                                                        JSONObject object = response.getJSONArray("Notices").getJSONObject(c);
+
+
+                                                        title = object.getString("name");
+                                                        id = object.getString("id");
+
+                                                        Search search = new Search(id,title);
+                                                        searches.add(search);
+                                                        c++;
+                                                    }
+                                                    if(getActivity()!=null){
+                                                        searchAdapter = new SearchAdapter(getActivity(),R.layout.search,searches);
+                                                        searchAdapter.notifyDataSetChanged();
+                                                        listView.setAdapter(searchAdapter);
+                                                        progressBar.setVisibility(View.GONE);
+                                                    }
+
+
+                                                } catch (JSONException e) {
+                                                    e.printStackTrace();
+                                                }
+
+
+                                            }
+                                        }, new Response.ErrorListener() {
+                                            @Override
+                                            public void onErrorResponse(VolleyError error) {
+                                                Toast.makeText(getActivity(),"Network Error!!!",Toast.LENGTH_SHORT).show();
+                                                progressBar.setVisibility(View.GONE);
+                                                retry.setVisibility(View.VISIBLE);
+                                            }
+                                        });
+                                        Mysingleton.getInstance(getActivity()).addToRequestqueue(jsonObjectRequest);
+                                    }
+                                });
 
 
                             }

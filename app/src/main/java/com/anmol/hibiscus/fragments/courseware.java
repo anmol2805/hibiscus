@@ -9,14 +9,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.anmol.hibiscus.Adapter.CourseAdapter;
 import com.anmol.hibiscus.Courselistnotice;
 import com.anmol.hibiscus.Model.Mycourse;
 import com.anmol.hibiscus.R;
+import com.anmol.hibiscus.services.RequestServiceAttendance;
 import com.anmol.hibiscus.services.RequestServiceCourses;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -43,6 +46,7 @@ public class courseware extends Fragment {
     DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("Students").child(auth.getCurrentUser().getUid()).child("hibiscus");
     ArrayList<String> arrayList = new ArrayList<>();
     ArrayAdapter<String> arrayAdapter;
+    Button retry;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
@@ -54,7 +58,7 @@ public class courseware extends Fragment {
         cl.setVisibility(View.VISIBLE);
         mycourses = new ArrayList<>();
         courselist = (ListView)vi.findViewById(R.id.listcourses);
-
+        retry = (Button)vi.findViewById(R.id.retry);
         spinner = (Spinner)vi.findViewById(R.id.spinner);
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
@@ -108,10 +112,18 @@ public class courseware extends Fragment {
 
                         }
                         if(getActivity()!=null){
-                            cl.setVisibility(View.GONE);
                             courseAdapter = new CourseAdapter(getActivity(),R.layout.courses,mycourses);
                             courseAdapter.notifyDataSetChanged();
-                            courselist.setAdapter(courseAdapter);
+                            if(!courseAdapter.isEmpty()){
+                                cl.setVisibility(View.GONE);
+                                retry.setVisibility(View.GONE);
+                                courselist.setAdapter(courseAdapter);
+
+                            }
+                            else {
+                                retry.setVisibility(View.VISIBLE);
+                                cl.setVisibility(View.GONE);
+                            }
 
                         }
                     }
@@ -128,7 +140,16 @@ public class courseware extends Fragment {
 
             }
         });
-
+        retry.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), RequestServiceCourses.class);
+                getActivity().startService(intent);
+                retry.setVisibility(View.GONE);
+                cl.setVisibility(View.VISIBLE);
+                Toast.makeText(getActivity(),"Please Wait...",Toast.LENGTH_SHORT).show();
+            }
+        });
         courselist.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {

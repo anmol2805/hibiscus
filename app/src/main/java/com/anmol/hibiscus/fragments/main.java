@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.ProgressBar;
@@ -56,6 +57,7 @@ public class main extends Fragment {
     String uid,pwd;
     DatabaseReference mdatabase;
     Animation rotate;
+    Button retry;
     String dep;
     String decrypt = "https://us-central1-iiitcloud-e9d6b.cloudfunctions.net/dcryptr?pass=";
     @Nullable
@@ -66,6 +68,7 @@ public class main extends Fragment {
         Intent intent = new Intent(getActivity(), RequestService.class);
         getActivity().startService(intent);
         final ImageButton refresh = (ImageButton)vi.findViewById(R.id.refresh);
+        retry = (Button)vi.findViewById(R.id.retry);
         rotate = AnimationUtils.loadAnimation(getActivity(),R.anim.rotate);
         refresh.setOnClickListener(new View.OnClickListener() {
             @Override

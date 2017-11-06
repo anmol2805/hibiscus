@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
@@ -45,6 +46,7 @@ public class moocs extends Fragment {
     MoocsAdapter moocsAdapter;
     JSONObject jsonObject =  new JSONObject();
     FirebaseAuth auth = FirebaseAuth.getInstance();
+    Button retry;
     DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("Students").child(auth.getCurrentUser().getUid()).child("hibiscus");
     @Nullable
     @Override
@@ -52,7 +54,7 @@ public class moocs extends Fragment {
         View vi = inflater.inflate(R.layout.moocs,container,false);
         getActivity().setTitle("Moocs");
 
-
+        retry = (Button)vi.findViewById(R.id.retry);
         lv = (ListView)vi.findViewById(R.id.list);
         progressBar = (ProgressBar)vi.findViewById(R.id.load);
         progressBar.setVisibility(View.VISIBLE);
@@ -92,12 +94,59 @@ public class moocs extends Fragment {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-
+                retry.setVisibility(View.VISIBLE);
                 progressBar.setVisibility(View.GONE);
             }
         });
         Mysingleton.getInstance(getActivity()).addToRequestqueue(jsonObjectRequest);
+        retry.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                retry.setVisibility(View.GONE);
+                progressBar.setVisibility(View.VISIBLE);
+                JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, getResources().getString(R.string.moocs_url), null, new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
 
+                        try {
+                            int c = 0;
+                            moocses.clear();
+                            while (c<response.getJSONArray("Notices").length()){
+
+                                JSONObject object = response.getJSONArray("Notices").getJSONObject(c);
+
+
+                                name = object.getString("name");
+                                link = object.getString("link");
+                                Moocs moocs = new Moocs(name,link);
+                                moocses.add(moocs);
+
+                                c++;
+                            }
+                            if(getActivity()!=null){
+                                moocsAdapter = new MoocsAdapter(getActivity(),R.layout.moocslist,moocses);
+                                moocsAdapter.notifyDataSetChanged();
+                                lv.setAdapter(moocsAdapter);
+                                progressBar.setVisibility(View.GONE);
+                            }
+
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+
+                    }
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        retry.setVisibility(View.VISIBLE);
+                        progressBar.setVisibility(View.GONE);
+                    }
+                });
+                Mysingleton.getInstance(getActivity()).addToRequestqueue(jsonObjectRequest);
+            }
+        });
         return vi;
     }
 }

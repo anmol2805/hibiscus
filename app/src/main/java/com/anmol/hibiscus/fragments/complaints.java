@@ -55,6 +55,7 @@ public class complaints extends Fragment {
     JSONObject jsonObject = new JSONObject();
     String date,title,status;
     ImageButton post;
+    Button retry;
     String url = "https://hib.iiit-bh.ac.in/Hibiscus/complain/compProcess.php?cmd=NEW&trid=";
     @Nullable
     @Override
@@ -66,6 +67,7 @@ public class complaints extends Fragment {
         progressBar = (ProgressBar)vi.findViewById(R.id.load);
         post = (ImageButton)vi.findViewById(R.id.refresh);
         progressBar.setVisibility(View.VISIBLE);
+        retry = (Button)vi.findViewById(R.id.retry);
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -113,12 +115,57 @@ public class complaints extends Fragment {
                     }, new Response.ErrorListener() {
                         @Override
                         public void onErrorResponse(VolleyError error) {
-
+                            retry.setVisibility(View.VISIBLE);
                             progressBar.setVisibility(View.GONE);
                         }
                     });
                     Mysingleton.getInstance(getActivity()).addToRequestqueue(jsonObjectRequest);
+                    retry.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            retry.setVisibility(View.GONE);
+                            progressBar.setVisibility(View.VISIBLE);
+                            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, getResources().getString(R.string.complains_url), jsonObject, new Response.Listener<JSONObject>() {
+                                @Override
+                                public void onResponse(JSONObject response) {
 
+                                    try {
+                                        int c = 0;
+                                        complainses.clear();
+                                        while (c<response.getJSONArray("Notices").length()){
+
+                                            JSONObject object = response.getJSONArray("Notices").getJSONObject(c);
+                                            status = object.getString("status");
+                                            date = object.getString("date");
+                                            title = object.getString("title");
+                                            Complains complains = new Complains(date,title,status);
+                                            complainses.add(complains);
+                                            c++;
+                                        }
+                                        if(getActivity()!=null){
+                                            complainAdapter = new ComplainAdapter(getActivity(),R.layout.comp,complainses);
+                                            complainAdapter.notifyDataSetChanged();
+                                            listView.setAdapter(complainAdapter);
+                                            progressBar.setVisibility(View.GONE);
+                                        }
+
+
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+
+
+                                }
+                            }, new Response.ErrorListener() {
+                                @Override
+                                public void onErrorResponse(VolleyError error) {
+                                    retry.setVisibility(View.VISIBLE);
+                                    progressBar.setVisibility(View.GONE);
+                                }
+                            });
+                            Mysingleton.getInstance(getActivity()).addToRequestqueue(jsonObjectRequest);
+                        }
+                    });
 
 
                 }

@@ -57,6 +57,7 @@ public class library extends Fragment {
     String uid,pwd,dep,title,id,author,publisher,year,edition,status;
     JSONObject jsonObject;
     LibraryAdapter libraryAdapter;
+    Button retry;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, final Bundle savedInstanceState) {
@@ -66,6 +67,7 @@ public class library extends Fragment {
         books = (EditText)vi.findViewById(R.id.books);
         lv = (ListView)vi.findViewById(R.id.list);
         progressBar = (ProgressBar)vi.findViewById(R.id.load);
+        retry = (Button)vi.findViewById(R.id.retry);
         libraries = new ArrayList<>();
         jsonObject = new JSONObject();
         auth = FirebaseAuth.getInstance();
@@ -134,10 +136,63 @@ public class library extends Fragment {
                                     public void onErrorResponse(VolleyError error) {
                                         Toast.makeText(getActivity(),"Network Error!!!",Toast.LENGTH_SHORT).show();
                                         progressBar.setVisibility(View.GONE);
+                                        retry.setVisibility(View.VISIBLE);
                                     }
                                 });
                                 Mysingleton.getInstance(getActivity()).addToRequestqueue(jsonObjectRequest);
+                                retry.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        retry.setVisibility(View.GONE);
+                                        progressBar.setVisibility(View.VISIBLE);
+                                        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, getResources().getString(R.string.library_url), jsonObject, new Response.Listener<JSONObject>() {
+                                            @Override
+                                            public void onResponse(JSONObject response) {
 
+                                                try {
+                                                    int c = 0;
+                                                    libraries.clear();
+                                                    while (c<response.getJSONArray("Notices").length()){
+
+                                                        JSONObject object = response.getJSONArray("Notices").getJSONObject(c);
+
+
+                                                        title = object.getString("title");
+                                                        id = object.getString("id");
+                                                        author = object.getString("author");
+                                                        publisher = object.getString("publiser");
+                                                        edition = object.getString("edition");
+                                                        year = object.getString("year");
+                                                        status = object.getString("status");
+                                                        Library library = new Library(id,title,author,publisher,year,edition,status);
+                                                        libraries.add(library);
+                                                        c++;
+                                                    }
+                                                    if(getActivity()!=null){
+                                                        libraryAdapter = new LibraryAdapter(getActivity(),R.layout.lib,libraries);
+                                                        libraryAdapter.notifyDataSetChanged();
+                                                        lv.setAdapter(libraryAdapter);
+                                                        progressBar.setVisibility(View.GONE);
+                                                    }
+
+
+                                                } catch (JSONException e) {
+                                                    e.printStackTrace();
+                                                }
+
+
+                                            }
+                                        }, new Response.ErrorListener() {
+                                            @Override
+                                            public void onErrorResponse(VolleyError error) {
+                                                Toast.makeText(getActivity(),"Network Error!!!",Toast.LENGTH_SHORT).show();
+                                                progressBar.setVisibility(View.GONE);
+                                                retry.setVisibility(View.VISIBLE);
+                                            }
+                                        });
+                                        Mysingleton.getInstance(getActivity()).addToRequestqueue(jsonObjectRequest);
+                                    }
+                                });
 
 
                             }
