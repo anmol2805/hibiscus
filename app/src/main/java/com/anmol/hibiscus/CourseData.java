@@ -7,6 +7,7 @@ import android.view.View;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -41,6 +42,7 @@ public class CourseData extends AppCompatActivity {
     String url1 = "http://139.59.23.157/api/hibi/course_notice_data";
     ProgressBar load;
     Button retry;
+    ImageView fail;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
