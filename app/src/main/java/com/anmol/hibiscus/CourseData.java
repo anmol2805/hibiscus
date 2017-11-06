@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
+import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -39,6 +40,7 @@ public class CourseData extends AppCompatActivity {
     TextView ndata;
     String url1 = "http://139.59.23.157/api/hibi/course_notice_data";
     ProgressBar load;
+    Button retry;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,6 +55,7 @@ public class CourseData extends AppCompatActivity {
         jsonObject = new JSONObject();
         auth = FirebaseAuth.getInstance();
         link = getIntent().getStringExtra("link");
+        retry = (Button)findViewById(R.id.retry);
         cd.setFocusable(true);
         cd.setFocusableInTouchMode(true);
         cd.getSettings().setJavaScriptEnabled(true);
@@ -110,11 +113,48 @@ public class CourseData extends AppCompatActivity {
                     }, new Response.ErrorListener() {
                         @Override
                         public void onErrorResponse(VolleyError error) {
+                            retry.setVisibility(View.VISIBLE);
                             load.setVisibility(View.INVISIBLE);
                         }
                     });
                     Mysingleton.getInstance(getApplicationContext()).addToRequestqueue(jsonObjectRequest);
+                    retry.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            retry.setVisibility(View.GONE);
+                            load.setVisibility(View.VISIBLE);
+                            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, getResources().getString(R.string.cnd_url), jsonObject, new Response.Listener<JSONObject>() {
+                                @Override
+                                public void onResponse(JSONObject response) {
+                                    load.setVisibility(View.GONE);
+                                    try {
 
+                                        JSONObject object = response.getJSONArray("Notices").getJSONObject(0);
+                                        head = object.getString("heading");
+                                        date = object.getString("date");
+                                        data = object.getString("notice_data");
+                                        heading.setText(head);
+                                        ndata.setText(data);
+                                        cd.loadData(date, "text/html; charset=utf-8", "UTF-8");
+
+
+
+
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+
+                                }
+                            }, new Response.ErrorListener() {
+                                @Override
+                                public void onErrorResponse(VolleyError error) {
+                                    retry.setVisibility(View.VISIBLE);
+                                    load.setVisibility(View.INVISIBLE);
+                                }
+                            });
+                            Mysingleton.getInstance(getApplicationContext()).addToRequestqueue(jsonObjectRequest);
+                        }
+                    });
 
 
                 }

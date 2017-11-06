@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
@@ -43,6 +44,7 @@ public class Courselistnotice extends AppCompatActivity {
     ListView listView;
     CourseNoticeAdapter courseNoticeAdapter;
     ProgressBar ld;
+    Button retry;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,6 +57,7 @@ public class Courselistnotice extends AppCompatActivity {
         ld = (ProgressBar)findViewById(R.id.loadnd);
         ld.setVisibility(View.VISIBLE);
         listView = (ListView)findViewById(R.id.list);
+        retry = (Button)findViewById(R.id.retry);
         cnd.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -104,11 +107,58 @@ public class Courselistnotice extends AppCompatActivity {
                         @Override
                         public void onErrorResponse(VolleyError error) {
                             ld.setVisibility(View.GONE);
+                            retry.setVisibility(View.VISIBLE);
                             Toast.makeText(Courselistnotice.this,"Network Error!!!",Toast.LENGTH_SHORT).show();
                         }
                     });
                     Mysingleton.getInstance(getApplicationContext()).addToRequestqueue(jsonObjectRequest);
+                    retry.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            retry.setVisibility(View.GONE);
+                            ld.setVisibility(View.GONE);
+                            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, getResources().getString(R.string.cn_url), jsonObject, new Response.Listener<JSONObject>() {
+                                @Override
+                                public void onResponse(JSONObject response) {
+                                    ld.setVisibility(View.GONE);
+                                    try {
+                                        int c = 1;
+                                        coursenotices.clear();
+                                        while (c<response.getJSONArray("Notices").length()){
 
+                                            JSONObject object = response.getJSONArray("Notices").getJSONObject(c);
+
+
+                                            title = object.getString("title");
+                                            date = object.getString("date");
+                                            link = object.getString("link_id");
+                                            Coursenotice coursenotice = new Coursenotice(date,title,link);
+                                            coursenotices.add(coursenotice);
+                                            c++;
+                                        }
+                                        if(getApplicationContext()!=null){
+                                            courseNoticeAdapter = new CourseNoticeAdapter(Courselistnotice.this,R.layout.cn,coursenotices);
+                                            courseNoticeAdapter.notifyDataSetChanged();
+                                            listView.setAdapter(courseNoticeAdapter);
+                                        }
+
+
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+
+                                }
+                            }, new Response.ErrorListener() {
+                                @Override
+                                public void onErrorResponse(VolleyError error) {
+                                    ld.setVisibility(View.GONE);
+                                    retry.setVisibility(View.VISIBLE);
+                                    Toast.makeText(Courselistnotice.this,"Network Error!!!",Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                            Mysingleton.getInstance(getApplicationContext()).addToRequestqueue(jsonObjectRequest);
+                        }
+                    });
 
 
                 }
