@@ -63,6 +63,7 @@ public class students extends Fragment {
     SearchAdapter searchAdapter;
     Button retry;
     ImageView empty;
+    ImageView errorimg;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, final Bundle savedInstanceState) {
@@ -79,6 +80,7 @@ public class students extends Fragment {
         student = (EditText)vi.findViewById(R.id.books);
         progressBar = (ProgressBar)vi.findViewById(R.id.load);
         empty = (ImageView)vi.findViewById(R.id.fail);
+        errorimg = (ImageView) vi.findViewById(R.id.error);
         jsonObject = new JSONObject();
         rid.setChecked(true);
         method = "ID";
@@ -169,7 +171,7 @@ public class students extends Fragment {
                                         Toast.makeText(getActivity(),"Network Error!!!",Toast.LENGTH_SHORT).show();
                                         progressBar.setVisibility(View.GONE);
                                         retry.setVisibility(View.VISIBLE);
-                                        empty.setVisibility(View.VISIBLE);
+                                        errorimg.setVisibility(View.VISIBLE);
 
                                     }
                                 });
@@ -178,7 +180,7 @@ public class students extends Fragment {
                                     @Override
                                     public void onClick(View v) {
                                         retry.setVisibility(View.GONE);
-                                        empty.setVisibility(View.GONE);
+                                        errorimg.setVisibility(View.GONE);
                                         progressBar.setVisibility(View.VISIBLE);
                                         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, getResources().getString(R.string.search_url), jsonObject, new Response.Listener<JSONObject>() {
                                             @Override
@@ -227,7 +229,7 @@ public class students extends Fragment {
                                                 Toast.makeText(getActivity(),"Network Error!!!",Toast.LENGTH_SHORT).show();
                                                 progressBar.setVisibility(View.GONE);
                                                 retry.setVisibility(View.VISIBLE);
-                                                empty.setVisibility(View.VISIBLE);
+                                                errorimg.setVisibility(View.VISIBLE);
                                             }
                                         });
                                         Mysingleton.getInstance(getActivity()).addToRequestqueue(jsonObjectRequest);
