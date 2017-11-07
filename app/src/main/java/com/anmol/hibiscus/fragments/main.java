@@ -2,6 +2,7 @@ package com.anmol.hibiscus.fragments;
 
 import android.app.Fragment;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.provider.Settings;
@@ -17,6 +18,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -61,6 +63,8 @@ public class main extends Fragment {
     Button retry;
     String dep;
     String decrypt = "https://us-central1-iiitcloud-e9d6b.cloudfunctions.net/dcryptr?pass=";
+    TextView head,body;
+    Button work;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
@@ -70,6 +74,9 @@ public class main extends Fragment {
         getActivity().startService(intent);
         final ImageButton refresh = (ImageButton)vi.findViewById(R.id.refresh);
         retry = (Button)vi.findViewById(R.id.retry);
+        head = (TextView)vi.findViewById(R.id.head);
+        body = (TextView)vi.findViewById(R.id.body);
+        work = (Button)vi.findViewById(R.id.work);
         rotate = AnimationUtils.loadAnimation(getActivity(),R.anim.rotate);
         refresh.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -86,6 +93,52 @@ public class main extends Fragment {
         mdatabase = FirebaseDatabase.getInstance().getReference().child("Notice");
         progressBar = (ProgressBar)vi.findViewById(R.id.load);
         progressBar.setVisibility(View.VISIBLE);
+        final DatabaseReference data = FirebaseDatabase.getInstance().getReference().getRoot().child("banner");
+        data.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                String dhead = dataSnapshot.child("head").getValue(String.class);
+                String dbody = dataSnapshot.child("body").getValue(String.class);
+                String dname = dataSnapshot.child("button").child("name").getValue(String.class);
+                final String dlink = dataSnapshot.child("button").child("link").getValue(String.class);
+                if(dhead!=null && !dhead.isEmpty()){
+                    head.setText(dhead);
+                    head.setVisibility(View.VISIBLE);
+                }
+                else {
+                    head.setVisibility(View.GONE);
+                }
+                if(dbody!=null && !dbody.isEmpty()){
+                    body.setText(dbody);
+                    body.setVisibility(View.VISIBLE);
+                }
+                else {
+                    body.setVisibility(View.GONE);
+                }
+                if(dname!=null && !dname.isEmpty()){
+                    work.setText(dname);
+                    work.setVisibility(View.VISIBLE);
+                }
+                else {
+                    work.setVisibility(View.GONE);
+                }
+                work.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if(dlink!=null){
+                            Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(dlink));
+                            startActivity(browserIntent);
+                        }
+
+                    }
+                });
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
         final DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("Students").child(auth.getCurrentUser().getUid()).child("hibiscus");
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
