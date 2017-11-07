@@ -106,6 +106,7 @@ public class students extends Fragment {
                 studentdet = student.getText().toString();
                 if(!TextUtils.isEmpty(studentdet)){
                     searches.clear();
+                    empty.setVisibility(View.GONE);
                     studentdet = studentdet.toUpperCase();
 
                     progressBar.setVisibility(View.VISIBLE);

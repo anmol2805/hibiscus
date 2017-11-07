@@ -2,6 +2,7 @@ package com.anmol.hibiscus;
 
 import android.app.FragmentManager;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -109,7 +110,22 @@ public class HibiscusActivity extends AppCompatActivity
         FragmentManager fm = getFragmentManager();
         fm.beginTransaction().replace(R.id.content_hib,new main()).commit();
     }
+    private class versionCheck extends AsyncTask< Void,Void,Void>{
+        @Override
+        protected void onPreExecute() {
+            HttpHandler sh = new HttpHandler();
+            super.onPreExecute();
+        }
 
+        @Override
+        protected Void doInBackground(Void... params) {
+            return null;
+        }
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+        }
+    }
 
 
     @Override

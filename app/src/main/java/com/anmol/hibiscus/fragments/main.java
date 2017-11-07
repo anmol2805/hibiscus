@@ -16,6 +16,7 @@ import android.webkit.WebView;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -32,6 +33,7 @@ import com.anmol.hibiscus.Mysingleton;
 import com.anmol.hibiscus.NoticeDataActivity;
 import com.anmol.hibiscus.R;
 import com.anmol.hibiscus.services.RequestService;
+import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -65,6 +67,8 @@ public class main extends Fragment {
     String decrypt = "https://us-central1-iiitcloud-e9d6b.cloudfunctions.net/dcryptr?pass=";
     TextView head,body;
     Button work;
+    ImageView back;
+    View margin;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
@@ -77,6 +81,7 @@ public class main extends Fragment {
         head = (TextView)vi.findViewById(R.id.head);
         body = (TextView)vi.findViewById(R.id.body);
         work = (Button)vi.findViewById(R.id.work);
+        margin = (View)vi.findViewById(R.id.margin);
         rotate = AnimationUtils.loadAnimation(getActivity(),R.anim.rotate);
         refresh.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -101,9 +106,11 @@ public class main extends Fragment {
                 String dbody = dataSnapshot.child("body").getValue(String.class);
                 String dname = dataSnapshot.child("button").child("name").getValue(String.class);
                 final String dlink = dataSnapshot.child("button").child("link").getValue(String.class);
+
                 if(dhead!=null && !dhead.isEmpty()){
                     head.setText(dhead);
                     head.setVisibility(View.VISIBLE);
+
                 }
                 else {
                     head.setVisibility(View.GONE);
@@ -111,6 +118,7 @@ public class main extends Fragment {
                 if(dbody!=null && !dbody.isEmpty()){
                     body.setText(dbody);
                     body.setVisibility(View.VISIBLE);
+
                 }
                 else {
                     body.setVisibility(View.GONE);
@@ -118,9 +126,16 @@ public class main extends Fragment {
                 if(dname!=null && !dname.isEmpty()){
                     work.setText(dname);
                     work.setVisibility(View.VISIBLE);
+
                 }
                 else {
                     work.setVisibility(View.GONE);
+                }
+                if((dhead==null || dhead.isEmpty())&&(dbody == null || dbody.isEmpty())&&(dname==null || dname.isEmpty())){
+                    margin.setVisibility(View.GONE);
+                }
+                else {
+                    margin.setVisibility(View.VISIBLE);
                 }
                 work.setOnClickListener(new View.OnClickListener() {
                     @Override

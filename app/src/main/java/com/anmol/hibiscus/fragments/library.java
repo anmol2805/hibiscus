@@ -83,7 +83,7 @@ public class library extends Fragment {
                 bookn = books.getText().toString();
                 if(!TextUtils.isEmpty(bookn)){
                     libraries.clear();
-
+                    empty.setVisibility(View.GONE);
                     progressBar.setVisibility(View.VISIBLE);
                     hibdatabase.addValueEventListener(new ValueEventListener() {
                         @Override
