@@ -104,8 +104,18 @@ public class complaints extends Fragment {
                                 if(getActivity()!=null){
                                     complainAdapter = new ComplainAdapter(getActivity(),R.layout.comp,complainses);
                                     complainAdapter.notifyDataSetChanged();
-                                    listView.setAdapter(complainAdapter);
-                                    progressBar.setVisibility(View.GONE);
+                                    if(!complainAdapter.isEmpty()){
+                                        listView.setAdapter(complainAdapter);
+                                        progressBar.setVisibility(View.GONE);
+                                        retry.setVisibility(View.GONE);
+                                        fail.setVisibility(View.GONE);
+                                    }
+                                    else {
+                                        progressBar.setVisibility(View.GONE);
+                                        retry.setVisibility(View.VISIBLE);
+                                        fail.setVisibility(View.VISIBLE);
+                                        Toast.makeText(getActivity(),"Network Error",Toast.LENGTH_SHORT).show();
+                                    }
                                 }
 
 
@@ -118,6 +128,7 @@ public class complaints extends Fragment {
                     }, new Response.ErrorListener() {
                         @Override
                         public void onErrorResponse(VolleyError error) {
+                            Toast.makeText(getActivity(),"Network Error",Toast.LENGTH_SHORT).show();
                             retry.setVisibility(View.VISIBLE);
                             fail.setVisibility(View.VISIBLE);
                             progressBar.setVisibility(View.GONE);
@@ -160,6 +171,7 @@ public class complaints extends Fragment {
                                                 progressBar.setVisibility(View.GONE);
                                                 retry.setVisibility(View.VISIBLE);
                                                 fail.setVisibility(View.VISIBLE);
+                                                Toast.makeText(getActivity(),"Network Error",Toast.LENGTH_SHORT).show();
                                             }
 
                                         }
@@ -177,6 +189,7 @@ public class complaints extends Fragment {
                                     retry.setVisibility(View.VISIBLE);
                                     fail.setVisibility(View.VISIBLE);
                                     progressBar.setVisibility(View.GONE);
+                                    Toast.makeText(getActivity(),"Network Error",Toast.LENGTH_SHORT).show();
                                 }
                             });
                             Mysingleton.getInstance(getActivity()).addToRequestqueue(jsonObjectRequest);

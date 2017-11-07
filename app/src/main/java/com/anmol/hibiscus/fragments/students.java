@@ -78,6 +78,7 @@ public class students extends Fragment {
         search = (ImageButton)vi.findViewById(R.id.search);
         student = (EditText)vi.findViewById(R.id.books);
         progressBar = (ProgressBar)vi.findViewById(R.id.load);
+        empty = (ImageView)vi.findViewById(R.id.fail);
         jsonObject = new JSONObject();
         rid.setChecked(true);
         method = "ID";
@@ -143,8 +144,16 @@ public class students extends Fragment {
                                             if(getActivity()!=null){
                                                 searchAdapter = new SearchAdapter(getActivity(),R.layout.search,searches);
                                                 searchAdapter.notifyDataSetChanged();
-                                                listView.setAdapter(searchAdapter);
-                                                progressBar.setVisibility(View.GONE);
+                                                if(!searchAdapter.isEmpty()){
+                                                    empty.setVisibility(View.GONE);
+                                                    listView.setAdapter(searchAdapter);
+                                                    progressBar.setVisibility(View.GONE);
+                                                }
+                                                else {
+                                                    empty.setVisibility(View.VISIBLE);
+                                                    progressBar.setVisibility(View.GONE);
+                                                    Toast.makeText(getActivity(),"No Results Found",Toast.LENGTH_SHORT).show();
+                                                }
                                             }
 
 
@@ -160,6 +169,7 @@ public class students extends Fragment {
                                         Toast.makeText(getActivity(),"Network Error!!!",Toast.LENGTH_SHORT).show();
                                         progressBar.setVisibility(View.GONE);
                                         retry.setVisibility(View.VISIBLE);
+                                        empty.setVisibility(View.VISIBLE);
 
                                     }
                                 });
@@ -168,6 +178,7 @@ public class students extends Fragment {
                                     @Override
                                     public void onClick(View v) {
                                         retry.setVisibility(View.GONE);
+                                        empty.setVisibility(View.GONE);
                                         progressBar.setVisibility(View.VISIBLE);
                                         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, getResources().getString(R.string.search_url), jsonObject, new Response.Listener<JSONObject>() {
                                             @Override
@@ -191,8 +202,16 @@ public class students extends Fragment {
                                                     if(getActivity()!=null){
                                                         searchAdapter = new SearchAdapter(getActivity(),R.layout.search,searches);
                                                         searchAdapter.notifyDataSetChanged();
-                                                        listView.setAdapter(searchAdapter);
-                                                        progressBar.setVisibility(View.GONE);
+                                                        if(!searchAdapter.isEmpty()){
+                                                            empty.setVisibility(View.GONE);
+                                                            listView.setAdapter(searchAdapter);
+                                                            progressBar.setVisibility(View.GONE);
+                                                        }
+                                                        else {
+                                                            empty.setVisibility(View.VISIBLE);
+                                                            progressBar.setVisibility(View.GONE);
+                                                            Toast.makeText(getActivity(),"No Results Found",Toast.LENGTH_SHORT).show();
+                                                        }
                                                     }
 
 
@@ -208,6 +227,7 @@ public class students extends Fragment {
                                                 Toast.makeText(getActivity(),"Network Error!!!",Toast.LENGTH_SHORT).show();
                                                 progressBar.setVisibility(View.GONE);
                                                 retry.setVisibility(View.VISIBLE);
+                                                empty.setVisibility(View.VISIBLE);
                                             }
                                         });
                                         Mysingleton.getInstance(getActivity()).addToRequestqueue(jsonObjectRequest);

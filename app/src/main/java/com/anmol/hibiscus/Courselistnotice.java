@@ -60,7 +60,7 @@ public class Courselistnotice extends AppCompatActivity {
         ld.setVisibility(View.VISIBLE);
         listView = (ListView)findViewById(R.id.list);
         retry = (Button)findViewById(R.id.retry);
-
+        fail = (ImageView) findViewById(R.id.fail);
         cnd.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -111,6 +111,7 @@ public class Courselistnotice extends AppCompatActivity {
                         public void onErrorResponse(VolleyError error) {
                             ld.setVisibility(View.GONE);
                             retry.setVisibility(View.VISIBLE);
+                            fail.setVisibility(View.VISIBLE);
                             Toast.makeText(Courselistnotice.this,"Network Error!!!",Toast.LENGTH_SHORT).show();
                         }
                     });
@@ -119,6 +120,7 @@ public class Courselistnotice extends AppCompatActivity {
                         @Override
                         public void onClick(View v) {
                             retry.setVisibility(View.GONE);
+                            fail.setVisibility(View.GONE);
                             ld.setVisibility(View.GONE);
                             JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, getResources().getString(R.string.cn_url), jsonObject, new Response.Listener<JSONObject>() {
                                 @Override
@@ -156,6 +158,7 @@ public class Courselistnotice extends AppCompatActivity {
                                 public void onErrorResponse(VolleyError error) {
                                     ld.setVisibility(View.GONE);
                                     retry.setVisibility(View.VISIBLE);
+                                    fail.setVisibility(View.VISIBLE);
                                     Toast.makeText(Courselistnotice.this,"Network Error!!!",Toast.LENGTH_SHORT).show();
                                 }
                             });

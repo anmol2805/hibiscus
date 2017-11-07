@@ -83,8 +83,18 @@ public class moocs extends Fragment {
                     if(getActivity()!=null){
                         moocsAdapter = new MoocsAdapter(getActivity(),R.layout.moocslist,moocses);
                         moocsAdapter.notifyDataSetChanged();
-                        lv.setAdapter(moocsAdapter);
-                        progressBar.setVisibility(View.GONE);
+                        if(!moocsAdapter.isEmpty()){
+                            lv.setAdapter(moocsAdapter);
+                            progressBar.setVisibility(View.GONE);
+                            retry.setVisibility(View.GONE);
+                            fail.setVisibility(View.GONE);
+                        }
+                        else {
+                            progressBar.setVisibility(View.GONE);
+                            retry.setVisibility(View.VISIBLE);
+                            fail.setVisibility(View.VISIBLE);
+                            Toast.makeText(getActivity(),"Network Error",Toast.LENGTH_SHORT).show();
+                        }
                     }
 
 
@@ -100,6 +110,7 @@ public class moocs extends Fragment {
                 retry.setVisibility(View.VISIBLE);
                 fail.setVisibility(View.VISIBLE);
                 progressBar.setVisibility(View.GONE);
+                Toast.makeText(getActivity(),"Network Error",Toast.LENGTH_SHORT).show();
             }
         });
         Mysingleton.getInstance(getActivity()).addToRequestqueue(jsonObjectRequest);
@@ -141,6 +152,7 @@ public class moocs extends Fragment {
                                     progressBar.setVisibility(View.GONE);
                                     retry.setVisibility(View.VISIBLE);
                                     fail.setVisibility(View.VISIBLE);
+                                    Toast.makeText(getActivity(),"Network Error",Toast.LENGTH_SHORT).show();
                                 }
 
                             }
@@ -158,6 +170,7 @@ public class moocs extends Fragment {
                         retry.setVisibility(View.VISIBLE);
                         fail.setVisibility(View.VISIBLE);
                         progressBar.setVisibility(View.GONE);
+                        Toast.makeText(getActivity(),"Network Error",Toast.LENGTH_SHORT).show();
                     }
                 });
                 Mysingleton.getInstance(getActivity()).addToRequestqueue(jsonObjectRequest);

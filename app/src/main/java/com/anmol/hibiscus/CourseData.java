@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -58,6 +59,7 @@ public class CourseData extends AppCompatActivity {
         auth = FirebaseAuth.getInstance();
         link = getIntent().getStringExtra("link");
         retry = (Button)findViewById(R.id.retry);
+        fail = (ImageView) findViewById(R.id.fail);
         cd.setFocusable(true);
         cd.setFocusableInTouchMode(true);
         cd.getSettings().setJavaScriptEnabled(true);
@@ -116,6 +118,7 @@ public class CourseData extends AppCompatActivity {
                         @Override
                         public void onErrorResponse(VolleyError error) {
                             retry.setVisibility(View.VISIBLE);
+                            fail.setVisibility(View.VISIBLE);
                             load.setVisibility(View.INVISIBLE);
                         }
                     });
@@ -124,6 +127,7 @@ public class CourseData extends AppCompatActivity {
                         @Override
                         public void onClick(View v) {
                             retry.setVisibility(View.GONE);
+                            fail.setVisibility(View.GONE);
                             load.setVisibility(View.VISIBLE);
                             JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, getResources().getString(R.string.cnd_url), jsonObject, new Response.Listener<JSONObject>() {
                                 @Override
@@ -151,7 +155,9 @@ public class CourseData extends AppCompatActivity {
                                 @Override
                                 public void onErrorResponse(VolleyError error) {
                                     retry.setVisibility(View.VISIBLE);
+                                    fail.setVisibility(View.VISIBLE);
                                     load.setVisibility(View.INVISIBLE);
+                                    Toast.makeText(CourseData.this,"Network Error",Toast.LENGTH_SHORT).show();
                                 }
                             });
                             Mysingleton.getInstance(getApplicationContext()).addToRequestqueue(jsonObjectRequest);

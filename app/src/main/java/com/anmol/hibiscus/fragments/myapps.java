@@ -170,6 +170,7 @@ public class myapps extends Fragment {
                                 progressBar.setVisibility(View.GONE);
                                 retry.setVisibility(View.VISIBLE);
                                 fail.setVisibility(View.VISIBLE);
+                                Toast.makeText(getActivity(),"Network Error",Toast.LENGTH_SHORT).show();
                             }
 
                         }

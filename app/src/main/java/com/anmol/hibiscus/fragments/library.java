@@ -70,6 +70,7 @@ public class library extends Fragment {
         lv = (ListView)vi.findViewById(R.id.list);
         progressBar = (ProgressBar)vi.findViewById(R.id.load);
         retry = (Button)vi.findViewById(R.id.retry);
+        empty = (ImageView)vi.findViewById(R.id.fail);
         libraries = new ArrayList<>();
         jsonObject = new JSONObject();
         auth = FirebaseAuth.getInstance();
@@ -122,8 +123,16 @@ public class library extends Fragment {
                                             if(getActivity()!=null){
                                                 libraryAdapter = new LibraryAdapter(getActivity(),R.layout.lib,libraries);
                                                 libraryAdapter.notifyDataSetChanged();
-                                                lv.setAdapter(libraryAdapter);
-                                                progressBar.setVisibility(View.GONE);
+                                                if(!libraryAdapter.isEmpty()){
+                                                    lv.setAdapter(libraryAdapter);
+                                                    progressBar.setVisibility(View.GONE);
+                                                    empty.setVisibility(View.GONE);
+                                                }
+                                                else {
+                                                    empty.setVisibility(View.VISIBLE);
+                                                    progressBar.setVisibility(View.GONE);
+                                                    Toast.makeText(getActivity(),"No Results Found",Toast.LENGTH_SHORT).show();
+                                                }
                                             }
 
 
@@ -139,6 +148,7 @@ public class library extends Fragment {
                                         Toast.makeText(getActivity(),"Network Error!!!",Toast.LENGTH_SHORT).show();
                                         progressBar.setVisibility(View.GONE);
                                         retry.setVisibility(View.VISIBLE);
+                                        empty.setVisibility(View.VISIBLE);
                                     }
                                 });
                                 Mysingleton.getInstance(getActivity()).addToRequestqueue(jsonObjectRequest);
@@ -146,6 +156,7 @@ public class library extends Fragment {
                                     @Override
                                     public void onClick(View v) {
                                         retry.setVisibility(View.GONE);
+                                        empty.setVisibility(View.GONE);
                                         progressBar.setVisibility(View.VISIBLE);
                                         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, getResources().getString(R.string.library_url), jsonObject, new Response.Listener<JSONObject>() {
                                             @Override
@@ -173,8 +184,16 @@ public class library extends Fragment {
                                                     if(getActivity()!=null){
                                                         libraryAdapter = new LibraryAdapter(getActivity(),R.layout.lib,libraries);
                                                         libraryAdapter.notifyDataSetChanged();
-                                                        lv.setAdapter(libraryAdapter);
-                                                        progressBar.setVisibility(View.GONE);
+                                                        if(!libraryAdapter.isEmpty()){
+                                                            lv.setAdapter(libraryAdapter);
+                                                            progressBar.setVisibility(View.GONE);
+                                                            empty.setVisibility(View.GONE);
+                                                        }
+                                                        else {
+                                                            empty.setVisibility(View.VISIBLE);
+                                                            progressBar.setVisibility(View.GONE);
+                                                            Toast.makeText(getActivity(),"No Results Found",Toast.LENGTH_SHORT).show();
+                                                        }
                                                     }
 
 
@@ -190,6 +209,7 @@ public class library extends Fragment {
                                                 Toast.makeText(getActivity(),"Network Error!!!",Toast.LENGTH_SHORT).show();
                                                 progressBar.setVisibility(View.GONE);
                                                 retry.setVisibility(View.VISIBLE);
+                                                empty.setVisibility(View.VISIBLE);
                                             }
                                         });
                                         Mysingleton.getInstance(getActivity()).addToRequestqueue(jsonObjectRequest);

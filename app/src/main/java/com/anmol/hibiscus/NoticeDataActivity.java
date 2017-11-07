@@ -10,6 +10,7 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -40,6 +41,7 @@ public class NoticeDataActivity extends AppCompatActivity {
     TextView d,a,p,t;
     ProgressBar pn;
     Button retry;
+    ImageView fail;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,6 +56,7 @@ public class NoticeDataActivity extends AppCompatActivity {
         p = (TextView)findViewById(R.id.posted);
         t = (TextView)findViewById(R.id.title);
         pn = (ProgressBar)findViewById(R.id.pn);
+        fail = (ImageView) findViewById(R.id.fail);
         pn.setVisibility(View.VISIBLE);
         nd.setFocusable(true);
         nd.setFocusableInTouchMode(true);
@@ -106,6 +109,7 @@ public class NoticeDataActivity extends AppCompatActivity {
                     else{
                         pn.setVisibility(View.GONE);
                         retry.setVisibility(View.VISIBLE);
+                        fail.setVisibility(View.VISIBLE);
                         Toast.makeText(NoticeDataActivity.this,"Network Error",Toast.LENGTH_SHORT).show();
                     }
 
@@ -118,6 +122,7 @@ public class NoticeDataActivity extends AppCompatActivity {
             public void onErrorResponse(VolleyError error) {
                 pn.setVisibility(View.GONE);
                 retry.setVisibility(View.VISIBLE);
+                fail.setVisibility(View.VISIBLE);
                 Toast.makeText(NoticeDataActivity.this,"Network Error!!!",Toast.LENGTH_SHORT).show();
             }
         });
@@ -126,6 +131,7 @@ public class NoticeDataActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 retry.setVisibility(View.GONE);
+                fail.setVisibility(View.GONE);
                 pn.setVisibility(View.VISIBLE);
                 JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, getResources().getString(R.string.noticedata_url), object, new Response.Listener<JSONObject>() {
                     @Override
@@ -139,6 +145,7 @@ public class NoticeDataActivity extends AppCompatActivity {
                             else{
                                 pn.setVisibility(View.GONE);
                                 retry.setVisibility(View.VISIBLE);
+                                fail.setVisibility(View.VISIBLE);
                                 Toast.makeText(NoticeDataActivity.this,"Network Error",Toast.LENGTH_SHORT).show();
                             }
 
@@ -151,6 +158,7 @@ public class NoticeDataActivity extends AppCompatActivity {
                     public void onErrorResponse(VolleyError error) {
                         pn.setVisibility(View.GONE);
                         retry.setVisibility(View.VISIBLE);
+                        fail.setVisibility(View.VISIBLE);
                         Toast.makeText(NoticeDataActivity.this,"Network Error!!!",Toast.LENGTH_SHORT).show();
                     }
                 });

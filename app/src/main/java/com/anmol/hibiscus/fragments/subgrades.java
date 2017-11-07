@@ -140,8 +140,18 @@ public class subgrades extends Fragment{
                                         if(getActivity()!=null){
                                             cl.setVisibility(View.GONE);
                                             gradesAdapter = new GradesAdapter(getActivity(),R.layout.grades,mycourses);
-                                            gradesAdapter.notifyDataSetChanged();
-                                            courselist.setAdapter(gradesAdapter);
+                                            if(!gradesAdapter.isEmpty()){
+                                                courselist.setAdapter(gradesAdapter);
+                                                cl.setVisibility(View.GONE);
+                                                retry.setVisibility(View.GONE);
+                                                fail.setVisibility(View.GONE);
+                                            }
+                                            else {
+                                                retry.setVisibility(View.VISIBLE);
+                                                fail.setVisibility(View.VISIBLE);
+                                                cl.setVisibility(View.GONE);
+                                                Toast.makeText(getActivity(),"Network Error",Toast.LENGTH_SHORT).show();
+                                            }
 
                                         }
 
@@ -157,6 +167,7 @@ public class subgrades extends Fragment{
                                     retry.setVisibility(View.VISIBLE);
                                     fail.setVisibility(View.VISIBLE);
                                     cl.setVisibility(View.GONE);
+                                    Toast.makeText(getActivity(),"Network Error",Toast.LENGTH_SHORT).show();
                                 }
                             });
                             Mysingleton.getInstance(getActivity()).addToRequestqueue(jsonObjectRequestc);
@@ -200,6 +211,7 @@ public class subgrades extends Fragment{
                                                         retry.setVisibility(View.VISIBLE);
                                                         fail.setVisibility(View.VISIBLE);
                                                         cl.setVisibility(View.GONE);
+                                                        Toast.makeText(getActivity(),"Network Error",Toast.LENGTH_SHORT).show();
                                                     }
 
 
@@ -217,6 +229,7 @@ public class subgrades extends Fragment{
                                             retry.setVisibility(View.VISIBLE);
                                             fail.setVisibility(View.VISIBLE);
                                             cl.setVisibility(View.GONE);
+                                            Toast.makeText(getActivity(),"Network Error",Toast.LENGTH_SHORT).show();
                                         }
                                     });
                                     Mysingleton.getInstance(getActivity()).addToRequestqueue(jsonObjectRequestc);
