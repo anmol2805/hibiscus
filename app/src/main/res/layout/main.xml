@@ -68,6 +68,46 @@
                 />
 
 
+            <TextView
+                android:id="@+id/head"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:layout_gravity="center"
+                android:layout_marginTop="5dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:textColor="@color/colorPrimary"
+                android:textStyle="bold"
+                />
+
+            <TextView
+                android:id="@+id/body"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:layout_gravity="center"
+                android:layout_marginBottom="5dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:textColor="#000"
+                android:textSize="13sp"
+                android:textStyle="italic"
+
+                />
+
+            <Button
+                android:id="@+id/work"
+                android:layout_width="wrap_content"
+                android:layout_height="25dp"
+                android:layout_gravity="center"
+                android:textSize="12sp"
+                android:textColor="#000"
+                android:background="@drawable/round_button2"
+                android:layout_marginBottom="5dp"
+                android:visibility="gone"
+                />
+
             <ListView
                 android:id="@+id/list"
                 android:layout_width="match_parent"
