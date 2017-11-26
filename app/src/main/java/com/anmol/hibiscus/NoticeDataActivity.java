@@ -66,10 +66,10 @@ public class NoticeDataActivity extends AppCompatActivity {
         nd.getSettings().setSupportZoom(true);
         nd.getSettings().setBuiltInZoomControls(true);
         nd.getSettings().setRenderPriority(WebSettings.RenderPriority.HIGH);
-        nd.getSettings().setCacheMode(WebSettings.LOAD_CACHE_ONLY);
+        //nd.getSettings().setCacheMode(WebSettings.LOAD_CACHE_ONLY);
         nd.getSettings().setDomStorageEnabled(true);
         nd.getSettings().setDatabaseEnabled(true);
-        nd.getSettings().setAppCacheEnabled(true);
+        //nd.getSettings().setAppCacheEnabled(true);
         nd.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
         nd.getSettings().setUseWideViewPort(true);
         nd.getSettings().setTextZoom(175);
