@@ -30,27 +30,31 @@
             android:layout_weight="1"
             android:orientation="horizontal">
 
-            <com.github.lzyzsd.circleprogress.ArcProgress
-                android:id="@+id/presentp"
-                android:layout_marginTop="5dp"
-                android:layout_marginBottom="5dp"
-                android:layout_marginLeft="175dp"
-                android:layout_width="65dp"
-                android:layout_height="65dp"
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                >
 
-                app:arc_finished_color="#28a745"
-                app:arc_unfinished_color="#00000000"
-                app:arc_stroke_width="5dp"
-                app:arc_text_size="25sp"
-                app:arc_text_color="#007bff"
-                app:arc_suffix_text_padding="0dp"
-                app:arc_suffix_text_size="13sp"
-                />
+                <com.github.lzyzsd.circleprogress.ArcProgress
+                    android:id="@+id/presentp"
+                    android:layout_width="65dp"
+                    android:layout_height="65dp"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_centerHorizontal="true"
+                    app:arc_finished_color="#28a745"
+                    app:arc_stroke_width="5dp"
+                    app:arc_suffix_text_padding="0dp"
+                    app:arc_suffix_text_size="11sp"
+                    app:arc_text_color="#007bff"
+                    app:arc_text_size="18sp"
+                    app:arc_unfinished_color="#DCDCDC" />
+            </RelativeLayout>
 
             <LinearLayout
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
                 android:orientation="vertical">
 
                 <TextView
