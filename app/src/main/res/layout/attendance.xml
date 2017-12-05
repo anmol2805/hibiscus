@@ -39,7 +39,7 @@
                 android:layout_height="65dp"
 
                 app:arc_finished_color="#28a745"
-
+                app:arc_unfinished_color="#00000000"
                 app:arc_stroke_width="5dp"
                 app:arc_text_size="25sp"
                 app:arc_text_color="#007bff"
