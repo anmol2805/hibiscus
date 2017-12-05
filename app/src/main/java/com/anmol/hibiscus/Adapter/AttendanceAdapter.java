@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.anmol.hibiscus.Model.Attendance;
 
 import com.anmol.hibiscus.R;
+import com.github.lzyzsd.circleprogress.CircleProgress;
 
 import java.util.List;
 
@@ -43,12 +44,27 @@ public class AttendanceAdapter extends ArrayAdapter<Attendance> {
         TextView submame = (TextView)v.findViewById(R.id.subname);
         submame.setText(attendances.get(position).getSub());
         TextView attendance = (TextView)v.findViewById(R.id.att);
+        TextView tpresent = (TextView)v.findViewById(R.id.present);
+        TextView tabsent = (TextView)v.findViewById(R.id.absent);
+        TextView tleave = (TextView)v.findViewById(R.id.leave);
+        TextView ttotal = (TextView)v.findViewById(R.id.total);
         String attstatus = attendances.get(position).getAttend();
-        String present = attstatus.substring(0,9);
-        String absent = attstatus.substring(10,19);
-        String leave = attstatus.substring(20,30);
+        String present = attstatus.substring(0,2);
+        String absent = attstatus.substring(11,13);
+        String leave = attstatus.substring(21,23);
         String total = attstatus.substring(31,33);
-
+        tpresent.setText(present);
+        tabsent.setText(absent);
+        tleave.setText(leave);
+        ttotal.setText(total);
+        String pp = attstatus.substring(4,6);
+        int ppi = Integer.parseInt(pp);
+        CircleProgress circleProgress = (CircleProgress)v.findViewById(R.id.presentp);
+        circleProgress.setProgress(ppi);
+        int totali = Integer.parseInt(total);
+        if(totali!=0){
+            circleProgress.setUnfinishedColor(R.color.absent);
+        }
         attendance.setText(attstatus);
         TextView teacher = (TextView)v.findViewById(R.id.teacher);
         teacher.setText(attendances.get(position).getName());
