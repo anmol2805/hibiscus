@@ -43,7 +43,13 @@ public class AttendanceAdapter extends ArrayAdapter<Attendance> {
         TextView submame = (TextView)v.findViewById(R.id.subname);
         submame.setText(attendances.get(position).getSub());
         TextView attendance = (TextView)v.findViewById(R.id.att);
-        attendance.setText(attendances.get(position).getAttend());
+        String attstatus = attendances.get(position).getAttend();
+        String present = attstatus.substring(0,9);
+        String absent = attstatus.substring(10,19);
+        String leave = attstatus.substring(20,30);
+        String total = attstatus.substring(31,33);
+
+        attendance.setText(attstatus);
         TextView teacher = (TextView)v.findViewById(R.id.teacher);
         teacher.setText(attendances.get(position).getName());
         TextView subcode = (TextView)v.findViewById(R.id.subcode);
