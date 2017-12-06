@@ -2,6 +2,7 @@ package com.anmol.hibiscus.Adapter;
 
 import android.app.Activity;
 import android.content.Context;
+import android.os.Handler;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -60,10 +61,9 @@ public class AttendanceAdapter extends ArrayAdapter<Attendance> {
         ttotal.setText(total);
         String pp = attstatus.substring(4,7);
         pp = pp.replaceAll("\\s","0");
-        int ppi = Integer.parseInt(pp);
-        ArcProgress arcProgress = (ArcProgress)v.findViewById(R.id.presentp);
+        final int ppi = Integer.parseInt(pp);
+        final ArcProgress arcProgress = (ArcProgress)v.findViewById(R.id.presentp);
         arcProgress.setProgress(ppi);
-
         attendance.setText(attstatus);
         TextView teacher = (TextView)v.findViewById(R.id.teacher);
         teacher.setText(attendances.get(position).getName());
