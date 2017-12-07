@@ -121,10 +121,13 @@ public class commapps extends Fragment {
                     }, new Response.ErrorListener() {
                         @Override
                         public void onErrorResponse(VolleyError error) {
-                            progressBar.setVisibility(View.GONE);
-                            retry.setVisibility(View.VISIBLE);
-                            fail.setVisibility(View.VISIBLE);
-                            Toast.makeText(getActivity(),"Network Error",Toast.LENGTH_SHORT).show();
+                            if(getActivity()!=null && isAdded()){
+                                progressBar.setVisibility(View.GONE);
+                                retry.setVisibility(View.VISIBLE);
+                                fail.setVisibility(View.VISIBLE);
+                                Toast.makeText(getActivity(),"Network Error",Toast.LENGTH_SHORT).show();
+                            }
+
                         }
                     });
                     Mysingleton.getInstance(getActivity()).addToRequestqueue(jsonObjectRequestg);
@@ -157,10 +160,13 @@ public class commapps extends Fragment {
                             }, new Response.ErrorListener() {
                                 @Override
                                 public void onErrorResponse(VolleyError error) {
-                                    progressBar.setVisibility(View.GONE);
-                                    retry.setVisibility(View.VISIBLE);
-                                    fail.setVisibility(View.VISIBLE);
-                                    Toast.makeText(getActivity(),"Network Error",Toast.LENGTH_SHORT).show();
+                                    if(getActivity()!=null && isAdded()){
+                                        progressBar.setVisibility(View.GONE);
+                                        retry.setVisibility(View.VISIBLE);
+                                        fail.setVisibility(View.VISIBLE);
+                                        Toast.makeText(getActivity(),"Network Error",Toast.LENGTH_SHORT).show();
+                                    }
+
                                 }
                             });
                             Mysingleton.getInstance(getActivity()).addToRequestqueue(jsonObjectRequestg);

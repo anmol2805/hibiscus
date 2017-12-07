@@ -107,10 +107,13 @@ public class moocs extends Fragment {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                retry.setVisibility(View.VISIBLE);
-                fail.setVisibility(View.VISIBLE);
-                progressBar.setVisibility(View.GONE);
-                Toast.makeText(getActivity(),"Network Error",Toast.LENGTH_SHORT).show();
+                if(getActivity()!=null && isAdded()){
+                    retry.setVisibility(View.VISIBLE);
+                    fail.setVisibility(View.VISIBLE);
+                    progressBar.setVisibility(View.GONE);
+                    Toast.makeText(getActivity(),"Network Error",Toast.LENGTH_SHORT).show();
+                }
+
             }
         });
         Mysingleton.getInstance(getActivity()).addToRequestqueue(jsonObjectRequest);
@@ -167,10 +170,13 @@ public class moocs extends Fragment {
                 }, new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        retry.setVisibility(View.VISIBLE);
-                        fail.setVisibility(View.VISIBLE);
-                        progressBar.setVisibility(View.GONE);
-                        Toast.makeText(getActivity(),"Network Error",Toast.LENGTH_SHORT).show();
+                        if(getActivity()!=null && isAdded()){
+                            retry.setVisibility(View.VISIBLE);
+                            fail.setVisibility(View.VISIBLE);
+                            progressBar.setVisibility(View.GONE);
+                            Toast.makeText(getActivity(),"Network Error",Toast.LENGTH_SHORT).show();
+                        }
+
                     }
                 });
                 Mysingleton.getInstance(getActivity()).addToRequestqueue(jsonObjectRequest);

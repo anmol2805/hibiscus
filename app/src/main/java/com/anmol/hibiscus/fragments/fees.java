@@ -101,10 +101,13 @@ public class fees extends Fragment {
                                     grd.loadData(object.getString("html"), "text/html; charset=utf-8", "UTF-8");
                                 }
                                 else {
-                                    progressBar.setVisibility(View.GONE);
-                                    retry.setVisibility(View.VISIBLE);
-                                    fail.setVisibility(View.VISIBLE);
-                                    Toast.makeText(getActivity(),"Network Error",Toast.LENGTH_SHORT).show();
+                                    if(getActivity()!=null && isAdded()){
+                                        progressBar.setVisibility(View.GONE);
+                                        retry.setVisibility(View.VISIBLE);
+                                        fail.setVisibility(View.VISIBLE);
+                                        Toast.makeText(getActivity(),"Network Error",Toast.LENGTH_SHORT).show();
+                                    }
+
                                 }
 
                                 //Toast.makeText(getActivity(),object.getString("html"),Toast.LENGTH_SHORT).show();
@@ -117,11 +120,13 @@ public class fees extends Fragment {
                     }, new Response.ErrorListener() {
                         @Override
                         public void onErrorResponse(VolleyError error) {
+                            if(getActivity()!=null && isAdded()){
+                                progressBar.setVisibility(View.GONE);
+                                retry.setVisibility(View.VISIBLE);
+                                fail.setVisibility(View.VISIBLE);
+                                Toast.makeText(getActivity(),"Network Error",Toast.LENGTH_SHORT).show();
+                            }
 
-                            progressBar.setVisibility(View.GONE);
-                            retry.setVisibility(View.VISIBLE);
-                            fail.setVisibility(View.VISIBLE);
-                            Toast.makeText(getActivity(),"Network Error",Toast.LENGTH_SHORT).show();
                         }
                     });
                     Mysingleton.getInstance(getActivity()).addToRequestqueue(jsonObjectRequest);
@@ -159,11 +164,13 @@ public class fees extends Fragment {
                             }, new Response.ErrorListener() {
                                 @Override
                                 public void onErrorResponse(VolleyError error) {
+                                    if(getActivity()!=null && isAdded()){
+                                        progressBar.setVisibility(View.GONE);
+                                        retry.setVisibility(View.VISIBLE);
+                                        fail.setVisibility(View.VISIBLE);
+                                        Toast.makeText(getActivity(),"Network Error",Toast.LENGTH_SHORT).show();
+                                    }
 
-                                    progressBar.setVisibility(View.GONE);
-                                    retry.setVisibility(View.VISIBLE);
-                                    fail.setVisibility(View.VISIBLE);
-                                    Toast.makeText(getActivity(),"Network Error",Toast.LENGTH_SHORT).show();
                                 }
                             });
                             Mysingleton.getInstance(getActivity()).addToRequestqueue(jsonObjectRequest);
