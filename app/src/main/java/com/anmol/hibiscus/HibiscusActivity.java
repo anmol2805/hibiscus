@@ -109,6 +109,7 @@ public class HibiscusActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
         FragmentManager fm = getFragmentManager();
         fm.beginTransaction().replace(R.id.content_hib,new main()).commit();
+        fm.executePendingTransactions();
     }
     private class versionCheck extends AsyncTask< Void,Void,Void>{
         @Override
@@ -185,6 +186,7 @@ public class HibiscusActivity extends AppCompatActivity
                 @Override
                 public void run() {
                     fm.beginTransaction().replace(R.id.content_hib,new main()).commit();
+                    fm.executePendingTransactions();
                 }
             },175);
 
@@ -194,12 +196,14 @@ public class HibiscusActivity extends AppCompatActivity
                 @Override
                 public void run() {
                     fm.beginTransaction().replace(R.id.content_hib,new local()).commit();
+                    fm.executePendingTransactions();
                 }
             },175);} else if (id == R.id.nav_myapps) {
             handler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
                     fm.beginTransaction().replace(R.id.content_hib,new myapps()).commit();
+                    fm.executePendingTransactions();
                 }
             },175);
 
@@ -208,6 +212,7 @@ public class HibiscusActivity extends AppCompatActivity
                 @Override
                 public void run() {
                     fm.beginTransaction().replace(R.id.content_hib,new courseware()).commit();
+                    fm.executePendingTransactions();
                 }
             },175);
 
@@ -216,27 +221,35 @@ public class HibiscusActivity extends AppCompatActivity
                 @Override
                 public void run() {
                     fm.beginTransaction().replace(R.id.content_hib,new commapps()).commit();
+                    fm.executePendingTransactions();
                 }
             },225);
 
         }else if(id == R.id.nav_lib){
             fm.beginTransaction().replace(R.id.content_hib,new library()).commit();
+            fm.executePendingTransactions();
         }else if(id == R.id.nav_viewgrades){
             fm.beginTransaction().replace(R.id.content_hib,new subgrades()).commit();
+            fm.executePendingTransactions();
         }
 //        else if(id == R.id.nav_elib){
 //            fm.beginTransaction().replace(R.id.content_hib,new ebooks()).commit();
 //        }
         else if(id == R.id.nav_students){
             fm.beginTransaction().replace(R.id.content_hib,new students()).commit();
+            fm.executePendingTransactions();
         } else if(id == R.id.fees){
             fm.beginTransaction().replace(R.id.content_hib,new fees()).commit();
+            fm.executePendingTransactions();
         }else if(id == R.id.nav_moocs){
             fm.beginTransaction().replace(R.id.content_hib,new moocs()).commit();
+            fm.executePendingTransactions();
         }else if(id == R.id.nav_comp){
             fm.beginTransaction().replace(R.id.content_hib,new complaints()).commit();
+            fm.executePendingTransactions();
         }else if(id == R.id.nav_con){
             fm.beginTransaction().replace(R.id.content_hib,new mypage()).commit();
+            fm.executePendingTransactions();
         } else if (id == R.id.nav_help) {
             FirebaseAuth.getInstance().signOut();
             handler.postDelayed(new Runnable() {
