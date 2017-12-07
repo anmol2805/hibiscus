@@ -35,40 +35,53 @@ public class AttendanceAdapter extends ArrayAdapter<Attendance> {
         this.resource = resource;
         attendances = objects;
     }
+    public int getViewTypeCount() {
+        return getCount();
+    }
+
+    public int getItemViewType(int position) {
+        return position;
+    }
 
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        //LayoutInflater inflater = context.getLayoutInflater();
-        View v = inflater.inflate(resource,null);
+        if(convertView!=null){
+            return convertView;
+        }
+        else{
+            LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            //LayoutInflater inflater = context.getLayoutInflater();
+            View v = inflater.inflate(resource,null);
 
-        TextView submame = (TextView)v.findViewById(R.id.subname);
-        submame.setText(attendances.get(position).getSub());
-        TextView attendance = (TextView)v.findViewById(R.id.att);
-        TextView tpresent = (TextView)v.findViewById(R.id.present);
-        TextView tabsent = (TextView)v.findViewById(R.id.absent);
-        TextView tleave = (TextView)v.findViewById(R.id.leave);
-        TextView ttotal = (TextView)v.findViewById(R.id.total);
-        String attstatus = attendances.get(position).getAttend();
-        String present = attstatus.substring(0,3);
-        String absent = attstatus.substring(11,14);
-        String leave = attstatus.substring(21,24);
-        String total = attstatus.substring(31,34);
-        tpresent.setText(present);
-        tabsent.setText(absent);
-        tleave.setText(leave);
-        ttotal.setText(total);
-        String pp = attstatus.substring(4,7);
-        pp = pp.replaceAll("\\s","0");
-        final int ppi = Integer.parseInt(pp);
-        final ArcProgress arcProgress = (ArcProgress)v.findViewById(R.id.presentp);
-        arcProgress.setProgress(ppi);
-        attendance.setText(attstatus);
-        TextView teacher = (TextView)v.findViewById(R.id.teacher);
-        teacher.setText(attendances.get(position).getName());
-        TextView subcode = (TextView)v.findViewById(R.id.subcode);
-        subcode.setText(attendances.get(position).getSubcode());
-        return v;
+            TextView submame = (TextView)v.findViewById(R.id.subname);
+            submame.setText(attendances.get(position).getSub());
+            TextView attendance = (TextView)v.findViewById(R.id.att);
+            TextView tpresent = (TextView)v.findViewById(R.id.present);
+            TextView tabsent = (TextView)v.findViewById(R.id.absent);
+            TextView tleave = (TextView)v.findViewById(R.id.leave);
+            TextView ttotal = (TextView)v.findViewById(R.id.total);
+            String attstatus = attendances.get(position).getAttend();
+            String present = attstatus.substring(0,3);
+            String absent = attstatus.substring(11,14);
+            String leave = attstatus.substring(21,24);
+            String total = attstatus.substring(31,34);
+            tpresent.setText(present);
+            tabsent.setText(absent);
+            tleave.setText(leave);
+            ttotal.setText(total);
+            String pp = attstatus.substring(4,7);
+            pp = pp.replaceAll("\\s","0");
+            final int ppi = Integer.parseInt(pp);
+            final ArcProgress arcProgress = (ArcProgress)v.findViewById(R.id.presentp);
+            arcProgress.setProgress(ppi);
+            attendance.setText(attstatus);
+            TextView teacher = (TextView)v.findViewById(R.id.teacher);
+            teacher.setText(attendances.get(position).getName());
+            TextView subcode = (TextView)v.findViewById(R.id.subcode);
+            subcode.setText(attendances.get(position).getSubcode());
+            return v;
+        }
+
     }
 }
