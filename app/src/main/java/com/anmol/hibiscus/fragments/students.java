@@ -169,10 +169,13 @@ public class students extends Fragment {
                                 }, new Response.ErrorListener() {
                                     @Override
                                     public void onErrorResponse(VolleyError error) {
-                                        Toast.makeText(getActivity(),"Network Error!!!",Toast.LENGTH_SHORT).show();
-                                        progressBar.setVisibility(View.GONE);
-                                        retry.setVisibility(View.VISIBLE);
-                                        errorimg.setVisibility(View.VISIBLE);
+                                        if(getActivity()!=null && isAdded()){
+                                            Toast.makeText(getActivity(),"Network Error!!!",Toast.LENGTH_SHORT).show();
+                                            progressBar.setVisibility(View.GONE);
+                                            retry.setVisibility(View.VISIBLE);
+                                            errorimg.setVisibility(View.VISIBLE);
+                                        }
+
 
                                     }
                                 });
@@ -227,10 +230,13 @@ public class students extends Fragment {
                                         }, new Response.ErrorListener() {
                                             @Override
                                             public void onErrorResponse(VolleyError error) {
-                                                Toast.makeText(getActivity(),"Network Error!!!",Toast.LENGTH_SHORT).show();
-                                                progressBar.setVisibility(View.GONE);
-                                                retry.setVisibility(View.VISIBLE);
-                                                errorimg.setVisibility(View.VISIBLE);
+                                                if(getActivity()!=null && isAdded()){
+                                                    Toast.makeText(getActivity(),"Network Error!!!",Toast.LENGTH_SHORT).show();
+                                                    progressBar.setVisibility(View.GONE);
+                                                    retry.setVisibility(View.VISIBLE);
+                                                    errorimg.setVisibility(View.VISIBLE);
+                                                }
+
                                             }
                                         });
                                         Mysingleton.getInstance(getActivity()).addToRequestqueue(jsonObjectRequest);

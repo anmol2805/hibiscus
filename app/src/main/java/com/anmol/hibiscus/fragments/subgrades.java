@@ -164,10 +164,13 @@ public class subgrades extends Fragment{
                             }, new Response.ErrorListener() {
                                 @Override
                                 public void onErrorResponse(VolleyError error) {
-                                    retry.setVisibility(View.VISIBLE);
-                                    fail.setVisibility(View.VISIBLE);
-                                    cl.setVisibility(View.GONE);
-                                    Toast.makeText(getActivity(),"Network Error",Toast.LENGTH_SHORT).show();
+                                    if(getActivity()!=null && isAdded()){
+                                        retry.setVisibility(View.VISIBLE);
+                                        fail.setVisibility(View.VISIBLE);
+                                        cl.setVisibility(View.GONE);
+                                        Toast.makeText(getActivity(),"Network Error",Toast.LENGTH_SHORT).show();
+                                    }
+
                                 }
                             });
                             Mysingleton.getInstance(getActivity()).addToRequestqueue(jsonObjectRequestc);
@@ -226,10 +229,13 @@ public class subgrades extends Fragment{
                                     }, new Response.ErrorListener() {
                                         @Override
                                         public void onErrorResponse(VolleyError error) {
-                                            retry.setVisibility(View.VISIBLE);
-                                            fail.setVisibility(View.VISIBLE);
-                                            cl.setVisibility(View.GONE);
-                                            Toast.makeText(getActivity(),"Network Error",Toast.LENGTH_SHORT).show();
+                                            if(getActivity()!=null && isAdded()){
+                                                retry.setVisibility(View.VISIBLE);
+                                                fail.setVisibility(View.VISIBLE);
+                                                cl.setVisibility(View.GONE);
+                                                Toast.makeText(getActivity(),"Network Error",Toast.LENGTH_SHORT).show();
+                                            }
+
                                         }
                                     });
                                     Mysingleton.getInstance(getActivity()).addToRequestqueue(jsonObjectRequestc);
