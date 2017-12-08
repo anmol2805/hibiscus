@@ -64,71 +64,194 @@
             android:orientation="horizontal"
             android:visibility="gone">
 
-            <TextView
-                android:id="@+id/textView4"
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:text="Quiz 1"
-                android:textColor="#708090"
-                android:textSize="12sp" />
+                android:layout_marginLeft="5dp"
+                android:layout_weight="1"
+                android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/textView2"
+                <TextView
+                    android:id="@+id/textView4"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+
+                    android:text="Quiz 1"
+                    android:textColor="#708090"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:id="@+id/q1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="3dp"
+
+                    android:text="5.60"
+                    android:textColor="#000"
+
+                    android:textSize="14sp" />
+            </LinearLayout>
+
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:text="Quiz 2"
-                android:textColor="#708090"
-                android:textSize="12sp" />
+                android:layout_weight="1"
+                android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/textView5"
+                <TextView
+                    android:id="@+id/textView2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+
+                    android:text="Quiz 2"
+                    android:textColor="#708090"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:id="@+id/q2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="3dp"
+
+                    android:text="5.60"
+                    android:textColor="#000"
+                    android:textSize="14sp" />
+            </LinearLayout>
+
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:text="Mid-Sems"
-                android:textColor="#708090"
-                android:textSize="12sp" />
+                android:layout_weight="1"
+                android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/textView7"
+                <TextView
+                    android:id="@+id/textView5"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+
+                    android:text="Mid-Sems"
+                    android:textColor="#708090"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:id="@+id/ms"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+
+                    android:paddingLeft="12dp"
+                    android:text="30.0"
+                    android:textColor="#000"
+                    android:textSize="14sp" />
+            </LinearLayout>
+
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:text="End-Sems"
-                android:textColor="#708090"
+                android:layout_weight="1"
+                android:orientation="vertical">
 
-                android:textSize="12sp" />
+                <TextView
+                    android:id="@+id/textView7"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="End-Sems"
+                    android:textColor="#708090"
 
-            <TextView
-                android:id="@+id/textView9"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:id="@+id/es"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="12dp"
+                    android:text="50.0"
+                    android:textColor="#000"
+                    android:textSize="14sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:text="F.A."
+                android:layout_weight="1"
+                android:orientation="vertical">
 
-                android:textColor="#708090"
-                android:textSize="12sp" />
+                <TextView
+                    android:id="@+id/textView9"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="F.A."
 
-            <TextView
-                android:id="@+id/textView13"
+                    android:textColor="#708090"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:id="@+id/fa"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="5dp"
+
+                    android:text="5.00"
+                    android:textColor="#000"
+                    android:textSize="14sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="15dp"
-                android:text="Total"
-                android:textColor="#2F4F4F"
-                android:textSize="12sp" />
+                android:layout_weight="1"
+
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/textView13"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="Total"
+                    android:textColor="#2F4F4F"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:id="@+id/tot"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="5dp"
+
+                    android:text="99.00"
+                    android:textColor="#FF53ABFC"
+                    android:textStyle="bold" />
+            </LinearLayout>
 
 
-            <TextView
-                android:id="@+id/textView12"
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
-                android:text="G.P.A"
-                android:textColor="#2F4F4F"
-                android:textSize="12sp" />
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/textView12"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+
+                    android:text="G.P.A"
+                    android:textColor="#2F4F4F"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:id="@+id/gp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+
+
+                    android:text="9.99"
+                    android:textColor="#000"
+                    android:textStyle="italic" />
+
+            </LinearLayout>
 
         </LinearLayout>
 
@@ -140,73 +263,6 @@
             android:orientation="horizontal"
             android:visibility="gone">
 
-            <TextView
-                android:id="@+id/q1"
-                android:layout_width="40dp"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:paddingLeft="3dp"
-
-                android:textColor="#000"
-                android:textSize="14sp"
-
-                />
-
-            <TextView
-                android:id="@+id/q2"
-                android:layout_width="40dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="right"
-                android:layout_marginLeft="4dp"
-                android:paddingLeft="3dp"
-
-                android:textColor="#000"
-                android:textSize="14sp" />
-
-            <TextView
-                android:id="@+id/ms"
-                android:layout_width="40dp"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-
-                android:textColor="#000"
-                android:textSize="14sp" />
-
-            <TextView
-                android:id="@+id/es"
-                android:layout_width="36dp"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="30dp"
-                android:textColor="#000"
-                android:textSize="14sp" />
-
-            <TextView
-                android:id="@+id/fa"
-                android:layout_width="30dp"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="12dp"
-
-                android:textColor="#000"
-                android:textSize="14sp" />
-
-            <TextView
-                android:id="@+id/tot"
-                android:layout_width="45dp"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="4dp"
-
-                android:textAlignment="center"
-                android:textColor="#FF53ABFC"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/gp"
-                android:layout_width="40dp"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-
-                android:textColor="#000"
-                android:textStyle="italic" />
 
         </LinearLayout>
 
