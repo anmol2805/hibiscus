@@ -169,7 +169,7 @@ public class GradesAdapter extends ArrayAdapter<Mycourse> {
                                         }
 
                                         float total = m1+m2+m3+m4+m5;
-                                        tot.setText(String.format("%.4f",total));
+                                        tot.setText(String.format("%.2f",total));
                                         if(response.getJSONArray("Notices")==null){
                                             Toast.makeText(context,"null",Toast.LENGTH_SHORT).show();
                                             lg.setVisibility(View.GONE);
