@@ -219,7 +219,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:paddingLeft="5dp"
-
+                    android:textAlignment="center"
                     android:text="99.00"
                     android:textColor="#FF53ABFC"
                     android:textStyle="bold" />
