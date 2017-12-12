@@ -73,8 +73,8 @@ public class subgrades extends Fragment{
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                if(dataSnapshot.child("semester")!=null){
-                    int semester = Integer.parseInt(dataSnapshot.child("semester").getValue().toString());
+                if(dataSnapshot.child("semester").getValue(String.class)!=null){
+                    int semester = Integer.parseInt(dataSnapshot.child("semester").getValue(String.class));
 
                     for(int i = semester;i>0;i--){
                         arrayList.add("Semester " + String.valueOf(i));
@@ -106,9 +106,9 @@ public class subgrades extends Fragment{
                     databaseReference.addValueEventListener(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
-                            if(dataSnapshot!=null && dataSnapshot.child("sid").getValue()!=null && dataSnapshot.child("pwd").getValue()!=null) {
-                                uid = dataSnapshot.child("sid").getValue().toString();
-                                pwd = dataSnapshot.child("pwd").getValue().toString();
+                            if(dataSnapshot.child("sid").getValue(String.class)!=null && dataSnapshot.child("pwd").getValue(String.class)!=null) {
+                                uid = dataSnapshot.child("sid").getValue(String.class);
+                                pwd = dataSnapshot.child("pwd").getValue(String.class);
                             }
                             try {
                                 jsonObject.put("pass","encrypt");
