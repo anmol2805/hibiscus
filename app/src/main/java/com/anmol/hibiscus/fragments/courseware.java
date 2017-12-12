@@ -66,8 +66,8 @@ public class courseware extends Fragment {
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                if(dataSnapshot.child("semester").getValue(String.class)!=null){
-                    int semester = Integer.parseInt(dataSnapshot.child("semester").getValue(String.class));
+                if(dataSnapshot.child("semester")!=null){
+                    int semester = Integer.parseInt(dataSnapshot.child("semester").getValue().toString());
 
 
                     for(int i = semester;i>0;i--){

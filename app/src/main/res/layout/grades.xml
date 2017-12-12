@@ -88,7 +88,7 @@
                     android:layout_height="wrap_content"
                     android:paddingLeft="3dp"
 
-                    android:text="5.60"
+                    android:text=""
                     android:textColor="#000"
 
                     android:textSize="14sp" />
@@ -115,7 +115,7 @@
                     android:layout_height="wrap_content"
                     android:paddingLeft="3dp"
 
-                    android:text="5.60"
+                    android:text=""
                     android:textColor="#000"
                     android:textSize="14sp" />
             </LinearLayout>
@@ -141,7 +141,7 @@
                     android:layout_height="wrap_content"
 
                     android:paddingLeft="12dp"
-                    android:text="30.0"
+                    android:text=""
                     android:textColor="#000"
                     android:textSize="14sp" />
             </LinearLayout>
@@ -166,7 +166,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:paddingLeft="12dp"
-                    android:text="50.0"
+                    android:text=""
                     android:textColor="#000"
                     android:textSize="14sp" />
 
@@ -194,7 +194,7 @@
                     android:layout_height="wrap_content"
                     android:paddingLeft="5dp"
 
-                    android:text="5.00"
+                    android:text=""
                     android:textColor="#000"
                     android:textSize="14sp" />
 
@@ -222,7 +222,7 @@
                     android:layout_height="wrap_content"
                     android:paddingLeft="5dp"
                     android:textAlignment="center"
-                    android:text="99.00"
+                    android:text=""
                     android:textColor="#FF53ABFC"
                     android:textStyle="bold" />
             </LinearLayout>
@@ -249,7 +249,7 @@
                     android:layout_height="wrap_content"
 
 
-                    android:text="9.99"
+                    android:text=""
                     android:textColor="#000"
                     android:textStyle="italic" />
 
