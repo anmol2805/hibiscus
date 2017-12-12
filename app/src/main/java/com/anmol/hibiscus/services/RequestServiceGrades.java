@@ -61,9 +61,9 @@ public class RequestServiceGrades extends IntentService {
         databaseReference.child("Students").child(auth.getCurrentUser().getUid()).child("hibiscus").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                if(dataSnapshot!=null && dataSnapshot.child("sid").getValue()!=null && dataSnapshot.child("pwd").getValue()!=null){
-                    uid = dataSnapshot.child("sid").getValue().toString();
-                    pwd = dataSnapshot.child("pwd").getValue().toString();
+                if(dataSnapshot.child("sid").getValue(String.class)!=null && dataSnapshot.child("pwd").getValue(String.class)!=null){
+                    uid = dataSnapshot.child("sid").getValue(String.class);
+                    pwd = dataSnapshot.child("pwd").getValue(String.class);
                     try {
                         jsonObject.put("uid",uid);
                         jsonObject.put("pwd",pwd);
