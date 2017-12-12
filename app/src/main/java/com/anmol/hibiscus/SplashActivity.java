@@ -105,29 +105,31 @@ public class SplashActivity extends AppCompatActivity {
                 @Override
                 public void run() {
                     progressBar.setVisibility(View.INVISIBLE);
-                    databaseReference.addValueEventListener(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(DataSnapshot dataSnapshot) {
-                            if(dataSnapshot!=null && dataSnapshot.child("sid").getValue()!=null && dataSnapshot.child("pwd").getValue()!=null){
-                                uid = dataSnapshot.child("sid").getValue().toString();
-                                pwd = dataSnapshot.child("pwd").getValue().toString();
-                                uidu = uid.toUpperCase();
-                                urlid = "https://hib.iiit-bh.ac.in/Hibiscus/docs/iiit/Photos/" + uidu + ".jpg";
-
-                            }
-
-                            Intent intent = new Intent(SplashActivity.this, HibiscusActivity.class);
-                            intent.putExtra("url", urlid);
-                            intent.putExtra("uidu", uidu);
-                            startActivity(intent);
-                            overridePendingTransition(R.anim.still,R.anim.slide_in_up);
-                        }
-
-                        @Override
-                        public void onCancelled(DatabaseError databaseError) {
-
-                        }
-                    });
+                    Intent intent = new Intent(SplashActivity.this, HibiscusActivity.class);
+                    startActivity(intent);
+                    overridePendingTransition(R.anim.still,R.anim.slide_in_up);
+//                    databaseReference.addValueEventListener(new ValueEventListener() {
+//                        @Override
+//                        public void onDataChange(DataSnapshot dataSnapshot) {
+//                            if(dataSnapshot!=null && dataSnapshot.child("sid").getValue()!=null && dataSnapshot.child("pwd").getValue()!=null){
+//                                uid = dataSnapshot.child("sid").getValue().toString();
+//                                pwd = dataSnapshot.child("pwd").getValue().toString();
+//                                uidu = uid.toUpperCase();
+//                                urlid = "https://hib.iiit-bh.ac.in/Hibiscus/docs/iiit/Photos/" + uidu + ".jpg";
+//
+//                            }
+//
+//
+//                            intent.putExtra("url", urlid);
+//                            intent.putExtra("uidu", uidu);
+//
+//                        }
+//
+//                        @Override
+//                        public void onCancelled(DatabaseError databaseError) {
+//
+//                        }
+//                    });
 //                    Intent intent = new Intent(SplashActivity.this, RequestServiceGrades.class);
 //                    startService(intent);
                 }

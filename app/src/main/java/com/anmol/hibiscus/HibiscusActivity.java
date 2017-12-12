@@ -37,7 +37,11 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.Calendar;
 import java.util.HashMap;
@@ -53,6 +57,7 @@ public class HibiscusActivity extends AppCompatActivity
     DrawerLayout drawer;
     FirebaseAuth auth;
     int sem;
+    DatabaseReference databaseReference;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,42 +74,58 @@ public class HibiscusActivity extends AppCompatActivity
         toggle.syncState();
         toggle.setDrawerIndicatorEnabled(false);
         auth = FirebaseAuth.getInstance();
+        databaseReference = FirebaseDatabase.getInstance().getReference().child("Students").child(auth.getCurrentUser().getUid()).child("hibiscus");
 
-        String url = getIntent().getStringExtra("url");
-        String uidu = getIntent().getStringExtra("uidu");
         setTitle("IIITcloud");
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
 
         View header = navigationView.getHeaderView(0);
-        CircleImageView imageView = (CircleImageView) header.findViewById(R.id.dph);
-        if(url!=null){
-            Glide.with(HibiscusActivity.this).load(url).into(imageView);
-        }
+        final CircleImageView imageView = (CircleImageView) header.findViewById(R.id.dph);
+        final TextView sid = (TextView)header.findViewById(R.id.sid);
+        databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if(dataSnapshot.child("sid").getValue(String.class)!=null){
+                    String uid = dataSnapshot.child("sid").getValue(String.class);
+                    String uidu = uid.toUpperCase();
+                    String urlid = "https://hib.iiit-bh.ac.in/Hibiscus/docs/iiit/Photos/" + uidu + ".jpg";
+                    Glide.with(HibiscusActivity.this).load(urlid).into(imageView);
+                    sid.setText(uidu);
+                    String yr = String.valueOf(uidu.charAt(2)) + String.valueOf(uidu.charAt(3));
+                    int y = Integer.parseInt(yr);
+                    Calendar c = Calendar.getInstance();
+                    int year = c.get(Calendar.YEAR);
+                    String cr = String.valueOf(year);
+                    int month = c.get(Calendar.MONTH);
+                    String cyr = String.valueOf(cr.charAt(2)) + String.valueOf(cr.charAt(3));
+                    year = Integer.parseInt(cyr);
+                    if(month>6){
+                        sem = 2*(year - y) + 1;
+                    }
+                    else{
+                        sem = 2*(year - y);
+                    }
+                    if(sem<9){
+                        Map<String,Object> map = new HashMap<>();
+                        map.put("semester",sem);
+                        FirebaseDatabase.getInstance().getReference().child("Students").child(auth.getCurrentUser().getUid()).child("hibiscus").updateChildren(map);
+                    }
 
-        TextView sid = (TextView)header.findViewById(R.id.sid);
-        if(uidu!=null){
-            sid.setText(uidu);
-            String yr = String.valueOf(uidu.charAt(2)) + String.valueOf(uidu.charAt(3));
-            int y = Integer.parseInt(yr);
-            Calendar c = Calendar.getInstance();
-            int year = c.get(Calendar.YEAR);
-            String cr = String.valueOf(year);
-            int month = c.get(Calendar.MONTH);
-            String cyr = String.valueOf(cr.charAt(2)) + String.valueOf(cr.charAt(3));
-            year = Integer.parseInt(cyr);
-            if(month>6){
-                sem = 2*(year - y) + 1;
-            }
-            else{
-                sem = 2*(year - y);
-            }
-            if(sem<9){
-                Map<String,Object> map = new HashMap<>();
-                map.put("semester",sem);
-                FirebaseDatabase.getInstance().getReference().child("Students").child(auth.getCurrentUser().getUid()).child("hibiscus").updateChildren(map);
+
+                }
+
+
             }
 
-        }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+
+
+
 
         navigationView.setNavigationItemSelectedListener(this);
         FragmentManager fm = getFragmentManager();
