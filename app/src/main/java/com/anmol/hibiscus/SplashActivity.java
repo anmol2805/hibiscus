@@ -55,6 +55,7 @@ public class SplashActivity extends AppCompatActivity {
         DatabaseReference mdatabase;
         CircleImageView sanmol,sankit;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
