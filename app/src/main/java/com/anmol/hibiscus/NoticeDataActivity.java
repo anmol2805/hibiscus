@@ -20,6 +20,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.anmol.hibiscus.Model.Noticedata;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -105,6 +106,31 @@ public class NoticeDataActivity extends AppCompatActivity {
 
             }
         });
+        FirebaseDatabase.getInstance().getReference().child("NoticeData").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if(dataSnapshot.hasChild(id)
+                        && !dataSnapshot.child(id).child("notice").getValue(String.class).contains("null")
+                        && dataSnapshot.child(id).child("notice").getValue()!=null
+                        && dataSnapshot.child(id).child("notice").getValue(String.class)!=null
+                        && dataSnapshot.child(id).child("notice")!=null
+                        && dataSnapshot.child(id).child("notice").exists()
+                        ){
+                    System.out.println("notice:" + "firebase");
+                    nd.loadData(dataSnapshot.child(id).child("notice").getValue(String.class), "text/html; charset=utf-8", "UTF-8");
+                    pn.setVisibility(View.GONE);
+                }
+                else {
+                    request(object);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
 //        FirebaseDatabase.getInstance().getReference().child("NoticeData").addValueEventListener(new ValueEventListener() {
 //            @Override
 //            public void onDataChange(DataSnapshot dataSnapshot) {
@@ -156,12 +182,21 @@ public class NoticeDataActivity extends AppCompatActivity {
         retry.setVisibility(View.GONE);
         fail.setVisibility(View.GONE);
         pn.setVisibility(View.VISIBLE);
+        final DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("NoticeData").child(id);
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, getResources().getString(R.string.noticedata_url), object, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 try {
                     String notice = response.getJSONArray("Notices").getJSONObject(0).getString("notice_data");
                     if(!notice.contains("null") && !notice.isEmpty()){
+                        Noticedata noticedata = new Noticedata(notice);
+                        databaseReference.setValue(noticedata).addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
+                                System.out.println("added to firebase");
+                            }
+                        });
+                        System.out.println("notice:" + "api");
                         nd.loadData(notice, "text/html; charset=utf-8", "UTF-8");
                         pn.setVisibility(View.GONE);
                     }
