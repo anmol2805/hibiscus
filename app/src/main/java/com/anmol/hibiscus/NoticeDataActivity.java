@@ -48,7 +48,6 @@ public class NoticeDataActivity extends AppCompatActivity {
         setContentView(R.layout.activity_notice_data);
         setTitle("Notices");
         retry = (Button)findViewById(R.id.retry);
-        retry.setVisibility(View.GONE);
         //data = (TextView)findViewById(R.id.data);
         nd = (WebView)findViewById(R.id.nd);
         d = (TextView)findViewById(R.id.date);
@@ -57,7 +56,7 @@ public class NoticeDataActivity extends AppCompatActivity {
         t = (TextView)findViewById(R.id.title);
         pn = (ProgressBar)findViewById(R.id.pn);
         fail = (ImageView) findViewById(R.id.fail);
-        pn.setVisibility(View.VISIBLE);
+
         nd.setFocusable(true);
         nd.setFocusableInTouchMode(true);
         nd.getSettings().setJavaScriptEnabled(true);
@@ -69,6 +68,7 @@ public class NoticeDataActivity extends AppCompatActivity {
         //nd.getSettings().setCacheMode(WebSettings.LOAD_CACHE_ONLY);
         nd.getSettings().setDomStorageEnabled(true);
         nd.getSettings().setDatabaseEnabled(true);
+        nd.getSettings().setLoadsImagesAutomatically(true);
         //nd.getSettings().setAppCacheEnabled(true);
         nd.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
         nd.getSettings().setUseWideViewPort(true);
@@ -97,72 +97,12 @@ public class NoticeDataActivity extends AppCompatActivity {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, getResources().getString(R.string.noticedata_url), object, new Response.Listener<JSONObject>() {
-            @Override
-            public void onResponse(JSONObject response) {
-                try {
-                    String notice = response.getJSONArray("Notices").getJSONObject(0).getString("notice_data");
-                    if(!notice.contains("null") && !notice.isEmpty()){
-                        nd.loadData(notice, "text/html; charset=utf-8", "UTF-8");
-                        pn.setVisibility(View.GONE);
-                    }
-                    else{
-                        pn.setVisibility(View.GONE);
-                        retry.setVisibility(View.VISIBLE);
-                        fail.setVisibility(View.VISIBLE);
-                        Toast.makeText(NoticeDataActivity.this,"Network Error",Toast.LENGTH_SHORT).show();
-                    }
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                pn.setVisibility(View.GONE);
-                retry.setVisibility(View.VISIBLE);
-                fail.setVisibility(View.VISIBLE);
-                Toast.makeText(NoticeDataActivity.this,"Network Error!!!",Toast.LENGTH_SHORT).show();
-            }
-        });
-        Mysingleton.getInstance(NoticeDataActivity.this).addToRequestqueue(jsonObjectRequest);
+        request(object);
         retry.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                retry.setVisibility(View.GONE);
-                fail.setVisibility(View.GONE);
-                pn.setVisibility(View.VISIBLE);
-                JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, getResources().getString(R.string.noticedata_url), object, new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        try {
-                            String notice = response.getJSONArray("Notices").getJSONObject(0).getString("notice_data");
-                            if(!notice.contains("null") && !notice.isEmpty()){
-                                nd.loadData(notice, "text/html; charset=utf-8", "UTF-8");
-                                pn.setVisibility(View.GONE);
-                            }
-                            else{
-                                pn.setVisibility(View.GONE);
-                                retry.setVisibility(View.VISIBLE);
-                                fail.setVisibility(View.VISIBLE);
-                                Toast.makeText(NoticeDataActivity.this,"Network Error",Toast.LENGTH_SHORT).show();
-                            }
+                request(object);
 
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }, new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        pn.setVisibility(View.GONE);
-                        retry.setVisibility(View.VISIBLE);
-                        fail.setVisibility(View.VISIBLE);
-                        Toast.makeText(NoticeDataActivity.this,"Network Error!!!",Toast.LENGTH_SHORT).show();
-                    }
-                });
-                Mysingleton.getInstance(NoticeDataActivity.this).addToRequestqueue(jsonObjectRequest);
             }
         });
 //        FirebaseDatabase.getInstance().getReference().child("NoticeData").addValueEventListener(new ValueEventListener() {
@@ -210,6 +150,42 @@ public class NoticeDataActivity extends AppCompatActivity {
 //
 //            }
 //        });
+    }
+
+    private void request(JSONObject object) {
+        retry.setVisibility(View.GONE);
+        fail.setVisibility(View.GONE);
+        pn.setVisibility(View.VISIBLE);
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, getResources().getString(R.string.noticedata_url), object, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                try {
+                    String notice = response.getJSONArray("Notices").getJSONObject(0).getString("notice_data");
+                    if(!notice.contains("null") && !notice.isEmpty()){
+                        nd.loadData(notice, "text/html; charset=utf-8", "UTF-8");
+                        pn.setVisibility(View.GONE);
+                    }
+                    else{
+                        pn.setVisibility(View.GONE);
+                        retry.setVisibility(View.VISIBLE);
+                        fail.setVisibility(View.VISIBLE);
+                        Toast.makeText(NoticeDataActivity.this,"Network Error",Toast.LENGTH_SHORT).show();
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                pn.setVisibility(View.GONE);
+                retry.setVisibility(View.VISIBLE);
+                fail.setVisibility(View.VISIBLE);
+                Toast.makeText(NoticeDataActivity.this,"Network Error!!!",Toast.LENGTH_SHORT).show();
+            }
+        });
+        Mysingleton.getInstance(NoticeDataActivity.this).addToRequestqueue(jsonObjectRequest);
     }
 
     @Override
