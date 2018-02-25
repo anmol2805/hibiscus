@@ -28,6 +28,8 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.nearby.messages.Strategy;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
@@ -47,15 +49,12 @@ import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Map;
 
-public class LoginActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
+public class LoginActivity extends AppCompatActivity {
 
     private EditText inputEmail, inputPassword;
     private FirebaseAuth auth;
     private ProgressBar progressBar;
     private Button  btnLogin, btnReset;
-    private Button googleSignIn;
-    private static final int RC_SIGN_IN = 9001;
-    private GoogleApiClient mGoogleApiClient;
 
     private static final String TAG = "Login";
     String email,sid,password;
@@ -63,9 +62,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     String uid,pwd;
     String url = "http://139.59.23.157/api/hibi/login_test";
     private static long back_pressed;
-    Button btnSignup;
     String crypt = "https://us-central1-iiitcloud-e9d6b.cloudfunctions.net/cryptr?pass=";
-    String dep;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,38 +76,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         uid = getIntent().getStringExtra("uid");
         pwd = getIntent().getStringExtra("pwd");
 
-        if (auth.getCurrentUser() != null) {
-            if(auth.getCurrentUser().isEmailVerified()){
 
-                Intent intent = new Intent(LoginActivity.this, SplashActivity.class);
-
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                startActivity(intent);
-                finish();
-                overridePendingTransition(R.anim.slide_in_up,R.anim.slide_in_up);
-
-            }
-            else {
-                auth.getCurrentUser().sendEmailVerification()
-                        .addOnCompleteListener(new OnCompleteListener<Void>() {
-                            @Override
-                            public void onComplete(@NonNull Task<Void> task) {
-                                if (task.isSuccessful()) {
-                                    // email sent
-                                    // after email is sent just logout the user and finish this activity
-                                    Toast.makeText(LoginActivity.this,"Your Email is not verified",Toast.LENGTH_SHORT).show();
-                                    Toast.makeText(LoginActivity.this,"We have sent you a verification email at " +auth.getCurrentUser().getEmail()+ ",verify and login again",Toast.LENGTH_LONG).show();
-                                }
-                                else
-                                {
-                                    Toast.makeText(LoginActivity.this,"Failed to send Verification link",Toast.LENGTH_SHORT).show();
-                                }
-                            }
-                        });
-            }
-
-        }
 
         // set the view now
         setContentView(R.layout.activity_login);
@@ -129,21 +95,6 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         //Get Firebase auth instance
         auth = FirebaseAuth.getInstance();
 
-//        btnSignup.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                startActivity(new Intent(LoginActivity.this, SplashActivity.class));
-//                overridePendingTransition(R.anim.slide_in_up,R.anim.still);
-//            }
-//        });
-
-//        btnReset.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                startActivity(new Intent(LoginActivity.this, ResetPasswordActivity.class));
-//                overridePendingTransition(R.anim.slide_out_right,R.anim.still);
-//            }
-//        });
 
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -181,7 +132,6 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                                                 // If sign in fails, display a message to the user. If sign in succeeds
                                                 // the auth state listener will be notified and logic to handle the
                                                 // signed in user can be handled in the listener.
-                                                progressBar.setVisibility(View.INVISIBLE);
                                                 if (!task.isSuccessful()) {
                                                     // there was an error
                                                     if (password.length() < 6) {
@@ -193,11 +143,11 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                                                                     @Override
                                                                     public void onComplete(@NonNull Task<AuthResult> task) {
 
-                                                                        progressBar.setVisibility(View.INVISIBLE);
                                                                         // If sign in fails, display a message to the user. If sign in succeeds
                                                                         // the auth state listener will be notified and logic to handle the
                                                                         // signed in user can be handled in the listener.
                                                                         if (!task.isSuccessful()) {
+                                                                            progressBar.setVisibility(View.INVISIBLE);
                                                                             Toast.makeText(LoginActivity.this, "Authentication failed.Check your Network Connection",
                                                                                     Toast.LENGTH_SHORT).show();
                                                                         } else {
@@ -212,7 +162,27 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                                                                                     public void onResponse(String response) {
 
                                                                                         Students students = new Students(sid,response,true);
-                                                                                        ref.setValue(students);
+                                                                                        ref.setValue(students).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                                                            @Override
+                                                                                            public void onSuccess(Void aVoid) {
+                                                                                                progressBar.setVisibility(View.INVISIBLE);
+                                                                                                String yr = String.valueOf(email.charAt(2)) + String.valueOf(email.charAt(3));
+                                                                                                FirebaseMessaging.getInstance().subscribeToTopic(yr);
+                                                                                                Intent intent = new Intent(LoginActivity.this, SplashActivity.class);
+
+                                                                                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                                                                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                                                                                startActivity(intent);
+                                                                                                finish();
+                                                                                                overridePendingTransition(R.anim.still,R.anim.slide_in_up);
+                                                                                            }
+                                                                                        }).addOnFailureListener(new OnFailureListener() {
+                                                                                            @Override
+                                                                                            public void onFailure(@NonNull Exception e) {
+                                                                                                progressBar.setVisibility(View.INVISIBLE);
+                                                                                                Toast.makeText(LoginActivity.this,"Connection Error...Please try again!!!",Toast.LENGTH_LONG).show();
+                                                                                            }
+                                                                                        });
 
                                                                                     }
                                                                                 }, new Response.ErrorListener() {
@@ -227,15 +197,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                                                                                 e.printStackTrace();
                                                                             }
 
-                                                                            String yr = String.valueOf(email.charAt(2)) + String.valueOf(email.charAt(3));
-                                                                            FirebaseMessaging.getInstance().subscribeToTopic(yr);
-                                                                            Intent intent = new Intent(LoginActivity.this, SplashActivity.class);
 
-                                                                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                                                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                                                            startActivity(intent);
-                                                                            finish();
-                                                                            overridePendingTransition(R.anim.still,R.anim.slide_in_up);
                                                                         }
                                                                     }
                                                                 });
@@ -252,7 +214,29 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                                                             @Override
                                                             public void onResponse(String response) {
                                                                 Students students = new Students(sid,response,true);
-                                                                ref.setValue(students);
+                                                                ref.setValue(students).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                                    @Override
+                                                                    public void onSuccess(Void aVoid) {
+                                                                        progressBar.setVisibility(View.INVISIBLE);
+                                                                        String yr = String.valueOf(email.charAt(2)) + String.valueOf(email.charAt(3));
+                                                                        FirebaseMessaging.getInstance().subscribeToTopic(yr);
+
+                                                                        Intent intent = new Intent(LoginActivity.this, SplashActivity.class);
+
+                                                                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                                                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                                                        startActivity(intent);
+                                                                        finish();
+                                                                        overridePendingTransition(R.anim.still,R.anim.slide_in_up);
+
+                                                                    }
+                                                                }).addOnFailureListener(new OnFailureListener() {
+                                                                    @Override
+                                                                    public void onFailure(@NonNull Exception e) {
+                                                                        progressBar.setVisibility(View.INVISIBLE);
+                                                                        Toast.makeText(LoginActivity.this,"Connection Error...Please try again!!!",Toast.LENGTH_LONG).show();
+                                                                    }
+                                                                });
                                                             }
                                                         }, new Response.ErrorListener() {
                                                             @Override
@@ -265,16 +249,6 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                                                         e.printStackTrace();
                                                     }
 
-                                                    String yr = String.valueOf(email.charAt(2)) + String.valueOf(email.charAt(3));
-                                                    FirebaseMessaging.getInstance().subscribeToTopic(yr);
-
-                                                        Intent intent = new Intent(LoginActivity.this, SplashActivity.class);
-
-                                                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                                        startActivity(intent);
-                                                        finish();
-                                                        overridePendingTransition(R.anim.still,R.anim.slide_in_up);
 
 
 
@@ -307,116 +281,11 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 
 
         });
-        GoogleLogin();
     }
 
 
 
 
-    private void GoogleLogin(){
-
-        googleSignIn = (Button) findViewById(R.id.google_sign_in);
-
-        googleSignIn.setVisibility(View.INVISIBLE);
-
-        // Configure Google Sign In
-        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(getString(R.string.default_web_client_id))
-                .requestEmail()
-                .build();
-
-        mGoogleApiClient = new GoogleApiClient.Builder(this)
-                .enableAutoManage(this /* FragmentActivity */, this /* OnConnectionFailedListener */)
-                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
-                .build();
-
-        googleSignIn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
-                startActivityForResult(signInIntent, RC_SIGN_IN);
-            }
-        });
-    }
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if (requestCode == RC_SIGN_IN) {
-            GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
-            if (result.isSuccess()) {
-                // Google Sign In was successful, authenticate with Firebase
-                GoogleSignInAccount account = result.getSignInAccount();
-                firebaseAuthWithGoogle(account);
-            } else {
-                // Google Sign In failed, update UI appropriately
-                // [START_EXCLUDE]
-                // [END_EXCLUDE]
-            }
-        }
-        else {
-            //callbackManager.onActivityResult(requestCode, resultCode, data);
-        }
-    }
-    // [END onactivityresult]
-
-    // [START auth_with_google]
-    private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
-        Log.d(TAG, "firebaseAuthWithGoogle:" + acct.getId());
-        // [START_EXCLUDE silent]
-        // [END_EXCLUDE]
-
-
-
-
-        AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
-        auth.signInWithCredential(credential)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            // Sign in success, update UI with the signed-in user's information
-                            Log.d(TAG, "signInWithCredential:success");
-                            FirebaseUser user = auth.getCurrentUser();
-                            updateUI(user);
-
-                        } else {
-                            // If sign in fails, display a message to the user.
-                            Log.w(TAG, "signInWithCredential:failure", task.getException());
-                            Toast.makeText(LoginActivity.this, "Authentication failed.",
-                                    Toast.LENGTH_SHORT).show();
-
-                        }
-
-
-
-                    }
-                });
-    }
-
-    private void updateUI(FirebaseUser user) {
-        if(user!=null)       //Someone is logged in
-        {
-            Log.i(TAG,"Login was successful in Firebase");
-            Log.i(TAG,"UID "+ user.getUid());
-
-            Intent intent = new Intent(this,SplashActivity.class);
-
-
-            startActivity(intent);
-
-        }
-        else
-        {
-            Log.i(TAG,"No user is logged in ");
-        }
-
-    }
-
-    @Override
-    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-
-    }
 
     @Override
     public void onBackPressed() {
