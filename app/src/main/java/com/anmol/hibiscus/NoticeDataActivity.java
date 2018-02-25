@@ -1,19 +1,15 @@
 package com.anmol.hibiscus;
 
 import android.content.Context;
-import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
-import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -29,8 +25,6 @@ import com.google.firebase.database.ValueEventListener;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import org.w3c.dom.Text;
 
 public class NoticeDataActivity extends AppCompatActivity {
     String id,uid,pwd,title,date,att,post;
@@ -98,11 +92,11 @@ public class NoticeDataActivity extends AppCompatActivity {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        request(object);
+        request(object, 0);
         retry.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                request(object);
+                request(object, 1);
 
             }
         });
@@ -122,7 +116,7 @@ public class NoticeDataActivity extends AppCompatActivity {
                     pn.setVisibility(View.GONE);
                 }
                 else {
-                    request(object);
+                    request(object,1);
                 }
             }
 
@@ -134,7 +128,7 @@ public class NoticeDataActivity extends AppCompatActivity {
 
     }
 
-    private void request(JSONObject object) {
+    private void request(JSONObject object, final int i) {
         retry.setVisibility(View.GONE);
         fail.setVisibility(View.GONE);
         pn.setVisibility(View.VISIBLE);
@@ -157,9 +151,14 @@ public class NoticeDataActivity extends AppCompatActivity {
                         pn.setVisibility(View.GONE);
                     }
                     else{
-                        pn.setVisibility(View.GONE);
-                        retry.setVisibility(View.VISIBLE);
-                        fail.setVisibility(View.VISIBLE);
+                        if(i == 1){
+                            pn.setVisibility(View.GONE);
+                            retry.setVisibility(View.VISIBLE);
+                            fail.setVisibility(View.VISIBLE);
+                        }
+                        else{
+                            pn.setVisibility(View.GONE);
+                        }
                     }
 
                 } catch (JSONException e) {
@@ -169,9 +168,15 @@ public class NoticeDataActivity extends AppCompatActivity {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                pn.setVisibility(View.GONE);
-                retry.setVisibility(View.VISIBLE);
-                fail.setVisibility(View.VISIBLE);
+
+                if(i == 1){
+                    pn.setVisibility(View.GONE);
+                    retry.setVisibility(View.VISIBLE);
+                    fail.setVisibility(View.VISIBLE);
+                }
+                else{
+                    pn.setVisibility(View.GONE);
+                }
 
             }
         });
