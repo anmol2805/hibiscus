@@ -8,139 +8,200 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="horizontal"
 
-        <TextView
-            android:id="@+id/subname"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="14sp"
-            android:layout_marginLeft="10dp"
-            android:layout_weight="1"
-            android:text="TextView"
-            android:textColor="#000"
-            android:textStyle="bold"
-
-
-            />
-
+        >
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
             android:layout_weight="1"
-            android:orientation="horizontal">
+            >
 
-            <RelativeLayout
-                android:layout_width="match_parent"
+            <TextView
+                android:id="@+id/subname"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textSize="14sp"
+                android:layout_marginLeft="10dp"
                 android:layout_weight="1"
-                >
+                android:text="TextView"
+                android:textColor="#000"
+                android:textStyle="bold"
 
-                <com.github.lzyzsd.circleprogress.ArcProgress
-                    android:id="@+id/presentp"
-                    android:layout_width="65dp"
-                    android:layout_height="65dp"
-                    android:layout_marginBottom="5dp"
-                    android:layout_marginTop="5dp"
-                    android:layout_centerHorizontal="true"
-                    app:arc_finished_color="#28a745"
-                    app:arc_stroke_width="5dp"
-                    app:arc_suffix_text_padding="0dp"
-                    app:arc_suffix_text_size="11sp"
-                    app:arc_text_color="#007bff"
-                    app:arc_text_size="18sp"
-                    app:arc_unfinished_color="#DCDCDC" />
-            </RelativeLayout>
+
+                />
 
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/present"
+                android:layout_weight="1"
+                android:orientation="horizontal">
+                <LinearLayout
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="end"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:text="TextView"
-                    android:textColor="#28a745"
-                    android:textSize="13sp" />
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/absent"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="end"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:text="TextView"
-                    android:textColor="#dc3545"
-                    android:textSize="13sp" />
+                    <TextView
 
-                <TextView
-                    android:id="@+id/leave"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="end"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:text="TextView"
-                    android:textColor="#708090"
-                    android:textSize="13sp" />
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end"
+                        android:layout_marginLeft="10dp"
+                        android:text="Present :"
+                        android:textColor="#28a745"
+                        android:textSize="13sp" />
 
-                <TextView
-                    android:id="@+id/total"
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end"
+                        android:layout_marginLeft="10dp"
+                        android:text="Absent :"
+                        android:textColor="#dc3545"
+                        android:textSize="13sp" />
+
+                    <TextView
+
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end"
+                        android:layout_marginLeft="10dp"
+                        android:text="Leave :"
+                        android:textColor="#708090"
+                        android:textSize="13sp" />
+
+                    <TextView
+
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end"
+                        android:layout_marginLeft="10dp"
+                        android:text="Total :"
+                        android:textColor="#17a2b8"
+                        android:textSize="13sp" />
+                </LinearLayout>
+
+                <LinearLayout
                     android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    >
+
+                    <TextView
+                        android:id="@+id/present"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="10dp"
+                        android:text="TextView"
+                        android:textStyle="italic"
+                        android:textColor="#28a745"
+                        android:textSize="13sp" />
+
+                    <TextView
+                        android:id="@+id/absent"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="10dp"
+                        android:text="TextView"
+                        android:textStyle="italic"
+                        android:textColor="#dc3545"
+                        android:textSize="13sp" />
+
+                    <TextView
+                        android:id="@+id/leave"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="10dp"
+                        android:text="TextView"
+                        android:textStyle="italic"
+                        android:textColor="#708090"
+                        android:textSize="13sp" />
+
+                    <TextView
+                        android:id="@+id/total"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="10dp"
+                        android:text="TextView"
+                        android:textStyle="italic"
+                        android:textColor="#17a2b8"
+                        android:textSize="13sp" />
+                </LinearLayout>
+                <RelativeLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="end"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:text="TextView"
-                    android:textColor="#17a2b8"
-                    android:textSize="13sp" />
+                    >
+                    <com.github.lzyzsd.circleprogress.ArcProgress
+                        android:layout_alignParentEnd="true"
+                        android:id="@+id/presentp"
+                        android:layout_width="65dp"
+                        android:layout_height="65dp"
+                        android:layout_margin="5dp"
+                        android:layout_gravity="center"
+                        app:arc_finished_color="#28a745"
+                        app:arc_stroke_width="5dp"
+                        app:arc_suffix_text_padding="0dp"
+                        app:arc_suffix_text_size="11sp"
+                        app:arc_text_color="#007bff"
+                        app:arc_text_size="18sp"
+                        app:arc_unfinished_color="#DCDCDC"
+
+                        android:layout_alignParentRight="true" />
+                </RelativeLayout>
+
+
             </LinearLayout>
+
+            <TextView
+                android:id="@+id/att"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:text="TextView"
+                android:textColor="#708090"
+                android:textSize="13sp"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/teacher"
+                android:layout_width="match_parent"
+
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_below="@+id/title"
+                android:layout_marginLeft="10dp"
+                android:layout_weight="1"
+                android:text="TextView"
+                android:textStyle="italic"
+                android:textSize="13sp"
+                android:textColor="#2F4F4F"
+                />
+
+
+            <TextView
+                android:id="@+id/subcode"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="TextView"
+                android:layout_marginLeft="10dp"
+
+                android:textSize="12sp"
+                />
+
         </LinearLayout>
 
-        <TextView
-            android:id="@+id/att"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="end"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:text="TextView"
-            android:textColor="#708090"
-            android:textSize="13sp"
-            android:visibility="gone" />
-
-        <TextView
-            android:id="@+id/teacher"
-            android:layout_width="match_parent"
-
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_below="@+id/title"
-            android:layout_marginLeft="10dp"
-            android:layout_weight="1"
-            android:text="TextView"
-            android:textStyle="italic"
-            android:textSize="13sp"
-            android:textColor="#2F4F4F"
-            />
-
-
-        <TextView
-            android:id="@+id/subcode"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="TextView"
-            android:layout_marginLeft="10dp"
-
-            android:textSize="12sp"
-            />
 
     </LinearLayout>
 
