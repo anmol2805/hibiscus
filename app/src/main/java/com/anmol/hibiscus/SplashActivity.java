@@ -63,7 +63,7 @@ public class SplashActivity extends AppCompatActivity {
         sanmol = (CircleImageView)findViewById(R.id.sanmol);
         sankit = (CircleImageView)findViewById(R.id.sankit);
         Glide.with(this).load(R.drawable.anmol).into(sanmol);
-        Glide.with(this).load(R.drawable.ankit).into(sankit);
+        Glide.with(this).load(R.drawable.ankitnew).into(sankit);
         auth = FirebaseAuth.getInstance();
         if(auth.getCurrentUser()==null){
             startActivity(new Intent(SplashActivity.this,LoginActivity.class));

@@ -27,8 +27,8 @@ public class mypage extends Fragment {
         getActivity().setTitle("Developers");
         CircleImageView anmol = (CircleImageView)vi.findViewById(R.id.anmol);
         CircleImageView ankit = (CircleImageView)vi.findViewById(R.id.ankit);
-        Glide.with(getActivity()).load(R.drawable.anmol).into(anmol);
-        Glide.with(getActivity()).load(R.drawable.ankit).into(ankit);
+        Glide.with(getActivity()).load(R.drawable.anmolnew).into(anmol);
+        Glide.with(getActivity()).load(R.drawable.ankitnew).into(ankit);
         Button ganmol = (Button)vi.findViewById(R.id.ganmol);
 
         Button gitanmol = (Button)vi.findViewById(R.id.gitanmol);
