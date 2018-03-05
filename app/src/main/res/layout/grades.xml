@@ -11,6 +11,7 @@
         android:paddingTop="5dp"
         >
 
+
         <TextView
             android:id="@+id/subject"
             android:layout_width="wrap_content"
