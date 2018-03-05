@@ -64,7 +64,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:orientation="vertical"
-            android:visibility="gone">
+            android:visibility="visible">
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -84,7 +84,7 @@
                         android:text="Quiz 1 :"
                         android:layout_marginVertical="1dp"
                         android:textColor="#708090"
-                        android:textSize="12sp" />
+                        android:textSize="14sp" />
                     <TextView
                         android:layout_marginVertical="1dp"
                         android:id="@+id/textView2"
@@ -93,7 +93,7 @@
                         android:text="Quiz 2 :"
                         android:layout_marginLeft="10dp"
                         android:textColor="#708090"
-                        android:textSize="12sp" />
+                        android:textSize="14sp" />
                     <TextView
                         android:layout_marginVertical="1dp"
                         android:id="@+id/textView9"
@@ -103,7 +103,7 @@
                         android:layout_gravity="end"
                         android:layout_marginLeft="10dp"
                         android:textColor="#708090"
-                        android:textSize="12sp" />
+                        android:textSize="14sp" />
 
 
 
@@ -121,7 +121,6 @@
                         android:layout_marginVertical="1dp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
                         android:text=""
 
                         android:textColor="#000"
@@ -131,7 +130,6 @@
                         android:layout_marginVertical="1dp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
                         android:text=""
                         android:textColor="#000"
                         android:textSize="14sp" />
@@ -140,7 +138,6 @@
                         android:layout_marginVertical="1dp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
                         android:text=""
                         android:textColor="#000"
                         android:textSize="14sp" />
@@ -160,7 +157,7 @@
                         android:text="Mid-Sems :"
                         android:layout_marginVertical="1dp"
                         android:textColor="#708090"
-                        android:textSize="12sp" />
+                        android:textSize="14sp" />
 
                     <TextView
                         android:id="@+id/textView7"
@@ -170,7 +167,7 @@
                         android:text="End-Sems :"
 
                         android:textColor="#708090"
-                        android:textSize="12sp" />
+                        android:textSize="14sp" />
 
                     <TextView
                         android:id="@+id/textView13"
@@ -180,7 +177,7 @@
                         android:text="Total :"
                         android:layout_gravity="end"
                         android:textColor="#2F4F4F"
-                        android:textSize="12sp" />
+                        android:textSize="14sp" />
                     <TextView
                         android:id="@+id/textView12"
                         android:layout_width="wrap_content"
@@ -189,7 +186,7 @@
                         android:layout_marginVertical="1dp"
                         android:layout_gravity="end"
                         android:textColor="#2F4F4F"
-                        android:textSize="12sp" />
+                        android:textSize="14sp" />
 
                 </LinearLayout>
 
@@ -204,7 +201,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginVertical="1dp"
-                        android:layout_weight="1"
+                        
                         android:text=""
                         android:textColor="#000"
                         android:textSize="14sp" />
@@ -214,7 +211,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginVertical="1dp"
-                        android:layout_weight="1"
+                        
                         android:text=""
                         android:textColor="#000"
                         android:textSize="14sp" />
@@ -222,8 +219,8 @@
                         android:id="@+id/tot"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
                         android:text=""
+                        android:textSize="14sp"
                         android:layout_marginVertical="1dp"
                         android:textColor="#FF53ABFC"
                         android:textStyle="bold"/>
@@ -232,8 +229,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginVertical="1dp"
-                        android:layout_weight="1"
                         android:text=""
+                        android:textSize="14sp"
                         android:textColor="#000"
                         android:textStyle="italic" />
 
