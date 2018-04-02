@@ -1,11 +1,18 @@
 package com.anmol.hibiscus;
 
+import android.app.Dialog;
 import android.app.FragmentManager;
+import android.content.ActivityNotFoundException;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
+import android.support.v7.app.AlertDialog;
 import android.view.Gravity;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -131,23 +138,66 @@ public class HibiscusActivity extends AppCompatActivity
         FragmentManager fm = getFragmentManager();
         fm.beginTransaction().replace(R.id.content_hib,new main()).commit();
         fm.executePendingTransactions();
+        checkupdatestatus();
     }
-    private class versionCheck extends AsyncTask< Void,Void,Void>{
-        @Override
-        protected void onPreExecute() {
-            HttpHandler sh = new HttpHandler();
-            super.onPreExecute();
-        }
 
-        @Override
-        protected Void doInBackground(Void... params) {
-            return null;
-        }
-        @Override
-        protected void onPostExecute(Void aVoid) {
-            super.onPostExecute(aVoid);
-        }
+    private void checkupdatestatus() {
+        DatabaseReference dtb = FirebaseDatabase.getInstance().getReference().getRoot();
+        dtb.child("banner").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if(dataSnapshot.child("vname").getValue(String.class)!=null){
+                    String updateversion = dataSnapshot.child("vname").getValue(String.class);
+                    try {
+                        PackageInfo pinfo = getPackageManager().getPackageInfo(getPackageName(),0);
+                        String version = pinfo.versionName.trim();
+                        if (version.equals(updateversion)){
+                            System.out.println("update not needed");
+                        }
+                        else {
+                            AlertDialog dialog = new AlertDialog.Builder(HibiscusActivity.this)
+                                    .setTitle("New version available")
+                                    .setMessage("Please, update app to new version to continue!!!")
+                                    .setCancelable(false)
+                                    .setPositiveButton("Update", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialogInterface, int i) {
+                                            Uri uri = Uri.parse("market://details?id=" + "com.anmol.hibiscus");
+                                            Intent goToMarket = new Intent(Intent.ACTION_VIEW, uri);
+                                            // To count with Play market backstack, After pressing back button,
+                                            // to taken back to our application, we need to add following flags to intent.
+                                            goToMarket.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+                                            goToMarket.addFlags(Intent.FLAG_ACTIVITY_NEW_DOCUMENT);
+                                            goToMarket.addFlags(Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
+                                            try{
+                                                startActivity(goToMarket);
+                                            }
+                                            catch (ActivityNotFoundException e){
+                                                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://play.google.com/store/apps/details?id=" + "com.anmol.hibiscus")));
+                                            }
+
+
+
+                                        }
+                                    }).create();
+                            dialog.show();
+                        }
+                    } catch (PackageManager.NameNotFoundException e) {
+                        e.printStackTrace();
+                    }
+
+
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
+
+
 
 
     @Override
@@ -290,26 +340,10 @@ public class HibiscusActivity extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.END);
         return true;
     }
-    private void sendVerificationEmail()
-    {
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
-        user.sendEmailVerification()
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        if (task.isSuccessful()) {
-                            Toast.makeText(HibiscusActivity.this,"Email sent...",Toast.LENGTH_SHORT).show();
-                        }
-                        else
-                        {
-                            Toast.makeText(HibiscusActivity.this,"Failed to send E-mail!!!",Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
+    @Override
+    protected void onPostResume() {
+        super.onPostResume();
+        checkupdatestatus();
     }
-
-
-
-
 }

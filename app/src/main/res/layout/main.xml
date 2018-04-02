@@ -123,10 +123,11 @@
                     <View
                         android:id="@+id/margin"
                         android:layout_width="match_parent"
-                        android:layout_height="2dp"
+                        android:layout_height="1dp"
                         android:layout_marginLeft="4dp"
                         android:layout_marginRight="4dp"
-                        android:background="@color/colorPrimary"/>
+                        android:background="#3f3f3f"
+                        />
 
                 </LinearLayout>
 
