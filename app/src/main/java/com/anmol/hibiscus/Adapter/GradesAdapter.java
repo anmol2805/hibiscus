@@ -84,12 +84,12 @@ public class GradesAdapter extends ArrayAdapter<Mycourse> {
             final TextView tot = (TextView)v.findViewById(R.id.tot);
             final LinearLayout l1 = (LinearLayout)v.findViewById(R.id.l1);
             final LinearLayout l2 = (LinearLayout)v.findViewById(R.id.l2);
-            l1.setVisibility(View.GONE);
-            l2.setVisibility(View.GONE);
+            l1.setVisibility(View.VISIBLE);
+            l2.setVisibility(View.VISIBLE);
             final Button load = (Button)v.findViewById(R.id.pg);
             final ProgressBar lg = (ProgressBar)v.findViewById(R.id.lg);
-            load.setVisibility(View.VISIBLE);
-            lg.setVisibility(View.GONE);
+            load.setVisibility(View.GONE);
+            lg.setVisibility(View.VISIBLE);
             DatabaseReference db = FirebaseDatabase.getInstance().getReference().child("Students").child(auth.getCurrentUser().getUid()).child("subject_grades");
             db.child(mycourses.get(position).getId()).addValueEventListener(new ValueEventListener() {
                 @Override
