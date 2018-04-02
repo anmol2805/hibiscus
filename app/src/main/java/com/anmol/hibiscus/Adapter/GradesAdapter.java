@@ -21,6 +21,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.anmol.hibiscus.Model.Mycourse;
+import com.anmol.hibiscus.Model.Subjectgrd;
 import com.anmol.hibiscus.Mysingleton;
 import com.anmol.hibiscus.R;
 import com.google.firebase.auth.FirebaseAuth;
@@ -89,6 +90,41 @@ public class GradesAdapter extends ArrayAdapter<Mycourse> {
             final ProgressBar lg = (ProgressBar)v.findViewById(R.id.lg);
             load.setVisibility(View.VISIBLE);
             lg.setVisibility(View.GONE);
+            DatabaseReference db = FirebaseDatabase.getInstance().getReference().child("Students").child(auth.getCurrentUser().getUid()).child("subject_grades");
+            db.child(mycourses.get(position).getId()).addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    if(!dataSnapshot.exists() || !dataSnapshot.hasChildren()){
+                        load.setVisibility(View.VISIBLE);
+                        l1.setVisibility(View.GONE);
+                        l2.setVisibility(View.GONE);
+                    }
+                    else{
+                        load.setVisibility(View.GONE);
+                        l1.setVisibility(View.VISIBLE);
+                        l2.setVisibility(View.VISIBLE);
+                        String quiz1 = dataSnapshot.child("quiz1").getValue(String.class);
+                        String quiz2 = dataSnapshot.child("quiz2").getValue(String.class);
+                        String midsem = dataSnapshot.child("midsem").getValue(String.class);
+                        String endsem = dataSnapshot.child("endsem").getValue(String.class);
+                        String faculty = dataSnapshot.child("faculty_assessment").getValue(String.class);
+                        String gpa = dataSnapshot.child("grade_point").getValue(String.class);
+                        String total = dataSnapshot.child("subtotal").getValue(String.class);
+                        q1.setText(quiz1);
+                        q2.setText(quiz2);
+                        ms.setText(midsem);
+                        es.setText(endsem);
+                        fa.setText(faculty);
+                        cgpa.setText(gpa);
+                        tot.setText(total);
+                    }
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
             load.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -127,11 +163,11 @@ public class GradesAdapter extends ArrayAdapter<Mycourse> {
                                         String q5s = object.getString("faculty_assessment");
                                         String fq1s,fq2s,fq3s,fq4s,fq5s,fgpa,ftot;
                                         fgpa = object.getString("grade_point");
-                                        cgpa.setText(fgpa);
+
                                         if(!q1s.isEmpty() && !Character.isLetter(q1s.charAt(0))){
                                             m1 = Float.parseFloat(q1s);
                                             fq1s = q1s;
-                                            q1.setText(q1s);
+
                                         }
                                         else{
                                             fq1s = "";
@@ -140,7 +176,7 @@ public class GradesAdapter extends ArrayAdapter<Mycourse> {
                                         if(!q2s.isEmpty() && !Character.isLetter(q2s.charAt(0))){
                                             m2 = Float.parseFloat(q2s);
                                             fq2s = q2s;
-                                            q2.setText(q2s);
+
                                         }
                                         else{
                                             fq2s = "";
@@ -149,7 +185,7 @@ public class GradesAdapter extends ArrayAdapter<Mycourse> {
                                         if(!q3s.isEmpty()&& !Character.isLetter(q3s.charAt(0))){
                                             m3 = Float.parseFloat(q3s);
                                             fq3s = q3s;
-                                            ms.setText(q3s);
+
                                         }
                                         else{
                                             fq3s = "";
@@ -158,7 +194,7 @@ public class GradesAdapter extends ArrayAdapter<Mycourse> {
                                         if(!q4s.isEmpty()&& !Character.isLetter(q4s.charAt(0))){
                                             m4 = Float.parseFloat(q4s);
                                             fq4s = q4s;
-                                            es.setText(q4s);
+
                                         }
                                         else{
                                             fq4s = "";
@@ -167,7 +203,7 @@ public class GradesAdapter extends ArrayAdapter<Mycourse> {
                                         if(!q5s.isEmpty()&& !Character.isLetter(q5s.charAt(0))){
                                             m5 = Float.parseFloat(q5s);
                                             fq5s = q5s;
-                                            fa.setText(q5s);
+
                                         }
                                         else{
                                             fq5s = "";
@@ -176,8 +212,10 @@ public class GradesAdapter extends ArrayAdapter<Mycourse> {
 
                                         float total = m1+m2+m3+m4+m5;
                                         ftot = String.format("%.2f",total);
+                                        Subjectgrd subjectgrd = new Subjectgrd(fq1s,fq2s,fq3s,fq4s,fq5s,fgpa,ftot);
+                                        DatabaseReference db = FirebaseDatabase.getInstance().getReference().child("Students").child(auth.getCurrentUser().getUid()).child("subject_grades");
+                                        db.child(mycourses.get(position).getId()).setValue(subjectgrd);
 
-                                        tot.setText(ftot);
                                         if(response.getJSONArray("Notices")==null){
                                             Toast.makeText(context,"null",Toast.LENGTH_SHORT).show();
                                             lg.setVisibility(View.GONE);
