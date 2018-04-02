@@ -151,35 +151,36 @@ public class HibiscusActivity extends AppCompatActivity
                     try {
                         PackageInfo pinfo = getPackageManager().getPackageInfo(getPackageName(),0);
                         String version = pinfo.versionName.trim();
+                        AlertDialog dialog = new AlertDialog.Builder(HibiscusActivity.this)
+                                .setTitle("New version available")
+                                .setMessage("Please, update app to new version to continue!!!")
+                                .setCancelable(false)
+                                .setPositiveButton("Update", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                        Uri uri = Uri.parse("market://details?id=" + "com.anmol.hibiscus");
+                                        Intent goToMarket = new Intent(Intent.ACTION_VIEW, uri);
+                                        // To count with Play market backstack, After pressing back button,
+                                        // to taken back to our application, we need to add following flags to intent.
+                                        goToMarket.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+                                        goToMarket.addFlags(Intent.FLAG_ACTIVITY_NEW_DOCUMENT);
+                                        goToMarket.addFlags(Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
+                                        try{
+                                            startActivity(goToMarket);
+                                        }
+                                        catch (ActivityNotFoundException e){
+                                            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://play.google.com/store/apps/details?id=" + "com.anmol.hibiscus")));
+                                        }
+
+
+
+                                    }
+                                }).create();
                         if (version.equals(updateversion)){
-                            System.out.println("update not needed");
+                            dialog.dismiss();
                         }
                         else {
-                            AlertDialog dialog = new AlertDialog.Builder(HibiscusActivity.this)
-                                    .setTitle("New version available")
-                                    .setMessage("Please, update app to new version to continue!!!")
-                                    .setCancelable(false)
-                                    .setPositiveButton("Update", new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialogInterface, int i) {
-                                            Uri uri = Uri.parse("market://details?id=" + "com.anmol.hibiscus");
-                                            Intent goToMarket = new Intent(Intent.ACTION_VIEW, uri);
-                                            // To count with Play market backstack, After pressing back button,
-                                            // to taken back to our application, we need to add following flags to intent.
-                                            goToMarket.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
-                                            goToMarket.addFlags(Intent.FLAG_ACTIVITY_NEW_DOCUMENT);
-                                            goToMarket.addFlags(Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
-                                            try{
-                                                startActivity(goToMarket);
-                                            }
-                                            catch (ActivityNotFoundException e){
-                                                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://play.google.com/store/apps/details?id=" + "com.anmol.hibiscus")));
-                                            }
 
-
-
-                                        }
-                                    }).create();
                             dialog.show();
                         }
                     } catch (PackageManager.NameNotFoundException e) {
