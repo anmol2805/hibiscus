@@ -20,4 +20,6 @@
     <color name="btn_logut_bg">#ff6861</color>
     <color name="available">#6EBB3B</color>
     <color name="absent">#dc3545</color>
+    <color name="good">#28a745</color>
+    <color name="warn">#ffc107</color>
 </resources>

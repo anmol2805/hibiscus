@@ -75,6 +75,15 @@ public class AttendanceAdapter extends ArrayAdapter<Attendance> {
             final int ppi = Integer.parseInt(pp);
             final ArcProgress arcProgress = (ArcProgress)v.findViewById(R.id.presentp);
             arcProgress.setProgress(ppi);
+            if(ppi>= 75 ){
+                arcProgress.setFinishedStrokeColor(R.color.good);
+            }
+            else if(ppi >= 65 && ppi<75){
+                arcProgress.setFinishedStrokeColor(R.color.warn);
+            }
+            else {
+                arcProgress.setFinishedStrokeColor(R.color.absent);
+            }
             attendance.setText(attstatus);
             TextView teacher = (TextView)v.findViewById(R.id.teacher);
             teacher.setText(attendances.get(position).getName());
