@@ -98,8 +98,10 @@ public class GradesAdapter extends ArrayAdapter<Mycourse> {
                         load.setVisibility(View.VISIBLE);
                         l1.setVisibility(View.GONE);
                         l2.setVisibility(View.GONE);
+                        lg.setVisibility(View.GONE);
                     }
                     else{
+                        lg.setVisibility(View.GONE);
                         load.setVisibility(View.GONE);
                         l1.setVisibility(View.VISIBLE);
                         l2.setVisibility(View.VISIBLE);
