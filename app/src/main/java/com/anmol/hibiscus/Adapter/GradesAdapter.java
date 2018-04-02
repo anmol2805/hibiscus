@@ -125,51 +125,59 @@ public class GradesAdapter extends ArrayAdapter<Mycourse> {
                                         String q3s = object.getString("midsem");
                                         String q4s = object.getString("endsem");
                                         String q5s = object.getString("faculty_assessment");
-
-
-
-
-
-
-                                        cgpa.setText(object.getString("grade_point"));
+                                        String fq1s,fq2s,fq3s,fq4s,fq5s,fgpa,ftot;
+                                        fgpa = object.getString("grade_point");
+                                        cgpa.setText(fgpa);
                                         if(!q1s.isEmpty() && !Character.isLetter(q1s.charAt(0))){
                                             m1 = Float.parseFloat(q1s);
+                                            fq1s = q1s;
                                             q1.setText(q1s);
                                         }
                                         else{
+                                            fq1s = "";
                                             m1 = 0;
                                         }
                                         if(!q2s.isEmpty() && !Character.isLetter(q2s.charAt(0))){
                                             m2 = Float.parseFloat(q2s);
+                                            fq2s = q2s;
                                             q2.setText(q2s);
                                         }
                                         else{
+                                            fq2s = "";
                                             m2 = 0;
                                         }
                                         if(!q3s.isEmpty()&& !Character.isLetter(q3s.charAt(0))){
                                             m3 = Float.parseFloat(q3s);
+                                            fq3s = q3s;
                                             ms.setText(q3s);
                                         }
                                         else{
+                                            fq3s = "";
                                             m3 = 0;
                                         }
                                         if(!q4s.isEmpty()&& !Character.isLetter(q4s.charAt(0))){
                                             m4 = Float.parseFloat(q4s);
+                                            fq4s = q4s;
                                             es.setText(q4s);
                                         }
                                         else{
+                                            fq4s = "";
                                             m4 = 0;
                                         }
                                         if(!q5s.isEmpty()&& !Character.isLetter(q5s.charAt(0))){
                                             m5 = Float.parseFloat(q5s);
+                                            fq5s = q5s;
                                             fa.setText(q5s);
                                         }
                                         else{
+                                            fq5s = "";
                                             m5 = 0;
                                         }
 
                                         float total = m1+m2+m3+m4+m5;
-                                        tot.setText(String.format("%.2f",total));
+                                        ftot = String.format("%.2f",total);
+
+                                        tot.setText(ftot);
                                         if(response.getJSONArray("Notices")==null){
                                             Toast.makeText(context,"null",Toast.LENGTH_SHORT).show();
                                             lg.setVisibility(View.GONE);
