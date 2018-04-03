@@ -76,7 +76,7 @@ public class GradesAdapter extends ArrayAdapter<Mycourse> {
             final Button refreshgrd = (Button)v.findViewById(R.id.refreshgrd);
             subjectpgr.getIndeterminateDrawable().setColorFilter(context.getResources().getColor(R.color.pgrcolor),android.graphics.PorterDuff.Mode.MULTIPLY);
             refreshgrd.setVisibility(View.VISIBLE);
-            subjectpgr.setVisibility(View.VISIBLE);
+            subjectpgr.setVisibility(View.GONE);
             TextView text = (TextView)v.findViewById(R.id.subject);
             text.setText(mycourses.get(position).getName());
             final TextView q1 = (TextView)v.findViewById(R.id.q1);
