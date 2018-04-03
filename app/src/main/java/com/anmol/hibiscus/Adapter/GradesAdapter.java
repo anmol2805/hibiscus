@@ -220,7 +220,7 @@ public class GradesAdapter extends ArrayAdapter<Mycourse> {
                                         Subjectgrd subjectgrd = new Subjectgrd(fq1s,fq2s,fq3s,fq4s,fq5s,fgpa,ftot);
                                         DatabaseReference db = FirebaseDatabase.getInstance().getReference().child("Students").child(auth.getCurrentUser().getUid()).child("subject_grades");
                                         db.child(mycourses.get(position).getId()).setValue(subjectgrd);
-
+                                        Toast.makeText(context,"Updated Successfully",Toast.LENGTH_SHORT).show();
 
 
                                     } catch (JSONException e) {

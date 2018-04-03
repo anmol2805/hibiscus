@@ -107,7 +107,7 @@ public class myapps extends Fragment {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if(dataSnapshot.child("semester")!=null){
-                    int semester = Integer.parseInt(dataSnapshot.child("semester").getValue().toString());
+                    int semester = Integer.parseInt(dataSnapshot.child("semester").getValue(String.class));
 
                     for(int i = semester;i>0;i--){
                         arrayList.add("Semester " + String.valueOf(i));
@@ -158,13 +158,12 @@ public class myapps extends Fragment {
                         }
                         if(getActivity()!=null){
                             attendanceAdapter = new AttendanceAdapter(getActivity(),R.layout.attendance,attendances);
-                            attendanceAdapter.notifyDataSetChanged();
                             if(!attendanceAdapter.isEmpty()){
                                 progressBar.setVisibility(View.GONE);
                                 retry.setVisibility(View.GONE);
                                 fail.setVisibility(View.GONE);
+                                attendanceAdapter.notifyDataSetChanged();
                                 listView.setAdapter(attendanceAdapter);
-
                             }
                             else{
                                 progressBar.setVisibility(View.GONE);

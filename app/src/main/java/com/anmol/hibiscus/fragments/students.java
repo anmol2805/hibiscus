@@ -146,16 +146,20 @@ public class students extends Fragment {
                                             }
                                             if(getActivity()!=null){
                                                 searchAdapter = new SearchAdapter(getActivity(),R.layout.search,searches);
-                                                searchAdapter.notifyDataSetChanged();
+
                                                 if(!searchAdapter.isEmpty()){
                                                     empty.setVisibility(View.GONE);
+                                                    searchAdapter.notifyDataSetChanged();
                                                     listView.setAdapter(searchAdapter);
                                                     progressBar.setVisibility(View.GONE);
                                                 }
                                                 else {
                                                     empty.setVisibility(View.VISIBLE);
                                                     progressBar.setVisibility(View.GONE);
-                                                    Toast.makeText(getActivity(),"No Results Found",Toast.LENGTH_SHORT).show();
+                                                    if(getActivity()!=null){
+                                                        Toast.makeText(getActivity(),"No Results Found",Toast.LENGTH_SHORT).show();
+                                                    }
+
                                                 }
                                             }
 

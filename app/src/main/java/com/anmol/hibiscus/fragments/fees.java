@@ -124,12 +124,18 @@ public class fees extends Fragment {
                                 progressBar.setVisibility(View.GONE);
                                 retry.setVisibility(View.VISIBLE);
                                 fail.setVisibility(View.VISIBLE);
-                                Toast.makeText(getActivity(),"Network Error",Toast.LENGTH_SHORT).show();
+                                if(getActivity()!=null){
+                                    Toast.makeText(getActivity(),"Network Error",Toast.LENGTH_SHORT).show();
+                                }
+
                             }
 
                         }
                     });
-                    Mysingleton.getInstance(getActivity()).addToRequestqueue(jsonObjectRequest);
+                    if(getActivity()!=null && isAdded()){
+                        Mysingleton.getInstance(getActivity()).addToRequestqueue(jsonObjectRequest);
+                    }
+
                     retry.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {

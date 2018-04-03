@@ -79,7 +79,7 @@ public class subgrades extends Fragment{
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if(dataSnapshot.child("semester")!=null){
-                    int semester = Integer.parseInt(dataSnapshot.child("semester").getValue().toString());
+                    int semester = Integer.parseInt(dataSnapshot.child("semester").getValue(String.class));
 
                     for(int i = semester;i>0;i--){
                         arrayList.add("Semester " + String.valueOf(i));

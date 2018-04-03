@@ -96,7 +96,7 @@ public class HibiscusActivity extends AppCompatActivity
                     String uid = dataSnapshot.child("sid").getValue(String.class);
                     String uidu = uid.toUpperCase();
                     String urlid = "https://hib.iiit-bh.ac.in/Hibiscus/docs/iiit/Photos/" + uidu + ".jpg";
-                    Glide.with(HibiscusActivity.this).load(urlid).into(imageView);
+                    Glide.with(getApplicationContext()).load(urlid).into(imageView);
                     sid.setText(uidu);
                     String yr = String.valueOf(uidu.charAt(2)) + String.valueOf(uidu.charAt(3));
                     int y = Integer.parseInt(yr);
