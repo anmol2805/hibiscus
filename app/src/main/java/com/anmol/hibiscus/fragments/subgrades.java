@@ -124,6 +124,7 @@ public class subgrades extends Fragment{
                     mycourses.clear();
                     mysubjectgrades.clear();
                     cl.setVisibility(View.VISIBLE);
+
                 coursedatabase = FirebaseDatabase.getInstance().getReference().child("Students").child(auth.getCurrentUser().getUid()).child("mycourses");
                 coursedatabase.addValueEventListener(new ValueEventListener() {
                     @Override
@@ -155,6 +156,11 @@ public class subgrades extends Fragment{
                                                     "",
                                                     "",
                                                     false);
+                                            for(int i = 0;i<mysubjectgrades.size();i++){
+                                                if(mysubjectgrades.get(i).getId().equals(id)){
+                                                    mysubjectgrades.remove(i);
+                                                }
+                                            }
                                             mysubjectgrades.add(mysubjectgrade);
 //                                            Mycourse mycourse = new Mycourse(subject,professor,credits,id);
 //                                            mycourses.add(mycourse);
@@ -179,6 +185,11 @@ public class subgrades extends Fragment{
                                                     gpa,
                                                     total,
                                                     true);
+                                            for(int i = 0;i<mysubjectgrades.size();i++){
+                                                if(mysubjectgrades.get(i).getId().equals(id)){
+                                                    mysubjectgrades.remove(i);
+                                                }
+                                            }
                                             mysubjectgrades.add(mysubjectgrade);
 //                                            Mycourse mycourse = new Mycourse(subject,professor,credits,id);
 //                                            mycourses.add(mycourse);
