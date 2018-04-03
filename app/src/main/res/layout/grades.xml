@@ -65,13 +65,14 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:orientation="vertical"
-            android:visibility="gone">
+            android:visibility="visible">
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:orientation="horizontal"
-                >
+                android:orientation="horizontal">
+
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -82,32 +83,31 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="10dp"
-                        android:text="Quiz 1 :"
                         android:layout_marginVertical="1dp"
+                        android:text="Quiz 1 :"
                         android:textColor="#708090"
                         android:textSize="14sp" />
+
                     <TextView
-                        android:layout_marginVertical="1dp"
                         android:id="@+id/textView2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Quiz 2 :"
                         android:layout_marginLeft="10dp"
+                        android:layout_marginVertical="1dp"
+                        android:text="Quiz 2 :"
                         android:textColor="#708090"
                         android:textSize="14sp" />
+
                     <TextView
-                        android:layout_marginVertical="1dp"
                         android:id="@+id/textView9"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="F.A :"
                         android:layout_gravity="end"
                         android:layout_marginLeft="10dp"
+                        android:layout_marginVertical="1dp"
+                        android:text="F.A :"
                         android:textColor="#708090"
                         android:textSize="14sp" />
-
-
-
 
 
                 </LinearLayout>
@@ -118,54 +118,57 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:orientation="vertical">
+
                     <TextView
                         android:id="@+id/q1"
-                        android:layout_marginVertical="1dp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginVertical="1dp"
                         android:text=""
 
                         android:textColor="#000"
                         android:textSize="14sp" />
+
                     <TextView
                         android:id="@+id/q2"
-                        android:layout_marginVertical="1dp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginVertical="1dp"
                         android:text=""
                         android:textColor="#000"
                         android:textSize="14sp" />
+
                     <TextView
                         android:id="@+id/fa"
-                        android:layout_marginVertical="1dp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginVertical="1dp"
                         android:text=""
                         android:textColor="#000"
                         android:textSize="14sp" />
-
-
 
 
                 </LinearLayout>
+
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
+
                     <TextView
                         android:id="@+id/textView5"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Mid-Sems :"
                         android:layout_marginVertical="1dp"
+                        android:text="Mid-Sems :"
                         android:textColor="#708090"
                         android:textSize="14sp" />
 
                     <TextView
                         android:id="@+id/textView7"
-                        android:layout_marginVertical="1dp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginVertical="1dp"
                         android:text="End-Sems :"
 
                         android:textColor="#708090"
@@ -173,20 +176,21 @@
 
                     <TextView
                         android:id="@+id/textView13"
-                        android:layout_marginVertical="1dp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Total :"
                         android:layout_gravity="end"
+                        android:layout_marginVertical="1dp"
+                        android:text="Total :"
                         android:textColor="#2F4F4F"
                         android:textSize="14sp" />
+
                     <TextView
                         android:id="@+id/textView12"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="G.P.A :"
-                        android:layout_marginVertical="1dp"
                         android:layout_gravity="end"
+                        android:layout_marginVertical="1dp"
+                        android:text="G.P.A :"
                         android:textColor="#2F4F4F"
                         android:textSize="14sp" />
 
@@ -198,12 +202,13 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:orientation="vertical">
+
                     <TextView
                         android:id="@+id/ms"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginVertical="1dp"
-                        
+
                         android:text=""
                         android:textColor="#000"
                         android:textSize="14sp" />
@@ -213,30 +218,50 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginVertical="1dp"
-                        
+
                         android:text=""
                         android:textColor="#000"
                         android:textSize="14sp" />
+
                     <TextView
                         android:id="@+id/tot"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text=""
-                        android:textSize="14sp"
                         android:layout_marginVertical="1dp"
+                        android:text=""
                         android:textColor="#FF53ABFC"
-                        android:textStyle="bold"/>
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+
                     <TextView
                         android:id="@+id/gp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginVertical="1dp"
                         android:text=""
-                        android:textSize="14sp"
                         android:textColor="#000"
+                        android:textSize="14sp"
                         android:textStyle="italic" />
 
                 </LinearLayout>
+
+                <Button
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:id="@+id/refreshgrd"
+                    android:background="@drawable/retryblue"
+                    android:layout_marginRight="10dp"
+                    android:layout_gravity="center"
+                    />
+
+                <ProgressBar
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:id="@+id/subjectpgr"
+                    android:layout_marginRight="10dp"
+                    android:layout_gravity="center"
+                    android:visibility="gone"
+                    />
 
             </LinearLayout>
 
