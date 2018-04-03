@@ -14,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -61,6 +62,7 @@ public class subgrades extends Fragment{
     Button retry;
     ImageView fail;
     DatabaseReference coursedatabase;
+    TextView q1,q2,ms,es,fa,tot;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
@@ -76,7 +78,13 @@ public class subgrades extends Fragment{
         courselist = (ListView)vi.findViewById(R.id.list);
         LayoutInflater layoutInflater = getActivity().getLayoutInflater();
         ViewGroup header = (ViewGroup)layoutInflater.inflate(R.layout.header,courselist,false);
-        courselist.addFooterView(header,null,false);
+        courselist.addHeaderView(header,null,false);
+        q1 = (TextView)header.findViewById(R.id.q1);
+        q2 = (TextView)header.findViewById(R.id.q2);
+        ms = (TextView)header.findViewById(R.id.ms);
+        es = (TextView)header.findViewById(R.id.es);
+        fa = (TextView)header.findViewById(R.id.fa);
+        tot = (TextView)header.findViewById(R.id.tot);
         jsonObject = new JSONObject();
         auth = FirebaseAuth.getInstance();
         databaseReference = FirebaseDatabase.getInstance().getReference().child("Students").child(auth.getCurrentUser().getUid()).child("hibiscus");
@@ -114,12 +122,14 @@ public class subgrades extends Fragment{
                 String sem = adapterView.getItemAtPosition(i).toString();
                     final String a = String.valueOf(sem.charAt(9));
                     mycourses.clear();
+                    mysubjectgrades.clear();
                     cl.setVisibility(View.VISIBLE);
                 coursedatabase = FirebaseDatabase.getInstance().getReference().child("Students").child(auth.getCurrentUser().getUid()).child("mycourses");
                 coursedatabase.addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         mycourses.clear();
+                        mysubjectgrades.clear();
                         for(final DataSnapshot data:dataSnapshot.getChildren()){
 
                             final String id = data.child("id").getValue().toString();
@@ -416,6 +426,12 @@ public class subgrades extends Fragment{
                 subtotal = subtotal + Float.parseFloat(total);
             }
         }
+        q1.setText(String.format("%.2f",quiz1total));
+        q2.setText(String.format("%.2f",quiz2total));
+        ms.setText(String.format("%.2f",midsemtotal));
+        es.setText(String.format("%.2f",endsemtotal));
+        fa.setText(String.format("%.2f",facultytotal));
+        tot.setText(String.format("%.2f",subtotal));
         System.out.println("quiz1tot" + quiz1total + "," + quiz2total + "," + midsemtotal + "," + endsemtotal + "," + facultytotal + "," + subtotal);
     }
 }
