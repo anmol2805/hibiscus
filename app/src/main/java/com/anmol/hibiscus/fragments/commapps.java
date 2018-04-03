@@ -84,96 +84,20 @@ public class commapps extends Fragment {
         mdatabase = FirebaseDatabase.getInstance().getReference().child("Students").child(auth.getCurrentUser().getUid()).child("grades");
         gradesdatabse = FirebaseDatabase.getInstance().getReference().child("Students").child(auth.getCurrentUser().getUid());
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().getRoot();
-        final JSONObject jsonObject = new JSONObject();
-        databaseReference.child("Students").child(auth.getCurrentUser().getUid()).child("hibiscus").addValueEventListener(new ValueEventListener() {
+        databaseReference.child("Students").child(auth.getCurrentUser().getUid()).child("grades").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                if(dataSnapshot.child("sid").getValue(String.class)!=null && dataSnapshot.child("pwd").getValue(String.class)!=null){
-                    uid = dataSnapshot.child("sid").getValue(String.class);
-                    pwd = dataSnapshot.child("pwd").getValue(String.class);
-                    try {
-                        jsonObject.put("uid",uid);
-                        jsonObject.put("pwd",pwd);
-                        jsonObject.put("pass","encrypt");
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                    JsonObjectRequest jsonObjectRequestg = new JsonObjectRequest(Request.Method.POST, getResources().getString(R.string.view_grades_url), jsonObject, new Response.Listener<JSONObject>() {
-                        @Override
-                        public void onResponse(JSONObject response) {
-                            try {
-                                String html = response.getJSONArray("Notices").getJSONObject(0).getString("html");
-                                if(!html.isEmpty()){
-                                    progressBar.setVisibility(View.GONE);
-                                    grd.loadData(html, "text/html; charset=utf-8", "UTF-8");
-                                }
-                                else {
-                                    progressBar.setVisibility(View.GONE);
-                                    retry.setVisibility(View.VISIBLE);
-                                    fail.setVisibility(View.VISIBLE);
-                                    Toast.makeText(getActivity(),"Network Error",Toast.LENGTH_SHORT).show();
-                                }
-
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    }, new Response.ErrorListener() {
-                        @Override
-                        public void onErrorResponse(VolleyError error) {
-                            if(getActivity()!=null && isAdded()){
-                                progressBar.setVisibility(View.GONE);
-                                retry.setVisibility(View.VISIBLE);
-                                fail.setVisibility(View.VISIBLE);
-                                Toast.makeText(getActivity(),"Network Error",Toast.LENGTH_SHORT).show();
-                            }
-
-                        }
-                    });
-                    Mysingleton.getInstance(getActivity()).addToRequestqueue(jsonObjectRequestg);
-                    retry.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            retry.setVisibility(View.GONE);
-                            fail.setVisibility(View.GONE);
-                            progressBar.setVisibility(View.VISIBLE);
-                            JsonObjectRequest jsonObjectRequestg = new JsonObjectRequest(Request.Method.POST, getResources().getString(R.string.view_grades_url), jsonObject, new Response.Listener<JSONObject>() {
-                                @Override
-                                public void onResponse(JSONObject response) {
-                                    try {
-                                        String html = response.getJSONArray("Notices").getJSONObject(0).getString("html");
-                                        if(!html.isEmpty()){
-                                            progressBar.setVisibility(View.GONE);
-                                            grd.loadData(html, "text/html; charset=utf-8", "UTF-8");
-                                        }
-                                        else {
-                                            progressBar.setVisibility(View.GONE);
-                                            retry.setVisibility(View.VISIBLE);
-                                            fail.setVisibility(View.VISIBLE);
-                                            Toast.makeText(getActivity(),"Network Error",Toast.LENGTH_SHORT).show();
-                                        }
-
-                                    } catch (JSONException e) {
-                                        e.printStackTrace();
-                                    }
-                                }
-                            }, new Response.ErrorListener() {
-                                @Override
-                                public void onErrorResponse(VolleyError error) {
-                                    if(getActivity()!=null && isAdded()){
-                                        progressBar.setVisibility(View.GONE);
-                                        retry.setVisibility(View.VISIBLE);
-                                        fail.setVisibility(View.VISIBLE);
-                                        Toast.makeText(getActivity(),"Network Error",Toast.LENGTH_SHORT).show();
-                                    }
-
-                                }
-                            });
-                            Mysingleton.getInstance(getActivity()).addToRequestqueue(jsonObjectRequestg);
-                        }
-                    });
+                if(!dataSnapshot.exists() || !dataSnapshot.hasChildren()){
+                    progressBar.setVisibility(View.GONE);
+                    retry.setVisibility(View.VISIBLE);
+                    fail.setVisibility(View.VISIBLE);
+                    Toast.makeText(getActivity(),"Network Error",Toast.LENGTH_SHORT).show();
                 }
-
+                else{
+                    String html = dataSnapshot.child("html").getValue(String.class);
+                    progressBar.setVisibility(View.GONE);
+                    grd.loadData(html, "text/html; charset=utf-8", "UTF-8");
+                }
             }
 
             @Override
@@ -181,6 +105,113 @@ public class commapps extends Fragment {
 
             }
         });
+        retry.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                retry.setVisibility(View.GONE);
+                fail.setVisibility(View.GONE);
+                progressBar.setVisibility(View.VISIBLE);
+                Intent intent = new Intent(getActivity(), RequestServiceGrades.class);
+                getActivity().startService(intent);
+            }
+        });
+//        final JSONObject jsonObject = new JSONObject();
+//        databaseReference.child("Students").child(auth.getCurrentUser().getUid()).child("hibiscus").addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(DataSnapshot dataSnapshot) {
+//                if(dataSnapshot.child("sid").getValue(String.class)!=null && dataSnapshot.child("pwd").getValue(String.class)!=null){
+//                    uid = dataSnapshot.child("sid").getValue(String.class);
+//                    pwd = dataSnapshot.child("pwd").getValue(String.class);
+//                    try {
+//                        jsonObject.put("uid",uid);
+//                        jsonObject.put("pwd",pwd);
+//                        jsonObject.put("pass","encrypt");
+//                    } catch (JSONException e) {
+//                        e.printStackTrace();
+//                    }
+//                    JsonObjectRequest jsonObjectRequestg = new JsonObjectRequest(Request.Method.POST, getResources().getString(R.string.view_grades_url), jsonObject, new Response.Listener<JSONObject>() {
+//                        @Override
+//                        public void onResponse(JSONObject response) {
+//                            try {
+//                                String html = response.getJSONArray("Notices").getJSONObject(0).getString("html");
+//                                if(!html.isEmpty()){
+//                                    progressBar.setVisibility(View.GONE);
+//                                    grd.loadData(html, "text/html; charset=utf-8", "UTF-8");
+//                                }
+//                                else {
+//                                    progressBar.setVisibility(View.GONE);
+//                                    retry.setVisibility(View.VISIBLE);
+//                                    fail.setVisibility(View.VISIBLE);
+//                                    Toast.makeText(getActivity(),"Network Error",Toast.LENGTH_SHORT).show();
+//                                }
+//
+//                            } catch (JSONException e) {
+//                                e.printStackTrace();
+//                            }
+//                        }
+//                    }, new Response.ErrorListener() {
+//                        @Override
+//                        public void onErrorResponse(VolleyError error) {
+//                            if(getActivity()!=null && isAdded()){
+//                                progressBar.setVisibility(View.GONE);
+//                                retry.setVisibility(View.VISIBLE);
+//                                fail.setVisibility(View.VISIBLE);
+//                                Toast.makeText(getActivity(),"Network Error",Toast.LENGTH_SHORT).show();
+//                            }
+//
+//                        }
+//                    });
+//                    Mysingleton.getInstance(getActivity()).addToRequestqueue(jsonObjectRequestg);
+//                    retry.setOnClickListener(new View.OnClickListener() {
+//                        @Override
+//                        public void onClick(View view) {
+//                            retry.setVisibility(View.GONE);
+//                            fail.setVisibility(View.GONE);
+//                            progressBar.setVisibility(View.VISIBLE);
+//                            JsonObjectRequest jsonObjectRequestg = new JsonObjectRequest(Request.Method.POST, getResources().getString(R.string.view_grades_url), jsonObject, new Response.Listener<JSONObject>() {
+//                                @Override
+//                                public void onResponse(JSONObject response) {
+//                                    try {
+//                                        String html = response.getJSONArray("Notices").getJSONObject(0).getString("html");
+//                                        if(!html.isEmpty()){
+//                                            progressBar.setVisibility(View.GONE);
+//                                            grd.loadData(html, "text/html; charset=utf-8", "UTF-8");
+//                                        }
+//                                        else {
+//                                            progressBar.setVisibility(View.GONE);
+//                                            retry.setVisibility(View.VISIBLE);
+//                                            fail.setVisibility(View.VISIBLE);
+//                                            Toast.makeText(getActivity(),"Network Error",Toast.LENGTH_SHORT).show();
+//                                        }
+//
+//                                    } catch (JSONException e) {
+//                                        e.printStackTrace();
+//                                    }
+//                                }
+//                            }, new Response.ErrorListener() {
+//                                @Override
+//                                public void onErrorResponse(VolleyError error) {
+//                                    if(getActivity()!=null && isAdded()){
+//                                        progressBar.setVisibility(View.GONE);
+//                                        retry.setVisibility(View.VISIBLE);
+//                                        fail.setVisibility(View.VISIBLE);
+//                                        Toast.makeText(getActivity(),"Network Error",Toast.LENGTH_SHORT).show();
+//                                    }
+//
+//                                }
+//                            });
+//                            Mysingleton.getInstance(getActivity()).addToRequestqueue(jsonObjectRequestg);
+//                        }
+//                    });
+//                }
+//
+//            }
+//
+//            @Override
+//            public void onCancelled(DatabaseError databaseError) {
+//
+//            }
+//        });
 
 
         return vi;
