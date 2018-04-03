@@ -72,7 +72,11 @@ public class GradesAdapter extends ArrayAdapter<Mycourse> {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             //LayoutInflater inflater = context.getLayoutInflater();
             View v = inflater.inflate(resource,null);
-
+            final ProgressBar subjectpgr = (ProgressBar)v.findViewById(R.id.subjectpgr);
+            final Button refreshgrd = (Button)v.findViewById(R.id.refreshgrd);
+            subjectpgr.getIndeterminateDrawable().setColorFilter(context.getResources().getColor(R.color.pgrcolor),android.graphics.PorterDuff.Mode.MULTIPLY);
+            refreshgrd.setVisibility(View.VISIBLE);
+            subjectpgr.setVisibility(View.VISIBLE);
             TextView text = (TextView)v.findViewById(R.id.subject);
             text.setText(mycourses.get(position).getName());
             final TextView q1 = (TextView)v.findViewById(R.id.q1);
@@ -125,6 +129,120 @@ public class GradesAdapter extends ArrayAdapter<Mycourse> {
                 @Override
                 public void onCancelled(DatabaseError databaseError) {
 
+                }
+            });
+            refreshgrd.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    refreshgrd.setVisibility(View.GONE);
+                    subjectpgr.setVisibility(View.VISIBLE);
+                    databaseReference.addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            if(dataSnapshot!=null && dataSnapshot.child("sid").getValue()!=null && dataSnapshot.child("pwd").getValue()!=null) {
+                                uid = dataSnapshot.child("sid").getValue().toString();
+                                pwd = dataSnapshot.child("pwd").getValue().toString();
+                            }
+                            try {
+                                jsonObject.put("sub_code",mycourses.get(position).getId());
+                                jsonObject.put("pass","encrypt");
+                                jsonObject.put("uid",uid);
+                                jsonObject.put("pwd",pwd);
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                            final JsonObjectRequest jsonObjectRequestc = new JsonObjectRequest(Request.Method.POST, context.getResources().getString(R.string.subgrades_url), jsonObject, new Response.Listener<JSONObject>() {
+                                @Override
+                                public void onResponse(JSONObject response) {
+                                    try {
+
+                                        int c = 0;
+                                        float m1 = 0,m2 = 0,m3 = 0,m4 = 0,m5 = 0;
+                                        JSONObject object = response.getJSONArray("Notices").getJSONObject(c);
+                                        subjectpgr.setVisibility(View.GONE);
+                                        refreshgrd.setVisibility(View.VISIBLE);
+                                        String q1s = object.getString("quiz1");
+                                        String q2s = object.getString("quiz2");
+                                        String q3s = object.getString("midsem");
+                                        String q4s = object.getString("endsem");
+                                        String q5s = object.getString("faculty_assessment");
+                                        String fq1s,fq2s,fq3s,fq4s,fq5s,fgpa,ftot;
+                                        fgpa = object.getString("grade_point");
+
+                                        if(!q1s.isEmpty() && !Character.isLetter(q1s.charAt(0))){
+                                            m1 = Float.parseFloat(q1s);
+                                            fq1s = q1s;
+
+                                        }
+                                        else{
+                                            fq1s = "";
+                                            m1 = 0;
+                                        }
+                                        if(!q2s.isEmpty() && !Character.isLetter(q2s.charAt(0))){
+                                            m2 = Float.parseFloat(q2s);
+                                            fq2s = q2s;
+
+                                        }
+                                        else{
+                                            fq2s = "";
+                                            m2 = 0;
+                                        }
+                                        if(!q3s.isEmpty()&& !Character.isLetter(q3s.charAt(0))){
+                                            m3 = Float.parseFloat(q3s);
+                                            fq3s = q3s;
+
+                                        }
+                                        else{
+                                            fq3s = "";
+                                            m3 = 0;
+                                        }
+                                        if(!q4s.isEmpty()&& !Character.isLetter(q4s.charAt(0))){
+                                            m4 = Float.parseFloat(q4s);
+                                            fq4s = q4s;
+
+                                        }
+                                        else{
+                                            fq4s = "";
+                                            m4 = 0;
+                                        }
+                                        if(!q5s.isEmpty()&& !Character.isLetter(q5s.charAt(0))){
+                                            m5 = Float.parseFloat(q5s);
+                                            fq5s = q5s;
+
+                                        }
+                                        else{
+                                            fq5s = "";
+                                            m5 = 0;
+                                        }
+
+                                        float total = m1+m2+m3+m4+m5;
+                                        ftot = String.format("%.2f",total);
+                                        Subjectgrd subjectgrd = new Subjectgrd(fq1s,fq2s,fq3s,fq4s,fq5s,fgpa,ftot);
+                                        DatabaseReference db = FirebaseDatabase.getInstance().getReference().child("Students").child(auth.getCurrentUser().getUid()).child("subject_grades");
+                                        db.child(mycourses.get(position).getId()).setValue(subjectgrd);
+
+
+
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+
+                                }
+                            }, new Response.ErrorListener() {
+                                @Override
+                                public void onErrorResponse(VolleyError error) {
+                                    subjectpgr.setVisibility(View.GONE);
+                                    refreshgrd.setVisibility(View.VISIBLE);
+                                }
+                            });
+                            Mysingleton.getInstance(context).addToRequestqueue(jsonObjectRequestc);
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+
+                        }
+                    });
                 }
             });
             load.setOnClickListener(new View.OnClickListener() {

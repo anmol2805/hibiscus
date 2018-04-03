@@ -23,4 +23,5 @@
     <color name="good">#28a745</color>
     <color name="warn">#ffc107</color>
     <color name="unfin">#DCDCDC</color>
+    <color name="pgrcolor">#3498db</color>
 </resources>
