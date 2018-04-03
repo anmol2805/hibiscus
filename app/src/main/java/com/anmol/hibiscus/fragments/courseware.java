@@ -67,7 +67,7 @@ public class courseware extends Fragment {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if(dataSnapshot.child("semester")!=null){
-                    int semester = Integer.parseInt(dataSnapshot.child("semester").getValue(String.class));
+                    int semester = Integer.parseInt(dataSnapshot.child("semester").getValue().toString());
 
 
                     for(int i = semester;i>0;i--){

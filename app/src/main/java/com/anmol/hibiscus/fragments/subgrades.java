@@ -23,6 +23,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.anmol.hibiscus.Adapter.CourseAdapter;
 import com.anmol.hibiscus.Adapter.GradesAdapter;
 import com.anmol.hibiscus.Model.Mycourse;
+import com.anmol.hibiscus.Model.Mysubjectgrade;
 import com.anmol.hibiscus.Model.Search;
 import com.anmol.hibiscus.Mysingleton;
 import com.anmol.hibiscus.R;
@@ -51,6 +52,7 @@ public class subgrades extends Fragment{
     DatabaseReference databaseReference;
     ListView courselist;
     List<Mycourse> mycourses;
+    List<Mysubjectgrade> mysubjectgrades;
     GradesAdapter gradesAdapter;
     ProgressBar cl;
     String uid,pwd;
@@ -66,10 +68,15 @@ public class subgrades extends Fragment{
         getActivity().setTitle("Subject Grades");
         Intent intent = new Intent(getActivity(), RequestServiceCourses.class);
         getActivity().startService(intent);
+
         cl = (ProgressBar)vi.findViewById(R.id.load);
         retry = (Button)vi.findViewById(R.id.retry);
         mycourses = new ArrayList<>();
+        mysubjectgrades = new ArrayList<>();
         courselist = (ListView)vi.findViewById(R.id.list);
+        LayoutInflater layoutInflater = getActivity().getLayoutInflater();
+        ViewGroup header = (ViewGroup)layoutInflater.inflate(R.layout.header,courselist,false);
+        courselist.addFooterView(header,null,false);
         jsonObject = new JSONObject();
         auth = FirebaseAuth.getInstance();
         databaseReference = FirebaseDatabase.getInstance().getReference().child("Students").child(auth.getCurrentUser().getUid()).child("hibiscus");
@@ -79,7 +86,7 @@ public class subgrades extends Fragment{
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if(dataSnapshot.child("semester")!=null){
-                    int semester = Integer.parseInt(dataSnapshot.child("semester").getValue(String.class));
+                    int semester = Integer.parseInt(dataSnapshot.child("semester").getValue().toString());
 
                     for(int i = semester;i>0;i--){
                         arrayList.add("Semester " + String.valueOf(i));
@@ -113,36 +120,95 @@ public class subgrades extends Fragment{
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         mycourses.clear();
-                        for(DataSnapshot data:dataSnapshot.getChildren()){
+                        for(final DataSnapshot data:dataSnapshot.getChildren()){
 
-                            String id = data.child("id").getValue().toString();
+                            final String id = data.child("id").getValue().toString();
                             char s = id.charAt(5);
                             if(String.valueOf(s).equals(a)){
-                                String subject = data.child("name").getValue().toString();
-                                String credits = data.child("credits").getValue().toString();
-                                String professor = data.child("professor").getValue().toString();
-                                Mycourse mycourse = new Mycourse(subject,professor,credits,id);
-                                mycourses.add(mycourse);
+                                DatabaseReference db = FirebaseDatabase.getInstance().getReference().child("Students").child(auth.getCurrentUser().getUid()).child("subject_grades");
+                                db.child(id).addValueEventListener(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(DataSnapshot dataSnapshot) {
+                                        String subject = data.child("name").getValue().toString();
+                                        String credits = data.child("credits").getValue().toString();
+                                        String professor = data.child("professor").getValue().toString();
+                                        if(!dataSnapshot.exists() || !dataSnapshot.hasChildren()){
+                                            Mysubjectgrade mysubjectgrade = new Mysubjectgrade(subject,
+                                                    professor,
+                                                    credits,
+                                                    id,
+                                                    "",
+                                                    "",
+                                                    "",
+                                                    "",
+                                                    "",
+                                                    "",
+                                                    "",
+                                                    false);
+                                            mysubjectgrades.add(mysubjectgrade);
+//                                            Mycourse mycourse = new Mycourse(subject,professor,credits,id);
+//                                            mycourses.add(mycourse);
+                                        }
+                                        else{
+                                            String quiz1 = dataSnapshot.child("quiz1").getValue(String.class);
+                                            String quiz2 = dataSnapshot.child("quiz2").getValue(String.class);
+                                            String midsem = dataSnapshot.child("midsem").getValue(String.class);
+                                            String endsem = dataSnapshot.child("endsem").getValue(String.class);
+                                            String faculty = dataSnapshot.child("faculty_assessment").getValue(String.class);
+                                            String gpa = dataSnapshot.child("grade_point").getValue(String.class);
+                                            String total = dataSnapshot.child("subtotal").getValue(String.class);
+                                            Mysubjectgrade mysubjectgrade = new Mysubjectgrade(subject,
+                                                    professor,
+                                                    credits,
+                                                    id,
+                                                    quiz1,
+                                                    quiz2,
+                                                    midsem,
+                                                    endsem,
+                                                    faculty,
+                                                    gpa,
+                                                    total,
+                                                    true);
+                                            mysubjectgrades.add(mysubjectgrade);
+//                                            Mycourse mycourse = new Mycourse(subject,professor,credits,id);
+//                                            mycourses.add(mycourse);
+                                        }
+                                        if(getActivity()!=null){
+                                            gradesAdapter = new GradesAdapter(getActivity(),R.layout.grades,mysubjectgrades);
+
+
+                                            if(!gradesAdapter.isEmpty()){
+                                                cl.setVisibility(View.GONE);
+                                                retry.setVisibility(View.GONE);
+                                                fail.setVisibility(View.GONE);
+                                                gradesAdapter.notifyDataSetChanged();
+                                                courselist.setAdapter(gradesAdapter);
+                                                getTotal(mysubjectgrades);
+
+
+                                            }
+                                            else {
+                                                retry.setVisibility(View.VISIBLE);
+                                                cl.setVisibility(View.GONE);
+                                                fail.setVisibility(View.VISIBLE);
+                                            }
+
+                                        }
+
+                                    }
+
+                                    @Override
+                                    public void onCancelled(DatabaseError databaseError) {
+
+                                    }
+                                });
+
+
+
                             }
 
                         }
-                        if(getActivity()!=null){
-                            gradesAdapter = new GradesAdapter(getActivity(),R.layout.grades,mycourses);
-                            gradesAdapter.notifyDataSetChanged();
-                            if(!gradesAdapter.isEmpty()){
-                                cl.setVisibility(View.GONE);
-                                retry.setVisibility(View.GONE);
-                                fail.setVisibility(View.GONE);
-                                courselist.setAdapter(gradesAdapter);
 
-                            }
-                            else {
-                                retry.setVisibility(View.VISIBLE);
-                                cl.setVisibility(View.GONE);
-                                fail.setVisibility(View.VISIBLE);
-                            }
-
-                        }
                     }
 
                     @Override
@@ -315,5 +381,41 @@ public class subgrades extends Fragment{
             }
         });
         return vi;
+    }
+
+    private void getTotal(List<Mysubjectgrade> mysubjectgrades) {
+        float quiz1total = 0;
+        float quiz2total = 0;
+        float midsemtotal = 0;
+        float endsemtotal = 0;
+        float facultytotal = 0;
+        float subtotal = 0;
+        for(int i = 0;i< mysubjectgrades.size();i++){
+            String quiz1 = mysubjectgrades.get(i).getQuiz1();
+            if(!quiz1.isEmpty() || !quiz1.equals("")){
+                quiz1total = quiz1total + Float.parseFloat(quiz1);
+            }
+            String quiz2 = mysubjectgrades.get(i).getQuiz2();
+            if(!quiz2.isEmpty() || !quiz2.equals("")){
+                quiz2total = quiz2total + Float.parseFloat(quiz2);
+            }
+            String midsem = mysubjectgrades.get(i).getMidsem();
+            if(!midsem.isEmpty() || !midsem.equals("")){
+                midsemtotal = midsemtotal + Float.parseFloat(midsem);
+            }
+            String endsem = mysubjectgrades.get(i).getEndsem();
+            if(!endsem.isEmpty() || !endsem.equals("")){
+                endsemtotal = endsemtotal + Float.parseFloat(endsem);
+            }
+            String faculty = mysubjectgrades.get(i).getFaculty_assessment();
+            if(!faculty.isEmpty() || !faculty.equals("")){
+                facultytotal = facultytotal + Float.parseFloat(faculty);
+            }
+            String total = mysubjectgrades.get(i).getSubtotal();
+            if(!total.isEmpty() || !total.equals("")){
+                subtotal = subtotal + Float.parseFloat(total);
+            }
+        }
+        System.out.println("quiz1tot" + quiz1total + "," + quiz2total + "," + midsemtotal + "," + endsemtotal + "," + facultytotal + "," + subtotal);
     }
 }

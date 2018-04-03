@@ -25,8 +25,8 @@
             android:layout_width="25dp"
             android:layout_height="25dp"
             android:layout_gravity="right"
-            android:background="#00000000"
-            app:srcCompat="@drawable/ref25"
+            android:background="@drawable/ref25"
+
             android:layout_margin="10dp"
             android:layout_centerVertical="true"
             android:layout_alignParentRight="true"
