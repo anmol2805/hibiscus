@@ -7,14 +7,15 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textStyle="bold"
-        android:textColor="#000"
+        android:textColor="@color/colorAccent"
         android:text="Total"
+        android:textSize="16sp"
         android:layout_centerHorizontal="true"
         android:id="@+id/total"
         />
 
     <LinearLayout
-        android:layout_marginTop="5dp"
+        android:layout_marginVertical="5dp"
         android:layout_below="@+id/total"
         android:id="@+id/l1"
         android:layout_width="match_parent"
@@ -186,5 +187,11 @@
 
 
     </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="@color/colorAccent"
+        android:layout_below="@+id/l1"
+        />
 
 </RelativeLayout>
