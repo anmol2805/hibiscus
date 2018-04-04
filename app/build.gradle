@@ -1,6 +1,14 @@
 apply plugin: 'com.android.application'
 apply plugin: 'io.fabric'
 android {
+    signingConfigs {
+        config {
+            keyAlias 'key0'
+            keyPassword 'anmol@2805'
+            storeFile file('C:/Users/anmol/AndroidStudioProjects/hibiscus/signed/signedapk.jks')
+            storePassword 'anmol@2805'
+        }
+    }
     compileSdkVersion 27
     buildToolsVersion '27.0.3'
     defaultConfig {
@@ -11,11 +19,15 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
         versionCode 7
+        signingConfig signingConfigs.config
     }
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+        debug {
+            signingConfig signingConfigs.config
         }
     }
     dexOptions {

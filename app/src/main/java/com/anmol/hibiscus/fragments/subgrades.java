@@ -78,7 +78,7 @@ public class subgrades extends Fragment{
         courselist = (ListView)vi.findViewById(R.id.list);
         LayoutInflater layoutInflater = getActivity().getLayoutInflater();
         ViewGroup header = (ViewGroup)layoutInflater.inflate(R.layout.header,courselist,false);
-        courselist.addHeaderView(header,null,false);
+        courselist.addHeaderView(header);
         q1 = (TextView)header.findViewById(R.id.q1);
         q2 = (TextView)header.findViewById(R.id.q2);
         ms = (TextView)header.findViewById(R.id.ms);
