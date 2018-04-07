@@ -179,7 +179,9 @@ public class fees extends Fragment {
 
                                 }
                             });
-                            Mysingleton.getInstance(getActivity()).addToRequestqueue(jsonObjectRequest);
+                            if(getActivity()!=null && isAdded()){
+                                Mysingleton.getInstance(getActivity()).addToRequestqueue(jsonObjectRequest);
+                            }                       
                         }
                     });
 
