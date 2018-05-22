@@ -138,11 +138,11 @@ public class HibiscusActivity extends AppCompatActivity
         interstitialAdsubgrades = new InterstitialAd(this);
         interstitialAdattendance = new InterstitialAd(this);
         interstitialAdviewgrades = new InterstitialAd(this);
-        interstitialAdsubgrades.setAdUnitId("ca-app-pub-3940256099942544/1033173712");
+        interstitialAdsubgrades.setAdUnitId("ca-app-pub-5827006149924215/7561826910");
         interstitialAdsubgrades.loadAd(new AdRequest.Builder().build());
-        interstitialAdattendance.setAdUnitId("ca-app-pub-3940256099942544/1033173712");
+        interstitialAdattendance.setAdUnitId("ca-app-pub-5827006149924215/3997986426");
         interstitialAdattendance.loadAd(new AdRequest.Builder().build());
-        interstitialAdviewgrades.setAdUnitId("ca-app-pub-3940256099942544/1033173712");
+        interstitialAdviewgrades.setAdUnitId("ca-app-pub-5827006149924215/8088989261");
         interstitialAdviewgrades.loadAd(new AdRequest.Builder().build());
         interstitialAdsubgrades.setAdListener(new AdListener(){
             @Override
