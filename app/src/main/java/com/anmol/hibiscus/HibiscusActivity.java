@@ -163,6 +163,10 @@ public class HibiscusActivity extends AppCompatActivity
                 fm.executePendingTransactions();
                 interstitialAdattendance.loadAd(new AdRequest.Builder().build());
             }
+            @Override
+            public void onAdFailedToLoad(int errorCode) {
+                System.out.println("errorcode "+errorCode);
+            }
         });
         interstitialAdviewgrades.setAdListener(new AdListener(){
             @Override
