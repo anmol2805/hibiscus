@@ -40,6 +40,7 @@ import com.anmol.hibiscus.fragments.myapps;
 import com.anmol.hibiscus.fragments.mypage;
 import com.anmol.hibiscus.fragments.students;
 import com.anmol.hibiscus.fragments.subgrades;
+import com.google.android.gms.ads.InterstitialAd;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -64,6 +65,7 @@ public class HibiscusActivity extends AppCompatActivity
     DrawerLayout drawer;
     FirebaseAuth auth;
     int sem;
+    InterstitialAd interstitialAdsubgrades;
     DatabaseReference databaseReference;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -129,7 +131,7 @@ public class HibiscusActivity extends AppCompatActivity
 
             }
         });
-
+        interstitialAdsubgrades = new InterstitialAd(this);
 
 
 
@@ -139,6 +141,7 @@ public class HibiscusActivity extends AppCompatActivity
         fm.beginTransaction().replace(R.id.content_hib,new main()).commit();
         fm.executePendingTransactions();
         checkupdatestatus();
+
     }
 
     private void checkupdatestatus() {
