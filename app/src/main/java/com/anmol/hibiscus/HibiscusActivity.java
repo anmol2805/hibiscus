@@ -40,6 +40,8 @@ import com.anmol.hibiscus.fragments.myapps;
 import com.anmol.hibiscus.fragments.mypage;
 import com.anmol.hibiscus.fragments.students;
 import com.anmol.hibiscus.fragments.subgrades;
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.InterstitialAd;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -66,9 +68,11 @@ public class HibiscusActivity extends AppCompatActivity
     FirebaseAuth auth;
     int sem;
     InterstitialAd interstitialAdsubgrades;
+    InterstitialAd interstitialAdattendance;
+    InterstitialAd interstitialAdviewgrades;
     DatabaseReference databaseReference;
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_hibiscus);
 
@@ -132,8 +136,44 @@ public class HibiscusActivity extends AppCompatActivity
             }
         });
         interstitialAdsubgrades = new InterstitialAd(this);
-
-
+        interstitialAdattendance = new InterstitialAd(this);
+        interstitialAdviewgrades = new InterstitialAd(this);
+        interstitialAdsubgrades.setAdUnitId("ca-app-pub-3940256099942544/1033173712");
+        interstitialAdsubgrades.loadAd(new AdRequest.Builder().build());
+        interstitialAdattendance.setAdUnitId("ca-app-pub-3940256099942544/1033173712");
+        interstitialAdattendance.loadAd(new AdRequest.Builder().build());
+        interstitialAdviewgrades.setAdUnitId("ca-app-pub-3940256099942544/1033173712");
+        interstitialAdviewgrades.loadAd(new AdRequest.Builder().build());
+        interstitialAdsubgrades.setAdListener(new AdListener(){
+            @Override
+            public void onAdClosed() {
+                super.onAdClosed();
+                final FragmentManager fm = getFragmentManager();
+                fm.beginTransaction().replace(R.id.content_hib,new subgrades()).commit();
+                fm.executePendingTransactions();
+                interstitialAdsubgrades.loadAd(new AdRequest.Builder().build());
+            }
+        });
+        interstitialAdattendance.setAdListener(new AdListener(){
+            @Override
+            public void onAdClosed() {
+                super.onAdClosed();
+                final FragmentManager fm = getFragmentManager();
+                fm.beginTransaction().replace(R.id.content_hib,new myapps()).commit();
+                fm.executePendingTransactions();
+                interstitialAdattendance.loadAd(new AdRequest.Builder().build());
+            }
+        });
+        interstitialAdviewgrades.setAdListener(new AdListener(){
+            @Override
+            public void onAdClosed() {
+                super.onAdClosed();
+                final FragmentManager fm = getFragmentManager();
+                fm.beginTransaction().replace(R.id.content_hib,new commapps()).commit();
+                fm.executePendingTransactions();
+                interstitialAdviewgrades.loadAd(new AdRequest.Builder().build());
+            }
+        });
 
 
         navigationView.setNavigationItemSelectedListener(this);
@@ -273,14 +313,24 @@ public class HibiscusActivity extends AppCompatActivity
                     fm.beginTransaction().replace(R.id.content_hib,new local()).commit();
                     fm.executePendingTransactions();
                 }
-            },175);} else if (id == R.id.nav_myapps) {
-            handler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    fm.beginTransaction().replace(R.id.content_hib,new myapps()).commit();
-                    fm.executePendingTransactions();
-                }
-            },175);
+            },175);}
+            else if (id == R.id.nav_myapps) {
+
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        if(interstitialAdattendance.isLoaded()){
+                            interstitialAdattendance.show();
+                        }
+                        else {
+                            fm.beginTransaction().replace(R.id.content_hib,new myapps()).commit();
+                            fm.executePendingTransactions();
+                        }
+
+                    }
+                },175);
+
+
 
         } else if (id == R.id.nav_course) {
             handler.postDelayed(new Runnable() {
@@ -292,20 +342,42 @@ public class HibiscusActivity extends AppCompatActivity
             },175);
 
         } else if (id == R.id.nav_comm) {
-            handler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    fm.beginTransaction().replace(R.id.content_hib,new commapps()).commit();
-                    fm.executePendingTransactions();
-                }
-            },225);
+
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        if(interstitialAdviewgrades.isLoaded()){
+                            interstitialAdviewgrades.show();
+                        }else{
+                            fm.beginTransaction().replace(R.id.content_hib,new commapps()).commit();
+                            fm.executePendingTransactions();
+                        }
+
+                    }
+                },225);
+
+
 
         }else if(id == R.id.nav_lib){
             fm.beginTransaction().replace(R.id.content_hib,new library()).commit();
             fm.executePendingTransactions();
         }else if(id == R.id.nav_viewgrades){
-            fm.beginTransaction().replace(R.id.content_hib,new subgrades()).commit();
-            fm.executePendingTransactions();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    if(interstitialAdsubgrades.isLoaded()){
+                        interstitialAdsubgrades.show();
+                    }
+                    else{
+                        fm.beginTransaction().replace(R.id.content_hib,new subgrades()).commit();
+                        fm.executePendingTransactions();
+                    }
+
+                }
+            },175);
+
+
+
         }
 //        else if(id == R.id.nav_elib){
 //            fm.beginTransaction().replace(R.id.content_hib,new ebooks()).commit();
