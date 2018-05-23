@@ -209,13 +209,13 @@ public class main extends Fragment {
 
             }
         });
-        final InterstitialAd interstitialAdnotice = new InterstitialAd(getActivity());
-        interstitialAdnotice.setAdUnitId("ca-app-pub-3940256099942544/1033173712");
-        interstitialAdnotice.loadAd(new AdRequest.Builder().build());
+
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
-
+                final InterstitialAd interstitialAdnotice = new InterstitialAd(getActivity());
+                interstitialAdnotice.setAdUnitId("ca-app-pub-5827006149924215/9013567438");
+                interstitialAdnotice.loadAd(new AdRequest.Builder().build());
                 interstitialAdnotice.setAdListener(new AdListener(){
                     @Override
                     public void onAdClosed() {
