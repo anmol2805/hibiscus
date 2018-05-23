@@ -84,6 +84,9 @@ public class myapps extends Fragment {
         databaseReference = FirebaseDatabase.getInstance().getReference().child("Students").child(auth.getCurrentUser().getUid()).child("attendance");
         final ImageButton refresh = (ImageButton)vi.findViewById(R.id.refresh);
         rotate = AnimationUtils.loadAnimation(getActivity(),R.anim.rotate);
+        swipeRefreshLayout.setColorSchemeColors(
+                getActivity().getResources().getColor(R.color.colorAccent)
+        );
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {

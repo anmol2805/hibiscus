@@ -99,6 +99,9 @@ public class main extends Fragment {
                 refresh.startAnimation(rotate);
             }
         });
+        noticerefresh.setColorSchemeColors(
+                getActivity().getResources().getColor(R.color.colorAccent)
+        );
         noticerefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
