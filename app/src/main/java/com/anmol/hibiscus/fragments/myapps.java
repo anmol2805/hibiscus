@@ -4,6 +4,7 @@ import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,6 +27,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.anmol.hibiscus.Adapter.AttendanceAdapter;
 import com.anmol.hibiscus.Model.Attendance;
 import com.anmol.hibiscus.Model.Mycourse;
+import com.anmol.hibiscus.Model.Notice;
 import com.anmol.hibiscus.Mysingleton;
 import com.anmol.hibiscus.R;
 import com.anmol.hibiscus.services.RequestService;
@@ -63,7 +65,7 @@ public class myapps extends Fragment {
     DatabaseReference db = FirebaseDatabase.getInstance().getReference().child("Students").child(auth.getCurrentUser().getUid()).child("hibiscus");
     ArrayList<String> arrayList = new ArrayList<>();
     ArrayAdapter<String> arrayAdapter;
-
+    SwipeRefreshLayout swipeRefreshLayout;
 
     @Nullable
     @Override
@@ -78,9 +80,80 @@ public class myapps extends Fragment {
         retry = (Button)vi.findViewById(R.id.retry);
         fail = (ImageView)vi.findViewById(R.id.fail);
         attendances = new ArrayList<>();
+        swipeRefreshLayout = (SwipeRefreshLayout)vi.findViewById(R.id.attendancerefresh);
         databaseReference = FirebaseDatabase.getInstance().getReference().child("Students").child(auth.getCurrentUser().getUid()).child("attendance");
         final ImageButton refresh = (ImageButton)vi.findViewById(R.id.refresh);
         rotate = AnimationUtils.loadAnimation(getActivity(),R.anim.rotate);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                List<Notice> notices;
+                notices = new ArrayList<>();
+                final DatabaseReference databaseReference,noticedatabase,attendancedatabase,gradesdatabase;
+                auth = FirebaseAuth.getInstance();
+                databaseReference = FirebaseDatabase.getInstance().getReference().getRoot();
+                noticedatabase = FirebaseDatabase.getInstance().getReference().child("Notice");
+                gradesdatabase = FirebaseDatabase.getInstance().getReference().child("Students").child(auth.getCurrentUser().getUid()).child("grades");
+                attendancedatabase = FirebaseDatabase.getInstance().getReference().child("Students").child(auth.getCurrentUser().getUid()).child("attendance");
+                final JSONObject jsonObject = new JSONObject();
+                databaseReference.child("Students").child(auth.getCurrentUser().getUid()).child("hibiscus").addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        if(dataSnapshot.child("sid").getValue(String.class)!=null && dataSnapshot.child("pwd").getValue(String.class)!=null){
+                            uid = dataSnapshot.child("sid").getValue(String.class);
+                            pwd = dataSnapshot.child("pwd").getValue(String.class);
+                            try {
+                                jsonObject.put("uid",uid);
+                                jsonObject.put("pwd",pwd);
+                                jsonObject.put("pass","encrypt");
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                            JsonObjectRequest jsonObjectRequesta = new JsonObjectRequest(Request.Method.POST, getResources().getString(R.string.att_url), jsonObject, new Response.Listener<JSONObject>() {
+                                @Override
+                                public void onResponse(JSONObject response) {
+                                    try {
+                                        int c = 0;
+                                        while (c<response.getJSONArray("Notices").length()){
+
+                                            JSONObject object = response.getJSONArray("Notices").getJSONObject(c);
+                                            String subcode = object.getString("subcode");
+                                            String sub = object.getString("sub");
+                                            String name = object.getString("name");
+                                            String attend = object.getString("attendance");
+                                            Attendance attendance = new Attendance(subcode,sub,name,attend);
+                                            attendancedatabase.child(String.valueOf(c)).setValue(attendance);
+                                            c++;
+                                        }
+                                        swipeRefreshLayout.setRefreshing(false);
+                                        Toast.makeText(getActivity(),"Updated Successfully",Toast.LENGTH_SHORT).show();
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+
+                                }
+                            }, new Response.ErrorListener() {
+                                @Override
+                                public void onErrorResponse(VolleyError error) {
+                                    swipeRefreshLayout.setRefreshing(false);
+                                    Toast.makeText(getActivity(),"Netwrok error",Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                            Mysingleton.getInstance(getActivity()).addToRequestqueue(jsonObjectRequesta);
+
+
+
+                        }
+
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+            }
+        });
         refresh.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

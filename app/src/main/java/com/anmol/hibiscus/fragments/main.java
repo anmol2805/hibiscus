@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.provider.Settings;
 import android.support.annotation.Nullable;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -72,6 +73,7 @@ public class main extends Fragment {
     Button work;
     ImageView back;
     View margin;
+    SwipeRefreshLayout noticerefresh;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
@@ -86,6 +88,7 @@ public class main extends Fragment {
         work = (Button)vi.findViewById(R.id.work);
         margin = (View)vi.findViewById(R.id.margin);
         rotate = AnimationUtils.loadAnimation(getActivity(),R.anim.rotate);
+        noticerefresh = (SwipeRefreshLayout)vi.findViewById(R.id.noticerefresh);
         refresh.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -96,7 +99,92 @@ public class main extends Fragment {
                 refresh.startAnimation(rotate);
             }
         });
+        noticerefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                notices = new ArrayList<>();
+                auth = FirebaseAuth.getInstance();
+                final DatabaseReference databaseReference,noticedatabase,attendancedatabase,gradesdatabase;
+                databaseReference = FirebaseDatabase.getInstance().getReference().getRoot();
+                noticedatabase = FirebaseDatabase.getInstance().getReference().child("Notice");
+                gradesdatabase = FirebaseDatabase.getInstance().getReference().child("Students").child(auth.getCurrentUser().getUid()).child("grades");
+                attendancedatabase = FirebaseDatabase.getInstance().getReference().child("Students").child(auth.getCurrentUser().getUid()).child("attendance");
+                final JSONObject jsonObject = new JSONObject();
+                databaseReference.child("Students").child(auth.getCurrentUser().getUid()).child("hibiscus").addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        if(dataSnapshot.child("sid").getValue(String.class)!=null && dataSnapshot.child("pwd").getValue(String.class)!=null){
+                            uid = dataSnapshot.child("sid").getValue(String.class);
+                            pwd = dataSnapshot.child("pwd").getValue(String.class);
+                            try {
+                                jsonObject.put("uid",uid);
+                                jsonObject.put("pwd",pwd);
+                                jsonObject.put("pass","encrypt");
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, getResources().getString(R.string.notice_url), jsonObject, new Response.Listener<JSONObject>() {
+                                @Override
+                                public void onResponse(JSONObject response) {
 
+                                    try {
+                                        int c = 0;
+                                        while (c<response.getJSONArray("Notices").length()){
+
+                                            JSONObject object = response.getJSONArray("Notices").getJSONObject(c);
+
+
+                                            title = object.getString("title");
+                                            date = object.getString("date");
+                                            postedby = object.getString("posted_by");
+                                            attention = object.getString("attention");
+                                            id = object.getString("id");
+                                            Notice notice = new Notice(title,date,postedby,attention,id);
+                                            //notices.add(notice);
+                                            noticedatabase.child(String.valueOf(c)).setValue(notice);
+                                            c++;
+                                        }
+                                        noticerefresh.setRefreshing(false);
+                                        Toast.makeText(getActivity(),"Updated Successfully",Toast.LENGTH_SHORT).show();
+
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+                                    try {
+                                        JSONObject object0 = response.getJSONArray("Notices").getJSONObject(0);
+
+                                        title = object0.getString("title");
+                                        date = object0.getString("date");
+                                        postedby = object0.getString("posted_by");
+                                        attention = object0.getString("attention");
+                                        id = object0.getString("id");
+                                        Notice notice = new Notice(title,date,postedby,attention,id);
+                                        FirebaseDatabase.getInstance().getReference().child("Notices").setValue(notice);
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            }, new Response.ErrorListener() {
+                                @Override
+                                public void onErrorResponse(VolleyError error) {
+                                    noticerefresh.setRefreshing(false);
+                                    Toast.makeText(getActivity(),"Network Error",Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                            Mysingleton.getInstance(getActivity()).addToRequestqueue(jsonObjectRequest);
+
+
+                        }
+
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+            }
+        });
         auth = FirebaseAuth.getInstance();
         mdatabase = FirebaseDatabase.getInstance().getReference().child("Notice");
         progressBar = (ProgressBar)vi.findViewById(R.id.load);
