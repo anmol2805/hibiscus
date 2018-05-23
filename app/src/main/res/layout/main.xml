@@ -24,64 +24,58 @@
             android:id="@+id/refresh"
             android:layout_width="25dp"
             android:layout_height="25dp"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-
-            android:layout_centerVertical="true"
             android:layout_gravity="right"
-            android:layout_margin="10dp"
             android:background="@drawable/ref25"
-            android:visibility="gone" />
+
+            android:layout_margin="10dp"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true" />
     </RelativeLayout>
 
-    <android.support.v4.widget.SwipeRefreshLayout
+
+    <android.support.v7.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"
-        android:id="@+id/noticerefresh"
+
+        app:cardCornerRadius="8dp"
+        app:cardElevation="48dp"
+
         >
-        <android.support.v7.widget.CardView
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:orientation="vertical">
 
-
-            app:cardCornerRadius="8dp"
-            app:cardElevation="48dp"
-
-            >
-
-            <LinearLayout
+            <ProgressBar
+                android:id="@+id/load"
+                style="?android:attr/progressBarStyle"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
+                android:layout_height="25dp"
+                android:layout_gravity="center"
 
-                <ProgressBar
-                    android:id="@+id/load"
-                    style="?android:attr/progressBarStyle"
-                    android:layout_width="match_parent"
-                    android:layout_height="25dp"
-                    android:layout_gravity="center"
+                android:visibility="gone" />
+            <ImageView
+                android:id="@+id/fail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:srcCompat="@drawable/sadcloud"
+                android:layout_marginTop="100dp"
+                android:visibility="gone"
+                />
 
-                    android:visibility="gone" />
-                <ImageView
-                    android:id="@+id/fail"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:srcCompat="@drawable/sadcloud"
-                    android:layout_marginTop="100dp"
-                    android:visibility="gone"
-                    />
-
-                <!--<RelativeLayout-->
+            <!--<RelativeLayout-->
                 <!--android:layout_width="match_parent"-->
                 <!--android:layout_height="wrap_content">-->
                 <!--<ImageView-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="75dp"-->
-                <!--android:id="@+id/back"-->
-                <!--android:visibility="gone"-->
-                <!--/>-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="75dp"-->
+                    <!--android:id="@+id/back"-->
+                    <!--android:visibility="gone"-->
+                    <!--/>-->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -138,21 +132,26 @@
                 </LinearLayout>
 
 
-
+            <android.support.v4.widget.SwipeRefreshLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="60dp"
+                android:id="@+id/noticerefresh"
+                >
                 <ListView
                     android:id="@+id/list"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginBottom="60dp"
+
                     android:visibility="visible">
 
                 </ListView>
 
-            </LinearLayout>
+            </android.support.v4.widget.SwipeRefreshLayout>
 
-        </android.support.v7.widget.CardView>
-    </android.support.v4.widget.SwipeRefreshLayout>
+        </LinearLayout>
 
+    </android.support.v7.widget.CardView>
 
 
 </LinearLayout>
