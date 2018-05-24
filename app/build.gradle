@@ -15,10 +15,10 @@ android {
         applicationId "com.anmol.hibiscus"
         minSdkVersion 15
         targetSdkVersion 27
-        versionName '2.3.0'
+        versionName '2.4.0'
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
-        versionCode 7
+        versionCode 8
         signingConfig signingConfigs.config
     }
     buildTypes {
@@ -41,7 +41,6 @@ android {
 }
 
 dependencies {
-
     compile fileTree(include: ['*.jar'], dir: 'libs')
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'

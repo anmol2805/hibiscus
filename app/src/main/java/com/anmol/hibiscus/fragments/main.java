@@ -171,7 +171,10 @@ public class main extends Fragment {
                                 @Override
                                 public void onErrorResponse(VolleyError error) {
                                     noticerefresh.setRefreshing(false);
-                                    Toast.makeText(getActivity(),"Network Error",Toast.LENGTH_SHORT).show();
+                                    if(getActivity()!=null){
+                                        Toast.makeText(getActivity(),"Network Error",Toast.LENGTH_SHORT).show();
+                                    }
+
                                 }
                             });
                             Mysingleton.getInstance(getActivity()).addToRequestqueue(jsonObjectRequest);
