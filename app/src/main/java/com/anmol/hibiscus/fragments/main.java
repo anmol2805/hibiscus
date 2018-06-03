@@ -148,7 +148,10 @@ public class main extends Fragment {
                                             c++;
                                         }
                                         noticerefresh.setRefreshing(false);
-                                        Toast.makeText(getActivity(),"Updated Successfully",Toast.LENGTH_SHORT).show();
+                                        if(getActivity()!=null){
+                                            Toast.makeText(getActivity(),"Updated Successfully",Toast.LENGTH_SHORT).show();
+                                        }
+
 
                                     } catch (JSONException e) {
                                         e.printStackTrace();
@@ -177,7 +180,10 @@ public class main extends Fragment {
 
                                 }
                             });
-                            Mysingleton.getInstance(getActivity()).addToRequestqueue(jsonObjectRequest);
+                            if(getActivity()!=null){
+                                Mysingleton.getInstance(getActivity()).addToRequestqueue(jsonObjectRequest);
+                            }
+
 
 
                         }

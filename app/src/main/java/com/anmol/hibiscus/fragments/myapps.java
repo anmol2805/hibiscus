@@ -129,7 +129,10 @@ public class myapps extends Fragment {
                                             c++;
                                         }
                                         swipeRefreshLayout.setRefreshing(false);
-                                        Toast.makeText(getActivity(),"Updated Successfully",Toast.LENGTH_SHORT).show();
+                                        if(getActivity()!=null){
+                                            Toast.makeText(getActivity(),"Updated Successfully",Toast.LENGTH_SHORT).show();
+                                        }
+
                                     } catch (JSONException e) {
                                         e.printStackTrace();
                                     }
@@ -139,7 +142,10 @@ public class myapps extends Fragment {
                                 @Override
                                 public void onErrorResponse(VolleyError error) {
                                     swipeRefreshLayout.setRefreshing(false);
-                                    Toast.makeText(getActivity(),"Netwrok error",Toast.LENGTH_SHORT).show();
+                                    if(getActivity()!=null){
+                                        Toast.makeText(getActivity(),"Netwrok error",Toast.LENGTH_SHORT).show();
+                                    }
+
                                 }
                             });
                             Mysingleton.getInstance(getActivity()).addToRequestqueue(jsonObjectRequesta);
