@@ -16,6 +16,9 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.anmol.hibiscus.Model.Noticedata;
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.InterstitialAd;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -51,81 +54,249 @@ public class NoticeDataActivity extends AppCompatActivity {
         t = (TextView)findViewById(R.id.title);
         pn = (ProgressBar)findViewById(R.id.pn);
         fail = (ImageView) findViewById(R.id.fail);
-
-        nd.setFocusable(true);
-        nd.setFocusableInTouchMode(true);
-        nd.getSettings().setJavaScriptEnabled(true);
-        nd.getSettings().setJavaScriptCanOpenWindowsAutomatically(true);
-        nd.getSettings().setLoadsImagesAutomatically(true);
-        nd.getSettings().setSupportZoom(true);
-        nd.getSettings().setBuiltInZoomControls(true);
-        nd.getSettings().setRenderPriority(WebSettings.RenderPriority.HIGH);
-        //nd.getSettings().setCacheMode(WebSettings.LOAD_CACHE_ONLY);
-        nd.getSettings().setDomStorageEnabled(true);
-        nd.getSettings().setDatabaseEnabled(true);
-        nd.getSettings().setLoadsImagesAutomatically(true);
-        //nd.getSettings().setAppCacheEnabled(true);
-        nd.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
-        nd.getSettings().setUseWideViewPort(true);
-        nd.getSettings().setTextZoom(175);
-        nd.setInitialScale(1);
-        id = getIntent().getStringExtra("id");
-        uid = getIntent().getStringExtra("uid");
-        pwd = getIntent().getStringExtra("pwd");
-        title = getIntent().getStringExtra("title");
-        date = getIntent().getStringExtra("date");
-        att = getIntent().getStringExtra("att");
-        post = getIntent().getStringExtra("posted");
-        d.setText(date);
-        p.setText(post);
-        a.setText(att);
-        t.setText(title);
-
-        final DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("NoticeData").child(id);
-
-        object = new JSONObject();
-        try {
-            object.put("uid",uid);
-            object.put("pwd",pwd);
-            object.put("id",id);
-            object.put("pass","encrypt");
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        request(object, 0);
-        retry.setOnClickListener(new View.OnClickListener() {
+        final InterstitialAd interstitialAdnotice = new InterstitialAd(this);
+        interstitialAdnotice.setAdUnitId("ca-app-pub-5827006149924215/9013567438");
+        interstitialAdnotice.loadAd(new AdRequest.Builder().build());
+        interstitialAdnotice.setAdListener(new AdListener(){
             @Override
-            public void onClick(View view) {
-                request(object, 1);
-
-            }
-        });
-        pn.setVisibility(View.VISIBLE);
-        FirebaseDatabase.getInstance().getReference().child("NoticeData").addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if(dataSnapshot.hasChild(id)
-                        && !dataSnapshot.child(id).child("notice").getValue(String.class).contains("null")
-                        && dataSnapshot.child(id).child("notice").getValue()!=null
-                        && dataSnapshot.child(id).child("notice").getValue(String.class)!=null
-                        && dataSnapshot.child(id).child("notice")!=null
-                        && dataSnapshot.child(id).child("notice").exists()
-                        ){
-                    System.out.println("notice:" + "firebase");
-                    nd.loadData(dataSnapshot.child(id).child("notice").getValue(String.class), "text/html; charset=utf-8", "UTF-8");
-                    pn.setVisibility(View.GONE);
+            public void onAdLoaded() {
+                super.onAdLoaded();
+                if(interstitialAdnotice.isLoaded()){
+                    interstitialAdnotice.show();
                 }
                 else {
-                    request(object,1);
+                    nd.setFocusable(true);
+                    nd.setFocusableInTouchMode(true);
+                    nd.getSettings().setJavaScriptEnabled(true);
+                    nd.getSettings().setJavaScriptCanOpenWindowsAutomatically(true);
+                    nd.getSettings().setLoadsImagesAutomatically(true);
+                    nd.getSettings().setSupportZoom(true);
+                    nd.getSettings().setBuiltInZoomControls(true);
+                    nd.getSettings().setRenderPriority(WebSettings.RenderPriority.HIGH);
+                    //nd.getSettings().setCacheMode(WebSettings.LOAD_CACHE_ONLY);
+                    nd.getSettings().setDomStorageEnabled(true);
+                    nd.getSettings().setDatabaseEnabled(true);
+                    nd.getSettings().setLoadsImagesAutomatically(true);
+                    //nd.getSettings().setAppCacheEnabled(true);
+                    nd.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
+                    nd.getSettings().setUseWideViewPort(true);
+                    nd.getSettings().setTextZoom(175);
+                    nd.setInitialScale(1);
+                    id = getIntent().getStringExtra("id");
+                    uid = getIntent().getStringExtra("uid");
+                    pwd = getIntent().getStringExtra("pwd");
+                    title = getIntent().getStringExtra("title");
+                    date = getIntent().getStringExtra("date");
+                    att = getIntent().getStringExtra("att");
+                    post = getIntent().getStringExtra("posted");
+                    d.setText(date);
+                    p.setText(post);
+                    a.setText(att);
+                    t.setText(title);
+
+                    final DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("NoticeData").child(id);
+
+                    object = new JSONObject();
+                    try {
+                        object.put("uid",uid);
+                        object.put("pwd",pwd);
+                        object.put("id",id);
+                        object.put("pass","encrypt");
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    request(object, 0);
+                    retry.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            request(object, 1);
+
+                        }
+                    });
+                    pn.setVisibility(View.VISIBLE);
+                    FirebaseDatabase.getInstance().getReference().child("NoticeData").addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            if(dataSnapshot.hasChild(id)
+                                    && !dataSnapshot.child(id).child("notice").getValue(String.class).contains("null")
+                                    && dataSnapshot.child(id).child("notice").getValue()!=null
+                                    && dataSnapshot.child(id).child("notice").getValue(String.class)!=null
+                                    && dataSnapshot.child(id).child("notice")!=null
+                                    && dataSnapshot.child(id).child("notice").exists()
+                                    ){
+                                System.out.println("notice:" + "firebase");
+                                nd.loadData(dataSnapshot.child(id).child("notice").getValue(String.class), "text/html; charset=utf-8", "UTF-8");
+                                pn.setVisibility(View.GONE);
+                            }
+                            else {
+                                request(object,1);
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+
+                        }
+                    });
                 }
             }
 
             @Override
-            public void onCancelled(DatabaseError databaseError) {
+            public void onAdClosed() {
+                super.onAdClosed();
+                nd.setFocusable(true);
+                nd.setFocusableInTouchMode(true);
+                nd.getSettings().setJavaScriptEnabled(true);
+                nd.getSettings().setJavaScriptCanOpenWindowsAutomatically(true);
+                nd.getSettings().setLoadsImagesAutomatically(true);
+                nd.getSettings().setSupportZoom(true);
+                nd.getSettings().setBuiltInZoomControls(true);
+                nd.getSettings().setRenderPriority(WebSettings.RenderPriority.HIGH);
+                //nd.getSettings().setCacheMode(WebSettings.LOAD_CACHE_ONLY);
+                nd.getSettings().setDomStorageEnabled(true);
+                nd.getSettings().setDatabaseEnabled(true);
+                nd.getSettings().setLoadsImagesAutomatically(true);
+                //nd.getSettings().setAppCacheEnabled(true);
+                nd.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
+                nd.getSettings().setUseWideViewPort(true);
+                nd.getSettings().setTextZoom(175);
+                nd.setInitialScale(1);
+                id = getIntent().getStringExtra("id");
+                uid = getIntent().getStringExtra("uid");
+                pwd = getIntent().getStringExtra("pwd");
+                title = getIntent().getStringExtra("title");
+                date = getIntent().getStringExtra("date");
+                att = getIntent().getStringExtra("att");
+                post = getIntent().getStringExtra("posted");
+                d.setText(date);
+                p.setText(post);
+                a.setText(att);
+                t.setText(title);
 
+                final DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("NoticeData").child(id);
+
+                object = new JSONObject();
+                try {
+                    object.put("uid",uid);
+                    object.put("pwd",pwd);
+                    object.put("id",id);
+                    object.put("pass","encrypt");
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                request(object, 0);
+                retry.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        request(object, 1);
+
+                    }
+                });
+                pn.setVisibility(View.VISIBLE);
+                FirebaseDatabase.getInstance().getReference().child("NoticeData").addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        if(dataSnapshot.hasChild(id)
+                                && !dataSnapshot.child(id).child("notice").getValue(String.class).contains("null")
+                                && dataSnapshot.child(id).child("notice").getValue()!=null
+                                && dataSnapshot.child(id).child("notice").getValue(String.class)!=null
+                                && dataSnapshot.child(id).child("notice")!=null
+                                && dataSnapshot.child(id).child("notice").exists()
+                                ){
+                            System.out.println("notice:" + "firebase");
+                            nd.loadData(dataSnapshot.child(id).child("notice").getValue(String.class), "text/html; charset=utf-8", "UTF-8");
+                            pn.setVisibility(View.GONE);
+                        }
+                        else {
+                            request(object,1);
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
             }
         });
+        if(interstitialAdnotice.isLoaded()){
+            interstitialAdnotice.show();
+        }
+        else {
+            nd.setFocusable(true);
+            nd.setFocusableInTouchMode(true);
+            nd.getSettings().setJavaScriptEnabled(true);
+            nd.getSettings().setJavaScriptCanOpenWindowsAutomatically(true);
+            nd.getSettings().setLoadsImagesAutomatically(true);
+            nd.getSettings().setSupportZoom(true);
+            nd.getSettings().setBuiltInZoomControls(true);
+            nd.getSettings().setRenderPriority(WebSettings.RenderPriority.HIGH);
+            //nd.getSettings().setCacheMode(WebSettings.LOAD_CACHE_ONLY);
+            nd.getSettings().setDomStorageEnabled(true);
+            nd.getSettings().setDatabaseEnabled(true);
+            nd.getSettings().setLoadsImagesAutomatically(true);
+            //nd.getSettings().setAppCacheEnabled(true);
+            nd.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
+            nd.getSettings().setUseWideViewPort(true);
+            nd.getSettings().setTextZoom(175);
+            nd.setInitialScale(1);
+            id = getIntent().getStringExtra("id");
+            uid = getIntent().getStringExtra("uid");
+            pwd = getIntent().getStringExtra("pwd");
+            title = getIntent().getStringExtra("title");
+            date = getIntent().getStringExtra("date");
+            att = getIntent().getStringExtra("att");
+            post = getIntent().getStringExtra("posted");
+            d.setText(date);
+            p.setText(post);
+            a.setText(att);
+            t.setText(title);
 
+            final DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("NoticeData").child(id);
+
+            object = new JSONObject();
+            try {
+                object.put("uid",uid);
+                object.put("pwd",pwd);
+                object.put("id",id);
+                object.put("pass","encrypt");
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            request(object, 0);
+            retry.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    request(object, 1);
+
+                }
+            });
+            pn.setVisibility(View.VISIBLE);
+            FirebaseDatabase.getInstance().getReference().child("NoticeData").addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    if(dataSnapshot.hasChild(id)
+                            && !dataSnapshot.child(id).child("notice").getValue(String.class).contains("null")
+                            && dataSnapshot.child(id).child("notice").getValue()!=null
+                            && dataSnapshot.child(id).child("notice").getValue(String.class)!=null
+                            && dataSnapshot.child(id).child("notice")!=null
+                            && dataSnapshot.child(id).child("notice").exists()
+                            ){
+                        System.out.println("notice:" + "firebase");
+                        nd.loadData(dataSnapshot.child(id).child("notice").getValue(String.class), "text/html; charset=utf-8", "UTF-8");
+                        pn.setVisibility(View.GONE);
+                    }
+                    else {
+                        request(object,1);
+                    }
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+        }
     }
 
     private void request(JSONObject object, final int i) {
@@ -188,5 +359,10 @@ public class NoticeDataActivity extends AppCompatActivity {
         super.onBackPressed();
         finish();
         overridePendingTransition(R.anim.still,R.anim.slide_out_down);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
     }
 }

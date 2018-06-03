@@ -426,4 +426,9 @@ public class HibiscusActivity extends AppCompatActivity
         super.onPostResume();
         checkupdatestatus();
     }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+    }
 }

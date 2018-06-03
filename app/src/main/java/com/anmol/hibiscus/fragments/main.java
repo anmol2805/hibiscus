@@ -303,46 +303,22 @@ public class main extends Fragment {
 
             }
         });
-        final InterstitialAd interstitialAdnotice = new InterstitialAd(getActivity());
-        interstitialAdnotice.setAdUnitId("ca-app-pub-5827006149924215/9013567438");
-        interstitialAdnotice.loadAd(new AdRequest.Builder().build());
+
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
+                Intent i = new Intent(getActivity(),NoticeDataActivity.class);
+                i.putExtra("id",notices.get(position).getId());
+                i.putExtra("uid",uid);
+                i.putExtra("pwd",pwd);
 
-                interstitialAdnotice.setAdListener(new AdListener(){
-                    @Override
-                    public void onAdClosed() {
-                        super.onAdClosed();
-                        Intent i = new Intent(getActivity(),NoticeDataActivity.class);
-                        i.putExtra("id",notices.get(position).getId());
-                        i.putExtra("uid",uid);
-                        i.putExtra("pwd",pwd);
+                i.putExtra("title",notices.get(position).getTitle());
+                i.putExtra("date",notices.get(position).getDate());
+                i.putExtra("att",notices.get(position).getAttention());
+                i.putExtra("posted",notices.get(position).getPosted_by());
+                startActivity(i);
+                getActivity().overridePendingTransition(R.anim.slide_in_up,R.anim.still);
 
-                        i.putExtra("title",notices.get(position).getTitle());
-                        i.putExtra("date",notices.get(position).getDate());
-                        i.putExtra("att",notices.get(position).getAttention());
-                        i.putExtra("posted",notices.get(position).getPosted_by());
-                        startActivity(i);
-                        getActivity().overridePendingTransition(R.anim.slide_in_up,R.anim.still);
-                    }
-                });
-                if(interstitialAdnotice.isLoaded()){
-                    interstitialAdnotice.show();
-                }
-                else{
-                    Intent i = new Intent(getActivity(),NoticeDataActivity.class);
-                    i.putExtra("id",notices.get(position).getId());
-                    i.putExtra("uid",uid);
-                    i.putExtra("pwd",pwd);
-
-                    i.putExtra("title",notices.get(position).getTitle());
-                    i.putExtra("date",notices.get(position).getDate());
-                    i.putExtra("att",notices.get(position).getAttention());
-                    i.putExtra("posted",notices.get(position).getPosted_by());
-                    startActivity(i);
-                    getActivity().overridePendingTransition(R.anim.slide_in_up,R.anim.still);
-                }
 
             }
         });
@@ -352,5 +328,9 @@ public class main extends Fragment {
 
     }
 
+    @Override
+    public void onPause() {
+        super.onPause();
+    }
 
 }
