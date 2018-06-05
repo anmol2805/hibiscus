@@ -91,7 +91,10 @@ public class commapps extends Fragment {
                     progressBar.setVisibility(View.GONE);
                     retry.setVisibility(View.VISIBLE);
                     fail.setVisibility(View.VISIBLE);
-                    Toast.makeText(getActivity(),"Network Error",Toast.LENGTH_SHORT).show();
+                    if(getActivity()!=null){
+                        Toast.makeText(getActivity(),"Network Error",Toast.LENGTH_SHORT).show();
+                    }
+
                 }
                 else{
                     String html = dataSnapshot.child("html").getValue(String.class);
