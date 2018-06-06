@@ -149,7 +149,7 @@ public class HibiscusActivity extends AppCompatActivity
             public void onAdClosed() {
                 super.onAdClosed();
                 final FragmentManager fm = getFragmentManager();
-                fm.beginTransaction().replace(R.id.content_hib,new subgrades()).commit();
+                fm.beginTransaction().replace(R.id.content_hib,new subgrades()).commitAllowingStateLoss();
                 fm.executePendingTransactions();
                 interstitialAdsubgrades.loadAd(new AdRequest.Builder().build());
             }
@@ -159,7 +159,7 @@ public class HibiscusActivity extends AppCompatActivity
             public void onAdClosed() {
                 super.onAdClosed();
                 final FragmentManager fm = getFragmentManager();
-                fm.beginTransaction().replace(R.id.content_hib,new myapps()).commit();
+                fm.beginTransaction().replace(R.id.content_hib,new myapps()).commitAllowingStateLoss();
                 fm.executePendingTransactions();
                 interstitialAdattendance.loadAd(new AdRequest.Builder().build());
             }
@@ -173,7 +173,7 @@ public class HibiscusActivity extends AppCompatActivity
             public void onAdClosed() {
                 super.onAdClosed();
                 final FragmentManager fm = getFragmentManager();
-                fm.beginTransaction().replace(R.id.content_hib,new commapps()).commit();
+                fm.beginTransaction().replace(R.id.content_hib,new commapps()).commitAllowingStateLoss();
                 fm.executePendingTransactions();
                 interstitialAdviewgrades.loadAd(new AdRequest.Builder().build());
             }
@@ -182,7 +182,7 @@ public class HibiscusActivity extends AppCompatActivity
 
         navigationView.setNavigationItemSelectedListener(this);
         FragmentManager fm = getFragmentManager();
-        fm.beginTransaction().replace(R.id.content_hib,new main()).commit();
+        fm.beginTransaction().replace(R.id.content_hib,new main()).commitAllowingStateLoss();
         fm.executePendingTransactions();
         checkupdatestatus();
 
@@ -259,7 +259,7 @@ public class HibiscusActivity extends AppCompatActivity
             overridePendingTransition(R.anim.still,R.anim.slide_out_down);
         }else {
             FragmentManager fm = getFragmentManager();
-            fm.beginTransaction().replace(R.id.content_hib,new main()).commit();
+            fm.beginTransaction().replace(R.id.content_hib,new main()).commitAllowingStateLoss();
             Toast.makeText(getBaseContext(), "Double tap to exit!", Toast.LENGTH_SHORT).show();
             back_pressed = System.currentTimeMillis();
         }
@@ -304,7 +304,7 @@ public class HibiscusActivity extends AppCompatActivity
             handler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    fm.beginTransaction().replace(R.id.content_hib,new main()).commit();
+                    fm.beginTransaction().replace(R.id.content_hib,new main()).commitAllowingStateLoss();
                     fm.executePendingTransactions();
                 }
             },175);
@@ -314,7 +314,7 @@ public class HibiscusActivity extends AppCompatActivity
             handler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    fm.beginTransaction().replace(R.id.content_hib,new local()).commit();
+                    fm.beginTransaction().replace(R.id.content_hib,new local()).commitAllowingStateLoss();
                     fm.executePendingTransactions();
                 }
             },175);}
@@ -327,7 +327,7 @@ public class HibiscusActivity extends AppCompatActivity
                             interstitialAdattendance.show();
                         }
                         else {
-                            fm.beginTransaction().replace(R.id.content_hib,new myapps()).commit();
+                            fm.beginTransaction().replace(R.id.content_hib,new myapps()).commitAllowingStateLoss();
                             fm.executePendingTransactions();
                         }
 
@@ -340,7 +340,7 @@ public class HibiscusActivity extends AppCompatActivity
             handler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    fm.beginTransaction().replace(R.id.content_hib,new courseware()).commit();
+                    fm.beginTransaction().replace(R.id.content_hib,new courseware()).commitAllowingStateLoss();
                     fm.executePendingTransactions();
                 }
             },175);
@@ -353,7 +353,7 @@ public class HibiscusActivity extends AppCompatActivity
                         if(interstitialAdviewgrades.isLoaded()){
                             interstitialAdviewgrades.show();
                         }else{
-                            fm.beginTransaction().replace(R.id.content_hib,new commapps()).commit();
+                            fm.beginTransaction().replace(R.id.content_hib,new commapps()).commitAllowingStateLoss();
                             fm.executePendingTransactions();
                         }
 
@@ -363,7 +363,7 @@ public class HibiscusActivity extends AppCompatActivity
 
 
         }else if(id == R.id.nav_lib){
-            fm.beginTransaction().replace(R.id.content_hib,new library()).commit();
+            fm.beginTransaction().replace(R.id.content_hib,new library()).commitAllowingStateLoss();
             fm.executePendingTransactions();
         }else if(id == R.id.nav_viewgrades){
             handler.postDelayed(new Runnable() {
@@ -373,7 +373,7 @@ public class HibiscusActivity extends AppCompatActivity
                         interstitialAdsubgrades.show();
                     }
                     else{
-                        fm.beginTransaction().replace(R.id.content_hib,new subgrades()).commit();
+                        fm.beginTransaction().replace(R.id.content_hib,new subgrades()).commitAllowingStateLoss();
                         fm.executePendingTransactions();
                     }
 
@@ -387,19 +387,19 @@ public class HibiscusActivity extends AppCompatActivity
 //            fm.beginTransaction().replace(R.id.content_hib,new ebooks()).commit();
 //        }
         else if(id == R.id.nav_students){
-            fm.beginTransaction().replace(R.id.content_hib,new students()).commit();
+            fm.beginTransaction().replace(R.id.content_hib,new students()).commitAllowingStateLoss();
             fm.executePendingTransactions();
         } else if(id == R.id.fees){
-            fm.beginTransaction().replace(R.id.content_hib,new fees()).commit();
+            fm.beginTransaction().replace(R.id.content_hib,new fees()).commitAllowingStateLoss();
             fm.executePendingTransactions();
         }else if(id == R.id.nav_moocs){
-            fm.beginTransaction().replace(R.id.content_hib,new moocs()).commit();
+            fm.beginTransaction().replace(R.id.content_hib,new moocs()).commitAllowingStateLoss();
             fm.executePendingTransactions();
         }else if(id == R.id.nav_comp){
-            fm.beginTransaction().replace(R.id.content_hib,new complaints()).commit();
+            fm.beginTransaction().replace(R.id.content_hib,new complaints()).commitAllowingStateLoss();
             fm.executePendingTransactions();
         }else if(id == R.id.nav_con){
-            fm.beginTransaction().replace(R.id.content_hib,new mypage()).commit();
+            fm.beginTransaction().replace(R.id.content_hib,new mypage()).commitAllowingStateLoss();
             fm.executePendingTransactions();
         } else if (id == R.id.nav_help) {
             FirebaseAuth.getInstance().signOut();
