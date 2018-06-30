@@ -313,17 +313,23 @@ public class main extends Fragment {
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
-                Intent i = new Intent(getActivity(),NoticeDataActivity.class);
-                i.putExtra("id",notices.get(position).getId());
-                i.putExtra("uid",uid);
-                i.putExtra("pwd",pwd);
+                try{
+                    Intent i = new Intent(getActivity(),NoticeDataActivity.class);
+                    i.putExtra("id",notices.get(position).getId());
+                    i.putExtra("uid",uid);
+                    i.putExtra("pwd",pwd);
 
-                i.putExtra("title",notices.get(position).getTitle());
-                i.putExtra("date",notices.get(position).getDate());
-                i.putExtra("att",notices.get(position).getAttention());
-                i.putExtra("posted",notices.get(position).getPosted_by());
-                startActivity(i);
-                getActivity().overridePendingTransition(R.anim.slide_in_up,R.anim.still);
+                    i.putExtra("title",notices.get(position).getTitle());
+                    i.putExtra("date",notices.get(position).getDate());
+                    i.putExtra("att",notices.get(position).getAttention());
+                    i.putExtra("posted",notices.get(position).getPosted_by());
+                    startActivity(i);
+                    getActivity().overridePendingTransition(R.anim.slide_in_up,R.anim.still);
+
+                }
+                catch(IndexOutOfBoundsException e){
+                    e.printStackTrace();
+                }
 
 
             }
