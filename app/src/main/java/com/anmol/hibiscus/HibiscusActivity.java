@@ -52,6 +52,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.iid.FirebaseInstanceId;
 
 import java.util.Calendar;
 import java.util.HashMap;
@@ -90,6 +91,7 @@ public class HibiscusActivity extends AppCompatActivity
         databaseReference = FirebaseDatabase.getInstance().getReference().child("Students").child(auth.getCurrentUser().getUid()).child("hibiscus");
 
         setTitle("IIITcloud");
+        System.out.println("notiftoken" + FirebaseInstanceId.getInstance().getToken());
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
 
         View header = navigationView.getHeaderView(0);
