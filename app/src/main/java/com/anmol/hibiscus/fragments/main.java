@@ -126,62 +126,69 @@ public class main extends Fragment {
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
-                            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, getResources().getString(R.string.notice_url), jsonObject, new Response.Listener<JSONObject>() {
-                                @Override
-                                public void onResponse(JSONObject response) {
+                            System.out.println("noticeresponse null");
+                            try{
+                                JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, getResources().getString(R.string.notice_url), jsonObject, new Response.Listener<JSONObject>() {
+                                    @Override
+                                    public void onResponse(JSONObject response) {
 
-                                    try {
-                                        int c = 0;
-                                        while (c<response.getJSONArray("Notices").length()){
+                                        try {
+                                            int c = 0;
+                                            while (c<response.getJSONArray("Notices").length()){
+                                                System.out.println("noticeresponse" + response);
+                                                JSONObject object = response.getJSONArray("Notices").getJSONObject(c);
 
-                                            JSONObject object = response.getJSONArray("Notices").getJSONObject(c);
+
+                                                title = object.getString("title");
+                                                date = object.getString("date");
+                                                postedby = object.getString("posted_by");
+                                                attention = object.getString("attention");
+                                                id = object.getString("id");
+                                                Notice notice = new Notice(title,date,postedby,attention,id);
+                                                //notices.add(notice);
+                                                noticedatabase.child(String.valueOf(c)).setValue(notice);
+                                                c++;
+                                            }
+                                            noticerefresh.setRefreshing(false);
+                                            if(getActivity()!=null){
+                                                Toast.makeText(getActivity(),"Updated Successfully",Toast.LENGTH_SHORT).show();
+                                            }
 
 
-                                            title = object.getString("title");
-                                            date = object.getString("date");
-                                            postedby = object.getString("posted_by");
-                                            attention = object.getString("attention");
-                                            id = object.getString("id");
-                                            Notice notice = new Notice(title,date,postedby,attention,id);
-                                            //notices.add(notice);
-                                            noticedatabase.child(String.valueOf(c)).setValue(notice);
-                                            c++;
+                                        } catch (JSONException e) {
+                                            e.printStackTrace();
                                         }
+                                        try {
+                                            JSONObject object0 = response.getJSONArray("Notices").getJSONObject(0);
+
+                                            title = object0.getString("title");
+                                            date = object0.getString("date");
+                                            postedby = object0.getString("posted_by");
+                                            attention = object0.getString("attention");
+                                            id = object0.getString("id");
+                                            Notice notice = new Notice(title,date,postedby,attention,id);
+                                            FirebaseDatabase.getInstance().getReference().child("Notices").setValue(notice);
+                                        } catch (JSONException e) {
+                                            e.printStackTrace();
+                                        }
+                                    }
+                                }, new Response.ErrorListener() {
+                                    @Override
+                                    public void onErrorResponse(VolleyError error) {
                                         noticerefresh.setRefreshing(false);
                                         if(getActivity()!=null){
-                                            Toast.makeText(getActivity(),"Updated Successfully",Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(getActivity(),"Network Error",Toast.LENGTH_SHORT).show();
                                         }
 
-
-                                    } catch (JSONException e) {
-                                        e.printStackTrace();
                                     }
-                                    try {
-                                        JSONObject object0 = response.getJSONArray("Notices").getJSONObject(0);
-
-                                        title = object0.getString("title");
-                                        date = object0.getString("date");
-                                        postedby = object0.getString("posted_by");
-                                        attention = object0.getString("attention");
-                                        id = object0.getString("id");
-                                        Notice notice = new Notice(title,date,postedby,attention,id);
-                                        FirebaseDatabase.getInstance().getReference().child("Notices").setValue(notice);
-                                    } catch (JSONException e) {
-                                        e.printStackTrace();
-                                    }
+                                });
+                                if(getActivity()!=null){
+                                    Mysingleton.getInstance(getActivity()).addToRequestqueue(jsonObjectRequest);
                                 }
-                            }, new Response.ErrorListener() {
-                                @Override
-                                public void onErrorResponse(VolleyError error) {
-                                    noticerefresh.setRefreshing(false);
-                                    if(getActivity()!=null){
-                                        Toast.makeText(getActivity(),"Network Error",Toast.LENGTH_SHORT).show();
-                                    }
 
-                                }
-                            });
-                            if(getActivity()!=null){
-                                Mysingleton.getInstance(getActivity()).addToRequestqueue(jsonObjectRequest);
+                            }
+                            catch (IllegalStateException e){
+                                e.printStackTrace();
                             }
 
 

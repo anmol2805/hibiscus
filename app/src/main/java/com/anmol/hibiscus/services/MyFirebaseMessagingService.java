@@ -57,8 +57,8 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService{
         builder.setColorized(true);
         builder.setColor(ContextCompat.getColor(this,R.color.colorPrimary));
 
-        builder.setSmallIcon(R.drawable.hibif);
-        builder.setBadgeIconType(R.drawable.hibif);
+        builder.setSmallIcon(R.drawable.ic_canopy_notification);
+        builder.setBadgeIconType(R.drawable.ic_canopy_notification);
         builder.setWhen(System.currentTimeMillis());
         builder.setContentTitle(payload.get("title"));
         builder.setContentText(payload.get("body"));
