@@ -29,6 +29,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.anmol.hibiscus.Adapter.NoticeAdapter;
+import com.anmol.hibiscus.Helpers.Dbhelper;
 import com.anmol.hibiscus.Model.Notice;
 import com.anmol.hibiscus.Mysingleton;
 import com.anmol.hibiscus.NoticeDataActivity;
@@ -49,6 +50,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by anmol on 2017-08-18.
@@ -58,7 +60,7 @@ public class main extends Fragment {
     String url = "http://139.59.23.157/api/hibi/notice";
     ProgressBar progressBar;
     String title,date,postedby,id,attention;
-    ArrayList<Notice>notices;
+    List<Notice> notices;
     NoticeAdapter adapter;
     ListView lv;
     int key;
@@ -264,58 +266,51 @@ public class main extends Fragment {
 
             }
         });
-        final DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("Students").child(auth.getCurrentUser().getUid()).child("hibiscus");
-        databaseReference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if(dataSnapshot.child("sid").getValue(String.class)!=null && dataSnapshot.child("pwd").getValue(String.class)!=null) {
-                    uid = dataSnapshot.child("sid").getValue(String.class);
-                    pwd = dataSnapshot.child("pwd").getValue(String.class);
 
-                }
-            }
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
         lv = (ListView)vi.findViewById(R.id.list);
         notices = new ArrayList<>();
+        Dbhelper dbhelper = new Dbhelper(getActivity());
+        String query = "Select * from notice_table ORDER BY notice_id DESC";
+        notices = dbhelper.readData(query);
+        progressBar.setVisibility(View.GONE);
+        adapter = new NoticeAdapter(getActivity(),R.layout.notice,notices);
+        adapter.notifyDataSetChanged();
+        lv.setAdapter(adapter);
 
-        mdatabase.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                notices.clear();
-                for(DataSnapshot data:dataSnapshot.getChildren()){
-
-                        String title = data.child("title").getValue().toString();
-                        String attention = data.child("attention").getValue().toString();
-                        String posted_by = data.child("posted_by").getValue().toString();
-                        String date = data.child("date").getValue().toString();
-                        String id = data.child("id").getValue().toString();
-                        Notice notice = new Notice(title,date,posted_by,attention,id);
-                        notices.add(notice);
-
-
-                }
-                if(getActivity()!=null){
-                    progressBar.setVisibility(View.GONE);
-                    adapter = new NoticeAdapter(getActivity(),R.layout.notice,notices);
-                    adapter.notifyDataSetChanged();
-                    lv.setAdapter(adapter);
-
-                }
-
-
-
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
+//        mdatabase.addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(DataSnapshot dataSnapshot) {
+//                notices.clear();
+//                for(DataSnapshot data:dataSnapshot.getChildren()){
+//
+//                        String title = data.child("title").getValue().toString();
+//                        String attention = data.child("attention").getValue().toString();
+//                        String posted_by = data.child("posted_by").getValue().toString();
+//                        String date = data.child("date").getValue().toString();
+//                        String id = data.child("id").getValue().toString();
+//                        Notice notice = new Notice(title,date,posted_by,attention,id);
+//                        notices.add(notice);
+//
+//
+//                }
+//                if(getActivity()!=null){
+//                    progressBar.setVisibility(View.GONE);
+//                    adapter = new NoticeAdapter(getActivity(),R.layout.notice,notices);
+//                    adapter.notifyDataSetChanged();
+//                    lv.setAdapter(adapter);
+//
+//                }
+//
+//
+//
+//            }
+//
+//            @Override
+//            public void onCancelled(DatabaseError databaseError) {
+//
+//            }
+//        });
 
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
