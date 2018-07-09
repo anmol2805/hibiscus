@@ -89,51 +89,57 @@ public class fees extends Fragment {
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-                    JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, getResources().getString(R.string.fees_url), jsonObject, new Response.Listener<JSONObject>() {
-                        @Override
-                        public void onResponse(JSONObject response) {
+                    try{
+                        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, getResources().getString(R.string.fees_url), jsonObject, new Response.Listener<JSONObject>() {
+                            @Override
+                            public void onResponse(JSONObject response) {
 
-                            try {
-                                JSONObject object = response.getJSONArray("Notices").getJSONObject(0);
+                                try {
+                                    JSONObject object = response.getJSONArray("Notices").getJSONObject(0);
 
-                                if(!object.getString("html").isEmpty()){
-                                    progressBar.setVisibility(View.GONE);
-                                    grd.loadData(object.getString("html"), "text/html; charset=utf-8", "UTF-8");
-                                }
-                                else {
-                                    if(getActivity()!=null && isAdded()){
+                                    if(!object.getString("html").isEmpty()){
                                         progressBar.setVisibility(View.GONE);
-                                        retry.setVisibility(View.VISIBLE);
-                                        fail.setVisibility(View.VISIBLE);
+                                        grd.loadData(object.getString("html"), "text/html; charset=utf-8", "UTF-8");
+                                    }
+                                    else {
+                                        if(getActivity()!=null && isAdded()){
+                                            progressBar.setVisibility(View.GONE);
+                                            retry.setVisibility(View.VISIBLE);
+                                            fail.setVisibility(View.VISIBLE);
+                                            Toast.makeText(getActivity(),"Network Error",Toast.LENGTH_SHORT).show();
+                                        }
+
+                                    }
+
+                                    //Toast.makeText(getActivity(),object.getString("html"),Toast.LENGTH_SHORT).show();
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+
+
+                            }
+                        }, new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                if(getActivity()!=null && isAdded()){
+                                    progressBar.setVisibility(View.GONE);
+                                    retry.setVisibility(View.VISIBLE);
+                                    fail.setVisibility(View.VISIBLE);
+                                    if(getActivity()!=null){
                                         Toast.makeText(getActivity(),"Network Error",Toast.LENGTH_SHORT).show();
                                     }
 
                                 }
 
-                                //Toast.makeText(getActivity(),object.getString("html"),Toast.LENGTH_SHORT).show();
-                            } catch (JSONException e) {
-                                e.printStackTrace();
                             }
-
-
+                        });
+                        if(getActivity()!=null && isAdded()){
+                            Mysingleton.getInstance(getActivity()).addToRequestqueue(jsonObjectRequest);
                         }
-                    }, new Response.ErrorListener() {
-                        @Override
-                        public void onErrorResponse(VolleyError error) {
-                            if(getActivity()!=null && isAdded()){
-                                progressBar.setVisibility(View.GONE);
-                                retry.setVisibility(View.VISIBLE);
-                                fail.setVisibility(View.VISIBLE);
-                                if(getActivity()!=null){
-                                    Toast.makeText(getActivity(),"Network Error",Toast.LENGTH_SHORT).show();
-                                }
 
-                            }
-
-                        }
-                    });
-                    if(getActivity()!=null && isAdded()){
-                        Mysingleton.getInstance(getActivity()).addToRequestqueue(jsonObjectRequest);
+                    }
+                    catch (IllegalStateException e){
+                        e.printStackTrace();
                     }
 
                     retry.setOnClickListener(new View.OnClickListener() {
