@@ -17,7 +17,7 @@
         android:layout_centerVertical="true"
         android:visibility="visible"
 
-        app:srcCompat="@drawable/logo2" />
+        app:srcCompat="@drawable/iiit" />
 
     <ProgressBar
         android:id="@+id/load"

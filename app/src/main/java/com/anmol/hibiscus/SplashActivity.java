@@ -39,6 +39,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -84,7 +85,13 @@ public class SplashActivity extends AppCompatActivity {
                     R.anim.fade_in);
             zoomin = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.zoom_in);
             img.startAnimation(zoomin);
-            loaddata();
+            Dbhelper helper = new Dbhelper(this);
+            List<Notice> notices1 = helper.readData("Select * from notice_table ORDER BY notice_id DESC");
+            ArrayList<String> noticeids = new ArrayList<>();
+            for(int i = 0;i<notices1.size();i++){
+                noticeids.add(notices1.get(i).getId());
+            }
+            loaddata(noticeids);
 //            Handler handler = new Handler();
 //
 //
@@ -127,7 +134,7 @@ public class SplashActivity extends AppCompatActivity {
 
     }
 
-    private void loaddata() {
+    private void loaddata(final ArrayList<String> noticeids) {
         final JSONObject jsonObject = new JSONObject();
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().getRoot();
         databaseReference.child("Students").child(auth.getCurrentUser().getUid()).child("hibiscus").addValueEventListener(new ValueEventListener() {
@@ -161,7 +168,19 @@ public class SplashActivity extends AppCompatActivity {
                                     attention = object.getString("attention");
                                     id = object.getString("id");
                                     Notice notice = new Notice(title,date,postedby,attention,id);
-                                    dbhelper.insertData(notice);
+                                    int k=0;
+                                    for(int j = 0;j<noticeids.size();j++){
+                                        if(noticeids.get(j).equals(id)){
+                                            k=1;
+                                        }
+                                    }
+                                    if(k==0){
+                                        System.out.print("noticestatus:new entry");
+                                        dbhelper.insertData(notice);
+                                    }
+                                    else{
+                                        System.out.print("noticestatus:already present");
+                                    }
                                     dbhelper.updatenotice(notice);
                                     c++;
                                 }

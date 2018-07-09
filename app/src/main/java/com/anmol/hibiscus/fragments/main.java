@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.provider.Settings;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
@@ -83,6 +84,7 @@ public class main extends Fragment {
         getActivity().setTitle("Notice Board");
         Intent intent = new Intent(getActivity(), RequestService.class);
         getActivity().startService(intent);
+        notices = new ArrayList<>();
         final ImageButton refresh = (ImageButton)vi.findViewById(R.id.refresh);
         retry = (Button)vi.findViewById(R.id.retry);
         head = (TextView)vi.findViewById(R.id.head);
@@ -90,17 +92,22 @@ public class main extends Fragment {
         work = (Button)vi.findViewById(R.id.work);
         margin = (View)vi.findViewById(R.id.margin);
         rotate = AnimationUtils.loadAnimation(getActivity(),R.anim.rotate);
+        auth = FirebaseAuth.getInstance();
+        mdatabase = FirebaseDatabase.getInstance().getReference().child("Notice");
+        progressBar = (ProgressBar)vi.findViewById(R.id.load);
+        progressBar.setVisibility(View.VISIBLE);
+        final DatabaseReference data = FirebaseDatabase.getInstance().getReference().getRoot().child("banner");
         noticerefresh = (SwipeRefreshLayout)vi.findViewById(R.id.noticerefresh);
-        refresh.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                Intent intent = new Intent(getActivity(), RequestService.class);
-                getActivity().startService(intent);
-                Toast.makeText(getActivity(),"Please Wait...",Toast.LENGTH_SHORT).show();
-                refresh.startAnimation(rotate);
-            }
-        });
+//        refresh.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//
+//                Intent intent = new Intent(getActivity(), RequestService.class);
+//                getActivity().startService(intent);
+//                Toast.makeText(getActivity(),"Please Wait...",Toast.LENGTH_SHORT).show();
+//                refresh.startAnimation(rotate);
+//            }
+//        });
         noticerefresh.setColorSchemeColors(
                 getActivity().getResources().getColor(R.color.colorAccent)
         );
@@ -117,7 +124,7 @@ public class main extends Fragment {
                 final JSONObject jsonObject = new JSONObject();
                 databaseReference.child("Students").child(auth.getCurrentUser().getUid()).child("hibiscus").addValueEventListener(new ValueEventListener() {
                     @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         if(dataSnapshot.child("sid").getValue(String.class)!=null && dataSnapshot.child("pwd").getValue(String.class)!=null){
                             uid = dataSnapshot.child("sid").getValue(String.class);
                             pwd = dataSnapshot.child("pwd").getValue(String.class);
@@ -133,10 +140,11 @@ public class main extends Fragment {
                                 JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, getResources().getString(R.string.notice_url), jsonObject, new Response.Listener<JSONObject>() {
                                     @Override
                                     public void onResponse(JSONObject response) {
-
+                                        noticerefresh.setRefreshing(false);
                                         try {
+                                            Dbhelper dbhelper = new Dbhelper(getActivity());
                                             int c = 0;
-                                            while (c<response.getJSONArray("Notices").length()){
+                                            while (c<5){
                                                 System.out.println("noticeresponse" + response);
                                                 JSONObject object = response.getJSONArray("Notices").getJSONObject(c);
 
@@ -147,12 +155,56 @@ public class main extends Fragment {
                                                 attention = object.getString("attention");
                                                 id = object.getString("id");
                                                 Notice notice = new Notice(title,date,postedby,attention,id);
-                                                //notices.add(notice);
-                                                noticedatabase.child(String.valueOf(c)).setValue(notice);
+                                                dbhelper.insertData(notice);
+                                                dbhelper.updatenotice(notice);
+                                                //noticedatabase.child(String.valueOf(c)).setValue(notice);
                                                 c++;
                                             }
-                                            noticerefresh.setRefreshing(false);
-                                            if(getActivity()!=null){
+                                            notices.clear();
+                                            String query = "Select * from notice_table ORDER BY notice_id DESC";
+                                            notices = dbhelper.readData(query);
+                                            if (!notices.isEmpty()){
+                                                progressBar.setVisibility(View.GONE);
+                                                adapter = new NoticeAdapter(getActivity(),R.layout.notice,notices);
+                                                adapter.notifyDataSetChanged();
+                                                lv.setAdapter(adapter);
+
+                                            }
+                                            else {
+                                                mdatabase.addValueEventListener(new ValueEventListener() {
+                                                    @Override
+                                                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                                        notices.clear();
+                                                        for (DataSnapshot data : dataSnapshot.getChildren()) {
+
+                                                            String title = data.child("title").getValue().toString();
+                                                            String attention = data.child("attention").getValue().toString();
+                                                            String posted_by = data.child("posted_by").getValue().toString();
+                                                            String date = data.child("date").getValue().toString();
+                                                            String id = data.child("id").getValue().toString();
+                                                            Notice notice = new Notice(title, date, posted_by, attention, id);
+                                                            notices.add(notice);
+
+
+                                                        }
+                                                        if (getActivity() != null) {
+                                                            progressBar.setVisibility(View.GONE);
+                                                            adapter = new NoticeAdapter(getActivity(), R.layout.notice, notices);
+                                                            adapter.notifyDataSetChanged();
+                                                            lv.setAdapter(adapter);
+
+                                                        }
+
+
+                                                    }
+
+                                                    @Override
+                                                    public void onCancelled(DatabaseError databaseError) {
+
+                                                    }
+                                                });
+                                            }
+                                                if(getActivity()!=null){
                                                 Toast.makeText(getActivity(),"Updated Successfully",Toast.LENGTH_SHORT).show();
                                             }
 
@@ -160,19 +212,22 @@ public class main extends Fragment {
                                         } catch (JSONException e) {
                                             e.printStackTrace();
                                         }
-                                        try {
-                                            JSONObject object0 = response.getJSONArray("Notices").getJSONObject(0);
-
-                                            title = object0.getString("title");
-                                            date = object0.getString("date");
-                                            postedby = object0.getString("posted_by");
-                                            attention = object0.getString("attention");
-                                            id = object0.getString("id");
-                                            Notice notice = new Notice(title,date,postedby,attention,id);
-                                            FirebaseDatabase.getInstance().getReference().child("Notices").setValue(notice);
-                                        } catch (JSONException e) {
+                                        catch (NullPointerException e){
                                             e.printStackTrace();
                                         }
+//                                        try {
+//                                            JSONObject object0 = response.getJSONArray("Notices").getJSONObject(0);
+//
+//                                            title = object0.getString("title");
+//                                            date = object0.getString("date");
+//                                            postedby = object0.getString("posted_by");
+//                                            attention = object0.getString("attention");
+//                                            id = object0.getString("id");
+//                                            Notice notice = new Notice(title,date,postedby,attention,id);
+//                                            FirebaseDatabase.getInstance().getReference().child("Notices").setValue(notice);
+//                                        } catch (JSONException e) {
+//                                            e.printStackTrace();
+//                                        }
                                     }
                                 }, new Response.ErrorListener() {
                                     @Override
@@ -206,11 +261,7 @@ public class main extends Fragment {
                 });
             }
         });
-        auth = FirebaseAuth.getInstance();
-        mdatabase = FirebaseDatabase.getInstance().getReference().child("Notice");
-        progressBar = (ProgressBar)vi.findViewById(R.id.load);
-        progressBar.setVisibility(View.VISIBLE);
-        final DatabaseReference data = FirebaseDatabase.getInstance().getReference().getRoot().child("banner");
+
         data.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -269,48 +320,55 @@ public class main extends Fragment {
 
 
         lv = (ListView)vi.findViewById(R.id.list);
-        notices = new ArrayList<>();
+
+        notices.clear();
         Dbhelper dbhelper = new Dbhelper(getActivity());
         String query = "Select * from notice_table ORDER BY notice_id DESC";
         notices = dbhelper.readData(query);
-        progressBar.setVisibility(View.GONE);
-        adapter = new NoticeAdapter(getActivity(),R.layout.notice,notices);
-        adapter.notifyDataSetChanged();
-        lv.setAdapter(adapter);
+        if (!notices.isEmpty()){
+            progressBar.setVisibility(View.GONE);
+            adapter = new NoticeAdapter(getActivity(),R.layout.notice,notices);
+            adapter.notifyDataSetChanged();
+            lv.setAdapter(adapter);
 
-//        mdatabase.addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(DataSnapshot dataSnapshot) {
-//                notices.clear();
-//                for(DataSnapshot data:dataSnapshot.getChildren()){
-//
-//                        String title = data.child("title").getValue().toString();
-//                        String attention = data.child("attention").getValue().toString();
-//                        String posted_by = data.child("posted_by").getValue().toString();
-//                        String date = data.child("date").getValue().toString();
-//                        String id = data.child("id").getValue().toString();
-//                        Notice notice = new Notice(title,date,posted_by,attention,id);
-//                        notices.add(notice);
-//
-//
-//                }
-//                if(getActivity()!=null){
-//                    progressBar.setVisibility(View.GONE);
-//                    adapter = new NoticeAdapter(getActivity(),R.layout.notice,notices);
-//                    adapter.notifyDataSetChanged();
-//                    lv.setAdapter(adapter);
-//
-//                }
-//
-//
-//
-//            }
-//
-//            @Override
-//            public void onCancelled(DatabaseError databaseError) {
-//
-//            }
-//        });
+        }
+        else {
+            mdatabase.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    notices.clear();
+                    for(DataSnapshot data:dataSnapshot.getChildren()){
+
+                        String title = data.child("title").getValue().toString();
+                        String attention = data.child("attention").getValue().toString();
+                        String posted_by = data.child("posted_by").getValue().toString();
+                        String date = data.child("date").getValue().toString();
+                        String id = data.child("id").getValue().toString();
+                        Notice notice = new Notice(title,date,posted_by,attention,id);
+                        notices.add(notice);
+
+
+                    }
+                    if(getActivity()!=null){
+                        progressBar.setVisibility(View.GONE);
+                        adapter = new NoticeAdapter(getActivity(),R.layout.notice,notices);
+                        adapter.notifyDataSetChanged();
+                        lv.setAdapter(adapter);
+
+                    }
+
+
+
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+
+        }
+
 
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
