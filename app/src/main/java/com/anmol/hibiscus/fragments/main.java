@@ -85,6 +85,7 @@ public class main extends Fragment {
         Intent intent = new Intent(getActivity(), RequestService.class);
         getActivity().startService(intent);
         notices = new ArrayList<>();
+        lv = (ListView)vi.findViewById(R.id.list);
         final ImageButton refresh = (ImageButton)vi.findViewById(R.id.refresh);
         retry = (Button)vi.findViewById(R.id.retry);
         head = (TextView)vi.findViewById(R.id.head);
@@ -108,6 +109,59 @@ public class main extends Fragment {
 //                refresh.startAnimation(rotate);
 //            }
 //        });
+        notices.clear();
+        Dbhelper dbhelper = new Dbhelper(getActivity());
+        String query = "Select * from notice_table ORDER BY notice_id DESC";
+        notices = dbhelper.readData(query);
+        final ArrayList<String> noticeids = new ArrayList<>();
+        for(int i = 0;i<notices.size();i++){
+            noticeids.add(notices.get(i).getId());
+        }
+        if (!notices.isEmpty()){
+            progressBar.setVisibility(View.GONE);
+            adapter = new NoticeAdapter(getActivity(),R.layout.notice,notices);
+            adapter.notifyDataSetChanged();
+            lv.setAdapter(adapter);
+
+        }
+        else {
+            mdatabase.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    notices.clear();
+                    for(DataSnapshot data:dataSnapshot.getChildren()){
+
+                        String title = data.child("title").getValue().toString();
+                        String attention = data.child("attention").getValue().toString();
+                        String posted_by = data.child("posted_by").getValue().toString();
+                        String date = data.child("date").getValue().toString();
+                        String id = data.child("id").getValue().toString();
+                        Notice notice = new Notice(title,date,posted_by,attention,id);
+                        notices.add(notice);
+
+
+                    }
+                    if(getActivity()!=null){
+                        progressBar.setVisibility(View.GONE);
+                        adapter = new NoticeAdapter(getActivity(),R.layout.notice,notices);
+                        adapter.notifyDataSetChanged();
+                        lv.setAdapter(adapter);
+
+                    }
+
+
+
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+
+        }
+
+
         noticerefresh.setColorSchemeColors(
                 getActivity().getResources().getColor(R.color.colorAccent)
         );
@@ -155,7 +209,20 @@ public class main extends Fragment {
                                                 attention = object.getString("attention");
                                                 id = object.getString("id");
                                                 Notice notice = new Notice(title,date,postedby,attention,id);
-                                                dbhelper.insertData(notice);
+                                                int k=0;
+                                                for(int j = 0;j<noticeids.size();j++){
+                                                    if(noticeids.get(j).equals(id)){
+                                                        k=1;
+                                                    }
+                                                }
+                                                if(k==0){
+                                                    System.out.print("noticestatus:new entry");
+                                                    dbhelper.insertData(notice);
+                                                }
+                                                else{
+                                                    System.out.print("noticestatus:already present");
+                                                }
+                                                //dbhelper.insertData(notice);
                                                 dbhelper.updatenotice(notice);
                                                 //noticedatabase.child(String.valueOf(c)).setValue(notice);
                                                 c++;
@@ -319,55 +386,7 @@ public class main extends Fragment {
         });
 
 
-        lv = (ListView)vi.findViewById(R.id.list);
 
-        notices.clear();
-        Dbhelper dbhelper = new Dbhelper(getActivity());
-        String query = "Select * from notice_table ORDER BY notice_id DESC";
-        notices = dbhelper.readData(query);
-        if (!notices.isEmpty()){
-            progressBar.setVisibility(View.GONE);
-            adapter = new NoticeAdapter(getActivity(),R.layout.notice,notices);
-            adapter.notifyDataSetChanged();
-            lv.setAdapter(adapter);
-
-        }
-        else {
-            mdatabase.addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    notices.clear();
-                    for(DataSnapshot data:dataSnapshot.getChildren()){
-
-                        String title = data.child("title").getValue().toString();
-                        String attention = data.child("attention").getValue().toString();
-                        String posted_by = data.child("posted_by").getValue().toString();
-                        String date = data.child("date").getValue().toString();
-                        String id = data.child("id").getValue().toString();
-                        Notice notice = new Notice(title,date,posted_by,attention,id);
-                        notices.add(notice);
-
-
-                    }
-                    if(getActivity()!=null){
-                        progressBar.setVisibility(View.GONE);
-                        adapter = new NoticeAdapter(getActivity(),R.layout.notice,notices);
-                        adapter.notifyDataSetChanged();
-                        lv.setAdapter(adapter);
-
-                    }
-
-
-
-                }
-
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
-
-                }
-            });
-
-        }
 
 
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
