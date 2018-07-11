@@ -3,7 +3,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="5dp"
     android:id="@+id/noticelayout"
     >
     <LinearLayout
@@ -13,6 +12,7 @@
         android:id="@+id/linearLayout"
         android:layout_toLeftOf="@+id/star"
         android:layout_toStartOf="@+id/star"
+        android:padding="5dp"
         >
 
         <TextView
@@ -65,7 +65,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="TextView"
-        android:layout_marginRight="10dp"
+        android:layout_marginRight="15dp"
         android:layout_below="@+id/linearLayout"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
@@ -84,5 +84,11 @@
         android:visibility="gone"
         android:layout_above="@+id/posted"
         />
-
+    <View
+    android:layout_width="fill_parent"
+    android:layout_height="1dp"
+    android:background="@color/grey2"
+    android:layout_below="@id/posted"
+    android:layout_marginTop="5dp"
+    />
 </RelativeLayout>
