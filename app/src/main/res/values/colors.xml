@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#F0003B</color>
-    <color name="colorPrimaryDark">#F0003B</color>
-    <color name="colorAccent">#dc143c</color>
+    <color name="colorPrimary">#E53935</color>
+    <color name="colorPrimaryDark">#E53935</color>
+    <color name="colorAccent">#C62828</color>
 
 
     <color name="bg_login">#26ae90</color>
@@ -23,5 +23,9 @@
     <color name="good">#28a745</color>
     <color name="warn">#ffc107</color>
     <color name="unfin">#DCDCDC</color>
+    <color name="grey1">#F5F5F5</color>
+    <color name="grey2">#BDBDBD</color>
+    <color name="grey3">#616161</color>
+    <color name="grey4">#424242</color>
     <color name="pgrcolor">#3498db</color>
 </resources>

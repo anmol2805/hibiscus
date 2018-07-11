@@ -271,7 +271,7 @@ public class main extends Fragment {
                                                     }
                                                 });
                                             }
-                                                if(getActivity()!=null){
+                                            if(getActivity()!=null){
                                                 Toast.makeText(getActivity(),"Updated Successfully",Toast.LENGTH_SHORT).show();
                                             }
 
@@ -384,9 +384,6 @@ public class main extends Fragment {
 
             }
         });
-
-
-
 
 
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
