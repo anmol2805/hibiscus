@@ -1,6 +1,7 @@
 package com.anmol.hibiscus;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -21,6 +22,7 @@ import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.InterstitialAd;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -67,37 +69,59 @@ public class NoticeDataActivity extends AppCompatActivity {
                     interstitialAdnotice.show();
                 }
                 else {
-                    nd.setFocusable(true);
-                    nd.setFocusableInTouchMode(true);
-                    nd.getSettings().setJavaScriptEnabled(true);
-                    nd.getSettings().setJavaScriptCanOpenWindowsAutomatically(true);
-                    nd.getSettings().setLoadsImagesAutomatically(true);
-                    nd.getSettings().setSupportZoom(true);
-                    nd.getSettings().setBuiltInZoomControls(true);
-                    nd.getSettings().setRenderPriority(WebSettings.RenderPriority.HIGH);
-                    //nd.getSettings().setCacheMode(WebSettings.LOAD_CACHE_ONLY);
-                    nd.getSettings().setDomStorageEnabled(true);
-                    nd.getSettings().setDatabaseEnabled(true);
-                    nd.getSettings().setLoadsImagesAutomatically(true);
-                    //nd.getSettings().setAppCacheEnabled(true);
-                    nd.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
-                    nd.getSettings().setUseWideViewPort(true);
-                    nd.getSettings().setTextZoom(175);
-                    nd.setInitialScale(1);
-                    id = getIntent().getStringExtra("id");
-                    uid = getIntent().getStringExtra("uid");
-                    pwd = getIntent().getStringExtra("pwd");
-                    title = getIntent().getStringExtra("title");
-                    date = getIntent().getStringExtra("date");
-                    att = getIntent().getStringExtra("att");
-                    post = getIntent().getStringExtra("posted");
-                    d.setText(date);
-                    p.setText(post);
-                    a.setText(att);
-                    t.setText(title);
+                    loadview();
+                }
+            }
 
-                    final DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("NoticeData").child(id);
+            @Override
+            public void onAdClosed() {
+                super.onAdClosed();
+                loadview();
+            }
+        });
+        if(interstitialAdnotice.isLoaded()){
+            interstitialAdnotice.show();
+        }
+        else {
+            loadview();
+        }
+    }
 
+    private void loadview() {
+        nd.setFocusable(true);
+        nd.setFocusableInTouchMode(true);
+        nd.getSettings().setJavaScriptEnabled(true);
+        nd.getSettings().setJavaScriptCanOpenWindowsAutomatically(true);
+        nd.getSettings().setLoadsImagesAutomatically(true);
+        nd.getSettings().setSupportZoom(true);
+        nd.getSettings().setBuiltInZoomControls(true);
+        nd.getSettings().setRenderPriority(WebSettings.RenderPriority.HIGH);
+        //nd.getSettings().setCacheMode(WebSettings.LOAD_CACHE_ONLY);
+        nd.getSettings().setDomStorageEnabled(true);
+        nd.getSettings().setDatabaseEnabled(true);
+        nd.getSettings().setLoadsImagesAutomatically(true);
+        //nd.getSettings().setAppCacheEnabled(true);
+        nd.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
+        nd.getSettings().setUseWideViewPort(true);
+        nd.getSettings().setTextZoom(175);
+        nd.setInitialScale(1);
+        id = getIntent().getStringExtra("id");
+        title = getIntent().getStringExtra("title");
+        date = getIntent().getStringExtra("date");
+        att = getIntent().getStringExtra("att");
+        post = getIntent().getStringExtra("posted");
+        d.setText(date);
+        p.setText(post);
+        a.setText(att);
+        t.setText(title);
+        FirebaseAuth auth =FirebaseAuth.getInstance();
+        final DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("Students").child(auth.getCurrentUser().getUid()).child("hibiscus");
+        databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if(dataSnapshot.child("sid").getValue(String.class)!=null && dataSnapshot.child("pwd").getValue(String.class)!=null) {
+                    uid = dataSnapshot.child("sid").getValue(String.class);
+                    pwd = dataSnapshot.child("pwd").getValue(String.class);
                     object = new JSONObject();
                     try {
                         object.put("uid",uid);
@@ -144,164 +168,15 @@ public class NoticeDataActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onAdClosed() {
-                super.onAdClosed();
-                nd.setFocusable(true);
-                nd.setFocusableInTouchMode(true);
-                nd.getSettings().setJavaScriptEnabled(true);
-                nd.getSettings().setJavaScriptCanOpenWindowsAutomatically(true);
-                nd.getSettings().setLoadsImagesAutomatically(true);
-                nd.getSettings().setSupportZoom(true);
-                nd.getSettings().setBuiltInZoomControls(true);
-                nd.getSettings().setRenderPriority(WebSettings.RenderPriority.HIGH);
-                //nd.getSettings().setCacheMode(WebSettings.LOAD_CACHE_ONLY);
-                nd.getSettings().setDomStorageEnabled(true);
-                nd.getSettings().setDatabaseEnabled(true);
-                nd.getSettings().setLoadsImagesAutomatically(true);
-                //nd.getSettings().setAppCacheEnabled(true);
-                nd.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
-                nd.getSettings().setUseWideViewPort(true);
-                nd.getSettings().setTextZoom(175);
-                nd.setInitialScale(1);
-                id = getIntent().getStringExtra("id");
-                uid = getIntent().getStringExtra("uid");
-                pwd = getIntent().getStringExtra("pwd");
-                title = getIntent().getStringExtra("title");
-                date = getIntent().getStringExtra("date");
-                att = getIntent().getStringExtra("att");
-                post = getIntent().getStringExtra("posted");
-                d.setText(date);
-                p.setText(post);
-                a.setText(att);
-                t.setText(title);
+            public void onCancelled(@NonNull DatabaseError databaseError) {
 
-                final DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("NoticeData").child(id);
-
-                object = new JSONObject();
-                try {
-                    object.put("uid",uid);
-                    object.put("pwd",pwd);
-                    object.put("id",id);
-                    object.put("pass","encrypt");
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                request(object, 0);
-                retry.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        request(object, 1);
-
-                    }
-                });
-                pn.setVisibility(View.VISIBLE);
-                FirebaseDatabase.getInstance().getReference().child("NoticeData").addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        if(dataSnapshot.hasChild(id)
-                                && !dataSnapshot.child(id).child("notice").getValue(String.class).contains("null")
-                                && dataSnapshot.child(id).child("notice").getValue()!=null
-                                && dataSnapshot.child(id).child("notice").getValue(String.class)!=null
-                                && dataSnapshot.child(id).child("notice")!=null
-                                && dataSnapshot.child(id).child("notice").exists()
-                                ){
-                            System.out.println("notice:" + "firebase");
-                            nd.loadData(dataSnapshot.child(id).child("notice").getValue(String.class), "text/html; charset=utf-8", "UTF-8");
-                            pn.setVisibility(View.GONE);
-                        }
-                        else {
-                            request(object,1);
-                        }
-                    }
-
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-
-                    }
-                });
             }
         });
-        if(interstitialAdnotice.isLoaded()){
-            interstitialAdnotice.show();
-        }
-        else {
-            nd.setFocusable(true);
-            nd.setFocusableInTouchMode(true);
-            nd.getSettings().setJavaScriptEnabled(true);
-            nd.getSettings().setJavaScriptCanOpenWindowsAutomatically(true);
-            nd.getSettings().setLoadsImagesAutomatically(true);
-            nd.getSettings().setSupportZoom(true);
-            nd.getSettings().setBuiltInZoomControls(true);
-            nd.getSettings().setRenderPriority(WebSettings.RenderPriority.HIGH);
-            //nd.getSettings().setCacheMode(WebSettings.LOAD_CACHE_ONLY);
-            nd.getSettings().setDomStorageEnabled(true);
-            nd.getSettings().setDatabaseEnabled(true);
-            nd.getSettings().setLoadsImagesAutomatically(true);
-            //nd.getSettings().setAppCacheEnabled(true);
-            nd.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
-            nd.getSettings().setUseWideViewPort(true);
-            nd.getSettings().setTextZoom(175);
-            nd.setInitialScale(1);
-            id = getIntent().getStringExtra("id");
-            uid = getIntent().getStringExtra("uid");
-            pwd = getIntent().getStringExtra("pwd");
-            title = getIntent().getStringExtra("title");
-            date = getIntent().getStringExtra("date");
-            att = getIntent().getStringExtra("att");
-            post = getIntent().getStringExtra("posted");
-            d.setText(date);
-            p.setText(post);
-            a.setText(att);
-            t.setText(title);
 
-            final DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("NoticeData").child(id);
-
-            object = new JSONObject();
-            try {
-                object.put("uid",uid);
-                object.put("pwd",pwd);
-                object.put("id",id);
-                object.put("pass","encrypt");
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-            request(object, 0);
-            retry.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    request(object, 1);
-
-                }
-            });
-            pn.setVisibility(View.VISIBLE);
-            FirebaseDatabase.getInstance().getReference().child("NoticeData").addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-                    if(dataSnapshot.hasChild(id)
-                            && !dataSnapshot.child(id).child("notice").getValue(String.class).contains("null")
-                            && dataSnapshot.child(id).child("notice").getValue()!=null
-                            && dataSnapshot.child(id).child("notice").getValue(String.class)!=null
-                            && dataSnapshot.child(id).child("notice")!=null
-                            && dataSnapshot.child(id).child("notice").exists()
-                            ){
-                        System.out.println("notice:" + "firebase");
-                        nd.loadData(dataSnapshot.child(id).child("notice").getValue(String.class), "text/html; charset=utf-8", "UTF-8");
-                        pn.setVisibility(View.GONE);
-                    }
-                    else {
-                        request(object,1);
-                    }
-                }
-
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
-
-                }
-            });
-        }
     }
 
     private void request(JSONObject object, final int i) {
+        System.out.println(object);
         retry.setVisibility(View.GONE);
         fail.setVisibility(View.GONE);
         pn.setVisibility(View.VISIBLE);
