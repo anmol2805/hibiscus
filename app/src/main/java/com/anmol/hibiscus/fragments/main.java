@@ -9,6 +9,9 @@ import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,8 +32,10 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
+import com.anmol.hibiscus.Adapter.IcoAdapter;
 import com.anmol.hibiscus.Adapter.NoticeAdapter;
 import com.anmol.hibiscus.Helpers.Dbhelper;
+import com.anmol.hibiscus.Interfaces.ItemClickListener;
 import com.anmol.hibiscus.Model.Notice;
 import com.anmol.hibiscus.Mysingleton;
 import com.anmol.hibiscus.NoticeDataActivity;
@@ -64,6 +69,7 @@ public class main extends Fragment {
     List<Notice> notices;
     NoticeAdapter adapter;
     ListView lv;
+    RecyclerView rv;
     int key;
     FirebaseAuth auth;
     String uid,pwd;
@@ -77,6 +83,8 @@ public class main extends Fragment {
     ImageView back;
     View margin;
     SwipeRefreshLayout noticerefresh;
+    ItemClickListener itemClickListener;
+    IcoAdapter icoAdapter;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
@@ -86,6 +94,11 @@ public class main extends Fragment {
         getActivity().startService(intent);
         notices = new ArrayList<>();
         lv = (ListView)vi.findViewById(R.id.list);
+        rv = (RecyclerView)vi.findViewById(R.id.rv);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
+        rv.setLayoutManager(layoutManager);
+        rv.setHasFixedSize(true);
+        rv.setItemAnimator(new DefaultItemAnimator());
         final ImageButton refresh = (ImageButton)vi.findViewById(R.id.refresh);
         retry = (Button)vi.findViewById(R.id.retry);
         head = (TextView)vi.findViewById(R.id.head);
@@ -109,6 +122,12 @@ public class main extends Fragment {
 //                refresh.startAnimation(rotate);
 //            }
 //        });
+        itemClickListener = new ItemClickListener() {
+            @Override
+            public void onItemClick(int pos) {
+
+            }
+        };
         notices.clear();
         Dbhelper dbhelper = new Dbhelper(getActivity());
         String query = "Select * from notice_table ORDER BY notice_id DESC";
@@ -119,9 +138,12 @@ public class main extends Fragment {
         }
         if (!notices.isEmpty()){
             progressBar.setVisibility(View.GONE);
-            adapter = new NoticeAdapter(getActivity(),R.layout.notice,notices);
-            adapter.notifyDataSetChanged();
-            lv.setAdapter(adapter);
+//            adapter = new NoticeAdapter(getActivity(),R.layout.notice,notices);
+//            adapter.notifyDataSetChanged();
+//            lv.setAdapter(adapter);
+            icoAdapter = new IcoAdapter(getActivity(),notices,itemClickListener);
+            icoAdapter.notifyDataSetChanged();
+            rv.setAdapter(icoAdapter);
 
         }
         else {
@@ -143,9 +165,12 @@ public class main extends Fragment {
                     }
                     if(getActivity()!=null){
                         progressBar.setVisibility(View.GONE);
-                        adapter = new NoticeAdapter(getActivity(),R.layout.notice,notices);
-                        adapter.notifyDataSetChanged();
-                        lv.setAdapter(adapter);
+//                        adapter = new NoticeAdapter(getActivity(),R.layout.notice,notices);
+//                        adapter.notifyDataSetChanged();
+//                        lv.setAdapter(adapter);
+                        icoAdapter = new IcoAdapter(getActivity(),notices,itemClickListener);
+                        icoAdapter.notifyDataSetChanged();
+                        rv.setAdapter(icoAdapter);
 
                     }
 
@@ -232,9 +257,12 @@ public class main extends Fragment {
                                             notices = dbhelper.readData(query);
                                             if (!notices.isEmpty()){
                                                 progressBar.setVisibility(View.GONE);
-                                                adapter = new NoticeAdapter(getActivity(),R.layout.notice,notices);
-                                                adapter.notifyDataSetChanged();
-                                                lv.setAdapter(adapter);
+//                                                adapter = new NoticeAdapter(getActivity(),R.layout.notice,notices);
+//                                                adapter.notifyDataSetChanged();
+//                                                lv.setAdapter(adapter);
+                                                icoAdapter = new IcoAdapter(getActivity(),notices,itemClickListener);
+                                                icoAdapter.notifyDataSetChanged();
+                                                rv.setAdapter(icoAdapter);
 
                                             }
                                             else {
@@ -256,9 +284,12 @@ public class main extends Fragment {
                                                         }
                                                         if (getActivity() != null) {
                                                             progressBar.setVisibility(View.GONE);
-                                                            adapter = new NoticeAdapter(getActivity(), R.layout.notice, notices);
-                                                            adapter.notifyDataSetChanged();
-                                                            lv.setAdapter(adapter);
+//                                                            adapter = new NoticeAdapter(getActivity(), R.layout.notice, notices);
+//                                                            adapter.notifyDataSetChanged();
+//                                                            lv.setAdapter(adapter);
+                                                            icoAdapter = new IcoAdapter(getActivity(),notices,itemClickListener);
+                                                            icoAdapter.notifyDataSetChanged();
+                                                            rv.setAdapter(icoAdapter);
 
                                                         }
 
@@ -386,30 +417,30 @@ public class main extends Fragment {
         });
 
 
-        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
-                try{
-                    Intent i = new Intent(getActivity(),NoticeDataActivity.class);
-                    i.putExtra("id",notices.get(position).getId());
-                    i.putExtra("uid",uid);
-                    i.putExtra("pwd",pwd);
-
-                    i.putExtra("title",notices.get(position).getTitle());
-                    i.putExtra("date",notices.get(position).getDate());
-                    i.putExtra("att",notices.get(position).getAttention());
-                    i.putExtra("posted",notices.get(position).getPosted_by());
-                    startActivity(i);
-                    getActivity().overridePendingTransition(R.anim.slide_in_up,R.anim.still);
-
-                }
-                catch(IndexOutOfBoundsException e){
-                    e.printStackTrace();
-                }
-
-
-            }
-        });
+//        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
+//                try{
+//                    Intent i = new Intent(getActivity(),NoticeDataActivity.class);
+//                    i.putExtra("id",notices.get(position).getId());
+//                    i.putExtra("uid",uid);
+//                    i.putExtra("pwd",pwd);
+//
+//                    i.putExtra("title",notices.get(position).getTitle());
+//                    i.putExtra("date",notices.get(position).getDate());
+//                    i.putExtra("att",notices.get(position).getAttention());
+//                    i.putExtra("posted",notices.get(position).getPosted_by());
+//                    startActivity(i);
+//                    getActivity().overridePendingTransition(R.anim.slide_in_up,R.anim.still);
+//
+//                }
+//                catch(IndexOutOfBoundsException e){
+//                    e.printStackTrace();
+//                }
+//
+//
+//            }
+//        });
 
         return vi;
 

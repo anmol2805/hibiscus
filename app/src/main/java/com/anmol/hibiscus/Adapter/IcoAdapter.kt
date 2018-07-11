@@ -54,11 +54,11 @@ class IcoAdapter(internal var c: Context, internal var notices: MutableList<Noti
         holder.noticelayout?.setOnClickListener {
             view ->
             val intent2 = Intent(c, NoticeDataActivity::class.java)
-            intent2.putExtra("noticeid",noticedata.id)
-            intent2.putExtra("noticetitle",noticedata.title)
-            intent2.putExtra("noticepostedby",noticedata.posted_by)
-            intent2.putExtra("noticeatt",noticedata.attention)
-            intent2.putExtra("noticedates",noticedata.date)
+            intent2.putExtra("id",noticedata.id)
+            intent2.putExtra("title",noticedata.title)
+            intent2.putExtra("posted",noticedata.posted_by)
+            intent2.putExtra("att",noticedata.attention)
+            intent2.putExtra("date",noticedata.date)
 
             val optionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation(c as Activity,holder.itemView.findViewById(R.id.title),"mytext")
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
