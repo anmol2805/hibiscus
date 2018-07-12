@@ -1,97 +1,134 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.chauthai.swipereveallayout.SwipeRevealLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:id="@+id/noticelayout"
-    android:foreground="?attr/selectableItemBackground"
+    app:mode="same_level"
+    app:dragEdge="right"
+    android:id="@+id/swipereveallayout"
+
     >
     <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:background="@color/colorPrimary"
+        >
+        <Button
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:layout_margin="10dp"
+            android:background="@drawable/starwhite"
+            android:id="@+id/starnotice"
+            />
+        <Button
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:layout_margin="10dp"
+            android:background="@drawable/sharewhite"
+            android:id="@+id/sharenotice"
+            />
+    </LinearLayout>
+
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:id="@+id/linearLayout"
-        android:layout_toLeftOf="@+id/star"
-        android:layout_toStartOf="@+id/star"
-        android:padding="5dp"
+        android:id="@+id/noticelayout"
+        android:foreground="?attr/selectableItemBackground"
         >
-
-        <TextView
-            android:id="@+id/date"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:transitionName="mydate"
             android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_below="@+id/title"
-            android:layout_marginLeft="10dp"
-            android:layout_marginBottom="0dp"
-            android:layout_weight="1"
-            android:text="TextView"
-            android:textSize="13sp"
-            />
+            android:orientation="vertical"
+            android:id="@+id/linearLayout"
+            android:layout_toLeftOf="@+id/star"
+            android:layout_toStartOf="@+id/star"
+            android:padding="5dp"
+            >
 
+            <TextView
+                android:id="@+id/date"
+                android:layout_width="match_parent"
+                android:transitionName="mydate"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_below="@+id/title"
+                android:layout_marginLeft="10dp"
+                android:layout_marginBottom="0dp"
+                android:layout_weight="1"
+                android:text="TextView"
+                android:textSize="13sp"
+                />
+
+            <TextView
+                android:id="@+id/title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="TextView"
+                android:transitionName="mytext"
+                android:layout_marginBottom="0dp"
+                android:textStyle="bold"
+                android:textColor="#000"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:textSize="14sp"
+                />
+
+            <TextView
+                android:id="@+id/attention"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="TextView"
+                android:transitionName="myatt"
+                android:layout_marginRight="10dp"
+                android:layout_marginBottom="0dp"
+                android:textStyle="italic"
+                android:layout_marginLeft="10dp"
+                android:layout_marginStart="10dp"
+                android:textSize="13sp"
+                />
+
+
+        </LinearLayout>
         <TextView
-            android:id="@+id/title"
+            android:id="@+id/posted"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="TextView"
-            android:transitionName="mytext"
-            android:layout_marginBottom="0dp"
-            android:textStyle="bold"
-            android:textColor="#000"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:textSize="14sp"
+            android:transitionName="mypost"
+            android:layout_marginRight="15dp"
+            android:layout_below="@+id/linearLayout"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:textSize="12sp"
             />
-
-        <TextView
-            android:id="@+id/attention"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="TextView"
-            android:transitionName="myatt"
-            android:layout_marginRight="10dp"
-            android:layout_marginBottom="0dp"
-            android:textStyle="italic"
-            android:layout_marginLeft="10dp"
-            android:layout_marginStart="10dp"
-            android:textSize="13sp"
+        <Button
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:id="@+id/star"
+            android:background="@drawable/star1"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginBottom="15dp"
+            android:layout_marginEnd="5dp"
+            android:layout_marginRight="5dp"
+            android:visibility="gone"
+            android:layout_above="@+id/posted"
             />
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="1dp"
+            android:background="@color/grey2"
+            android:layout_below="@id/posted"
+            android:layout_marginTop="5dp"
+            />
+    </RelativeLayout>
 
 
-    </LinearLayout>
-    <TextView
-        android:id="@+id/posted"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="TextView"
-        android:transitionName="mypost"
-        android:layout_marginRight="15dp"
-        android:layout_below="@+id/linearLayout"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:textSize="12sp"
-        />
-    <Button
-        android:layout_width="20dp"
-        android:layout_height="20dp"
-        android:id="@+id/star"
-        android:background="@drawable/star1"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_marginBottom="15dp"
-        android:layout_marginEnd="5dp"
-        android:layout_marginRight="5dp"
-        android:visibility="gone"
-        android:layout_above="@+id/posted"
-        />
-    <View
-    android:layout_width="fill_parent"
-    android:layout_height="1dp"
-    android:background="@color/grey2"
-    android:layout_below="@id/posted"
-    android:layout_marginTop="5dp"
-    />
-</RelativeLayout>
+</com.chauthai.swipereveallayout.SwipeRevealLayout>

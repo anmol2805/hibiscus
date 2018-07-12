@@ -26,6 +26,8 @@ import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
+import com.chauthai.swipereveallayout.SwipeRevealLayout
+import com.chauthai.swipereveallayout.ViewBinderHelper
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
@@ -34,6 +36,7 @@ import kotlin.collections.ArrayList
  * Created by anmol on 2/27/2018.
  */
 class IcoAdapter(internal var c: Context, internal var notices: MutableList<Notice>, private val mitemClickListener: ItemClickListener): RecyclerView.Adapter<IcoAdapter.MyViewHolder>(){
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         val v = LayoutInflater.from(c).inflate(R.layout.notice,parent,false)
         return MyViewHolder(v,mitemClickListener)
@@ -50,7 +53,7 @@ class IcoAdapter(internal var c: Context, internal var notices: MutableList<Noti
         holder.pstdby?.text = noticedata.posted_by
         holder.attent?.text = noticedata.attention
         holder.dates?.text = noticedata.date
-
+        holder.viewBinderHelper!!.bind(holder.swipereveallayout,noticedata.id)
         
         holder.noticelayout?.setOnClickListener {
             view ->
@@ -84,6 +87,8 @@ class IcoAdapter(internal var c: Context, internal var notices: MutableList<Noti
         var attent:TextView?=null
         var pstdby:TextView?=null
         var mtitle:TextView?=null
+        var viewBinderHelper:ViewBinderHelper?=null
+        var swipereveallayout:SwipeRevealLayout?=null
 
         //var sharebtn:Button?=null
         var noticelayout:RelativeLayout?=null
@@ -93,6 +98,9 @@ class IcoAdapter(internal var c: Context, internal var notices: MutableList<Noti
             this.pstdby = itemView.findViewById(R.id.posted)
             this.mtitle = itemView.findViewById(R.id.title)
             this.noticelayout = itemView.findViewById(R.id.noticelayout)
+            this.swipereveallayout = itemView.findViewById(R.id.swipereveallayout)
+            viewBinderHelper = ViewBinderHelper()
+            viewBinderHelper!!.setOpenOnlyOne(true)
             itemView.setOnClickListener(this)
         }
 
@@ -102,5 +110,6 @@ class IcoAdapter(internal var c: Context, internal var notices: MutableList<Noti
 
 
     }
+
 
 }
