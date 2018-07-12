@@ -12,7 +12,7 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:orientation="horizontal"
-        android:background="@color/colorPrimary"
+        android:background="@color/grey1"
         >
         <Button
             android:layout_width="25dp"
@@ -20,7 +20,7 @@
             android:gravity="center"
             android:layout_gravity="center"
             android:layout_margin="10dp"
-            android:background="@drawable/starwhite"
+            android:background="@drawable/star1"
             android:id="@+id/starnotice"
             />
         <Button
@@ -29,7 +29,7 @@
             android:gravity="center"
             android:layout_gravity="center"
             android:layout_margin="10dp"
-            android:background="@drawable/sharewhite"
+            android:background="@drawable/shareblue"
             android:id="@+id/sharenotice"
             />
     </LinearLayout>
@@ -45,8 +45,6 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:id="@+id/linearLayout"
-            android:layout_toLeftOf="@+id/star"
-            android:layout_toStartOf="@+id/star"
             android:padding="5dp"
             >
 
@@ -107,27 +105,28 @@
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
             android:textSize="12sp"
+            android:layout_marginBottom="5dp"
             />
-        <Button
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:id="@+id/star"
-            android:background="@drawable/star1"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:layout_marginBottom="15dp"
-            android:layout_marginEnd="5dp"
-            android:layout_marginRight="5dp"
-            android:visibility="gone"
-            android:layout_above="@+id/posted"
-            />
-        <View
-            android:layout_width="fill_parent"
-            android:layout_height="1dp"
-            android:background="@color/grey2"
-            android:layout_below="@id/posted"
-            android:layout_marginTop="5dp"
-            />
+        <!--<Button-->
+            <!--android:layout_width="20dp"-->
+            <!--android:layout_height="20dp"-->
+            <!--android:id="@+id/star"-->
+            <!--android:background="@drawable/star1"-->
+            <!--android:layout_alignParentEnd="true"-->
+            <!--android:layout_alignParentRight="true"-->
+            <!--android:layout_marginBottom="15dp"-->
+            <!--android:layout_marginEnd="5dp"-->
+            <!--android:layout_marginRight="5dp"-->
+            <!--android:visibility="gone"-->
+            <!--android:layout_above="@+id/posted"-->
+            <!--/>-->
+        <!--<View-->
+            <!--android:layout_width="fill_parent"-->
+            <!--android:layout_height="1dp"-->
+            <!--android:background="@color/grey2"-->
+            <!--android:layout_below="@id/posted"-->
+            <!--android:layout_marginTop="5dp"-->
+            <!--/>-->
     </RelativeLayout>
 
 

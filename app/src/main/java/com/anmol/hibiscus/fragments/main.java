@@ -10,6 +10,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -99,6 +100,8 @@ public class main extends Fragment {
         rv.setLayoutManager(layoutManager);
         rv.setHasFixedSize(true);
         rv.setItemAnimator(new DefaultItemAnimator());
+        rv.addItemDecoration(new DividerItemDecoration(getContext(),
+                DividerItemDecoration.VERTICAL));
         final ImageButton refresh = (ImageButton)vi.findViewById(R.id.refresh);
         retry = (Button)vi.findViewById(R.id.retry);
         head = (TextView)vi.findViewById(R.id.head);
