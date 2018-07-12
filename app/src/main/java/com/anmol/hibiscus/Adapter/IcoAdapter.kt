@@ -6,6 +6,7 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.drawable.Drawable
 import android.os.Build
+import android.os.Bundle
 import android.support.v4.app.ActivityOptionsCompat
 import android.support.v4.util.Pair
 import android.support.v7.widget.RecyclerView
@@ -53,6 +54,7 @@ class IcoAdapter(internal var c: Context, internal var notices: MutableList<Noti
         holder.pstdby?.text = noticedata.posted_by
         holder.attent?.text = noticedata.attention
         holder.dates?.text = noticedata.date
+        holder.viewBinderHelper!!.setOpenOnlyOne(true)
         holder.viewBinderHelper!!.bind(holder.swipereveallayout,noticedata.id)
         
         holder.noticelayout?.setOnClickListener {
@@ -100,7 +102,6 @@ class IcoAdapter(internal var c: Context, internal var notices: MutableList<Noti
             this.noticelayout = itemView.findViewById(R.id.noticelayout)
             this.swipereveallayout = itemView.findViewById(R.id.swipereveallayout)
             viewBinderHelper = ViewBinderHelper()
-            viewBinderHelper!!.setOpenOnlyOne(true)
             itemView.setOnClickListener(this)
         }
 
@@ -109,7 +110,11 @@ class IcoAdapter(internal var c: Context, internal var notices: MutableList<Noti
         }
 
 
+
+
     }
+
+
 
 
 }

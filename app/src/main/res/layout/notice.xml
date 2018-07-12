@@ -100,7 +100,7 @@
             android:layout_height="wrap_content"
             android:text="TextView"
             android:transitionName="mypost"
-            android:layout_marginRight="15dp"
+            android:layout_marginRight="10dp"
             android:layout_below="@+id/linearLayout"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
