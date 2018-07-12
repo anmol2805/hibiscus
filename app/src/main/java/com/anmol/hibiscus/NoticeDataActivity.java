@@ -241,6 +241,11 @@ public class NoticeDataActivity extends AppCompatActivity {
     }
 
     @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
+    }
+    @Override
     public void onBackPressed() {
         super.onBackPressed();
         //finish();
