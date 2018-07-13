@@ -17,6 +17,7 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.RelativeLayout
 import android.widget.TextView
+import com.anmol.hibiscus.Helpers.Dbbookshelper
 import com.anmol.hibiscus.Interfaces.ItemClickListener
 import com.anmol.hibiscus.Model.Notice
 import com.anmol.hibiscus.NoticeDataActivity
@@ -78,6 +79,31 @@ class IcoAdapter(internal var c: Context, internal var notices: MutableList<Noti
                 c.startActivity(intent2)
             }
         }
+        Glide.with(c).load(R.drawable.star1).into(holder.starnotice)
+        val dbb = Dbbookshelper(c)
+        var data = ArrayList<String>()
+        data.clear()
+        data = dbb.readbook()
+        var i = 0
+        var booked = false
+        while(i<data.size){
+            if(data[i] == noticedata.id){
+                Glide.with(c).load(R.drawable.stargolden).into(holder.starnotice)
+                booked = true
+            }
+            i++
+        }
+        holder.starnotice?.setOnClickListener{
+            if(!booked){
+                dbb.insertBook(noticedata.id)
+                Glide.with(c).load(R.drawable.stargolden).into(holder.starnotice)
+            }
+            else{
+                dbb.deletebook(noticedata.id)
+                Glide.with(c).load(R.drawable.star1).into(holder.starnotice)
+            }
+        }
+
 
 
 
@@ -91,8 +117,8 @@ class IcoAdapter(internal var c: Context, internal var notices: MutableList<Noti
         var mtitle:TextView?=null
         var viewBinderHelper:ViewBinderHelper?=null
         var swipereveallayout:SwipeRevealLayout?=null
-
-        //var sharebtn:Button?=null
+        var starnotice:ImageView?=null
+        var sharenotice:Button?=null
         var noticelayout:RelativeLayout?=null
         init {
             this.dates = itemView.findViewById(R.id.date)
@@ -101,6 +127,8 @@ class IcoAdapter(internal var c: Context, internal var notices: MutableList<Noti
             this.mtitle = itemView.findViewById(R.id.title)
             this.noticelayout = itemView.findViewById(R.id.noticelayout)
             this.swipereveallayout = itemView.findViewById(R.id.swipereveallayout)
+            this.sharenotice = itemView.findViewById(R.id.sharenotice)
+            this.starnotice = itemView.findViewById(R.id.starnotice)
             viewBinderHelper = ViewBinderHelper()
             itemView.setOnClickListener(this)
         }

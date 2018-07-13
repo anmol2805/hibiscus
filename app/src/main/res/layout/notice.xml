@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.chauthai.swipereveallayout.SwipeRevealLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     app:mode="same_level"
@@ -14,14 +15,15 @@
         android:orientation="horizontal"
         android:background="@color/grey1"
         >
-        <Button
+
+        <ImageView
+            android:id="@+id/starnotice"
             android:layout_width="25dp"
             android:layout_height="25dp"
-            android:gravity="center"
             android:layout_gravity="center"
             android:layout_margin="10dp"
-            android:background="@drawable/star1"
-            android:id="@+id/starnotice"
+            android:gravity="center"
+            app:srcCompat ="@drawable/star1"
             />
         <Button
             android:layout_width="25dp"
