@@ -13,8 +13,7 @@
         android:roundIcon="@drawable/hibi2"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-        android:fullBackupContent="true"
-        >
+        android:fullBackupContent="true">
         <meta-data
             android:name="com.onesignal.NotificationAccentColor.DEFAULT"
             android:value="#F0003B" />
@@ -39,6 +38,16 @@
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
 
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="com.anmol.hibiscus"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/filepaths" />
+        </provider>
+
         <activity
             android:name=".SplashActivity"
             android:screenOrientation="portrait"
@@ -48,17 +57,29 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:scheme="https"
+                    android:host="canopydevelopers.com"
+                    android:pathPrefix="/sharednotice" />
+            </intent-filter>
         </activity>
-        <activity android:name=".LoginActivity"
-            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".LoginActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".HibiscusActivity"
             android:screenOrientation="portrait"
             android:label="@string/title_activity_hibiscus"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".NoticeDataActivity"
-            android:screenOrientation="portrait"
-            />
+        <activity
+            android:name=".NoticeDataActivity"
+            android:screenOrientation="portrait" />
 
         <service android:name=".services.MyFirebaseMessagingService">
             <intent-filter>
@@ -70,18 +91,18 @@
         <service android:name=".services.RequestServiceGrades" />
         <service android:name=".services.RequestServiceCourses" />
 
-        <activity android:name=".Courselistnotice"
-            android:screenOrientation="portrait"
-            />
-        <activity android:name=".CourseData"
-            android:screenOrientation="portrait"
-            />
-        <activity android:name=".Ebooksdata"
-            android:screenOrientation="portrait"
-            />
-        <activity android:name=".MoocsWeb"
-            android:screenOrientation="portrait"
-            >
+        <activity
+            android:name=".Courselistnotice"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".CourseData"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Ebooksdata"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".MoocsWeb"
+            android:screenOrientation="portrait">
 
         </activity>
     </application>

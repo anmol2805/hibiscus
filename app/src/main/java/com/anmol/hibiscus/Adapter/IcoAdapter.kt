@@ -103,6 +103,13 @@ class IcoAdapter(internal var c: Context, internal var notices: MutableList<Noti
                 Glide.with(c).load(R.drawable.star1).into(holder.starnotice)
             }
         }
+        holder.sharenotice?.setOnClickListener{
+            val shareintent = Intent()
+            shareintent.action = Intent.ACTION_SEND
+            shareintent.type = "text/plain"
+            shareintent.putExtra(Intent.EXTRA_TEXT,noticedata.title + " news:\nhttps://canopydevelopers.com/sharedndeotice/" + noticedata.id)
+            c.startActivity(Intent.createChooser(shareintent,"Share notice"))
+        }
 
 
 
