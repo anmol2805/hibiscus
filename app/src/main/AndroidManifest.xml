@@ -57,6 +57,20 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name=".LoginActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".HibiscusActivity"
+            android:screenOrientation="portrait"
+            android:label="@string/title_activity_hibiscus"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".NoticeDataActivity"
+            android:exported="true"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
@@ -69,17 +83,6 @@
                     android:pathPrefix="/sharednotice" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".LoginActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".HibiscusActivity"
-            android:screenOrientation="portrait"
-            android:label="@string/title_activity_hibiscus"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".NoticeDataActivity"
-            android:screenOrientation="portrait" />
 
         <service android:name=".services.MyFirebaseMessagingService">
             <intent-filter>
