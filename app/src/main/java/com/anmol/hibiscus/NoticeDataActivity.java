@@ -144,8 +144,15 @@ public class NoticeDataActivity extends AppCompatActivity {
                 }
                 break;
             case R.id.action_share:
-
+                Intent shareintent = new Intent();
+                shareintent.setAction(Intent.ACTION_SEND);
+                shareintent.setType("text/plain");
+                shareintent.putExtra(Intent.EXTRA_TEXT,title + " :\nhttps://canopydevelopers.com/sharednotice/" + id);
+                startActivity(Intent.createChooser(shareintent,"Share notice"));
                 break;
+            case android.R.id.home:
+                onBackPressed();
+                return true;
             default:
                 break;
         }
