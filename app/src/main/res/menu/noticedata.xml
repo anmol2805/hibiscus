@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".NoticeDataActivity">
+
+    <item
+        android:id="@+id/action_share"
+        android:title="share"
+        app:showAsAction="always"
+        android:icon="@drawable/sharewhite"
+
+        />
+    <item
+        android:id="@+id/action_book"
+        android:title="book"
+        app:showAsAction="always"
+        android:icon="@drawable/starwhite"
+
+        />
+
+</menu>
