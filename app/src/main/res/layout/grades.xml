@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical">
@@ -25,7 +26,7 @@
             android:textStyle="bold"
 
 
-            />
+            app:fontFamily="@font/lato_regular" />
 
         <ProgressBar
             android:id="@+id/lg"
@@ -82,32 +83,35 @@
                         android:id="@+id/textView4"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="10dp"
                         android:layout_marginVertical="1dp"
+                        android:layout_marginLeft="10dp"
                         android:text="Quiz 1 :"
                         android:textColor="#708090"
-                        android:textSize="14sp" />
+                        android:textSize="14sp"
+                        app:fontFamily="@font/lato_regular" />
 
                     <TextView
                         android:id="@+id/textView2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="10dp"
                         android:layout_marginVertical="1dp"
+                        android:layout_marginLeft="10dp"
                         android:text="Quiz 2 :"
                         android:textColor="#708090"
-                        android:textSize="14sp" />
+                        android:textSize="14sp"
+                        app:fontFamily="@font/lato_regular" />
 
                     <TextView
                         android:id="@+id/textView9"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="end"
-                        android:layout_marginLeft="10dp"
                         android:layout_marginVertical="1dp"
+                        android:layout_marginLeft="10dp"
                         android:text="F.A :"
                         android:textColor="#708090"
-                        android:textSize="14sp" />
+                        android:textSize="14sp"
+                        app:fontFamily="@font/lato_regular" />
 
 
                 </LinearLayout>
@@ -127,7 +131,8 @@
                         android:text=""
 
                         android:textColor="#000"
-                        android:textSize="14sp" />
+                        android:textSize="14sp"
+                        app:fontFamily="@font/lato_regular" />
 
                     <TextView
                         android:id="@+id/q2"
@@ -136,7 +141,8 @@
                         android:layout_marginVertical="1dp"
                         android:text=""
                         android:textColor="#000"
-                        android:textSize="14sp" />
+                        android:textSize="14sp"
+                        app:fontFamily="@font/lato_regular" />
 
                     <TextView
                         android:id="@+id/fa"
@@ -145,7 +151,8 @@
                         android:layout_marginVertical="1dp"
                         android:text=""
                         android:textColor="#000"
-                        android:textSize="14sp" />
+                        android:textSize="14sp"
+                        app:fontFamily="@font/lato_regular" />
 
 
                 </LinearLayout>
@@ -162,7 +169,8 @@
                         android:layout_marginVertical="1dp"
                         android:text="Mid-Sems :"
                         android:textColor="#708090"
-                        android:textSize="14sp" />
+                        android:textSize="14sp"
+                        app:fontFamily="@font/lato_regular" />
 
                     <TextView
                         android:id="@+id/textView7"
@@ -172,7 +180,8 @@
                         android:text="End-Sems :"
 
                         android:textColor="#708090"
-                        android:textSize="14sp" />
+                        android:textSize="14sp"
+                        app:fontFamily="@font/lato_regular" />
 
                     <TextView
                         android:id="@+id/textView13"
@@ -182,7 +191,8 @@
                         android:layout_marginVertical="1dp"
                         android:text="Total :"
                         android:textColor="#2F4F4F"
-                        android:textSize="14sp" />
+                        android:textSize="14sp"
+                        app:fontFamily="@font/lato_regular" />
 
                     <TextView
                         android:id="@+id/textView12"
@@ -192,7 +202,8 @@
                         android:layout_marginVertical="1dp"
                         android:text="G.P.A :"
                         android:textColor="#2F4F4F"
-                        android:textSize="14sp" />
+                        android:textSize="14sp"
+                        app:fontFamily="@font/lato_regular" />
 
                 </LinearLayout>
 
@@ -211,7 +222,8 @@
 
                         android:text=""
                         android:textColor="#000"
-                        android:textSize="14sp" />
+                        android:textSize="14sp"
+                        app:fontFamily="@font/lato_regular" />
 
                     <TextView
                         android:id="@+id/es"
@@ -221,7 +233,8 @@
 
                         android:text=""
                         android:textColor="#000"
-                        android:textSize="14sp" />
+                        android:textSize="14sp"
+                        app:fontFamily="@font/lato_regular" />
 
                     <TextView
                         android:id="@+id/tot"
@@ -231,7 +244,8 @@
                         android:text=""
                         android:textColor="#FF53ABFC"
                         android:textSize="14sp"
-                        android:textStyle="bold" />
+                        android:textStyle="bold"
+                        app:fontFamily="@font/lato_regular" />
 
                     <TextView
                         android:id="@+id/gp"
@@ -241,7 +255,8 @@
                         android:text=""
                         android:textColor="#000"
                         android:textSize="14sp"
-                        android:textStyle="italic" />
+                        android:textStyle="italic"
+                        app:fontFamily="@font/lato_regular" />
 
                 </LinearLayout>
 
@@ -288,7 +303,8 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="TextView"
-            android:visibility="gone" />
+            android:visibility="gone"
+            app:fontFamily="@font/lato_regular" />
 
         <TextView
             android:id="@+id/prof"
@@ -296,7 +312,8 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="TextView"
-            android:visibility="gone" />
+            android:visibility="gone"
+            app:fontFamily="@font/lato_regular" />
 
         <TextView
             android:id="@+id/id"
@@ -304,7 +321,8 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="TextView"
-            android:visibility="gone" />
+            android:visibility="gone"
+            app:fontFamily="@font/lato_regular" />
 
 
     </LinearLayout>

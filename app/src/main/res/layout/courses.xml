@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="wrap_content">
     <LinearLayout
@@ -11,15 +12,15 @@
             android:id="@+id/subject"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="14sp"
             android:layout_marginLeft="10dp"
             android:layout_weight="1"
             android:text="TextView"
             android:textColor="#000"
+            android:textSize="14sp"
             android:textStyle="bold"
 
 
-            />
+            app:fontFamily="@font/lato_regular" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -31,20 +32,20 @@
                 android:id="@+id/id"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
                 android:layout_weight="1"
                 android:text="TextView"
-                android:layout_marginRight="10dp"
-                android:layout_marginLeft="10dp"
-                />
+                app:fontFamily="@font/lato_regular" />
 
             <TextView
                 android:id="@+id/textView2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="#000"
                 android:text="Credits:"
+                android:textColor="#000"
 
-                />
+                app:fontFamily="@font/lato_regular" />
 
             <TextView
                 android:id="@+id/credits"
@@ -56,7 +57,8 @@
                 android:layout_weight="1"
                 android:text="TextView"
                 android:textColor="#708090"
-                android:textSize="13sp" />
+                android:textSize="13sp"
+                app:fontFamily="@font/lato_regular" />
         </LinearLayout>
 
         <TextView
@@ -64,16 +66,16 @@
             android:layout_width="match_parent"
 
             android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
             android:layout_below="@+id/title"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
             android:layout_marginLeft="10dp"
             android:layout_weight="1"
             android:text="TextView"
-            android:textStyle="italic"
-            android:textSize="13sp"
             android:textColor="#2F4F4F"
-            />
+            android:textSize="13sp"
+            android:textStyle="italic"
+            app:fontFamily="@font/lato_regular" />
 
 
 

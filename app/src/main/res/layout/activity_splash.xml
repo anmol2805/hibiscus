@@ -57,13 +57,14 @@
                 android:text="Anmol Saxena"
                 android:textColor="#000"
                 android:textStyle="italic"
-                />
+                app:fontFamily="@font/lato_regular" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
-                android:text="(B516008)" />
+                android:text="(B516008)"
+                app:fontFamily="@font/lato_regular" />
         </LinearLayout>
 
         <de.hdodenhof.circleimageview.CircleImageView
@@ -87,13 +88,14 @@
                 android:text="Ankit Choudhary"
                 android:textColor="#000"
                 android:textStyle="italic"
-                />
+                app:fontFamily="@font/lato_regular" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp"
-                android:text="(B216008)" />
+                android:text="(B216008)"
+                app:fontFamily="@font/lato_regular" />
         </LinearLayout>
 
 
@@ -106,8 +108,8 @@
         android:layout_above="@+id/linearLayout2"
         android:layout_centerHorizontal="true"
         android:text="Developed By:"
-        android:textStyle="bold"
         android:textColor="#000"
         android:textSize="17sp"
-        />
+        android:textStyle="bold"
+        app:fontFamily="@font/lato_regular" />
 </RelativeLayout>

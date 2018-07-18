@@ -19,16 +19,16 @@
             android:id="@+id/title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="0dp"
-            android:transitionName="mytext"
+            android:layout_gravity="center"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
+            android:layout_marginBottom="0dp"
             android:text="TextView"
             android:textColor="@color/colorPrimary"
             android:textSize="14sp"
             android:textStyle="bold"
-            android:layout_gravity="center"
-            />
+            android:transitionName="mytext"
+            app:fontFamily="@font/lato_regular" />
 
 
         <LinearLayout
@@ -41,42 +41,44 @@
                 android:layout_width="wrap_content"
 
                 android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
                 android:layout_below="@+id/title"
-                android:layout_marginBottom="0dp"
-                android:transitionName="mydate"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentLeft="true"
                 android:layout_marginLeft="10dp"
+                android:layout_marginBottom="0dp"
                 android:layout_weight="1"
                 android:text="TextView"
-                android:textSize="12sp" />
+                android:textSize="12sp"
+                android:transitionName="mydate"
+                app:fontFamily="@font/lato_regular" />
 
             <TextView
                 android:id="@+id/posted"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:transitionName="mypost"
-                android:layout_marginRight="10dp"
                 android:layout_gravity="end"
-
+                android:layout_marginRight="10dp"
                 android:text="TextView"
-                android:textSize="12sp" />
+
+                android:textSize="12sp"
+                android:transitionName="mypost"
+                app:fontFamily="@font/lato_regular" />
         </LinearLayout>
 
         <TextView
             android:id="@+id/attention"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginBottom="5dp"
             android:layout_weight="1"
             android:text="TextView"
-            android:transitionName="myatt"
-            android:layout_marginBottom="5dp"
-            android:textStyle="italic"
             android:textColor="@color/colorAccent"
-            android:layout_gravity="center"
             android:textSize="13sp"
+            android:textStyle="italic"
+            android:transitionName="myatt"
 
-            />
+            app:fontFamily="@font/lato_regular" />
         <View
             android:layout_width="match_parent"
             android:layout_height="2dp"

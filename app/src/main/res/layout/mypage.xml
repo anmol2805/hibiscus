@@ -10,14 +10,14 @@
         android:id="@+id/textView6"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
         android:layout_gravity="center"
+        android:layout_marginTop="2dp"
         android:text="Developers"
         android:textColor="#000"
-        android:textStyle="bold"
-        android:layout_marginTop="2dp"
-        android:layout_centerHorizontal="true"
         android:textSize="18sp"
-        />
+        android:textStyle="bold"
+        app:fontFamily="@font/lato_regular" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -52,7 +52,8 @@
                 android:layout_marginBottom="5dp"
                 android:text="Anmol Saxena"
                 android:textColor="#000"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                app:fontFamily="@font/lato_regular" />
 
             <TextView
                 android:id="@+id/textView10"
@@ -61,7 +62,8 @@
                 android:layout_gravity="center"
                 android:layout_marginBottom="5dp"
                 android:text="(B516008)"
-                android:textColor="#2F4F4F" />
+                android:textColor="#2F4F4F"
+                app:fontFamily="@font/lato_regular" />
 
             <TextView
                 android:id="@+id/textView11"
@@ -70,7 +72,8 @@
                 android:layout_gravity="center"
                 android:text="Contact"
                 android:textColor="#000"
-                android:textStyle="italic" />
+                android:textStyle="italic"
+                app:fontFamily="@font/lato_regular" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -117,7 +120,8 @@
                     android:layout_marginBottom="5dp"
                     android:text="Ankit Choudhary"
                     android:textColor="#000"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    app:fontFamily="@font/lato_regular" />
 
                 <TextView
                     android:id="@+id/textView101"
@@ -126,7 +130,8 @@
                     android:layout_gravity="center"
                     android:layout_marginBottom="5dp"
                     android:text="(B216008)"
-                    android:textColor="#2F4F4F" />
+                    android:textColor="#2F4F4F"
+                    app:fontFamily="@font/lato_regular" />
 
                 <TextView
                     android:id="@+id/textView1"
@@ -135,7 +140,8 @@
                     android:layout_gravity="center"
                     android:text="Contact"
                     android:textColor="#000"
-                    android:textStyle="italic" />
+                    android:textStyle="italic"
+                    app:fontFamily="@font/lato_regular" />
 
                 <LinearLayout
                     android:layout_width="wrap_content"

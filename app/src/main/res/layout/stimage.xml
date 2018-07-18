@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical" android:layout_width="wrap_content"
     android:layout_height="wrap_content">
 
@@ -8,10 +9,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:textStyle="bold"
-        android:textSize="18sp"
         android:textColor="#000"
-        />
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:fontFamily="@font/lato_regular" />
 
     <ImageView
         android:layout_width="wrap_content"
@@ -23,10 +24,10 @@
         android:id="@+id/sname"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="#2F4F4F"
         android:layout_gravity="center"
-        android:textStyle="italic"
+        android:textColor="#2F4F4F"
         android:textSize="18sp"
-        />
+        android:textStyle="italic"
+        app:fontFamily="@font/lato_regular" />
 
 </LinearLayout>

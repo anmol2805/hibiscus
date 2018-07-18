@@ -31,12 +31,13 @@
         android:id="@+id/sid"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentBottom="true"
         android:paddingTop="@dimen/nav_header_vertical_spacing"
         android:textColor="@color/colorPrimaryDark"
         android:textSize="20sp"
-        android:textStyle="italic" />
+        android:textStyle="italic"
+        app:fontFamily="@font/lato_regular" />
 
 </RelativeLayout>

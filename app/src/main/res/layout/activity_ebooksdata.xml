@@ -22,41 +22,42 @@
             android:layout_height="match_parent"
             android:orientation="vertical"
             >
+
             <TextView
                 android:id="@+id/name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:layout_marginLeft="10dp"
+                android:layout_marginTop="5dp"
                 android:layout_marginRight="10dp"
+                android:layout_marginBottom="5dp"
                 android:textColor="@color/colorPrimary"
                 android:textSize="14sp"
                 android:textStyle="bold"
-                android:layout_gravity="center"
-                android:layout_marginBottom="5dp"
-                android:layout_marginTop="5dp"
 
 
-                />
+                app:fontFamily="@font/lato_regular" />
 
             <TextView
                 android:id="@+id/author"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textStyle="italic"
-                android:textColor="#2F4F4F"
                 android:layout_gravity="center"
+                android:textColor="#2F4F4F"
                 android:textSize="13sp"
-                />
+                android:textStyle="italic"
+                app:fontFamily="@font/lato_regular" />
 
             <TextView
                 android:id="@+id/publisher"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-
                 android:layout_gravity="center"
+
+                android:layout_weight="1"
                 android:textSize="13sp"
-                />
+                app:fontFamily="@font/lato_regular" />
 
             <Button
                 android:id="@+id/linkbtn"
@@ -84,7 +85,8 @@
                 android:textStyle="italic"
 
 
-                android:visibility="gone" />
+                android:visibility="gone"
+                app:fontFamily="@font/lato_regular" />
             <View
                 android:layout_width="match_parent"
                 android:layout_height="2dp"
@@ -94,14 +96,14 @@
                 />
 
 
-
             <TextView
                 android:id="@+id/desc"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="15dp"
 
-                android:textColor="#000" />
+                android:textColor="#000"
+                app:fontFamily="@font/lato_regular" />
 
 
         </LinearLayout>
