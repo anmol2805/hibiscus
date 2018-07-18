@@ -5,13 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".NoticeDataActivity">
 
-    <item
-        android:id="@+id/action_share"
-        android:title="share"
-        app:showAsAction="always"
-        android:icon="@drawable/sharewhite"
 
-        />
     <item
         android:id="@+id/action_book"
         android:title="book"
@@ -19,5 +13,11 @@
         android:icon="@drawable/starwhite"
 
         />
+    <item
+        android:id="@+id/action_share"
+        android:title="share"
+        app:showAsAction="always"
+        android:icon="@drawable/sharewhite"
 
+        />
 </menu>

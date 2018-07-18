@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -23,6 +24,7 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.anmol.hibiscus.Helpers.Dbbookshelper;
 import com.anmol.hibiscus.Helpers.Dbhelper;
 import com.anmol.hibiscus.Model.Notice;
 import com.anmol.hibiscus.Model.Noticedata;
@@ -54,6 +56,9 @@ public class NoticeDataActivity extends AppCompatActivity {
     ProgressBar pn;
     Button retry;
     ImageView fail;
+    Boolean booked;
+    Dbbookshelper dbb;
+    MenuItem bookmarksmenu;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -76,6 +81,7 @@ public class NoticeDataActivity extends AppCompatActivity {
         t = (TextView) findViewById(R.id.title);
         pn = (ProgressBar) findViewById(R.id.pn);
         fail = (ImageView) findViewById(R.id.fail);
+        dbb = new Dbbookshelper(this);
         final InterstitialAd interstitialAdnotice = new InterstitialAd(this);
         interstitialAdnotice.setAdUnitId("ca-app-pub-5827006149924215/9013567438");
         interstitialAdnotice.loadAd(new AdRequest.Builder().build());
@@ -107,9 +113,44 @@ public class NoticeDataActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.noticedata, menu);
+        bookmarksmenu = menu.findItem(R.id.action_book);
+        bookmarksmenu.setIcon(R.drawable.starwhite);
+        List<String> data = new ArrayList<String>();
+        data.clear();
+        data = dbb.readbook();
+        int i = 0;
+        booked = false;
+        while(i<data.size()){
+            if(data.get(i).equals(id)){
+                bookmarksmenu.setIcon(R.drawable.stargolden);
+                booked = true;
+            }
+            i++;
+        }
         return true;
     }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            // action with ID action_refresh was selected
+            case R.id.action_book:
+                if(!booked){
+                    dbb.insertBook(id);
+                    bookmarksmenu.setIcon(R.drawable.stargolden);
+                }
+                else{
+                    dbb.deletebook(id);
+                    bookmarksmenu.setIcon(R.drawable.starwhite);
+                }
+                break;
+            case R.id.action_share:
 
+                break;
+            default:
+                break;
+        }
+        return true;
+    }
     private void loadview() {
         nd.setFocusable(true);
         nd.setFocusableInTouchMode(true);
