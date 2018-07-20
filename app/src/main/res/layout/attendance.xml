@@ -94,7 +94,12 @@
                     >
 
                     <TextView
-                        android:padding="@dimen/textmargin"
+                        android:paddingTop="@dimen/textmargin"
+                        android:paddingBottom="@dimen/textmargin"
+                        android:paddingLeft="@dimen/textmargin"
+                        android:paddingStart="@dimen/textmargin"
+                        android:paddingEnd="3dp"
+                        android:paddingRight="3dp"
                         android:id="@+id/present"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -108,7 +113,12 @@
                         app:fontFamily="@font/lato_regular" />
 
                     <TextView
-                        android:padding="@dimen/textmargin"
+                        android:paddingTop="@dimen/textmargin"
+                        android:paddingBottom="@dimen/textmargin"
+                        android:paddingLeft="@dimen/textmargin"
+                        android:paddingStart="@dimen/textmargin"
+                        android:paddingEnd="3dp"
+                        android:paddingRight="3dp"
                         android:id="@+id/absent"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -122,7 +132,12 @@
                         app:fontFamily="@font/lato_regular" />
 
                     <TextView
-                        android:padding="@dimen/textmargin"
+                        android:paddingTop="@dimen/textmargin"
+                        android:paddingBottom="@dimen/textmargin"
+                        android:paddingLeft="@dimen/textmargin"
+                        android:paddingStart="@dimen/textmargin"
+                        android:paddingEnd="3dp"
+                        android:paddingRight="3dp"
                         android:id="@+id/leave"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -136,7 +151,12 @@
                         app:fontFamily="@font/lato_regular" />
 
                     <TextView
-                        android:padding="@dimen/textmargin"
+                        android:paddingTop="@dimen/textmargin"
+                        android:paddingBottom="@dimen/textmargin"
+                        android:paddingLeft="@dimen/textmargin"
+                        android:paddingStart="@dimen/textmargin"
+                        android:paddingEnd="3dp"
+                        android:paddingRight="3dp"
                         android:id="@+id/total"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -203,7 +223,12 @@
                 android:text="TextView"
                 android:textColor="#2F4F4F"
                 android:textSize="13sp"
-                android:padding="@dimen/textmargin"
+                android:paddingTop="@dimen/textmargin"
+                android:paddingBottom="@dimen/textmargin"
+                android:paddingLeft="@dimen/textmargin"
+                android:paddingStart="@dimen/textmargin"
+                android:paddingEnd="3dp"
+                android:paddingRight="3dp"
                 android:textStyle="italic"
                 app:fontFamily="@font/lato_regular" />
 

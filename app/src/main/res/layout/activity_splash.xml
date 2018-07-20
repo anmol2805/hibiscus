@@ -56,8 +56,14 @@
                 android:layout_height="wrap_content"
                 android:text="Anmol Saxena"
                 android:textColor="#000"
-                android:padding="@dimen/textmargin"
+                android:paddingTop="@dimen/textmargin"
+                android:paddingBottom="@dimen/textmargin"
+                android:paddingLeft="@dimen/textmargin"
+                android:paddingStart="@dimen/textmargin"
+                android:paddingEnd="3dp"
+                android:paddingRight="3dp"
                 android:textStyle="italic"
+
                 app:fontFamily="@font/lato_regular" />
 
             <TextView
@@ -89,8 +95,14 @@
                 android:layout_height="wrap_content"
                 android:text="Ankit Choudhary"
                 android:textColor="#000"
-                android:padding="@dimen/textmargin"
+                android:paddingTop="@dimen/textmargin"
+                android:paddingBottom="@dimen/textmargin"
+                android:paddingLeft="@dimen/textmargin"
+                android:paddingStart="@dimen/textmargin"
+                android:paddingEnd="3dp"
+                android:paddingRight="3dp"
                 android:textStyle="italic"
+
                 app:fontFamily="@font/lato_regular" />
 
             <TextView

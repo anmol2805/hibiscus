@@ -35,6 +35,8 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentBottom="true"
         android:paddingTop="@dimen/nav_header_vertical_spacing"
+        android:paddingEnd="3dp"
+        android:paddingRight="3dp"
         android:text=""
         android:textColor="#000"
         android:textSize="20sp"
