@@ -12,7 +12,7 @@
         android:id="@+id/title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-
+        android:padding="@dimen/textmargin"
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"
         android:textColor="#000"
@@ -24,7 +24,7 @@
         android:id="@+id/author"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-
+        android:padding="@dimen/textmargin"
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"
         android:textColor="#2F4F4F"
@@ -36,7 +36,7 @@
         android:id="@+id/publish"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-
+        android:padding="@dimen/textmargin"
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"
         android:textSize="13sp"
@@ -54,7 +54,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-
+            android:padding="@dimen/textmargin"
             android:textColor="#708090"
             android:textSize="13sp"
             app:fontFamily="@font/lato_regular" />
@@ -65,7 +65,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
-
+            android:padding="@dimen/textmargin"
             android:textColor="#708090"
             android:textSize="13sp"
             app:fontFamily="@font/lato_regular" />
@@ -76,7 +76,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
-
+            android:padding="@dimen/textmargin"
             android:textColor="#2F4F4F"
             android:textSize="13sp"
             app:fontFamily="@font/lato_regular" />
@@ -87,6 +87,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="end"
+            android:padding="@dimen/textmargin"
             android:textColor="#708090"
             android:textSize="13sp"
             android:textStyle="italic"

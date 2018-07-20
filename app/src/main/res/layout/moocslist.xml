@@ -14,7 +14,7 @@
         android:textColor="#000"
         android:textSize="14sp"
         android:textStyle="bold"
-
+        android:padding="@dimen/textmargin"
         app:fontFamily="@font/lato_regular" />
 
     <Button

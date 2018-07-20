@@ -18,7 +18,7 @@
             android:textColor="#000"
             android:textSize="14sp"
             android:textStyle="bold"
-
+            android:padding="@dimen/textmargin"
 
             app:fontFamily="@font/lato_regular" />
 
@@ -36,6 +36,7 @@
                 android:layout_marginRight="10dp"
                 android:layout_weight="1"
                 android:text="TextView"
+                android:padding="@dimen/textmargin"
                 app:fontFamily="@font/lato_regular" />
 
             <TextView
@@ -44,7 +45,7 @@
                 android:layout_height="wrap_content"
                 android:text="Credits:"
                 android:textColor="#000"
-
+                android:padding="@dimen/textmargin"
                 app:fontFamily="@font/lato_regular" />
 
             <TextView
@@ -56,6 +57,7 @@
                 android:layout_marginRight="10dp"
                 android:layout_weight="1"
                 android:text="TextView"
+                android:padding="@dimen/textmargin"
                 android:textColor="#708090"
                 android:textSize="13sp"
                 app:fontFamily="@font/lato_regular" />
@@ -64,7 +66,7 @@
         <TextView
             android:id="@+id/prof"
             android:layout_width="match_parent"
-
+            android:padding="@dimen/textmargin"
             android:layout_height="wrap_content"
             android:layout_below="@+id/title"
             android:layout_alignParentStart="true"

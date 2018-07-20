@@ -56,6 +56,7 @@
                 android:layout_height="wrap_content"
                 android:text="Anmol Saxena"
                 android:textColor="#000"
+                android:padding="@dimen/textmargin"
                 android:textStyle="italic"
                 app:fontFamily="@font/lato_regular" />
 
@@ -64,6 +65,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:text="(B516008)"
+                android:padding="@dimen/textmargin"
                 app:fontFamily="@font/lato_regular" />
         </LinearLayout>
 
@@ -87,6 +89,7 @@
                 android:layout_height="wrap_content"
                 android:text="Ankit Choudhary"
                 android:textColor="#000"
+                android:padding="@dimen/textmargin"
                 android:textStyle="italic"
                 app:fontFamily="@font/lato_regular" />
 
@@ -95,6 +98,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp"
                 android:text="(B216008)"
+                android:padding="@dimen/textmargin"
                 app:fontFamily="@font/lato_regular" />
         </LinearLayout>
 
@@ -108,6 +112,7 @@
         android:layout_above="@+id/linearLayout2"
         android:layout_centerHorizontal="true"
         android:text="Developed By:"
+        android:padding="@dimen/textmargin"
         android:textColor="#000"
         android:textSize="17sp"
         android:textStyle="bold"

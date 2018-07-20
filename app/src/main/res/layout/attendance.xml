@@ -28,7 +28,7 @@
                 android:textColor="#000"
                 android:textSize="14sp"
                 android:textStyle="bold"
-
+                android:padding="@dimen/textmargin"
 
                 app:fontFamily="@font/lato_regular" />
 
@@ -43,7 +43,7 @@
                     android:orientation="vertical">
 
                     <TextView
-
+                        android:padding="@dimen/textmargin"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="end"
@@ -61,10 +61,11 @@
                         android:text="Absent :"
                         android:textColor="#dc3545"
                         android:textSize="13sp"
+                        android:padding="@dimen/textmargin"
                         app:fontFamily="@font/lato_regular" />
 
                     <TextView
-
+                        android:padding="@dimen/textmargin"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="end"
@@ -75,7 +76,7 @@
                         app:fontFamily="@font/lato_regular" />
 
                     <TextView
-
+                        android:padding="@dimen/textmargin"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="end"
@@ -93,6 +94,7 @@
                     >
 
                     <TextView
+                        android:padding="@dimen/textmargin"
                         android:id="@+id/present"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -106,6 +108,7 @@
                         app:fontFamily="@font/lato_regular" />
 
                     <TextView
+                        android:padding="@dimen/textmargin"
                         android:id="@+id/absent"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -119,6 +122,7 @@
                         app:fontFamily="@font/lato_regular" />
 
                     <TextView
+                        android:padding="@dimen/textmargin"
                         android:id="@+id/leave"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -132,6 +136,7 @@
                         app:fontFamily="@font/lato_regular" />
 
                     <TextView
+                        android:padding="@dimen/textmargin"
                         android:id="@+id/total"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -181,6 +186,7 @@
                 android:text="TextView"
                 android:textColor="#708090"
                 android:textSize="13sp"
+                android:padding="@dimen/textmargin"
                 android:visibility="gone"
                 app:fontFamily="@font/lato_regular" />
 
@@ -197,6 +203,7 @@
                 android:text="TextView"
                 android:textColor="#2F4F4F"
                 android:textSize="13sp"
+                android:padding="@dimen/textmargin"
                 android:textStyle="italic"
                 app:fontFamily="@font/lato_regular" />
 
@@ -207,7 +214,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:text="TextView"
-
+                android:padding="@dimen/textmargin"
                 android:textSize="12sp"
                 app:fontFamily="@font/lato_regular" />
 

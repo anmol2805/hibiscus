@@ -24,7 +24,7 @@
             android:textColor="#000"
             android:textSize="14sp"
             android:textStyle="bold"
-
+            android:padding="@dimen/textmargin"
 
             app:fontFamily="@font/lato_regular" />
 
@@ -86,6 +86,7 @@
                         android:layout_marginVertical="1dp"
                         android:layout_marginLeft="10dp"
                         android:text="Quiz 1 :"
+                        android:padding="@dimen/textmargin"
                         android:textColor="#708090"
                         android:textSize="14sp"
                         app:fontFamily="@font/lato_regular" />
@@ -97,6 +98,7 @@
                         android:layout_marginVertical="1dp"
                         android:layout_marginLeft="10dp"
                         android:text="Quiz 2 :"
+                        android:padding="@dimen/textmargin"
                         android:textColor="#708090"
                         android:textSize="14sp"
                         app:fontFamily="@font/lato_regular" />
@@ -109,6 +111,7 @@
                         android:layout_marginVertical="1dp"
                         android:layout_marginLeft="10dp"
                         android:text="F.A :"
+                        android:padding="@dimen/textmargin"
                         android:textColor="#708090"
                         android:textSize="14sp"
                         app:fontFamily="@font/lato_regular" />
@@ -129,7 +132,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginVertical="1dp"
                         android:text=""
-
+                        android:padding="@dimen/textmargin"
                         android:textColor="#000"
                         android:textSize="14sp"
                         app:fontFamily="@font/lato_regular" />
@@ -140,6 +143,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginVertical="1dp"
                         android:text=""
+                        android:padding="@dimen/textmargin"
                         android:textColor="#000"
                         android:textSize="14sp"
                         app:fontFamily="@font/lato_regular" />
@@ -150,6 +154,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginVertical="1dp"
                         android:text=""
+                        android:padding="@dimen/textmargin"
                         android:textColor="#000"
                         android:textSize="14sp"
                         app:fontFamily="@font/lato_regular" />
@@ -168,6 +173,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginVertical="1dp"
                         android:text="Mid-Sems :"
+                        android:padding="@dimen/textmargin"
                         android:textColor="#708090"
                         android:textSize="14sp"
                         app:fontFamily="@font/lato_regular" />
@@ -178,7 +184,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginVertical="1dp"
                         android:text="End-Sems :"
-
+                        android:padding="@dimen/textmargin"
                         android:textColor="#708090"
                         android:textSize="14sp"
                         app:fontFamily="@font/lato_regular" />
@@ -190,6 +196,7 @@
                         android:layout_gravity="end"
                         android:layout_marginVertical="1dp"
                         android:text="Total :"
+                        android:padding="@dimen/textmargin"
                         android:textColor="#2F4F4F"
                         android:textSize="14sp"
                         app:fontFamily="@font/lato_regular" />
@@ -201,6 +208,7 @@
                         android:layout_gravity="end"
                         android:layout_marginVertical="1dp"
                         android:text="G.P.A :"
+                        android:padding="@dimen/textmargin"
                         android:textColor="#2F4F4F"
                         android:textSize="14sp"
                         app:fontFamily="@font/lato_regular" />
@@ -219,7 +227,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginVertical="1dp"
-
+                        android:padding="@dimen/textmargin"
                         android:text=""
                         android:textColor="#000"
                         android:textSize="14sp"
@@ -230,7 +238,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginVertical="1dp"
-
+                        android:padding="@dimen/textmargin"
                         android:text=""
                         android:textColor="#000"
                         android:textSize="14sp"
@@ -242,6 +250,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginVertical="1dp"
                         android:text=""
+                        android:padding="@dimen/textmargin"
                         android:textColor="#FF53ABFC"
                         android:textSize="14sp"
                         android:textStyle="bold"
@@ -253,6 +262,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginVertical="1dp"
                         android:text=""
+                        android:padding="@dimen/textmargin"
                         android:textColor="#000"
                         android:textSize="14sp"
                         android:textStyle="italic"
@@ -303,6 +313,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="TextView"
+            android:padding="@dimen/textmargin"
             android:visibility="gone"
             app:fontFamily="@font/lato_regular" />
 
@@ -312,6 +323,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="TextView"
+            android:padding="@dimen/textmargin"
             android:visibility="gone"
             app:fontFamily="@font/lato_regular" />
 
@@ -321,6 +333,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="TextView"
+            android:padding="@dimen/textmargin"
             android:visibility="gone"
             app:fontFamily="@font/lato_regular" />
 

@@ -14,6 +14,7 @@
         android:paddingBottom="2dip"
         android:textColor="@color/colorPrimaryDark"
         android:textSize="16sp"
+        android:padding="@dimen/textmargin"
         android:textStyle="bold"
         app:fontFamily="@font/lato_regular" />
 
@@ -22,6 +23,7 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:paddingBottom="2dip"
+        android:padding="@dimen/textmargin"
         android:textColor="@color/colorAccent"
         app:fontFamily="@font/lato_regular" />
 
@@ -30,6 +32,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="#5d5d5d"
+        android:padding="@dimen/textmargin"
         android:textStyle="bold"
         app:fontFamily="@font/lato_regular" />
 

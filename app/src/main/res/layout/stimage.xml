@@ -10,6 +10,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:textColor="#000"
+        android:padding="@dimen/textmargin"
         android:textSize="18sp"
         android:textStyle="bold"
         app:fontFamily="@font/lato_regular" />
@@ -28,6 +29,7 @@
         android:textColor="#2F4F4F"
         android:textSize="18sp"
         android:textStyle="italic"
+        android:padding="@dimen/textmargin"
         app:fontFamily="@font/lato_regular" />
 
 </LinearLayout>
