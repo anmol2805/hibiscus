@@ -19,6 +19,17 @@
             android:layout_alignParentStart="true"
             android:layout_margin="10dp"
             />
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:src="@drawable/star1"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_margin="10dp"
+            android:id="@+id/showstar"
+            android:foreground="?attr/selectableItemBackground"
+            />
 
         <ImageButton
             android:id="@+id/refresh"

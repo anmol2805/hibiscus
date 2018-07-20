@@ -59,6 +59,8 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 /**
  * Created by anmol on 2017-08-18.
  */
@@ -86,6 +88,7 @@ public class main extends Fragment {
     SwipeRefreshLayout noticerefresh;
     ItemClickListener itemClickListener;
     IcoAdapter icoAdapter;
+    CircleImageView showstar;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
@@ -94,13 +97,14 @@ public class main extends Fragment {
         Intent intent = new Intent(getActivity(), RequestService.class);
         getActivity().startService(intent);
         notices = new ArrayList<>();
+        showstar = (CircleImageView)vi.findViewById(R.id.showstar);
         lv = (ListView)vi.findViewById(R.id.list);
         rv = (RecyclerView)vi.findViewById(R.id.rv);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         rv.setLayoutManager(layoutManager);
         rv.setHasFixedSize(true);
         rv.setItemAnimator(new DefaultItemAnimator());
-        rv.addItemDecoration(new DividerItemDecoration(getContext(),
+        rv.addItemDecoration(new DividerItemDecoration(getActivity(),
                 DividerItemDecoration.VERTICAL));
         final ImageButton refresh = (ImageButton)vi.findViewById(R.id.refresh);
         retry = (Button)vi.findViewById(R.id.retry);
@@ -141,9 +145,7 @@ public class main extends Fragment {
         }
         if (!notices.isEmpty()){
             progressBar.setVisibility(View.GONE);
-//            adapter = new NoticeAdapter(getActivity(),R.layout.notice,notices);
-//            adapter.notifyDataSetChanged();
-//            lv.setAdapter(adapter);
+
             icoAdapter = new IcoAdapter(getActivity(),notices,itemClickListener);
             icoAdapter.notifyDataSetChanged();
             rv.setAdapter(icoAdapter);
