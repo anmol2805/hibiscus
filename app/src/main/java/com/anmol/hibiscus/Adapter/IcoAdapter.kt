@@ -18,6 +18,7 @@ import android.widget.ImageView
 import android.widget.RelativeLayout
 import android.widget.TextView
 import com.anmol.hibiscus.Helpers.Dbbookshelper
+import com.anmol.hibiscus.Helpers.Dbhelper
 import com.anmol.hibiscus.Interfaces.ItemClickListener
 import com.anmol.hibiscus.Model.Notice
 import com.anmol.hibiscus.NoticeDataActivity
@@ -59,7 +60,6 @@ class IcoAdapter(internal var c: Context, internal var notices: MutableList<Noti
         holder.viewBinderHelper!!.bind(holder.swipereveallayout,noticedata.id)
         
         holder.noticelayout?.setOnClickListener {
-            view ->
             val intent2 = Intent(c, NoticeDataActivity::class.java)
             intent2.putExtra("id",noticedata.id)
             intent2.putExtra("title",noticedata.title)
@@ -79,33 +79,37 @@ class IcoAdapter(internal var c: Context, internal var notices: MutableList<Noti
                 c.startActivity(intent2)
             }
         }
-        if(!noticedata.bookmark){
+
+        val book = if(!noticedata.bookmark){
             Glide.with(c).load(R.drawable.star1).into(holder.starnotice)
+            false
         }
         else{
             Glide.with(c).load(R.drawable.stargolden).into(holder.starnotice)
+            true
         }
+        val db = Dbhelper(c)
 
-        val dbb = Dbbookshelper(c)
-        var data = ArrayList<String>()
-        data.clear()
-        data = dbb.readbook()
-        var i = 0
-        var booked = false
-        while(i<data.size){
-            if(data[i] == noticedata.id){
-                Glide.with(c).load(R.drawable.stargolden).into(holder.starnotice)
-                booked = true
-            }
-            i++
-        }
+//        val dbb = Dbbookshelper(c)
+//        var data = ArrayList<String>()
+//        data.clear()
+//        data = dbb.readbook()
+//        var i = 0
+//        var booked = false
+//        while(i<data.size){
+//            if(data[i] == noticedata.id){
+//                Glide.with(c).load(R.drawable.stargolden).into(holder.starnotice)
+//                booked = true
+//            }
+//            i++
+//        }
         holder.starnotice?.setOnClickListener{
-            if(!booked){
-                dbb.insertBook(noticedata.id)
+            if(!book){
+                db.updatebooknotice(true,noticedata.id)
                 Glide.with(c).load(R.drawable.stargolden).into(holder.starnotice)
             }
             else{
-                dbb.deletebook(noticedata.id)
+                db.updatebooknotice(false,noticedata.id)
                 Glide.with(c).load(R.drawable.star1).into(holder.starnotice)
             }
         }

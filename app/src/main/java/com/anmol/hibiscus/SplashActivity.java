@@ -167,7 +167,7 @@ public class SplashActivity extends AppCompatActivity {
                                     postedby = object.getString("posted_by");
                                     attention = object.getString("attention");
                                     id = object.getString("id");
-                                    Notice notice = new Notice(title,date,postedby,attention,id);
+                                    Notice notice = new Notice(title,date,postedby,attention,id,false,false);
                                     int k=0;
                                     for(int j = 0;j<noticeids.size();j++){
                                         if(noticeids.get(j).equals(id)){
@@ -200,7 +200,7 @@ public class SplashActivity extends AppCompatActivity {
                                 postedby = object0.getString("posted_by");
                                 attention = object0.getString("attention");
                                 id = object0.getString("id");
-                                Notice notice = new Notice(title,date,postedby,attention,id);
+                                Notice notice = new Notice(title,date,postedby,attention,id,false,false);
                                 FirebaseDatabase.getInstance().getReference().child("Notices").setValue(notice);
                             } catch (JSONException e) {
                                 e.printStackTrace();

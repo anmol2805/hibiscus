@@ -90,7 +90,7 @@ public class RequestService extends IntentService {
                                     postedby = object.getString("posted_by");
                                     attention = object.getString("attention");
                                     id = object.getString("id");
-                                    Notice notice = new Notice(title,date,postedby,attention,id);
+                                    Notice notice = new Notice(title,date,postedby,attention,id,false,false);
                                     //notices.add(notice);
                                     noticedatabase.child(String.valueOf(c)).setValue(notice);
                                     c++;
@@ -108,7 +108,7 @@ public class RequestService extends IntentService {
                                 postedby = object0.getString("posted_by");
                                 attention = object0.getString("attention");
                                 id = object0.getString("id");
-                                Notice notice = new Notice(title,date,postedby,attention,id);
+                                Notice notice = new Notice(title,date,postedby,attention,id,false,false);
                                 FirebaseDatabase.getInstance().getReference().child("Notices").setValue(notice);
                             } catch (JSONException e) {
                                 e.printStackTrace();

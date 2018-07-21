@@ -58,6 +58,7 @@ public class NoticeDataActivity extends AppCompatActivity {
     ImageView fail;
     Boolean booked;
     Dbbookshelper dbb;
+    Dbhelper db;
     MenuItem bookmarksmenu;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,6 +83,7 @@ public class NoticeDataActivity extends AppCompatActivity {
         pn = (ProgressBar) findViewById(R.id.pn);
         fail = (ImageView) findViewById(R.id.fail);
         dbb = new Dbbookshelper(this);
+        db = new Dbhelper(this);
         final InterstitialAd interstitialAdnotice = new InterstitialAd(this);
         interstitialAdnotice.setAdUnitId("ca-app-pub-5827006149924215/9013567438");
         interstitialAdnotice.loadAd(new AdRequest.Builder().build());
@@ -115,13 +117,17 @@ public class NoticeDataActivity extends AppCompatActivity {
         inflater.inflate(R.menu.noticedata, menu);
         bookmarksmenu = menu.findItem(R.id.action_book);
         bookmarksmenu.setIcon(R.drawable.starwhite);
-        List<String> data = new ArrayList<String>();
-        data.clear();
-        data = dbb.readbook();
+        List<Notice> notices = new ArrayList<>();
+//        List<String> data = new ArrayList<String>();
+//        data.clear();
+//        data = dbb.readbook();
+        notices.clear();
+        String query = "Select * from notice_table WHERE bookmark="+1;
+        notices = db.readData(query);
         int i = 0;
         booked = false;
-        while(i<data.size()){
-            if(data.get(i).equals(id)){
+        while(i<notices.size()){
+            if(notices.get(i).getId().equals(id)){
                 bookmarksmenu.setIcon(R.drawable.stargolden);
                 booked = true;
             }
@@ -135,11 +141,11 @@ public class NoticeDataActivity extends AppCompatActivity {
             // action with ID action_refresh was selected
             case R.id.action_book:
                 if(!booked){
-                    dbb.insertBook(id);
+                    db.updatebooknotice(true,id);
                     bookmarksmenu.setIcon(R.drawable.stargolden);
                 }
                 else{
-                    dbb.deletebook(id);
+                    db.updatebooknotice(false,id);
                     bookmarksmenu.setIcon(R.drawable.starwhite);
                 }
                 break;
@@ -378,7 +384,7 @@ public class NoticeDataActivity extends AppCompatActivity {
                                     String postedby = object.getString("posted_by");
                                     String attention = object.getString("attention");
                                     String mid = object.getString("id");
-                                    Notice notice = new Notice(mtitle,mdate,postedby,attention,mid);
+                                    Notice notice = new Notice(mtitle,mdate,postedby,attention,mid,false,false);
                                     int k=0;
                                     for(int j = 0;j<noticeids.size();j++){
                                         if(noticeids.get(j).equals(NoticeDataActivity.this.id)){
