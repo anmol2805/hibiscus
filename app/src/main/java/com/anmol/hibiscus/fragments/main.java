@@ -91,6 +91,8 @@ public class main extends Fragment {
     IcoAdapter icoAdapter;
     CircleImageView showstar;
     Boolean starred;
+    Dbhelper dbhelper;
+    ArrayList<String> noticeids;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
@@ -132,14 +134,18 @@ public class main extends Fragment {
 //            }
 //        });
         starred = false;
+        Glide.with(getActivity()).load(R.drawable.star1).into(showstar);
+        loadnotice();
         showstar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if(!starred){
+                    loadbook();
                     starred = true;
                     Glide.with(getActivity()).load(R.drawable.stargolden).into(showstar);
                 }
                 else{
+                    loadnotice();
                     starred = false;
                     Glide.with(getActivity()).load(R.drawable.star1).into(showstar);
                 }
@@ -151,71 +157,9 @@ public class main extends Fragment {
 
             }
         };
-        notices.clear();
-        Dbbookshelper dbb = new Dbbookshelper(getActivity());
-        ArrayList<String> bookids = new ArrayList<>();
-        bookids.clear();
-        bookids = dbb.readbook();
-        Dbhelper dbhelper = new Dbhelper(getActivity());
-        String query = "Select * from notice_table ORDER BY notice_id DESC";
-        notices = dbhelper.readData(query);
-        final ArrayList<String> noticeids = new ArrayList<>();
-        for(int i = 0;i<notices.size();i++){
-            noticeids.add(notices.get(i).getId());
-        }
-        if (!notices.isEmpty()){
-            if(!starred){
 
-            }
-            else{
+        dbhelper = new Dbhelper(getActivity());
 
-            }
-            progressBar.setVisibility(View.GONE);
-
-            icoAdapter = new IcoAdapter(getActivity(),notices,itemClickListener);
-            icoAdapter.notifyDataSetChanged();
-            rv.setAdapter(icoAdapter);
-
-        }
-        else {
-            mdatabase.addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    notices.clear();
-                    for(DataSnapshot data:dataSnapshot.getChildren()){
-
-                        String title = data.child("title").getValue().toString();
-                        String attention = data.child("attention").getValue().toString();
-                        String posted_by = data.child("posted_by").getValue().toString();
-                        String date = data.child("date").getValue().toString();
-                        String id = data.child("id").getValue().toString();
-                        Notice notice = new Notice(title,date,posted_by,attention,id,false,false);
-                        notices.add(notice);
-
-
-                    }
-                    if(getActivity()!=null){
-                        progressBar.setVisibility(View.GONE);
-//                        adapter = new NoticeAdapter(getActivity(),R.layout.notice,notices);
-//                        adapter.notifyDataSetChanged();
-//                        lv.setAdapter(adapter);
-                        icoAdapter = new IcoAdapter(getActivity(),notices,itemClickListener);
-                        icoAdapter.notifyDataSetChanged();
-                        rv.setAdapter(icoAdapter);
-
-                    }
-
-
-
-                }
-
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
-
-                }
-            });
-
-        }
 
 
         noticerefresh.setColorSchemeColors(
@@ -478,6 +422,88 @@ public class main extends Fragment {
 
     }
 
+    private void loadbook() {
+        notices.clear();
+        String querybook = "Select * from notice_table WHERE bookmark="+1+" ORDER BY notice_id DESC";
+
+        notices = dbhelper.readData(querybook);
+        if (!notices.isEmpty()){
+
+            progressBar.setVisibility(View.GONE);
+
+            icoAdapter = new IcoAdapter(getActivity(),notices,itemClickListener);
+            icoAdapter.notifyDataSetChanged();
+            rv.setAdapter(icoAdapter);
+
+        }
+        else {
+            Toast.makeText(getActivity(),"You don't have any starred notices yet",Toast.LENGTH_SHORT).show();
+            loadnotice();
+            starred = false;
+            Glide.with(getActivity()).load(R.drawable.star1).into(showstar);
+
+        }
+
+    }
+
+    private void loadnotice() {
+        notices.clear();
+        String query = "Select * from notice_table ORDER BY notice_id DESC";
+        notices = dbhelper.readData(query);
+        noticeids = new ArrayList<>();
+        for(int i = 0;i<notices.size();i++){
+            noticeids.add(notices.get(i).getId());
+        }
+        if (!notices.isEmpty()){
+
+            progressBar.setVisibility(View.GONE);
+
+            icoAdapter = new IcoAdapter(getActivity(),notices,itemClickListener);
+            icoAdapter.notifyDataSetChanged();
+            rv.setAdapter(icoAdapter);
+
+        }
+        else {
+            mdatabase.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    notices.clear();
+                    for(DataSnapshot data:dataSnapshot.getChildren()){
+
+                        String title = data.child("title").getValue().toString();
+                        String attention = data.child("attention").getValue().toString();
+                        String posted_by = data.child("posted_by").getValue().toString();
+                        String date = data.child("date").getValue().toString();
+                        String id = data.child("id").getValue().toString();
+                        Notice notice = new Notice(title,date,posted_by,attention,id,false,false);
+                        notices.add(notice);
+
+
+                    }
+                    if(getActivity()!=null){
+                        progressBar.setVisibility(View.GONE);
+//                        adapter = new NoticeAdapter(getActivity(),R.layout.notice,notices);
+//                        adapter.notifyDataSetChanged();
+//                        lv.setAdapter(adapter);
+                        icoAdapter = new IcoAdapter(getActivity(),notices,itemClickListener);
+                        icoAdapter.notifyDataSetChanged();
+                        rv.setAdapter(icoAdapter);
+
+                    }
+
+
+
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+
+        }
+
+    }
 
 
 }
