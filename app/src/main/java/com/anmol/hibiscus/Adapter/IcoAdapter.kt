@@ -79,7 +79,13 @@ class IcoAdapter(internal var c: Context, internal var notices: MutableList<Noti
                 c.startActivity(intent2)
             }
         }
-        Glide.with(c).load(R.drawable.star1).into(holder.starnotice)
+        if(!noticedata.bookmark){
+            Glide.with(c).load(R.drawable.star1).into(holder.starnotice)
+        }
+        else{
+            Glide.with(c).load(R.drawable.stargolden).into(holder.starnotice)
+        }
+
         val dbb = Dbbookshelper(c)
         var data = ArrayList<String>()
         data.clear()

@@ -16,6 +16,8 @@ val COL_ATTENTION = "attention"
 val COL_POSTED_BY = "posted_by"
 val COL_ID = "notice_id"
 val COL_DATES = "dates"
+val COL_BOOK = "bookmark"
+val COL_READ = "read"
 
 
 class Dbhelper (context: Context):SQLiteOpenHelper(context, DATABASE_NAME,null,1){
@@ -26,6 +28,8 @@ class Dbhelper (context: Context):SQLiteOpenHelper(context, DATABASE_NAME,null,1
                 COL_TITLE + " TEXT," +
                 COL_ATTENTION + " TEXT," +
                 COL_POSTED_BY + " VARCHAR(256)," +
+                COL_BOOK + " INTEGER," +
+                COL_READ + " INTEGER," +
                 COL_DATES + " TEXT)"
 
         p0?.execSQL(createtable)
@@ -46,6 +50,8 @@ class Dbhelper (context: Context):SQLiteOpenHelper(context, DATABASE_NAME,null,1
         cv.put(COL_ATTENTION,notice.attention)
         cv.put(COL_POSTED_BY,notice.posted_by)
         cv.put(COL_DATES,notice.date)
+        cv.put(COL_BOOK,0)
+        cv.put(COL_READ,0)
             val result = db.insert(TABLE_NAME,null,cv)
             if(result == (-1).toLong())
                 System.out.println("sqlstatus is failed")
@@ -69,7 +75,18 @@ class Dbhelper (context: Context):SQLiteOpenHelper(context, DATABASE_NAME,null,1
                     val posted = result.getString(result.getColumnIndex(COL_POSTED_BY))
                     val id = result.getString(result.getColumnIndex(COL_ID))
                     val dates = result.getString(result.getColumnIndex(COL_DATES))
-                    val notice = Notice(title,dates,posted,attention,id)
+                    val book = result.getInt(result.getColumnIndex(COL_BOOK))
+                    val read = result.getInt(result.getColumnIndex(COL_READ))
+                    var booked = false
+                    if(book == 1){
+                        booked = true
+                    }
+                    var readed = false
+                    if(read == 1){
+                        readed = true
+                    }
+
+                    val notice = Notice(title,dates,posted,attention,id,booked,readed)
                     notices.add(notice)
 //                    if(booked.contains("0")){
 //                        val tweet = Tweet(mcoin,coin_symbol,mtweet,url,keyword,id,false,dates,"mc",coinpage)
@@ -181,6 +198,32 @@ class Dbhelper (context: Context):SQLiteOpenHelper(context, DATABASE_NAME,null,1
         cv.put(COL_POSTED_BY,notice.posted_by)
         cv.put(COL_DATES,notice.date)
         db.update(TABLE_NAME,cv,"$COL_ID = ?", arrayOf(notice.id))
+        db.close()
+    }
+    fun updatebooknotice(booked:Boolean,id:String){
+        val db = this.writableDatabase
+        val cv = ContentValues()
+        if(booked){
+            cv.put(COL_BOOK,1)
+        }
+        else{
+            cv.put(COL_BOOK,0)
+        }
+
+        db.update(TABLE_NAME,cv,"$COL_ID = ?", arrayOf(id))
+        db.close()
+    }
+    fun updatereadnotice(readed:Boolean,id:String){
+        val db = this.writableDatabase
+        val cv = ContentValues()
+        if(readed){
+            cv.put(COL_READ,1)
+        }
+        else{
+            cv.put(COL_READ,0)
+        }
+
+        db.update(TABLE_NAME,cv,"$COL_ID = ?", arrayOf(id))
         db.close()
     }
 

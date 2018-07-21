@@ -35,6 +35,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.anmol.hibiscus.Adapter.IcoAdapter;
 import com.anmol.hibiscus.Adapter.NoticeAdapter;
+import com.anmol.hibiscus.Helpers.Dbbookshelper;
 import com.anmol.hibiscus.Helpers.Dbhelper;
 import com.anmol.hibiscus.Interfaces.ItemClickListener;
 import com.anmol.hibiscus.Model.Notice;
@@ -89,6 +90,7 @@ public class main extends Fragment {
     ItemClickListener itemClickListener;
     IcoAdapter icoAdapter;
     CircleImageView showstar;
+    Boolean starred;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
@@ -129,6 +131,20 @@ public class main extends Fragment {
 //                refresh.startAnimation(rotate);
 //            }
 //        });
+        starred = false;
+        showstar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(!starred){
+                    starred = true;
+                    Glide.with(getActivity()).load(R.drawable.stargolden).into(showstar);
+                }
+                else{
+                    starred = false;
+                    Glide.with(getActivity()).load(R.drawable.star1).into(showstar);
+                }
+            }
+        });
         itemClickListener = new ItemClickListener() {
             @Override
             public void onItemClick(int pos) {
@@ -136,6 +152,10 @@ public class main extends Fragment {
             }
         };
         notices.clear();
+        Dbbookshelper dbb = new Dbbookshelper(getActivity());
+        ArrayList<String> bookids = new ArrayList<>();
+        bookids.clear();
+        bookids = dbb.readbook();
         Dbhelper dbhelper = new Dbhelper(getActivity());
         String query = "Select * from notice_table ORDER BY notice_id DESC";
         notices = dbhelper.readData(query);
@@ -144,6 +164,12 @@ public class main extends Fragment {
             noticeids.add(notices.get(i).getId());
         }
         if (!notices.isEmpty()){
+            if(!starred){
+
+            }
+            else{
+
+            }
             progressBar.setVisibility(View.GONE);
 
             icoAdapter = new IcoAdapter(getActivity(),notices,itemClickListener);
@@ -163,7 +189,7 @@ public class main extends Fragment {
                         String posted_by = data.child("posted_by").getValue().toString();
                         String date = data.child("date").getValue().toString();
                         String id = data.child("id").getValue().toString();
-                        Notice notice = new Notice(title,date,posted_by,attention,id);
+                        Notice notice = new Notice(title,date,posted_by,attention,id,false,false);
                         notices.add(notice);
 
 
@@ -238,7 +264,7 @@ public class main extends Fragment {
                                                 postedby = object.getString("posted_by");
                                                 attention = object.getString("attention");
                                                 id = object.getString("id");
-                                                Notice notice = new Notice(title,date,postedby,attention,id);
+                                                Notice notice = new Notice(title,date,postedby,attention,id,false,false);
                                                 int k=0;
                                                 for(int j = 0;j<noticeids.size();j++){
                                                     if(noticeids.get(j).equals(id)){
@@ -282,7 +308,7 @@ public class main extends Fragment {
                                                             String posted_by = data.child("posted_by").getValue().toString();
                                                             String date = data.child("date").getValue().toString();
                                                             String id = data.child("id").getValue().toString();
-                                                            Notice notice = new Notice(title, date, posted_by, attention, id);
+                                                            Notice notice = new Notice(title, date, posted_by, attention, id,false,false);
                                                             notices.add(notice);
 
 

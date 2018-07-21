@@ -8,11 +8,14 @@ import java.io.Serializable;
 
 public class Notice implements Serializable {
     String title,date,posted_by,attention,id;
+    Boolean bookmark,read;
 
 
-    public Notice(String title,String date,String posted_by,String attention,String id) {
+    public Notice(String title,String date,String posted_by,String attention,String id,Boolean bookmark,Boolean read) {
         this.title = title;this.date = date;this.posted_by = posted_by;this.attention = attention;
         this.id = id;
+        this.bookmark = bookmark;
+        this.read = read;
     }
 
     public String getId() {
@@ -57,5 +60,21 @@ public class Notice implements Serializable {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public Boolean getBookmark() {
+        return bookmark;
+    }
+
+    public void setBookmark(Boolean bookmark) {
+        this.bookmark = bookmark;
+    }
+
+    public Boolean getRead() {
+        return read;
+    }
+
+    public void setRead(Boolean read) {
+        this.read = read;
     }
 }
