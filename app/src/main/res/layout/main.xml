@@ -22,7 +22,7 @@
         <de.hdodenhof.circleimageview.CircleImageView
             android:layout_width="25dp"
             android:layout_height="25dp"
-            android:src="@drawable/star1"
+            android:src="@drawable/starunfillwhite"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"

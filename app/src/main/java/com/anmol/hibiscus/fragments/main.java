@@ -134,7 +134,7 @@ public class main extends Fragment {
 //            }
 //        });
         starred = false;
-        Glide.with(getActivity()).load(R.drawable.star1).into(showstar);
+        Glide.with(getActivity()).load(R.drawable.starunfillwhite).into(showstar);
         loadnotice();
         showstar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -147,7 +147,7 @@ public class main extends Fragment {
                 else{
                     loadnotice();
                     starred = false;
-                    Glide.with(getActivity()).load(R.drawable.star1).into(showstar);
+                    Glide.with(getActivity()).load(R.drawable.starunfillwhite).into(showstar);
                 }
             }
         });
@@ -440,7 +440,7 @@ public class main extends Fragment {
             Toast.makeText(getActivity(),"You don't have any starred notices yet",Toast.LENGTH_SHORT).show();
             loadnotice();
             starred = false;
-            Glide.with(getActivity()).load(R.drawable.star1).into(showstar);
+            Glide.with(getActivity()).load(R.drawable.starunfillwhite).into(showstar);
 
         }
 
