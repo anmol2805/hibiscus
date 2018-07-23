@@ -122,6 +122,7 @@ public class main extends Fragment {
         progressBar = (ProgressBar)vi.findViewById(R.id.load);
         progressBar.setVisibility(View.VISIBLE);
         final DatabaseReference data = FirebaseDatabase.getInstance().getReference().getRoot().child("banner");
+        dbhelper = new Dbhelper(getActivity());
         noticerefresh = (SwipeRefreshLayout)vi.findViewById(R.id.noticerefresh);
 //        refresh.setOnClickListener(new View.OnClickListener() {
 //            @Override
@@ -133,6 +134,12 @@ public class main extends Fragment {
 //                refresh.startAnimation(rotate);
 //            }
 //        });
+        itemClickListener = new ItemClickListener() {
+            @Override
+            public void onItemClick(int pos) {
+
+            }
+        };
         starred = false;
         Glide.with(getActivity()).load(R.drawable.starunfillwhite).into(showstar);
         loadnotice();
@@ -140,25 +147,22 @@ public class main extends Fragment {
             @Override
             public void onClick(View view) {
                 if(!starred){
-                    loadbook();
+
                     starred = true;
                     Glide.with(getActivity()).load(R.drawable.stargolden).into(showstar);
+                    loadbook();
                 }
                 else{
-                    loadnotice();
+
                     starred = false;
                     Glide.with(getActivity()).load(R.drawable.starunfillwhite).into(showstar);
+                    loadnotice();
                 }
             }
         });
-        itemClickListener = new ItemClickListener() {
-            @Override
-            public void onItemClick(int pos) {
 
-            }
-        };
 
-        dbhelper = new Dbhelper(getActivity());
+
 
 
 
@@ -196,7 +200,7 @@ public class main extends Fragment {
                                     public void onResponse(JSONObject response) {
                                         noticerefresh.setRefreshing(false);
                                         try {
-                                            Dbhelper dbhelper = new Dbhelper(getActivity());
+
                                             int c = 0;
                                             while (c<5){
                                                 System.out.println("noticeresponse" + response);
