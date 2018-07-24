@@ -4,10 +4,12 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.graphics.Typeface
 import android.graphics.drawable.Drawable
 import android.os.Build
 import android.os.Bundle
 import android.support.v4.app.ActivityOptionsCompat
+import android.support.v4.content.res.ResourcesCompat
 import android.support.v4.util.Pair
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
@@ -52,14 +54,28 @@ class IcoAdapter(internal var c: Context, internal var notices: MutableList<Noti
     @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val noticedata = notices[position]
+        val db = Dbhelper(c)
+        val read = noticedata.read
         holder.mtitle?.text = noticedata.title
         holder.pstdby?.text = noticedata.posted_by
         holder.attent?.text = noticedata.attention
         holder.dates?.text = noticedata.date
         holder.viewBinderHelper!!.setOpenOnlyOne(true)
         holder.viewBinderHelper!!.bind(holder.swipereveallayout,noticedata.id)
+        val typeface = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            c.resources.getFont(R.font.lato_regular)
+        } else{
+            ResourcesCompat.getFont(c,R.font.lato_regular)
+        }
         
         holder.noticelayout?.setOnClickListener {
+            if (!read){
+                holder.mtitle?.typeface = typeface
+                holder.dates?.typeface = typeface
+                holder.pstdby?.typeface = typeface
+                holder.attent?.typeface = typeface
+                db.updatereadnotice(true,noticedata.id)
+            }
             val intent2 = Intent(c, NoticeDataActivity::class.java)
             intent2.putExtra("id",noticedata.id)
             intent2.putExtra("title",noticedata.title)
@@ -79,7 +95,13 @@ class IcoAdapter(internal var c: Context, internal var notices: MutableList<Noti
                 c.startActivity(intent2)
             }
         }
+        if (read){
+            holder.mtitle?.typeface = typeface
+            holder.dates?.typeface = typeface
+            holder.pstdby?.typeface = typeface
+            holder.attent?.typeface = typeface
 
+        }
         val book = if(!noticedata.bookmark){
             Glide.with(c).load(R.drawable.star1).into(holder.starnotice)
             false
@@ -88,21 +110,9 @@ class IcoAdapter(internal var c: Context, internal var notices: MutableList<Noti
             Glide.with(c).load(R.drawable.stargolden).into(holder.starnotice)
             true
         }
-        val db = Dbhelper(c)
 
-//        val dbb = Dbbookshelper(c)
-//        var data = ArrayList<String>()
-//        data.clear()
-//        data = dbb.readbook()
-//        var i = 0
-//        var booked = false
-//        while(i<data.size){
-//            if(data[i] == noticedata.id){
-//                Glide.with(c).load(R.drawable.stargolden).into(holder.starnotice)
-//                booked = true
-//            }
-//            i++
-//        }
+
+
         holder.starnotice?.setOnClickListener{
             if(!book){
                 db.updatebooknotice(true,noticedata.id)

@@ -60,13 +60,13 @@
                 android:layout_alignParentStart="true"
                 android:layout_alignParentLeft="true"
                 android:layout_marginLeft="10dp"
-                android:padding="@dimen/textmargin"
                 android:layout_marginBottom="0dp"
                 android:layout_weight="1"
+                android:padding="@dimen/textmargin"
                 android:text="TextView"
                 android:textSize="13sp"
                 android:transitionName="mydate"
-                app:fontFamily="@font/lato_regular" />
+                app:fontFamily="@font/lato_black" />
 
             <TextView
                 android:id="@+id/title"
@@ -75,13 +75,13 @@
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
                 android:layout_marginBottom="0dp"
-                android:text="TextView"
                 android:padding="@dimen/textmargin"
+                android:text="TextView"
                 android:textColor="#000"
                 android:textSize="14sp"
                 android:textStyle="bold"
                 android:transitionName="mytext"
-                app:fontFamily="@font/lato_regular" />
+                app:fontFamily="@font/lato_black" />
 
             <TextView
                 android:id="@+id/attention"
@@ -94,17 +94,17 @@
                 android:layout_marginRight="5dp"
                 android:layout_marginBottom="0dp"
                 android:layout_weight="1"
-                android:paddingTop="@dimen/textmargin"
-                android:paddingBottom="@dimen/textmargin"
-                android:paddingLeft="@dimen/textmargin"
                 android:paddingStart="@dimen/textmargin"
+                android:paddingLeft="@dimen/textmargin"
+                android:paddingTop="@dimen/textmargin"
                 android:paddingEnd="3dp"
                 android:paddingRight="3dp"
+                android:paddingBottom="@dimen/textmargin"
                 android:text="TextView"
                 android:textSize="13sp"
                 android:textStyle="italic"
                 android:transitionName="myatt"
-                app:fontFamily="@font/lato_regular" />
+                app:fontFamily="@font/lato_black" />
 
 
         </LinearLayout>
@@ -118,11 +118,11 @@
             android:layout_alignParentRight="true"
             android:layout_marginRight="10dp"
             android:layout_marginBottom="5dp"
-            android:text="TextView"
             android:padding="@dimen/textmargin"
+            android:text="TextView"
             android:textSize="12sp"
             android:transitionName="mypost"
-            app:fontFamily="@font/lato_regular" />
+            app:fontFamily="@font/lato_black" />
         <!--<Button-->
             <!--android:layout_width="20dp"-->
             <!--android:layout_height="20dp"-->
