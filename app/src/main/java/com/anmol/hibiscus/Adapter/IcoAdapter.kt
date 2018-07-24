@@ -55,18 +55,38 @@ class IcoAdapter(internal var c: Context, internal var notices: MutableList<Noti
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val noticedata = notices[position]
         val db = Dbhelper(c)
-        val read = noticedata.read
+        val typeface = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            c.resources.getFont(R.font.lato_regular)
+        } else{
+            ResourcesCompat.getFont(c,R.font.lato_regular)
+        }
+        val typefacebold = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            c.resources.getFont(R.font.lato_black)
+        } else{
+            ResourcesCompat.getFont(c,R.font.lato_black)
+        }
+        val read = if(!noticedata.read){
+            holder.mtitle?.typeface = typefacebold
+            holder.dates?.typeface = typefacebold
+            holder.pstdby?.typeface = typefacebold
+            holder.attent?.typeface = typefacebold
+
+            false
+        }
+        else{
+            holder.mtitle?.typeface = typeface
+            holder.dates?.typeface = typeface
+            holder.pstdby?.typeface = typeface
+            holder.attent?.typeface = typeface
+            true
+        }
         holder.mtitle?.text = noticedata.title
         holder.pstdby?.text = noticedata.posted_by
         holder.attent?.text = noticedata.attention
         holder.dates?.text = noticedata.date
         holder.viewBinderHelper!!.setOpenOnlyOne(true)
         holder.viewBinderHelper!!.bind(holder.swipereveallayout,noticedata.id)
-        val typeface = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            c.resources.getFont(R.font.lato_regular)
-        } else{
-            ResourcesCompat.getFont(c,R.font.lato_regular)
-        }
+
         
         holder.noticelayout?.setOnClickListener {
             if (!read){
@@ -95,13 +115,7 @@ class IcoAdapter(internal var c: Context, internal var notices: MutableList<Noti
                 c.startActivity(intent2)
             }
         }
-        if (read){
-            holder.mtitle?.typeface = typeface
-            holder.dates?.typeface = typeface
-            holder.pstdby?.typeface = typeface
-            holder.attent?.typeface = typeface
 
-        }
         val book = if(!noticedata.bookmark){
             Glide.with(c).load(R.drawable.star1).into(holder.starnotice)
             false
