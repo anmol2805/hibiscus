@@ -55,28 +55,48 @@
                 android:id="@+id/postnotice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
-                android:layout_marginBottom="75dp"
+                android:layout_alignParentBottom="true"
                 android:layout_marginEnd="25dp"
                 android:layout_marginRight="25dp"
+                android:layout_marginBottom="75dp"
                 android:clickable="true"
+                android:visibility="gone"
                 app:backgroundTint="@color/white"
                 app:fabSize="normal"
                 app:rippleColor="@color/colorAccent"
-                app:srcCompat="@drawable/plus5"
 
-                />
+                app:srcCompat="@drawable/plus5" />
 
             <ListView
                 android:id="@+id/list"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="50dp"
+                android:layout_above="@+id/editlayout"
                 >
 
             </ListView>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/editlayout"
+                android:orientation="horizontal"
+                android:layout_alignParentBottom="true"
+                android:layout_marginBottom="50dp"
+                android:layout_margin="10dp"
+                >
+
+                <android.support.v7.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+
+                    app:cardBackgroundColor="@color/colorPrimary"
+                    app:cardCornerRadius="24dp"
+                    app:cardElevation="64dp">
+
+                </android.support.v7.widget.CardView>
+            </LinearLayout>
         </RelativeLayout>
 
     </android.support.v7.widget.CardView>

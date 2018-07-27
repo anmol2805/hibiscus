@@ -69,6 +69,7 @@ dependencies {
     implementation 'org.jsoup:jsoup:1.11.1'
     implementation 'com.github.lzyzsd:circleprogress:1.2.1'
     testImplementation 'junit:junit:4.12'
+    implementation 'hani.momanii.supernova_emoji_library:supernova-emoji-library:0.0.2'
     implementation 'com.chauthai.swipereveallayout:swipe-reveal-layout:1.4.1'
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 }
