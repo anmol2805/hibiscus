@@ -15,4 +15,9 @@
         <attr name="arc_bottom_text" format="string"/>
         <attr name="arc_bottom_text_size" format="dimension"/>
     </declare-styleable>
+    <declare-styleable name="ExpandableSearchView">
+        <attr name="textColor" format="color"/>
+        <attr name="textSize" format="dimension"/>
+        <attr name="maxWidth" format="dimension"/>
+    </declare-styleable>
 </resources>

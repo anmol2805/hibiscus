@@ -35,6 +35,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.anmol.hibiscus.Adapter.IcoAdapter;
 import com.anmol.hibiscus.Adapter.NoticeAdapter;
+import com.anmol.hibiscus.ExpandableSearchView;
 import com.anmol.hibiscus.Helpers.Dbbookshelper;
 import com.anmol.hibiscus.Helpers.Dbhelper;
 import com.anmol.hibiscus.Interfaces.ItemClickListener;
@@ -93,6 +94,7 @@ public class main extends Fragment {
     Boolean starred;
     Dbhelper dbhelper;
     ArrayList<String> noticeids;
+    ExpandableSearchView expandableSearchView;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
@@ -104,6 +106,7 @@ public class main extends Fragment {
         showstar = (CircleImageView)vi.findViewById(R.id.showstar);
         lv = (ListView)vi.findViewById(R.id.list);
         rv = (RecyclerView)vi.findViewById(R.id.rv);
+        expandableSearchView = (ExpandableSearchView)vi.findViewById(R.id.expsrch);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         rv.setLayoutManager(layoutManager);
         rv.setHasFixedSize(true);
@@ -140,6 +143,12 @@ public class main extends Fragment {
 
             }
         };
+        expandableSearchView.setOnSearchActionListener(new ExpandableSearchView.OnSearchActionListener() {
+            @Override
+            public void onSearchAction(String text) {
+                
+            }
+        });
         starred = false;
         Glide.with(getActivity()).load(R.drawable.starunfillwhite).into(showstar);
         loadnotice();
