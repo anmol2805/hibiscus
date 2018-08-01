@@ -2,6 +2,7 @@ package com.anmol.hibiscus.fragments;
 
 import android.app.Dialog;
 import android.app.Fragment;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -137,6 +138,7 @@ public class local extends Fragment {
                 postn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
+                        startActivity(new Intent(getActivity(),PostingActivity.class));
                         String d = date.getText().toString();
                         String t = title.getText().toString();
                         String p = postedby.getText().toString();
