@@ -19,16 +19,22 @@
             android:layout_alignParentStart="true"
             android:layout_margin="10dp"
             />
+
         <com.anmol.hibiscus.ExpandableSearchView
+            android:id="@+id/expsrch"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:textColor="@color/white"
-            android:id="@+id/expsrch"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="10dp"
             android:layout_toStartOf="@+id/showstar"
             android:layout_toLeftOf="@+id/showstar"
-            android:layout_centerVertical="true"
-            android:layout_margin="10dp"
-            >
+            android:visibility="gone"
+            app:textColor="@color/white">
 
         </com.anmol.hibiscus.ExpandableSearchView>
         <de.hdodenhof.circleimageview.CircleImageView

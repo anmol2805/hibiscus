@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical" android:layout_width="match_parent"
+    xmlns:emojicon="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
     android:layout_height="match_parent">
 
 
@@ -23,6 +25,17 @@
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             android:layout_margin="10dp"
+            />
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:src="@drawable/starunfillwhite"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_margin="10dp"
+            android:id="@+id/showstar"
+            android:foreground="?attr/selectableItemBackground"
             />
     </RelativeLayout>
 
@@ -62,41 +75,21 @@
                 android:layout_marginRight="25dp"
                 android:layout_marginBottom="75dp"
                 android:clickable="true"
-                android:visibility="gone"
+                android:visibility="visible"
                 app:backgroundTint="@color/white"
                 app:fabSize="normal"
                 app:rippleColor="@color/colorAccent"
 
                 app:srcCompat="@drawable/plus5" />
 
-            <ListView
+            <android.support.v7.widget.RecyclerView
                 android:id="@+id/list"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_above="@+id/editlayout"
+                android:layout_marginBottom="60dp"
                 >
 
-            </ListView>
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/editlayout"
-                android:orientation="horizontal"
-                android:layout_alignParentBottom="true"
-                android:layout_marginBottom="50dp"
-                android:layout_margin="10dp"
-                >
-
-                <android.support.v7.widget.CardView
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"
-
-                    app:cardBackgroundColor="@color/colorPrimary"
-                    app:cardCornerRadius="24dp"
-                    app:cardElevation="64dp">
-
-                </android.support.v7.widget.CardView>
-            </LinearLayout>
+            </android.support.v7.widget.RecyclerView>
         </RelativeLayout>
 
     </android.support.v7.widget.CardView>

@@ -5,6 +5,7 @@ import android.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,7 +16,10 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.anmol.hibiscus.Adapter.IcoAdapter1;
 import com.anmol.hibiscus.Adapter.NoticeAdapterl;
+import com.anmol.hibiscus.Interfaces.ItemClickListener;
+import com.anmol.hibiscus.Model.Notice;
 import com.anmol.hibiscus.Model.Noticel;
 import com.anmol.hibiscus.R;
 import com.google.firebase.auth.FirebaseAuth;
@@ -36,42 +40,47 @@ public class local extends Fragment {
     FirebaseAuth auth;
     DatabaseReference databaseReference,studentdatabase;
     FloatingActionButton post;
-    List<Noticel> noticels;
-    ListView listView;
-    NoticeAdapterl noticeAdapterl;
+    List<Notice> noticels;
+    RecyclerView listView;
+    IcoAdapter1 noticeAdapterl;
     int size = 0;
     ProgressBar pg;
-
+    ItemClickListener itemClickListener;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         View vi = inflater.inflate(R.layout.local,container,false);
         getActivity().setTitle("Notice Board");
         post = (FloatingActionButton)vi.findViewById(R.id.postnotice);
-        post.setVisibility(View.GONE);
-        listView = (ListView)vi.findViewById(R.id.list);
+        listView = (RecyclerView) vi.findViewById(R.id.list);
         pg = (ProgressBar)vi.findViewById(R.id.load);
         pg.setVisibility(View.VISIBLE);
         noticels = new ArrayList<>();
         auth = FirebaseAuth.getInstance();
         studentdatabase = FirebaseDatabase.getInstance().getReference().child("Studentnotice");
         databaseReference = FirebaseDatabase.getInstance().getReference().child("Auth");
-        databaseReference.addValueEventListener(new ValueEventListener() {
+        itemClickListener = new ItemClickListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if(dataSnapshot.hasChild(auth.getCurrentUser().getUid())){
-                    Boolean status = (Boolean) dataSnapshot.child(auth.getCurrentUser().getUid()).getValue();
-                    if(status){
-                        post.setVisibility(View.VISIBLE);
-                    }
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
+            public void onItemClick(int pos) {
 
             }
-        });
+        };
+//        databaseReference.addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(DataSnapshot dataSnapshot) {
+//                if(dataSnapshot.hasChild(auth.getCurrentUser().getUid())){
+//                    Boolean status = (Boolean) dataSnapshot.child(auth.getCurrentUser().getUid()).getValue();
+//                    if(status){
+//                        post.setVisibility(View.VISIBLE);
+//                    }
+//                }
+//            }
+//
+//            @Override
+//            public void onCancelled(DatabaseError databaseError) {
+//
+//            }
+//        });
         studentdatabase.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -89,14 +98,14 @@ public class local extends Fragment {
                         String posted_by = dataSnapshot.child(String.valueOf(i)).child("posted_by").getValue().toString();
                         String date = dataSnapshot.child(String.valueOf(i)).child("date").getValue().toString();
                         String description = dataSnapshot.child(String.valueOf(i)).child("description").getValue().toString();
-                        Noticel noticel = new Noticel(title,date,posted_by,attention,description);
+                        Notice noticel = new Notice(title,date,posted_by,attention,description,false,false);
                         noticels.add(noticel);
                     }
 
                 }
                 if(getActivity()!=null){
                     pg.setVisibility(View.GONE);
-                    noticeAdapterl = new NoticeAdapterl(getActivity(),R.layout.notice,noticels);
+                    noticeAdapterl = new IcoAdapter1(getActivity(),noticels,itemClickListener);
                     noticeAdapterl.notifyDataSetChanged();
                     listView.setAdapter(noticeAdapterl);
                     System.out.println(noticels);
@@ -110,16 +119,7 @@ public class local extends Fragment {
 
             }
         });
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Dialog dialog = new Dialog(getActivity());
-                dialog.setContentView(R.layout.snd);
-                TextView text = (TextView)dialog.findViewById(R.id.noticedata);
-                text.setText(noticels.get(i).getDescription());
-                dialog.show();
-            }
-        });
+
         post.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
