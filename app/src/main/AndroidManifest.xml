@@ -103,12 +103,11 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".MoocsWeb"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".PostingActivity"
             android:screenOrientation="portrait"></activity>
-        <activity android:name=".PostingActivity"
-            android:screenOrientation="portrait"
-            >
-
-        </activity>
+        <activity android:name=".StudentNoticeDataActivity"></activity>
     </application>
 
 </manifest>

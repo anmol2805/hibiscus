@@ -27,6 +27,7 @@ import com.anmol.hibiscus.Interfaces.ItemClickListener
 import com.anmol.hibiscus.Model.Notice
 import com.anmol.hibiscus.NoticeDataActivity
 import com.anmol.hibiscus.R
+import com.anmol.hibiscus.StudentNoticeDataActivity
 
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.DataSource
@@ -35,6 +36,11 @@ import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
 import com.chauthai.swipereveallayout.SwipeRevealLayout
 import com.chauthai.swipereveallayout.ViewBinderHelper
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
@@ -86,7 +92,8 @@ class IcoAdapter1(internal var c: Context, internal var notices: MutableList<Not
         holder.viewBinderHelper!!.setOpenOnlyOne(true)
         holder.viewBinderHelper!!.bind(holder.swipereveallayout,noticedata.id)
 
-        
+        holder.deletenotice!!.visibility = View.GONE
+        holder.editnotice!!.visibility = View.GONE
         holder.noticelayout?.setOnClickListener {
             if (!read){
                 holder.mtitle?.typeface = typeface
@@ -94,11 +101,11 @@ class IcoAdapter1(internal var c: Context, internal var notices: MutableList<Not
                 holder.pstdby?.typeface = typeface
                 dbfo.insertBook(noticedata.id)
             }
-            val intent2 = Intent(c, NoticeDataActivity::class.java)
+            val intent2 = Intent(c, StudentNoticeDataActivity::class.java)
             intent2.putExtra("id",noticedata.id)
             intent2.putExtra("title",noticedata.title)
             intent2.putExtra("posted",noticedata.posted_by)
-            intent2.putExtra("att",noticedata.attention)
+            intent2.putExtra("des",noticedata.attention)
             intent2.putExtra("date",noticedata.date)
 
 
@@ -142,7 +149,22 @@ class IcoAdapter1(internal var c: Context, internal var notices: MutableList<Not
             shareintent.putExtra(Intent.EXTRA_TEXT,noticedata.title + " :\nhttps://canopydevelopers.com/sharednotice/" + noticedata.id)
             c.startActivity(Intent.createChooser(shareintent,"Share notice"))
         }
+        val auth = FirebaseAuth.getInstance()
+        val hibdatabase = FirebaseDatabase.getInstance().reference.child("Students").child(auth!!.currentUser!!.uid).child("hibiscus")
+        hibdatabase.addValueEventListener(object :ValueEventListener{
+            override fun onCancelled(p0: DatabaseError) {
 
+            }
+
+            override fun onDataChange(p0: DataSnapshot) {
+                val uid = p0.child("sid").value.toString()
+                if(uid == noticedata.posted_by){
+                    holder.deletenotice!!.visibility = View.VISIBLE
+                    holder.editnotice!!.visibility = View.VISIBLE
+                }
+            }
+
+        })
 
 
 
@@ -151,7 +173,6 @@ class IcoAdapter1(internal var c: Context, internal var notices: MutableList<Not
 
     inner class MyViewHolder(itemView: View, private val mitemClickListener: ItemClickListener):RecyclerView.ViewHolder(itemView), View.OnClickListener {
         var dates:TextView?=null
-
         var pstdby:TextView?=null
         var mtitle:TextView?=null
         var viewBinderHelper:ViewBinderHelper?=null
