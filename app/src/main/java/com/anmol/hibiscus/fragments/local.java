@@ -6,6 +6,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.DividerItemDecoration;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -45,7 +48,7 @@ public class local extends Fragment {
     List<Notice> noticels;
     RecyclerView listView;
     IcoAdapter1 noticeAdapterl;
-    int size = 0;
+    long size = 0;
     ProgressBar pg;
     ItemClickListener itemClickListener;
     @Nullable
@@ -55,11 +58,17 @@ public class local extends Fragment {
         getActivity().setTitle("Notice Board");
         post = (FloatingActionButton)vi.findViewById(R.id.postnotice);
         listView = (RecyclerView) vi.findViewById(R.id.list);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
+        listView.setLayoutManager(layoutManager);
+        listView.setHasFixedSize(true);
+        listView.setItemAnimator(new DefaultItemAnimator());
+        listView.addItemDecoration(new DividerItemDecoration(getActivity(),
+                DividerItemDecoration.VERTICAL));
         pg = (ProgressBar)vi.findViewById(R.id.load);
         pg.setVisibility(View.VISIBLE);
         noticels = new ArrayList<>();
         auth = FirebaseAuth.getInstance();
-        studentdatabase = FirebaseDatabase.getInstance().getReference().child("Studentnotice");
+        studentdatabase = FirebaseDatabase.getInstance().getReference().child("Studentnoticeboard");
         databaseReference = FirebaseDatabase.getInstance().getReference().child("Auth");
         itemClickListener = new ItemClickListener() {
             @Override
@@ -86,21 +95,17 @@ public class local extends Fragment {
         studentdatabase.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                size = 0;
-                for(DataSnapshot data:dataSnapshot.getChildren()){
-                    size++;
-
-                }
+                size = dataSnapshot.getChildrenCount();
                 noticels.clear();
-                for (int i=size;i>=0;i--){
+                for (long i=size;i>0;i--){
 
                     if(dataSnapshot.hasChild(String.valueOf(i))){
                         String title = dataSnapshot.child(String.valueOf(i)).child("title").getValue().toString();
-                        String attention = dataSnapshot.child(String.valueOf(i)).child("attention").getValue().toString();
-                        String posted_by = dataSnapshot.child(String.valueOf(i)).child("posted_by").getValue().toString();
-                        String date = dataSnapshot.child(String.valueOf(i)).child("date").getValue().toString();
                         String description = dataSnapshot.child(String.valueOf(i)).child("description").getValue().toString();
-                        Notice noticel = new Notice(title,date,posted_by,attention,description,false,false);
+                        String posted_by = dataSnapshot.child(String.valueOf(i)).child("postedby").getValue().toString();
+                        String date = dataSnapshot.child(String.valueOf(i)).child("time").getValue().toString();
+                        String id = String.valueOf(i);
+                        Notice noticel = new Notice(title,date,posted_by,description,id,false,false);
                         noticels.add(noticel);
                     }
 

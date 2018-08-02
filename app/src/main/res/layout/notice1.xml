@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.chauthai.swipereveallayout.SwipeRevealLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:mode="same_level"
+    app:dragEdge="right"
+    android:id="@+id/swipereveallayout"
+
+    >
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:background="@color/grey1"
+        >
+
+        <ImageView
+            android:id="@+id/starnotice"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_gravity="center"
+            android:layout_margin="10dp"
+            android:gravity="center"
+            app:srcCompat ="@drawable/star1"
+            />
+        <Button
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:layout_margin="10dp"
+            android:background="@drawable/shareblue"
+            android:id="@+id/sharenotice"
+            />
+        <Button
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:layout_margin="10dp"
+            android:background="@drawable/edit"
+            android:id="@+id/editnotice"
+            />
+        <Button
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:layout_margin="10dp"
+            android:background="@drawable/delete"
+            android:id="@+id/deletenotice"
+            />
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/noticelayout"
+        android:foreground="?attr/selectableItemBackground"
+        >
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:id="@+id/linearLayout"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:paddingTop="5dp"
+            >
+
+            <TextView
+                android:id="@+id/date"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/title"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentLeft="true"
+                android:layout_marginLeft="10dp"
+                android:layout_marginBottom="0dp"
+                android:layout_weight="1"
+                android:padding="@dimen/textmargin"
+                android:text="TextView"
+                android:textSize="13sp"
+                android:transitionName="mydate"
+                app:fontFamily="@font/lato_black" />
+
+            <TextView
+                android:id="@+id/title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginBottom="0dp"
+                android:padding="@dimen/textmargin"
+                android:text="TextView"
+                android:textColor="#000"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:transitionName="mytext"
+                app:fontFamily="@font/lato_black" />
+
+            <!--<TextView-->
+                <!--android:id="@+id/attention"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_gravity="right"-->
+                <!--android:layout_marginStart="10dp"-->
+                <!--android:layout_marginLeft="10dp"-->
+                <!--android:layout_marginEnd="5dp"-->
+                <!--android:layout_marginRight="5dp"-->
+                <!--android:layout_marginBottom="0dp"-->
+                <!--android:layout_weight="1"-->
+                <!--android:paddingStart="@dimen/textmargin"-->
+                <!--android:paddingLeft="@dimen/textmargin"-->
+                <!--android:paddingTop="@dimen/textmargin"-->
+                <!--android:paddingEnd="3dp"-->
+                <!--android:paddingRight="3dp"-->
+                <!--android:paddingBottom="@dimen/textmargin"-->
+                <!--android:text="TextView"-->
+                <!--android:textSize="13sp"-->
+                <!--android:textStyle="italic"-->
+                <!--android:transitionName="myatt"-->
+                <!--app:fontFamily="@font/lato_black" />-->
+
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/posted"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/linearLayout"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="5dp"
+            android:padding="@dimen/textmargin"
+            android:text="TextView"
+            android:textSize="12sp"
+            android:transitionName="mypost"
+            app:fontFamily="@font/lato_black" />
+        <!--<Button-->
+            <!--android:layout_width="20dp"-->
+            <!--android:layout_height="20dp"-->
+            <!--android:id="@+id/star"-->
+            <!--android:background="@drawable/star1"-->
+            <!--android:layout_alignParentEnd="true"-->
+            <!--android:layout_alignParentRight="true"-->
+            <!--android:layout_marginBottom="15dp"-->
+            <!--android:layout_marginEnd="5dp"-->
+            <!--android:layout_marginRight="5dp"-->
+            <!--android:visibility="gone"-->
+            <!--android:layout_above="@+id/posted"-->
+            <!--/>-->
+        <!--<View-->
+            <!--android:layout_width="fill_parent"-->
+            <!--android:layout_height="1dp"-->
+            <!--android:background="@color/grey2"-->
+            <!--android:layout_below="@id/posted"-->
+            <!--android:layout_marginTop="5dp"-->
+            <!--/>-->
+    </RelativeLayout>
+
+
+</com.chauthai.swipereveallayout.SwipeRevealLayout>
