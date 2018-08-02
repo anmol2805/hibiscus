@@ -130,38 +130,39 @@ public class local extends Fragment {
         post.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                final Dialog dialog = new Dialog(getActivity());
-                dialog.setTitle("Post Notice");
-                dialog.setContentView(R.layout.postnotice);
-                dialog.setCancelable(false);
-                final EditText date = (EditText)dialog.findViewById(R.id.date);
-                final EditText title = (EditText)dialog.findViewById(R.id.titlen);
-                final EditText postedby = (EditText)dialog.findViewById(R.id.postedby);
-                final EditText descript = (EditText)dialog.findViewById(R.id.description);
-                final EditText attent = (EditText)dialog.findViewById(R.id.attention);
-                Button postn = (Button)dialog.findViewById(R.id.postn);
-                Button cancel = (Button)dialog.findViewById(R.id.canceled);
-                postn.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        startActivity(new Intent(getActivity(),PostingActivity.class));
-                        String d = date.getText().toString();
-                        String t = title.getText().toString();
-                        String p = postedby.getText().toString();
-                        String de = descript.getText().toString();
-                        String at = attent.getText().toString();
-                        Noticel noticel = new Noticel(t,d,p,at,de);
-                        studentdatabase.child(String.valueOf(size)).setValue(noticel);
-                        dialog.dismiss();
-                    }
-                });
-                cancel.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        dialog.dismiss();
-                    }
-                });
-                dialog.show();
+                startActivity(new Intent(getActivity(),PostingActivity.class));
+//                final Dialog dialog = new Dialog(getActivity());
+//                dialog.setTitle("Post Notice");
+//                dialog.setContentView(R.layout.postnotice);
+//                dialog.setCancelable(false);
+//                final EditText date = (EditText)dialog.findViewById(R.id.date);
+//                final EditText title = (EditText)dialog.findViewById(R.id.titlen);
+//                final EditText postedby = (EditText)dialog.findViewById(R.id.postedby);
+//                final EditText descript = (EditText)dialog.findViewById(R.id.description);
+//                final EditText attent = (EditText)dialog.findViewById(R.id.attention);
+//                Button postn = (Button)dialog.findViewById(R.id.postn);
+//                Button cancel = (Button)dialog.findViewById(R.id.canceled);
+//                postn.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View view) {
+//
+//                        String d = date.getText().toString();
+//                        String t = title.getText().toString();
+//                        String p = postedby.getText().toString();
+//                        String de = descript.getText().toString();
+//                        String at = attent.getText().toString();
+//                        Noticel noticel = new Noticel(t,d,p,at,de);
+//                        studentdatabase.child(String.valueOf(size)).setValue(noticel);
+//                        dialog.dismiss();
+//                    }
+//                });
+//                cancel.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View view) {
+//                        dialog.dismiss();
+//                    }
+//                });
+//                dialog.show();
             }
         });
         return vi;
