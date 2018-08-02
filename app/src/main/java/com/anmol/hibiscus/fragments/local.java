@@ -22,6 +22,7 @@ import com.anmol.hibiscus.Adapter.NoticeAdapterl;
 import com.anmol.hibiscus.Interfaces.ItemClickListener;
 import com.anmol.hibiscus.Model.Notice;
 import com.anmol.hibiscus.Model.Noticel;
+import com.anmol.hibiscus.PostingActivity;
 import com.anmol.hibiscus.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
