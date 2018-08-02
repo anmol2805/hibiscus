@@ -30,6 +30,10 @@ class PostingActivity : AppCompatActivity() {
         title = "Post Notice"
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
         supportActionBar!!.setDisplayShowHomeEnabled(true)
+        val noticedestext = intent.getStringExtra("description")
+        val noticetitletext = intent.getStringExtra("title")
+        noticedes.setText(noticedestext)
+        noticetitle.setText(noticetitletext)
         auth = FirebaseAuth.getInstance()
         studentdatabase = FirebaseDatabase.getInstance().reference.child("Studentnoticeboard")
         studentdatabaseid = FirebaseDatabase.getInstance().reference.child("Studentnoticeid")
@@ -81,4 +85,10 @@ class PostingActivity : AppCompatActivity() {
         }
 
     }
+
+    override fun onSupportNavigateUp(): Boolean {
+        onBackPressed()
+        return true
+    }
+
 }

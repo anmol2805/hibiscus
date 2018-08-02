@@ -1,9 +1,95 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".StudentNoticeDataActivity">
+    tools:context="com.anmol.hibiscus.StudentNoticeDataActivity"
+    android:background="#fff"
+    android:orientation="vertical"
+    >
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="5dp"
+        >
 
-</android.support.constraint.ConstraintLayout>
+        <TextView
+            android:padding="@dimen/textmargin"
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="0dp"
+            android:text="TextView"
+            android:textColor="@color/colorPrimary"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:transitionName="mytext"
+            app:fontFamily="@font/lato_regular" />
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/date"
+                android:layout_width="wrap_content"
+                android:padding="@dimen/textmargin"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/title"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentLeft="true"
+                android:layout_marginLeft="10dp"
+                android:layout_marginBottom="5dp"
+                android:layout_weight="1"
+                android:text="TextView"
+                android:textSize="12sp"
+                android:transitionName="mydate"
+                app:fontFamily="@font/lato_regular" />
+
+            <TextView
+                android:id="@+id/posted"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:layout_marginRight="10dp"
+                android:layout_marginBottom="5dp"
+                android:text="TextView"
+                android:padding="@dimen/textmargin"
+                android:textSize="12sp"
+                android:transitionName="mypost"
+                app:fontFamily="@font/lato_regular" />
+        </LinearLayout>
+
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:background="@color/colorPrimary"
+            />
+        <TextView
+            android:id="@+id/descript"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="10dp"
+            android:padding="@dimen/textmargin"
+            android:textSize="12sp"
+            android:textAlignment="center"
+            android:textColor="#000"
+            android:autoLink="all"
+            app:fontFamily="@font/lato_regular" />
+
+
+
+    </LinearLayout>
+
+
+</LinearLayout>

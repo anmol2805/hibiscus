@@ -3,6 +3,7 @@ package com.anmol.hibiscus.Adapter
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
+import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.Typeface
 import android.graphics.drawable.Drawable
@@ -11,6 +12,7 @@ import android.os.Bundle
 import android.support.v4.app.ActivityOptionsCompat
 import android.support.v4.content.res.ResourcesCompat
 import android.support.v4.util.Pair
+import android.support.v7.app.AlertDialog
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
@@ -26,6 +28,7 @@ import com.anmol.hibiscus.Helpers.Dbstudentnoticefirstopenhelper
 import com.anmol.hibiscus.Interfaces.ItemClickListener
 import com.anmol.hibiscus.Model.Notice
 import com.anmol.hibiscus.NoticeDataActivity
+import com.anmol.hibiscus.PostingActivity
 import com.anmol.hibiscus.R
 import com.anmol.hibiscus.StudentNoticeDataActivity
 
@@ -165,7 +168,25 @@ class IcoAdapter1(internal var c: Context, internal var notices: MutableList<Not
             }
 
         })
-
+        holder.deletenotice!!.setOnClickListener{
+            val alertDialogBuilder = AlertDialog.Builder(c)
+            val alertDialog = alertDialogBuilder.create()
+            alertDialogBuilder.setTitle("Confirm")
+            alertDialogBuilder.setMessage("Are you sure you want to delete this notice?")
+            alertDialogBuilder.setPositiveButton("Delete") { p0, p1 ->
+                FirebaseDatabase.getInstance().reference.child("Studentnoticeboard").child(noticedata.id).removeValue()
+            }
+            alertDialogBuilder.setNegativeButton("Cancel") { p0, p1 ->
+                alertDialog.dismiss()
+            }
+            alertDialog.show()
+        }
+        holder.editnotice!!.setOnClickListener{
+            val intent = Intent(c,PostingActivity::class.java)
+            intent.putExtra("title",noticedata.title)
+            intent.putExtra("description",noticedata.attention)
+            c.startActivity(intent)
+        }
 
 
 

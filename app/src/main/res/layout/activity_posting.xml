@@ -17,7 +17,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@null"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="25dp"
             android:layout_marginBottom="10dp"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
@@ -26,7 +26,7 @@
             android:textAlignment="center"
             android:textColor="#000"
             android:theme="@style/MyEditTextTheme"
-
+            app:fontFamily="@font/lato_regular"
             />
     </android.support.design.widget.TextInputLayout>
     <android.support.design.widget.TextInputLayout
@@ -41,17 +41,18 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:hint="Description"
-            android:textAlignment="center"
             android:inputType="text"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="25dp"
             android:layout_marginBottom="10dp"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
             android:background="@null"
             android:textColor="#000"
+            android:textAlignment="viewStart"
             android:theme="@style/MyEditTextTheme"
             android:autoLink="web"
-            />
+            app:fontFamily="@font/lato_regular"
+            android:gravity="start" />
     </android.support.design.widget.TextInputLayout>
     <Button
         android:layout_width="200dp"
@@ -61,6 +62,7 @@
         android:layout_gravity="center"
         android:background="@drawable/round_button2"
         android:layout_marginBottom="10dp"
+        app:fontFamily="@font/lato_bold"
         />
 
 </LinearLayout>
