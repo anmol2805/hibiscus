@@ -22,6 +22,8 @@ import android.widget.TextView;
 
 import com.anmol.hibiscus.Adapter.IcoAdapter1;
 import com.anmol.hibiscus.Adapter.NoticeAdapterl;
+import com.anmol.hibiscus.Helpers.Dbstudentnoticebookshelper;
+import com.anmol.hibiscus.Helpers.Dbstudentnoticefirstopenhelper;
 import com.anmol.hibiscus.Interfaces.ItemClickListener;
 import com.anmol.hibiscus.Model.Notice;
 import com.anmol.hibiscus.Model.Noticel;
@@ -92,6 +94,10 @@ public class local extends Fragment {
 //
 //            }
 //        });
+        Dbstudentnoticebookshelper dbstudentnoticebookshelper = new Dbstudentnoticebookshelper(getActivity());
+        Dbstudentnoticefirstopenhelper dbstudentnoticefirstopenhelper = new Dbstudentnoticefirstopenhelper(getActivity());
+        final List<String> boomarks = dbstudentnoticebookshelper.readbook();
+        final List<String> firstopens = dbstudentnoticefirstopenhelper.readbook();
         studentdatabase.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -105,7 +111,23 @@ public class local extends Fragment {
                         String posted_by = dataSnapshot.child(String.valueOf(i)).child("postedby").getValue().toString();
                         String date = dataSnapshot.child(String.valueOf(i)).child("time").getValue().toString();
                         String id = String.valueOf(i);
-                        Notice noticel = new Notice(title,date,posted_by,description,id,false,false);
+                        int j = 0;
+                        Boolean booked = false;
+                        while(j<boomarks.size()){
+                            if(boomarks.get(j).equals(id)){
+                                booked = true;
+                            }
+                            j++;
+                        }
+                        int k = 0;
+                        Boolean firstopen = false;
+                        while(k<firstopens.size()){
+                            if(firstopens.get(k).equals(id)){
+                                firstopen = true;
+                            }
+                            k++;
+                        }
+                        Notice noticel = new Notice(title,date,posted_by,description,id,booked,firstopen);
                         noticels.add(noticel);
                     }
 
