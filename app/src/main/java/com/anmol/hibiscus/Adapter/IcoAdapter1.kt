@@ -43,7 +43,7 @@ import kotlin.collections.ArrayList
 class IcoAdapter1(internal var c: Context, internal var notices: MutableList<Notice>, private val mitemClickListener: ItemClickListener): RecyclerView.Adapter<IcoAdapter1.MyViewHolder>(){
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
-        val v = LayoutInflater.from(c).inflate(R.layout.notice,parent,false)
+        val v = LayoutInflater.from(c).inflate(R.layout.notice1,parent,false)
         return MyViewHolder(v,mitemClickListener)
     }
 
@@ -69,20 +69,16 @@ class IcoAdapter1(internal var c: Context, internal var notices: MutableList<Not
             holder.mtitle?.typeface = typefacebold
             holder.dates?.typeface = typefacebold
             holder.pstdby?.typeface = typefacebold
-            holder.attent?.typeface = typefacebold
-
             false
         }
         else{
             holder.mtitle?.typeface = typeface
             holder.dates?.typeface = typeface
             holder.pstdby?.typeface = typeface
-            holder.attent?.typeface = typeface
             true
         }
         holder.mtitle?.text = noticedata.title
         holder.pstdby?.text = noticedata.posted_by
-        holder.attent?.text = noticedata.attention
         holder.dates?.text = noticedata.date
         holder.viewBinderHelper!!.setOpenOnlyOne(true)
         holder.viewBinderHelper!!.bind(holder.swipereveallayout,noticedata.id)
@@ -93,7 +89,6 @@ class IcoAdapter1(internal var c: Context, internal var notices: MutableList<Not
                 holder.mtitle?.typeface = typeface
                 holder.dates?.typeface = typeface
                 holder.pstdby?.typeface = typeface
-                holder.attent?.typeface = typeface
                 db.updatereadnotice(true,noticedata.id)
             }
             val intent2 = Intent(c, NoticeDataActivity::class.java)
@@ -153,23 +148,27 @@ class IcoAdapter1(internal var c: Context, internal var notices: MutableList<Not
 
     inner class MyViewHolder(itemView: View, private val mitemClickListener: ItemClickListener):RecyclerView.ViewHolder(itemView), View.OnClickListener {
         var dates:TextView?=null
-        var attent:TextView?=null
+
         var pstdby:TextView?=null
         var mtitle:TextView?=null
         var viewBinderHelper:ViewBinderHelper?=null
         var swipereveallayout:SwipeRevealLayout?=null
         var starnotice:ImageView?=null
         var sharenotice:Button?=null
+        var editnotice:Button?=null
+        var deletenotice:Button?=null
         var noticelayout:RelativeLayout?=null
         init {
             this.dates = itemView.findViewById(R.id.date)
-            this.attent = itemView.findViewById(R.id.attention)
+
             this.pstdby = itemView.findViewById(R.id.posted)
             this.mtitle = itemView.findViewById(R.id.title)
             this.noticelayout = itemView.findViewById(R.id.noticelayout)
             this.swipereveallayout = itemView.findViewById(R.id.swipereveallayout)
             this.sharenotice = itemView.findViewById(R.id.sharenotice)
             this.starnotice = itemView.findViewById(R.id.starnotice)
+            this.editnotice = itemView.findViewById(R.id.editnotice)
+            this.deletenotice = itemView.findViewById(R.id.deletenotice)
             viewBinderHelper = ViewBinderHelper()
             itemView.setOnClickListener(this)
         }
