@@ -5,10 +5,18 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.view.WindowManager
 import android.widget.EditText
+import android.widget.Toast
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.*
 import kotlinx.android.synthetic.main.activity_posting.*
+import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.collections.HashMap
 
 class PostingActivity : AppCompatActivity() {
-
+    var auth:FirebaseAuth?=null
+    var hibdatabase:DatabaseReference?=null
+    var studentdatabase:DatabaseReference?=null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -21,9 +29,50 @@ class PostingActivity : AppCompatActivity() {
         title = "Post Notice"
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
         supportActionBar!!.setDisplayShowHomeEnabled(true)
+        auth = FirebaseAuth.getInstance()
+        studentdatabase = FirebaseDatabase.getInstance().reference.child("Studentnoticeboard")
+        hibdatabase = FirebaseDatabase.getInstance().reference.child("Students").child(auth!!.currentUser!!.uid).child("hibiscus")
         submitnotice.setOnClickListener{
+            val c = Calendar.getInstance().time
+            val df = SimpleDateFormat("dd-MM-yyyy hh:mm a")
+            val formattedDate = df.format(c)
             val noticetitlestring = noticetitle!!.text.toString()
             val noticedescription = noticedes!!.text.toString()
+            if(!noticetitlestring.isEmpty() && !noticedescription.isEmpty()){
+                hibdatabase!!.addListenerForSingleValueEvent(object :ValueEventListener{
+                    override fun onCancelled(p0: DatabaseError) {
+
+                    }
+
+                    override fun onDataChange(p0: DataSnapshot) {
+                        val uid = p0.child("sid").value.toString()
+                        studentdatabase!!.addListenerForSingleValueEvent(object : ValueEventListener{
+                            override fun onCancelled(p0: DatabaseError) {
+
+                            }
+
+                            override fun onDataChange(p0: DataSnapshot) {
+                                val size = p0.childrenCount
+
+                                val map = HashMap<String,Any>()
+                                map["title"] = noticetitlestring
+                                map["description"] = noticedescription
+                                map["postedby"] = uid
+                                map["time"] = formattedDate
+                                studentdatabase!!.child((size + 1).toString()).setValue(map)
+
+                            }
+
+                        })
+
+
+                    }
+
+                })
+            }
+            else{
+                Toast.makeText(this,"fields cannot be empty",Toast.LENGTH_SHORT).show()
+            }
         }
 
     }
