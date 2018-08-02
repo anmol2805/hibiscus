@@ -21,6 +21,8 @@ import android.widget.RelativeLayout
 import android.widget.TextView
 import com.anmol.hibiscus.Helpers.Dbbookshelper
 import com.anmol.hibiscus.Helpers.Dbhelper
+import com.anmol.hibiscus.Helpers.Dbstudentnoticebookshelper
+import com.anmol.hibiscus.Helpers.Dbstudentnoticefirstopenhelper
 import com.anmol.hibiscus.Interfaces.ItemClickListener
 import com.anmol.hibiscus.Model.Notice
 import com.anmol.hibiscus.NoticeDataActivity
@@ -54,7 +56,8 @@ class IcoAdapter1(internal var c: Context, internal var notices: MutableList<Not
     @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val noticedata = notices[position]
-        val db = Dbhelper(c)
+        val db = Dbstudentnoticebookshelper(c)
+        val dbfo = Dbstudentnoticefirstopenhelper(c)
         val typeface = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             c.resources.getFont(R.font.lato_regular)
         } else{
@@ -89,7 +92,7 @@ class IcoAdapter1(internal var c: Context, internal var notices: MutableList<Not
                 holder.mtitle?.typeface = typeface
                 holder.dates?.typeface = typeface
                 holder.pstdby?.typeface = typeface
-                db.updatereadnotice(true,noticedata.id)
+                dbfo.insertBook(noticedata.id)
             }
             val intent2 = Intent(c, NoticeDataActivity::class.java)
             intent2.putExtra("id",noticedata.id)
@@ -124,11 +127,11 @@ class IcoAdapter1(internal var c: Context, internal var notices: MutableList<Not
 
         holder.starnotice?.setOnClickListener{
             if(!book){
-                db.updatebooknotice(true,noticedata.id)
+                db.insertBook(noticedata.id)
                 Glide.with(c).load(R.drawable.stargolden).into(holder.starnotice)
             }
             else{
-                db.updatebooknotice(false,noticedata.id)
+                db.deletebook(noticedata.id)
                 Glide.with(c).load(R.drawable.star1).into(holder.starnotice)
             }
         }
