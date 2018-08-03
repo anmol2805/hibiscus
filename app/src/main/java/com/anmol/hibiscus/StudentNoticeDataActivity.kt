@@ -109,7 +109,7 @@ class StudentNoticeDataActivity : AppCompatActivity() {
                 val shareintent = Intent()
                 shareintent.action = Intent.ACTION_SEND
                 shareintent.type = "text/plain"
-                shareintent.putExtra(Intent.EXTRA_TEXT, title.toString() + " :\nhttps://canopydevelopers.com/sharednotice/" + id)
+                shareintent.putExtra(Intent.EXTRA_TEXT, title.toString() + " :\nhttps://canopydevelopers.com/sharedstudentnotice/" + id)
                 startActivity(Intent.createChooser(shareintent, "Share notice"))
             }
             R.id.action_delete ->{

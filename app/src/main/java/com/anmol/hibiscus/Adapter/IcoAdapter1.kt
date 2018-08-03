@@ -149,7 +149,7 @@ class IcoAdapter1(internal var c: Context, internal var notices: MutableList<Not
             val shareintent = Intent()
             shareintent.action = Intent.ACTION_SEND
             shareintent.type = "text/plain"
-            shareintent.putExtra(Intent.EXTRA_TEXT,noticedata.title + " :\nhttps://canopydevelopers.com/sharednotice/" + noticedata.id)
+            shareintent.putExtra(Intent.EXTRA_TEXT,noticedata.title + " :\nhttps://canopydevelopers.com/sharedstudentnotice/" + noticedata.id)
             c.startActivity(Intent.createChooser(shareintent,"Share notice"))
         }
         val auth = FirebaseAuth.getInstance()
