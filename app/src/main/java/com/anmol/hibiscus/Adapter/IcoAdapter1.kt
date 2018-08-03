@@ -2,11 +2,13 @@ package com.anmol.hibiscus.Adapter
 
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.Typeface
 import android.graphics.drawable.Drawable
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.support.v4.app.ActivityOptionsCompat
@@ -168,17 +170,29 @@ class IcoAdapter1(internal var c: Context, internal var notices: MutableList<Not
 
         })
         holder.deletenotice!!.setOnClickListener{
-            val alertDialogBuilder = AlertDialog.Builder(c)
-            val alertDialog = alertDialogBuilder.create()
-            alertDialogBuilder.setTitle("Confirm")
-            alertDialogBuilder.setMessage("Are you sure you want to delete this notice?")
-            alertDialogBuilder.setPositiveButton("Delete") { p0, p1 ->
-                FirebaseDatabase.getInstance().reference.child("Studentnoticeboard").child(noticedata.id).removeValue()
-            }
-            alertDialogBuilder.setNegativeButton("Cancel") { p0, p1 ->
-                alertDialog.dismiss()
-            }
-            alertDialog.show()
+//            val alertDialogBuilder = AlertDialog.Builder(c)
+//
+//            alertDialogBuilder.setTitle("Confirm")
+//            alertDialogBuilder.setMessage("Are you sure you want to delete this notice?")
+//            alertDialogBuilder.setPositiveButton("Delete") { p0, p1 ->
+//                FirebaseDatabase.getInstance().reference.child("Studentnoticeboard").child(noticedata.id).removeValue()
+//            }
+//            alertDialogBuilder.setNegativeButton("Cancel") { p0, p1 ->
+//
+//            }
+//            val alertDialog = alertDialogBuilder.create()
+//            alertDialog.show()
+
+            val dialog = AlertDialog.Builder(c)
+                    .setTitle("Confirm")
+                    .setMessage("Are you sure you want to delete this notice?")
+                    .setPositiveButton("Delete") { dialogInterface, i ->
+                        FirebaseDatabase.getInstance().reference.child("Studentnoticeboard").child(noticedata.id).removeValue()
+                    }.setNegativeButton("Cancel"){ dialogInterface, i ->
+                        dialogInterface.dismiss()
+                    }.create()
+
+            dialog.show()
         }
         holder.editnotice!!.setOnClickListener{
             val intent = Intent(c,PostingActivity::class.java)
