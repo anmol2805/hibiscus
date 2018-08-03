@@ -32,6 +32,7 @@ class PostingActivity : AppCompatActivity() {
         supportActionBar!!.setDisplayShowHomeEnabled(true)
         val noticedestext = intent.getStringExtra("description")
         val noticetitletext = intent.getStringExtra("title")
+        val id = intent.getStringExtra("id")
         noticedes.setText(noticedestext)
         noticetitle.setText(noticetitletext)
         auth = FirebaseAuth.getInstance()
@@ -58,17 +59,30 @@ class PostingActivity : AppCompatActivity() {
                             }
 
                             override fun onDataChange(p0: DataSnapshot) {
-                                val size:Long = p0.child("Studentnoticeid").value as Long
-                                val map = HashMap<String,Any>()
-                                map["title"] = noticetitlestring
-                                map["description"] = noticedescription
-                                map["postedby"] = uid
-                                map["time"] = formattedDate
-                                studentdatabase!!.child((size + 1).toString()).setValue(map).addOnCompleteListener {
-                                    val map2 = HashMap<String,Any>()
-                                    map2["Studentnoticeid"] = size + 1
-                                    studentdatabaseid!!.updateChildren(map2)
+                                if(id!=null){
+                                    val map = HashMap<String,Any>()
+                                    map["title"] = noticetitlestring
+                                    map["description"] = noticedescription
+                                    map["postedby"] = uid
+                                    map["time"] = formattedDate
+                                    studentdatabase!!.child(id).updateChildren(map).addOnCompleteListener {
+
+                                    }
                                 }
+                                else{
+                                    val size:Long = p0.child("Studentnoticeid").value as Long
+                                    val map = HashMap<String,Any>()
+                                    map["title"] = noticetitlestring
+                                    map["description"] = noticedescription
+                                    map["postedby"] = uid
+                                    map["time"] = formattedDate
+                                    studentdatabase!!.child((size + 1).toString()).setValue(map).addOnCompleteListener {
+                                        val map2 = HashMap<String,Any>()
+                                        map2["Studentnoticeid"] = size + 1
+                                        studentdatabaseid!!.updateChildren(map2)
+                                    }
+                                }
+
 
                             }
 

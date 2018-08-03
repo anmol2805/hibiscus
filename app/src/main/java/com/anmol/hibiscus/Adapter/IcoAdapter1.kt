@@ -184,6 +184,7 @@ class IcoAdapter1(internal var c: Context, internal var notices: MutableList<Not
             val intent = Intent(c,PostingActivity::class.java)
             intent.putExtra("title",noticedata.title)
             intent.putExtra("description",noticedata.attention)
+            intent.putExtra("id",noticedata.id)
             c.startActivity(intent)
         }
 

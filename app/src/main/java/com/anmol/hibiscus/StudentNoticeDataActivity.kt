@@ -169,6 +169,7 @@ class StudentNoticeDataActivity : AppCompatActivity() {
                 val intent = Intent(this,PostingActivity::class.java)
                 intent.putExtra("title",mtitle)
                 intent.putExtra("description",noticedescription)
+                intent.putExtra("id",id)
                 startActivity(intent)
             }
             android.R.id.home -> {
