@@ -44,7 +44,7 @@ class StudentNoticeDataActivity : AppCompatActivity() {
         title = "Notices"
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
         supportActionBar!!.setDisplayShowHomeEnabled(true)
-
+        handleIntent(intent)
 
         dbstudentnoticebookshelper = Dbstudentnoticebookshelper(this)
     }

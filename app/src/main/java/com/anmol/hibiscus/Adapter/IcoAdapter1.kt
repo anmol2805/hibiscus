@@ -115,9 +115,8 @@ class IcoAdapter1(internal var c: Context, internal var notices: MutableList<Not
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                 val pair1:Pair<View,String> = Pair.create(holder.itemView.findViewById(R.id.date),"mydate")
                 val pair2:Pair<View,String> = Pair.create(holder.itemView.findViewById(R.id.title),"mytext")
-                val pair3:Pair<View,String> = Pair.create(holder.itemView.findViewById(R.id.attention),"myatt")
                 val pair4:Pair<View,String> = Pair.create(holder.itemView.findViewById(R.id.posted),"mypost")
-                val optionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation(c as Activity,pair1,pair2,pair3,pair4)
+                val optionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation(c as Activity,pair1,pair2,pair4)
                 c.startActivity(intent2,optionsCompat.toBundle())
             }else{
                 c.startActivity(intent2)
