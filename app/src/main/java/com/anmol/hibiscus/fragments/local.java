@@ -19,6 +19,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.anmol.hibiscus.Adapter.IcoAdapter1;
 import com.anmol.hibiscus.Adapter.NoticeAdapterl;
@@ -29,6 +30,7 @@ import com.anmol.hibiscus.Model.Notice;
 import com.anmol.hibiscus.Model.Noticel;
 import com.anmol.hibiscus.PostingActivity;
 import com.anmol.hibiscus.R;
+import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -38,6 +40,8 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
  * Created by anmol on 2017-08-30.
@@ -53,6 +57,8 @@ public class local extends Fragment {
     long size = 0;
     ProgressBar pg;
     ItemClickListener itemClickListener;
+    CircleImageView showstar;
+    Boolean starred;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
@@ -60,6 +66,7 @@ public class local extends Fragment {
         getActivity().setTitle("Notice Board");
         post = (FloatingActionButton)vi.findViewById(R.id.postnotice);
         listView = (RecyclerView) vi.findViewById(R.id.list);
+        showstar = (CircleImageView)vi.findViewById(R.id.showstar);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         listView.setLayoutManager(layoutManager);
         listView.setHasFixedSize(true);
@@ -78,6 +85,31 @@ public class local extends Fragment {
 
             }
         };
+        Dbstudentnoticebookshelper dbstudentnoticebookshelper = new Dbstudentnoticebookshelper(getActivity());
+        Dbstudentnoticefirstopenhelper dbstudentnoticefirstopenhelper = new Dbstudentnoticefirstopenhelper(getActivity());
+        final List<String> boomarks = dbstudentnoticebookshelper.readbook();
+        final List<String> firstopens = dbstudentnoticefirstopenhelper.readbook();
+        starred = false;
+        Glide.with(getActivity()).load(R.drawable.starunfillwhite).into(showstar);
+        loadnotice(boomarks,firstopens);
+        showstar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(!starred){
+
+                    starred = true;
+                    Glide.with(getActivity()).load(R.drawable.stargolden).into(showstar);
+                    loadbook(boomarks,firstopens);
+                }
+                else{
+
+                    starred = false;
+                    Glide.with(getActivity()).load(R.drawable.starunfillwhite).into(showstar);
+                    loadnotice(boomarks,firstopens);
+                }
+            }
+        });
+
 //        databaseReference.addValueEventListener(new ValueEventListener() {
 //            @Override
 //            public void onDataChange(DataSnapshot dataSnapshot) {
@@ -94,10 +126,168 @@ public class local extends Fragment {
 //
 //            }
 //        });
-        Dbstudentnoticebookshelper dbstudentnoticebookshelper = new Dbstudentnoticebookshelper(getActivity());
-        Dbstudentnoticefirstopenhelper dbstudentnoticefirstopenhelper = new Dbstudentnoticefirstopenhelper(getActivity());
-        final List<String> boomarks = dbstudentnoticebookshelper.readbook();
-        final List<String> firstopens = dbstudentnoticefirstopenhelper.readbook();
+//        Dbstudentnoticebookshelper dbstudentnoticebookshelper = new Dbstudentnoticebookshelper(getActivity());
+//        Dbstudentnoticefirstopenhelper dbstudentnoticefirstopenhelper = new Dbstudentnoticefirstopenhelper(getActivity());
+//        final List<String> boomarks = dbstudentnoticebookshelper.readbook();
+//        final List<String> firstopens = dbstudentnoticefirstopenhelper.readbook();
+//        studentdatabase.addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(DataSnapshot dataSnapshot) {
+//                size = dataSnapshot.getChildrenCount();
+//                noticels.clear();
+//                for (long i=size;i>0;i--){
+//
+//                    if(dataSnapshot.hasChild(String.valueOf(i))){
+//                        String title = dataSnapshot.child(String.valueOf(i)).child("title").getValue().toString();
+//                        String description = dataSnapshot.child(String.valueOf(i)).child("description").getValue().toString();
+//                        String posted_by = dataSnapshot.child(String.valueOf(i)).child("postedby").getValue().toString();
+//                        String date = dataSnapshot.child(String.valueOf(i)).child("time").getValue().toString();
+//                        String id = String.valueOf(i);
+//                        int j = 0;
+//                        Boolean booked = false;
+//                        while(j<boomarks.size()){
+//                            if(boomarks.get(j).equals(id)){
+//                                booked = true;
+//                            }
+//                            j++;
+//                        }
+//                        int k = 0;
+//                        Boolean firstopen = false;
+//                        while(k<firstopens.size()){
+//                            if(firstopens.get(k).equals(id)){
+//                                firstopen = true;
+//                            }
+//                            k++;
+//                        }
+//                        Notice noticel = new Notice(title,date,posted_by,description,id,booked,firstopen);
+//                        noticels.add(noticel);
+//                    }
+//
+//                }
+//                if(getActivity()!=null){
+//                    pg.setVisibility(View.GONE);
+//                    noticeAdapterl = new IcoAdapter1(getActivity(),noticels,itemClickListener);
+//                    noticeAdapterl.notifyDataSetChanged();
+//                    listView.setAdapter(noticeAdapterl);
+//                    System.out.println(noticels);
+//                }
+//
+//
+//            }
+//
+//            @Override
+//            public void onCancelled(DatabaseError databaseError) {
+//
+//            }
+//        });
+
+        post.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getActivity(),PostingActivity.class));
+//                final Dialog dialog = new Dialog(getActivity());
+//                dialog.setTitle("Post Notice");
+//                dialog.setContentView(R.layout.postnotice);
+//                dialog.setCancelable(false);
+//                final EditText date = (EditText)dialog.findViewById(R.id.date);
+//                final EditText title = (EditText)dialog.findViewById(R.id.titlen);
+//                final EditText postedby = (EditText)dialog.findViewById(R.id.postedby);
+//                final EditText descript = (EditText)dialog.findViewById(R.id.description);
+//                final EditText attent = (EditText)dialog.findViewById(R.id.attention);
+//                Button postn = (Button)dialog.findViewById(R.id.postn);
+//                Button cancel = (Button)dialog.findViewById(R.id.canceled);
+//                postn.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View view) {
+//
+//                        String d = date.getText().toString();
+//                        String t = title.getText().toString();
+//                        String p = postedby.getText().toString();
+//                        String de = descript.getText().toString();
+//                        String at = attent.getText().toString();
+//                        Noticel noticel = new Noticel(t,d,p,at,de);
+//                        studentdatabase.child(String.valueOf(size)).setValue(noticel);
+//                        dialog.dismiss();
+//                    }
+//                });
+//                cancel.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View view) {
+//                        dialog.dismiss();
+//                    }
+//                });
+//                dialog.show();
+            }
+        });
+        return vi;
+    }
+
+    private void loadbook(final List<String> boomarks, final List<String> firstopens) {
+        studentdatabase.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                size = dataSnapshot.getChildrenCount();
+                noticels.clear();
+                for (long i=size;i>0;i--){
+
+                    if(dataSnapshot.hasChild(String.valueOf(i))){
+                        String title = dataSnapshot.child(String.valueOf(i)).child("title").getValue().toString();
+                        String description = dataSnapshot.child(String.valueOf(i)).child("description").getValue().toString();
+                        String posted_by = dataSnapshot.child(String.valueOf(i)).child("postedby").getValue().toString();
+                        String date = dataSnapshot.child(String.valueOf(i)).child("time").getValue().toString();
+                        String id = String.valueOf(i);
+                        int j = 0;
+                        Boolean booked = false;
+                        while(j<boomarks.size()){
+                            if(boomarks.get(j).equals(id)){
+                                booked = true;
+                            }
+                            j++;
+                        }
+                        int k = 0;
+                        Boolean firstopen = false;
+                        while(k<firstopens.size()){
+                            if(firstopens.get(k).equals(id)){
+                                firstopen = true;
+                            }
+                            k++;
+                        }
+                        if(booked){
+                            Notice noticel = new Notice(title,date,posted_by,description,id,booked,firstopen);
+                            noticels.add(noticel);
+                        }
+
+                    }
+
+                }
+                if(getActivity()!=null){
+                    if(!noticels.isEmpty()){
+                        pg.setVisibility(View.GONE);
+                        noticeAdapterl = new IcoAdapter1(getActivity(),noticels,itemClickListener);
+                        noticeAdapterl.notifyDataSetChanged();
+                        listView.setAdapter(noticeAdapterl);
+                        System.out.println(noticels);
+                    }
+                    else{
+                        Toast.makeText(getActivity(),"You don't have any starred notices yet",Toast.LENGTH_SHORT).show();
+                        loadnotice(boomarks,firstopens);
+                        starred = false;
+                        Glide.with(getActivity()).load(R.drawable.starunfillwhite).into(showstar);
+                    }
+
+                }
+
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    private void loadnotice(final List<String> boomarks, final List<String> firstopens) {
         studentdatabase.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -148,45 +338,8 @@ public class local extends Fragment {
 
             }
         });
-
-        post.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(getActivity(),PostingActivity.class));
-//                final Dialog dialog = new Dialog(getActivity());
-//                dialog.setTitle("Post Notice");
-//                dialog.setContentView(R.layout.postnotice);
-//                dialog.setCancelable(false);
-//                final EditText date = (EditText)dialog.findViewById(R.id.date);
-//                final EditText title = (EditText)dialog.findViewById(R.id.titlen);
-//                final EditText postedby = (EditText)dialog.findViewById(R.id.postedby);
-//                final EditText descript = (EditText)dialog.findViewById(R.id.description);
-//                final EditText attent = (EditText)dialog.findViewById(R.id.attention);
-//                Button postn = (Button)dialog.findViewById(R.id.postn);
-//                Button cancel = (Button)dialog.findViewById(R.id.canceled);
-//                postn.setOnClickListener(new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View view) {
-//
-//                        String d = date.getText().toString();
-//                        String t = title.getText().toString();
-//                        String p = postedby.getText().toString();
-//                        String de = descript.getText().toString();
-//                        String at = attent.getText().toString();
-//                        Noticel noticel = new Noticel(t,d,p,at,de);
-//                        studentdatabase.child(String.valueOf(size)).setValue(noticel);
-//                        dialog.dismiss();
-//                    }
-//                });
-//                cancel.setOnClickListener(new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View view) {
-//                        dialog.dismiss();
-//                    }
-//                });
-//                dialog.show();
-            }
-        });
-        return vi;
     }
+
+
+
 }
