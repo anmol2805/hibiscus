@@ -150,20 +150,16 @@ class StudentNoticeDataActivity : AppCompatActivity() {
                 startActivity(Intent.createChooser(shareintent, "Share notice"))
             }
             R.id.action_delete ->{
-                val alertDialogBuilder = AlertDialog.Builder(this)
-                val alertDialog = alertDialogBuilder.create()
-                alertDialogBuilder.setTitle("Confirm")
-                alertDialogBuilder.setMessage("Are you sure you want to delete this notice?")
-                alertDialogBuilder.setPositiveButton("Delete") { p0, p1 ->
-                    FirebaseDatabase.getInstance().reference.child("Studentnoticeboard").child(id!!).removeValue().addOnCompleteListener {
-                        Toast.makeText(this,"Deleted Successfully",Toast.LENGTH_SHORT).show()
-                        finish()
-                    }
-                }
-                alertDialogBuilder.setNegativeButton("Cancel") { p0, p1 ->
-                    alertDialog.dismiss()
-                }
-                alertDialog.show()
+                val dialog = AlertDialog.Builder(this)
+                        .setTitle("Confirm")
+                        .setMessage("Are you sure you want to delete this notice?")
+                        .setPositiveButton("Delete") { dialogInterface, i ->
+                            FirebaseDatabase.getInstance().reference.child("Studentnoticeboard").child(id!!).removeValue()
+                        }.setNegativeButton("Cancel"){ dialogInterface, i ->
+                            dialogInterface.dismiss()
+                        }.create()
+
+                dialog.show()
             }
             R.id.action_edit ->{
                 val intent = Intent(this,PostingActivity::class.java)
