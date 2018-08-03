@@ -10,6 +10,7 @@ import android.view.MenuItem
 import android.view.View
 import android.view.WindowManager
 import android.widget.Toast
+import com.anmol.hibiscus.Helpers.Dbhelper
 import com.anmol.hibiscus.Helpers.Dbstudentnoticebookshelper
 import com.anmol.hibiscus.Model.Notice
 import com.google.firebase.auth.FirebaseAuth
@@ -43,16 +44,52 @@ class StudentNoticeDataActivity : AppCompatActivity() {
         title = "Notices"
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
         supportActionBar!!.setDisplayShowHomeEnabled(true)
-        id = intent.getStringExtra("id")
-        posted_by = intent.getStringExtra("posted")
-        mtitle = intent.getStringExtra("title")
-        noticedescription = intent.getStringExtra("des")
-        time = intent.getStringExtra("date")
+
+
+        dbstudentnoticebookshelper = Dbstudentnoticebookshelper(this)
+    }
+
+    private fun handleIntent(intent: Intent) {
+        // ATTENTION: This was auto-generated to handle app links.
+        val appLinkData = intent.data
+        if (appLinkData != null) {
+            id = appLinkData.lastPathSegment
+            val studentdatabase = FirebaseDatabase.getInstance().reference.child("Studentnoticeboard")
+            studentdatabase.child(id!!).addListenerForSingleValueEvent(object : ValueEventListener{
+                override fun onCancelled(p0: DatabaseError) {
+
+                }
+                override fun onDataChange(p0: DataSnapshot) = if(p0.exists()){
+                    putvalues(id,p0.child("postedby").value.toString(),p0.child("title").value.toString(),p0.child("description").value.toString(),p0.child("time").value.toString())
+                }
+                else{
+                    Toast.makeText(this@StudentNoticeDataActivity,"Notice is deleted",Toast.LENGTH_SHORT).show()
+                    putvalues("","","","","")
+                }
+
+            })
+
+
+        } else {
+            putvalues(intent.getStringExtra("id"),intent.getStringExtra("posted"),intent.getStringExtra("title"),intent.getStringExtra("des"),intent.getStringExtra("date"))
+        }
+    }
+
+    private fun putvalues(mid: String?, mposted: String?, ntitle: String?, mdes: String?, mdate: String?) {
+        id = mid
+        noticedescription = mdes
+        time = mdate
+        posted_by = mposted
+        mtitle = ntitle
         titleid.text = mtitle
         descript.text = noticedescription
         date.text = time
         posted.text = posted_by
-        dbstudentnoticebookshelper = Dbstudentnoticebookshelper(this)
+    }
+
+    override fun onNewIntent(intent: Intent) {
+        super.onNewIntent(intent)
+        handleIntent(intent)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
