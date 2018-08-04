@@ -19,10 +19,7 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.ImageView
-import android.widget.RelativeLayout
-import android.widget.TextView
+import android.widget.*
 import com.anmol.hibiscus.Helpers.Dbbookshelper
 import com.anmol.hibiscus.Helpers.Dbhelper
 import com.anmol.hibiscus.Helpers.Dbstudentnoticebookshelper
@@ -49,6 +46,7 @@ import com.google.firebase.database.ValueEventListener
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
+import kotlin.collections.HashMap
 
 /**
  * Created by anmol on 2/27/2018.
@@ -187,7 +185,12 @@ class IcoAdapter1(internal var c: Context, internal var notices: MutableList<Not
                     .setTitle("Confirm")
                     .setMessage("Are you sure you want to delete this notice?")
                     .setPositiveButton("Delete") { dialogInterface, i ->
-                        FirebaseDatabase.getInstance().reference.child("Studentnoticeboard").child(noticedata.id).removeValue()
+                        val map = HashMap<String,Any>()
+                        map["deleted"] = true
+                        FirebaseDatabase.getInstance().reference.child("Studentnoticeboard").child(noticedata.id).updateChildren(map).addOnCompleteListener {
+                            dialogInterface.dismiss()
+                            Toast.makeText(c,"Deleted Successfully", Toast.LENGTH_SHORT).show()
+                        }
                     }.setNegativeButton("Cancel"){ dialogInterface, i ->
                         dialogInterface.dismiss()
                     }.create()

@@ -53,7 +53,7 @@ class PostingActivity : AppCompatActivity() {
 
                     override fun onDataChange(p0: DataSnapshot) {
                         val uid = p0.child("sid").value.toString()
-                        studentdatabaseid!!.addListenerForSingleValueEvent(object : ValueEventListener{
+                        studentdatabase!!.addListenerForSingleValueEvent(object : ValueEventListener{
                             override fun onCancelled(p0: DatabaseError) {
 
                             }
@@ -67,20 +67,19 @@ class PostingActivity : AppCompatActivity() {
                                     map["time"] = formattedDate
                                     map["deleted"] = false
                                     studentdatabase!!.child(id).updateChildren(map).addOnCompleteListener {
-
+                                        finish()
                                     }
                                 }
                                 else{
-                                    val size:Long = p0.child("Studentnoticeid").value as Long
+                                    val size:Long = p0.childrenCount
                                     val map = HashMap<String,Any>()
                                     map["title"] = noticetitlestring
                                     map["description"] = noticedescription
                                     map["postedby"] = uid
                                     map["time"] = formattedDate
+                                    map["deleted"] = false
                                     studentdatabase!!.child((size + 1).toString()).setValue(map).addOnCompleteListener {
-                                        val map2 = HashMap<String,Any>()
-                                        map2["Studentnoticeid"] = size + 1
-                                        studentdatabaseid!!.updateChildren(map2)
+                                        finish()
                                     }
                                 }
 

@@ -59,7 +59,7 @@ class StudentNoticeDataActivity : AppCompatActivity() {
                 override fun onCancelled(p0: DatabaseError) {
 
                 }
-                override fun onDataChange(p0: DataSnapshot) = if(p0.exists()){
+                override fun onDataChange(p0: DataSnapshot) = if(!(p0.child("deleted").value as Boolean)){
                     putvalues(id,p0.child("postedby").value.toString(),p0.child("title").value.toString(),p0.child("description").value.toString(),p0.child("time").value.toString())
                 }
                 else{
@@ -154,7 +154,12 @@ class StudentNoticeDataActivity : AppCompatActivity() {
                         .setTitle("Confirm")
                         .setMessage("Are you sure you want to delete this notice?")
                         .setPositiveButton("Delete") { dialogInterface, i ->
-                            FirebaseDatabase.getInstance().reference.child("Studentnoticeboard").child(id!!).removeValue()
+                            val map = HashMap<String,Any>()
+                            map["deleted"] = true
+                            FirebaseDatabase.getInstance().reference.child("Studentnoticeboard").child(id!!).updateChildren(map).addOnCompleteListener {
+                                dialogInterface.dismiss()
+                                Toast.makeText(this,"Deleted Successfully",Toast.LENGTH_SHORT).show()
+                            }
                         }.setNegativeButton("Cancel"){ dialogInterface, i ->
                             dialogInterface.dismiss()
                         }.create()
