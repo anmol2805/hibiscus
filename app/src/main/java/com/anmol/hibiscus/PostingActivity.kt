@@ -65,6 +65,7 @@ class PostingActivity : AppCompatActivity() {
                                     map["description"] = noticedescription
                                     map["postedby"] = uid
                                     map["time"] = formattedDate
+                                    map["deleted"] = false
                                     studentdatabase!!.child(id).updateChildren(map).addOnCompleteListener {
 
                                     }

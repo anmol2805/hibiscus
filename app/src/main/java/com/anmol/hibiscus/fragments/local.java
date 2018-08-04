@@ -231,10 +231,11 @@ public class local extends Fragment {
                 for (long i=size;i>0;i--){
 
                     if(dataSnapshot.hasChild(String.valueOf(i))){
-                        String title = dataSnapshot.child(String.valueOf(i)).child("title").getValue().toString();
-                        String description = dataSnapshot.child(String.valueOf(i)).child("description").getValue().toString();
-                        String posted_by = dataSnapshot.child(String.valueOf(i)).child("postedby").getValue().toString();
-                        String date = dataSnapshot.child(String.valueOf(i)).child("time").getValue().toString();
+                        String title = dataSnapshot.child(String.valueOf(i)).child("title").getValue(String.class);
+                        String description = dataSnapshot.child(String.valueOf(i)).child("description").getValue(String.class);
+                        String posted_by = dataSnapshot.child(String.valueOf(i)).child("postedby").getValue(String.class);
+                        String date = dataSnapshot.child(String.valueOf(i)).child("time").getValue(String.class);
+                        Boolean deleted = dataSnapshot.child(String.valueOf(i)).child("deleted").getValue(Boolean.class);
                         String id = String.valueOf(i);
                         int j = 0;
                         Boolean booked = false;
@@ -252,10 +253,13 @@ public class local extends Fragment {
                             }
                             k++;
                         }
-                        if(booked){
-                            Notice noticel = new Notice(title,date,posted_by,description,id,booked,firstopen);
-                            noticels.add(noticel);
+                        if(!deleted){
+                            if(booked){
+                                Notice noticel = new Notice(title,date,posted_by,description,id, true,firstopen);
+                                noticels.add(noticel);
+                            }
                         }
+
 
                     }
 
@@ -296,10 +300,11 @@ public class local extends Fragment {
                 for (long i=size;i>0;i--){
 
                     if(dataSnapshot.hasChild(String.valueOf(i))){
-                        String title = dataSnapshot.child(String.valueOf(i)).child("title").getValue().toString();
-                        String description = dataSnapshot.child(String.valueOf(i)).child("description").getValue().toString();
-                        String posted_by = dataSnapshot.child(String.valueOf(i)).child("postedby").getValue().toString();
-                        String date = dataSnapshot.child(String.valueOf(i)).child("time").getValue().toString();
+                        String title = dataSnapshot.child(String.valueOf(i)).child("title").getValue(String.class);
+                        String description = dataSnapshot.child(String.valueOf(i)).child("description").getValue(String.class);
+                        String posted_by = dataSnapshot.child(String.valueOf(i)).child("postedby").getValue(String.class);
+                        String date = dataSnapshot.child(String.valueOf(i)).child("time").getValue(String.class);
+                        Boolean deleted = dataSnapshot.child(String.valueOf(i)).child("deleted").getValue(Boolean.class);
                         String id = String.valueOf(i);
                         int j = 0;
                         Boolean booked = false;
@@ -317,8 +322,11 @@ public class local extends Fragment {
                             }
                             k++;
                         }
-                        Notice noticel = new Notice(title,date,posted_by,description,id,booked,firstopen);
-                        noticels.add(noticel);
+                        if(!deleted){
+                            Notice noticel = new Notice(title,date,posted_by,description,id,booked,firstopen);
+                            noticels.add(noticel);
+                        }
+
                     }
 
                 }
