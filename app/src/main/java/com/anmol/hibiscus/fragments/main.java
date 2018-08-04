@@ -2,6 +2,7 @@ package com.anmol.hibiscus.fragments;
 
 import android.app.Fragment;
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
@@ -13,6 +14,7 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,7 +22,9 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.webkit.WebView;
 import android.widget.AdapterView;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -58,6 +62,7 @@ import com.google.firebase.database.ValueEventListener;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -94,7 +99,7 @@ public class main extends Fragment {
     Boolean starred;
     Dbhelper dbhelper;
     ArrayList<String> noticeids;
-    ExpandableSearchView expandableSearchView;
+    SearchView searchView;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
@@ -104,9 +109,10 @@ public class main extends Fragment {
         getActivity().startService(intent);
         notices = new ArrayList<>();
         showstar = (CircleImageView)vi.findViewById(R.id.showstar);
+        searchView = (SearchView) vi.findViewById(R.id.searchview);
+
         lv = (ListView)vi.findViewById(R.id.list);
         rv = (RecyclerView)vi.findViewById(R.id.rv);
-        expandableSearchView = (ExpandableSearchView)vi.findViewById(R.id.expsrch);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         rv.setLayoutManager(layoutManager);
         rv.setHasFixedSize(true);
@@ -143,12 +149,7 @@ public class main extends Fragment {
 
             }
         };
-        expandableSearchView.setOnSearchActionListener(new ExpandableSearchView.OnSearchActionListener() {
-            @Override
-            public void onSearchAction(String text) {
-                
-            }
-        });
+
         starred = false;
         Glide.with(getActivity()).load(R.drawable.starunfillwhite).into(showstar);
         loadnotice();
@@ -517,6 +518,38 @@ public class main extends Fragment {
         }
 
     }
+    public void initSearchView()
+    {
 
+        // Enable Submit button
+
+        searchView.setSubmitButtonEnabled(true);
+
+        // Change search close button image
+
+        ImageView closeButton = (ImageView) searchView.findViewById(R.id.search_close_btn);
+        closeButton.setImageResource(R.drawable.ic_close);
+
+
+        // Set hint and the text colors
+
+        EditText txtSearch = ((EditText) searchView.findViewById(android.support.v7.appcompat.R.id.search_src_text));
+        txtSearch.setHint("Search..");
+        txtSearch.setHintTextColor(Color.DKGRAY);
+        txtSearch.setTextColor(getResources().getColor(R.color.colorPrimary));
+
+
+        // Set the cursor
+
+        AutoCompleteTextView searchTextView = (AutoCompleteTextView) searchView.findViewById(android.support.v7.appcompat.R.id.search_src_text);
+        try {
+            Field mCursorDrawableRes = TextView.class.getDeclaredField("mCursorDrawableRes");
+            mCursorDrawableRes.setAccessible(true);
+            mCursorDrawableRes.set(searchTextView, R.drawable.text_cursor); //This sets the cursor resource ID to 0 or @null which will make it visible on white background
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
 
 }

@@ -159,6 +159,7 @@ class StudentNoticeDataActivity : AppCompatActivity() {
                             FirebaseDatabase.getInstance().reference.child("Studentnoticeboard").child(id!!).updateChildren(map).addOnCompleteListener {
                                 dialogInterface.dismiss()
                                 Toast.makeText(this,"Deleted Successfully",Toast.LENGTH_SHORT).show()
+                                finish()
                             }
                         }.setNegativeButton("Cancel"){ dialogInterface, i ->
                             dialogInterface.dismiss()
