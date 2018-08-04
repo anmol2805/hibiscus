@@ -85,13 +85,12 @@ public class local extends Fragment {
 
             }
         };
-        Dbstudentnoticebookshelper dbstudentnoticebookshelper = new Dbstudentnoticebookshelper(getActivity());
-        Dbstudentnoticefirstopenhelper dbstudentnoticefirstopenhelper = new Dbstudentnoticefirstopenhelper(getActivity());
-        final List<String> boomarks = dbstudentnoticebookshelper.readbook();
-        final List<String> firstopens = dbstudentnoticefirstopenhelper.readbook();
+        final Dbstudentnoticebookshelper dbstudentnoticebookshelper = new Dbstudentnoticebookshelper(getActivity());
+        final Dbstudentnoticefirstopenhelper dbstudentnoticefirstopenhelper = new Dbstudentnoticefirstopenhelper(getActivity());
+
         starred = false;
         Glide.with(getActivity()).load(R.drawable.starunfillwhite).into(showstar);
-        loadnotice(boomarks,firstopens);
+        loadnotice(dbstudentnoticebookshelper,dbstudentnoticefirstopenhelper);
         showstar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -99,13 +98,13 @@ public class local extends Fragment {
 
                     starred = true;
                     Glide.with(getActivity()).load(R.drawable.stargolden).into(showstar);
-                    loadbook(boomarks,firstopens);
+                    loadbook(dbstudentnoticebookshelper,dbstudentnoticefirstopenhelper);
                 }
                 else{
 
                     starred = false;
                     Glide.with(getActivity()).load(R.drawable.starunfillwhite).into(showstar);
-                    loadnotice(boomarks,firstopens);
+                    loadnotice(dbstudentnoticebookshelper,dbstudentnoticefirstopenhelper);
                 }
             }
         });
@@ -222,7 +221,11 @@ public class local extends Fragment {
         return vi;
     }
 
-    private void loadbook(final List<String> boomarks, final List<String> firstopens) {
+
+
+    private void loadbook(final Dbstudentnoticebookshelper dbstudentnoticebookshelper, final Dbstudentnoticefirstopenhelper dbstudentnoticefirstopenhelper) {
+        final List<String> boomarks = dbstudentnoticebookshelper.readbook();
+        final List<String> firstopens = dbstudentnoticefirstopenhelper.readbook();
         studentdatabase.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -274,7 +277,7 @@ public class local extends Fragment {
                     }
                     else{
                         Toast.makeText(getActivity(),"You don't have any starred notices yet",Toast.LENGTH_SHORT).show();
-                        loadnotice(boomarks,firstopens);
+                        loadnotice(dbstudentnoticebookshelper,dbstudentnoticefirstopenhelper);
                         starred = false;
                         Glide.with(getActivity()).load(R.drawable.starunfillwhite).into(showstar);
                     }
@@ -291,7 +294,9 @@ public class local extends Fragment {
         });
     }
 
-    private void loadnotice(final List<String> boomarks, final List<String> firstopens) {
+    private void loadnotice(Dbstudentnoticebookshelper dbstudentnoticebookshelper, Dbstudentnoticefirstopenhelper dbstudentnoticefirstopenhelper) {
+        final List<String> boomarks = dbstudentnoticebookshelper.readbook();
+        final List<String> firstopens = dbstudentnoticefirstopenhelper.readbook();
         studentdatabase.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
