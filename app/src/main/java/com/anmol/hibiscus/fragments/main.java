@@ -3,6 +3,7 @@ package com.anmol.hibiscus.fragments;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.app.Fragment;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
@@ -19,12 +20,16 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewAnimationUtils;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.view.inputmethod.InputMethodManager;
 import android.webkit.WebView;
 import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
@@ -32,6 +37,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
@@ -107,7 +113,7 @@ public class main extends Fragment {
     ArrayList<String> noticeids;
     Button searchbtn,cancelbtn;
     EditText searchedit;
-    RelativeLayout myView;
+    LinearLayout myView;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
@@ -164,6 +170,9 @@ public class main extends Fragment {
             @Override
             public void onClick(View view) {
                 searchedit.setVisibility(View.VISIBLE);
+                searchedit.requestFocus();
+                getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+                ((InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE)).showSoftInput(searchedit, 0);
                 searchbtn.setVisibility(View.GONE);
                 cancelbtn.setVisibility(View.VISIBLE);
             }
@@ -172,6 +181,10 @@ public class main extends Fragment {
             @Override
             public void onClick(View view) {
                 searchedit.setVisibility(View.INVISIBLE);
+                searchedit.clearFocus();
+                getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+                ((InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE))
+                        .hideSoftInputFromWindow(getView().getWindowToken(), 0);
                 cancelbtn.setVisibility(View.GONE);
                 searchbtn.setVisibility(View.VISIBLE);
             }
@@ -494,10 +507,43 @@ public class main extends Fragment {
         for(int i = 0;i<notices.size();i++){
             noticeids.add(notices.get(i).getId());
         }
+        final List<Notice> searchednotices =  new ArrayList<>();
+        searchedit.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                searchednotices.clear();
+                if(!notices.isEmpty()){
+                    for(int j=0;j<notices.size();j++){
+                        if(notices.get(j).getTitle().toLowerCase().contains(charSequence) ||
+                                notices.get(j).getTitle().toUpperCase().contains(charSequence) ||
+                                notices.get(j).getAttention().toLowerCase().contains(charSequence) ||
+                                notices.get(j).getAttention().toUpperCase().contains(charSequence) ||
+                                notices.get(j).getPosted_by().toLowerCase().contains(charSequence) ||
+                                notices.get(j).getPosted_by().toUpperCase().contains(charSequence)
+                                ){
+                                searchednotices.add(notices.get(j));
+                        }
+                    }
+                    progressBar.setVisibility(View.GONE);
+                    icoAdapter = new IcoAdapter(getActivity(),searchednotices,itemClickListener);
+                    icoAdapter.notifyDataSetChanged();
+                    rv.setAdapter(icoAdapter);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
         if (!notices.isEmpty()){
 
             progressBar.setVisibility(View.GONE);
-
             icoAdapter = new IcoAdapter(getActivity(),notices,itemClickListener);
             icoAdapter.notifyDataSetChanged();
             rv.setAdapter(icoAdapter);
@@ -530,7 +576,39 @@ public class main extends Fragment {
                         rv.setAdapter(icoAdapter);
 
                     }
+                    searchedit.addTextChangedListener(new TextWatcher() {
+                        @Override
+                        public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
+                        }
+
+                        @Override
+                        public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                            searchednotices.clear();
+                            if(!notices.isEmpty()){
+                                for(int j=0;j<notices.size();j++){
+                                    if(notices.get(j).getTitle().toLowerCase().contains(charSequence) ||
+                                            notices.get(j).getTitle().toUpperCase().contains(charSequence) ||
+                                            notices.get(j).getAttention().toLowerCase().contains(charSequence) ||
+                                            notices.get(j).getAttention().toUpperCase().contains(charSequence) ||
+                                            notices.get(j).getPosted_by().toLowerCase().contains(charSequence) ||
+                                            notices.get(j).getPosted_by().toUpperCase().contains(charSequence)
+                                            ){
+                                        searchednotices.add(notices.get(j));
+                                    }
+                                }
+                                progressBar.setVisibility(View.GONE);
+                                icoAdapter = new IcoAdapter(getActivity(),searchednotices,itemClickListener);
+                                icoAdapter.notifyDataSetChanged();
+                                rv.setAdapter(icoAdapter);
+                            }
+                        }
+
+                        @Override
+                        public void afterTextChanged(Editable editable) {
+
+                        }
+                    });
 
 
                 }
