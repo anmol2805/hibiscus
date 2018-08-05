@@ -2,6 +2,7 @@ package com.anmol.hibiscus.fragments;
 
 import android.app.Dialog;
 import android.app.Fragment;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -10,9 +11,13 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
@@ -21,6 +26,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.anmol.hibiscus.Adapter.IcoAdapter;
 import com.anmol.hibiscus.Adapter.IcoAdapter1;
 import com.anmol.hibiscus.Adapter.NoticeAdapterl;
 import com.anmol.hibiscus.Helpers.Dbstudentnoticebookshelper;
@@ -59,6 +65,9 @@ public class local extends Fragment {
     ItemClickListener itemClickListener;
     CircleImageView showstar;
     Boolean starred;
+    List<Notice> searchednotices;
+    Button searchbtn,cancelbtn;
+    EditText searchedit;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
@@ -68,6 +77,10 @@ public class local extends Fragment {
         listView = (RecyclerView) vi.findViewById(R.id.list);
         showstar = (CircleImageView)vi.findViewById(R.id.showstar);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
+        searchbtn = vi.findViewById(R.id.searchbtn);
+        cancelbtn = vi.findViewById(R.id.cancelbtn);
+        searchedit = vi.findViewById(R.id.searchedit);
+        searchednotices = new ArrayList<>();
         listView.setLayoutManager(layoutManager);
         listView.setHasFixedSize(true);
         listView.setItemAnimator(new DefaultItemAnimator());
@@ -87,7 +100,30 @@ public class local extends Fragment {
         };
         final Dbstudentnoticebookshelper dbstudentnoticebookshelper = new Dbstudentnoticebookshelper(getActivity());
         final Dbstudentnoticefirstopenhelper dbstudentnoticefirstopenhelper = new Dbstudentnoticefirstopenhelper(getActivity());
-
+        searchbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                searchedit.setVisibility(View.VISIBLE);
+                searchedit.requestFocus();
+                getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+                ((InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE)).showSoftInput(searchedit, 0);
+                searchbtn.setVisibility(View.GONE);
+                cancelbtn.setVisibility(View.VISIBLE);
+            }
+        });
+        cancelbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                searchedit.setVisibility(View.INVISIBLE);
+                searchedit.clearFocus();
+                searchedit.setText(null);
+                getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+                ((InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE))
+                        .hideSoftInputFromWindow(getView().getWindowToken(), 0);
+                cancelbtn.setVisibility(View.GONE);
+                searchbtn.setVisibility(View.VISIBLE);
+            }
+        });
         starred = false;
         Glide.with(getActivity()).load(R.drawable.starunfillwhite).into(showstar);
         loadnotice(dbstudentnoticebookshelper,dbstudentnoticefirstopenhelper);
@@ -273,6 +309,37 @@ public class local extends Fragment {
                         noticeAdapterl = new IcoAdapter1(getActivity(),noticels,itemClickListener);
                         noticeAdapterl.notifyDataSetChanged();
                         listView.setAdapter(noticeAdapterl);
+                        searchedit.addTextChangedListener(new TextWatcher() {
+                            @Override
+                            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                            }
+
+                            @Override
+                            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                                searchednotices.clear();
+
+                                for(int j=0;j<noticels.size();j++){
+                                    if(noticels.get(j).getTitle().toLowerCase().contains(charSequence) ||
+                                            noticels.get(j).getTitle().toUpperCase().contains(charSequence) ||
+                                            noticels.get(j).getPosted_by().toLowerCase().contains(charSequence) ||
+                                            noticels.get(j).getPosted_by().toUpperCase().contains(charSequence)
+                                            ){
+                                        searchednotices.add(noticels.get(j));
+                                    }
+                                }
+
+                                noticeAdapterl = new IcoAdapter1(getActivity(),searchednotices,itemClickListener);
+                                noticeAdapterl.notifyDataSetChanged();
+                                listView.setAdapter(noticeAdapterl);
+                            }
+
+
+                            @Override
+                            public void afterTextChanged(Editable editable) {
+
+                            }
+                        });
                         System.out.println(noticels);
                     }
                     else{
@@ -342,6 +409,37 @@ public class local extends Fragment {
                     listView.setAdapter(noticeAdapterl);
                     System.out.println(noticels);
                 }
+                searchedit.addTextChangedListener(new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                    }
+
+                    @Override
+                    public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                        searchednotices.clear();
+
+                        for(int j=0;j<noticels.size();j++){
+                            if(noticels.get(j).getTitle().toLowerCase().contains(charSequence) ||
+                                    noticels.get(j).getTitle().toUpperCase().contains(charSequence) ||
+                                    noticels.get(j).getPosted_by().toLowerCase().contains(charSequence) ||
+                                    noticels.get(j).getPosted_by().toUpperCase().contains(charSequence)
+                                    ){
+                                searchednotices.add(noticels.get(j));
+                            }
+                        }
+
+                        noticeAdapterl = new IcoAdapter1(getActivity(),searchednotices,itemClickListener);
+                        noticeAdapterl.notifyDataSetChanged();
+                        listView.setAdapter(noticeAdapterl);
+                    }
+
+
+                    @Override
+                    public void afterTextChanged(Editable editable) {
+
+                    }
+                });
 
 
             }

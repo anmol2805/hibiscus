@@ -125,7 +125,6 @@ public class main extends Fragment {
         notices = new ArrayList<>();
         searchednotices =  new ArrayList<>();
         showstar = (CircleImageView)vi.findViewById(R.id.showstar);
-
         myView = vi.findViewById(R.id.searchlayout);
         searchbtn = vi.findViewById(R.id.searchbtn);
         cancelbtn = vi.findViewById(R.id.cancelbtn);
