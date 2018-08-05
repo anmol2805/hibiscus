@@ -114,6 +114,7 @@ public class main extends Fragment {
     Button searchbtn,cancelbtn;
     EditText searchedit;
     LinearLayout myView;
+    List<Notice> searchednotices;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
@@ -122,6 +123,7 @@ public class main extends Fragment {
         Intent intent = new Intent(getActivity(), RequestService.class);
         getActivity().startService(intent);
         notices = new ArrayList<>();
+        searchednotices =  new ArrayList<>();
         showstar = (CircleImageView)vi.findViewById(R.id.showstar);
 
         myView = vi.findViewById(R.id.searchlayout);
@@ -182,6 +184,7 @@ public class main extends Fragment {
             public void onClick(View view) {
                 searchedit.setVisibility(View.INVISIBLE);
                 searchedit.clearFocus();
+                searchedit.setText(null);
                 getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
                 ((InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE))
                         .hideSoftInputFromWindow(getView().getWindowToken(), 0);
@@ -196,13 +199,11 @@ public class main extends Fragment {
             @Override
             public void onClick(View view) {
                 if(!starred){
-
                     starred = true;
                     Glide.with(getActivity()).load(R.drawable.stargolden).into(showstar);
                     loadbook();
                 }
                 else{
-
                     starred = false;
                     Glide.with(getActivity()).load(R.drawable.starunfillwhite).into(showstar);
                     loadnotice();
@@ -487,7 +488,39 @@ public class main extends Fragment {
             icoAdapter = new IcoAdapter(getActivity(),notices,itemClickListener);
             icoAdapter.notifyDataSetChanged();
             rv.setAdapter(icoAdapter);
+            searchedit.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
+                }
+
+                @Override
+                public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                    searchednotices.clear();
+
+                        for(int j=0;j<notices.size();j++){
+                            if(notices.get(j).getTitle().toLowerCase().contains(charSequence) ||
+                                    notices.get(j).getTitle().toUpperCase().contains(charSequence) ||
+                                    notices.get(j).getAttention().toLowerCase().contains(charSequence) ||
+                                    notices.get(j).getAttention().toUpperCase().contains(charSequence) ||
+                                    notices.get(j).getPosted_by().toLowerCase().contains(charSequence) ||
+                                    notices.get(j).getPosted_by().toUpperCase().contains(charSequence)
+                                    ){
+                                searchednotices.add(notices.get(j));
+                            }
+                        }
+                        progressBar.setVisibility(View.GONE);
+                        icoAdapter = new IcoAdapter(getActivity(),searchednotices,itemClickListener);
+                        icoAdapter.notifyDataSetChanged();
+                        rv.setAdapter(icoAdapter);
+                    }
+
+
+                @Override
+                public void afterTextChanged(Editable editable) {
+
+                }
+            });
         }
         else {
             Toast.makeText(getActivity(),"You don't have any starred notices yet",Toast.LENGTH_SHORT).show();
@@ -507,7 +540,7 @@ public class main extends Fragment {
         for(int i = 0;i<notices.size();i++){
             noticeids.add(notices.get(i).getId());
         }
-        final List<Notice> searchednotices =  new ArrayList<>();
+
         searchedit.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
