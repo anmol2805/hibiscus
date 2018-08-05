@@ -105,7 +105,8 @@ public class main extends Fragment {
     Boolean starred;
     Dbhelper dbhelper;
     ArrayList<String> noticeids;
-    SearchView searchView;
+    Button searchbtn,cancelbtn;
+    EditText searchedit;
     RelativeLayout myView;
     @Nullable
     @Override
@@ -116,9 +117,11 @@ public class main extends Fragment {
         getActivity().startService(intent);
         notices = new ArrayList<>();
         showstar = (CircleImageView)vi.findViewById(R.id.showstar);
-        searchView = (SearchView) vi.findViewById(R.id.searchview);
+
         myView = vi.findViewById(R.id.searchlayout);
-        initSearchView();
+        searchbtn = vi.findViewById(R.id.searchbtn);
+        cancelbtn = vi.findViewById(R.id.cancelbtn);
+        searchedit = vi.findViewById(R.id.searchedit);
         lv = (ListView)vi.findViewById(R.id.list);
         rv = (RecyclerView)vi.findViewById(R.id.rv);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
@@ -157,7 +160,22 @@ public class main extends Fragment {
 
             }
         };
-
+        searchbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                searchedit.setVisibility(View.VISIBLE);
+                searchbtn.setVisibility(View.GONE);
+                cancelbtn.setVisibility(View.VISIBLE);
+            }
+        });
+        cancelbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                searchedit.setVisibility(View.INVISIBLE);
+                cancelbtn.setVisibility(View.GONE);
+                searchbtn.setVisibility(View.VISIBLE);
+            }
+        });
         starred = false;
         Glide.with(getActivity()).load(R.drawable.starunfillwhite).into(showstar);
         loadnotice();
@@ -526,82 +544,5 @@ public class main extends Fragment {
         }
 
     }
-    public void initSearchView()
-    {
-
-        // Enable Submit button
-
-        searchView.setSubmitButtonEnabled(true);
-
-        // Change search close button image
-
-        ImageView closeButton = (ImageView) searchView.findViewById(R.id.search_close_btn);
-        closeButton.setImageResource(R.drawable.ic_close);
-
-
-        // Set hint and the text colors
-
-        EditText txtSearch = ((EditText) searchView.findViewById(android.support.v7.appcompat.R.id.search_src_text));
-        txtSearch.setHint("Search..");
-        txtSearch.setHintTextColor(Color.WHITE);
-        txtSearch.setTextColor(getResources().getColor(R.color.white));
-
-
-        // Set the cursor
-
-        AutoCompleteTextView searchTextView = (AutoCompleteTextView) searchView.findViewById(android.support.v7.appcompat.R.id.search_src_text);
-        try {
-            Field mCursorDrawableRes = TextView.class.getDeclaredField("mCursorDrawableRes");
-            mCursorDrawableRes.setAccessible(true);
-            mCursorDrawableRes.set(searchTextView, R.drawable.text_cursor); //This sets the cursor resource ID to 0 or @null which will make it visible on white background
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-    }
-//    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-//    public void circleReveal(int viewID, int posFromRight, boolean containsOverflow, final boolean isShow)
-//    {
-//
-//
-//        int width=myView.getWidth();
-//
-//        if(posFromRight>0)
-//            width-=(posFromRight*getResources().getDimensionPixelSize(R.dimen.abc_action_button_min_width_material))-(getResources().getDimensionPixelSize(R.dimen.abc_action_button_min_width_material)/ 2);
-//        if(containsOverflow)
-//            width-=getResources().getDimensionPixelSize(R.dimen.abc_action_button_min_width_overflow_material);
-//
-//        int cx=width;
-//        int cy=myView.getHeight()/2;
-//
-//        Animator anim;
-//        if(isShow)
-//            anim = ViewAnimationUtils.createCircularReveal(myView, cx, cy, 0,(float)width);
-//        else
-//            anim = ViewAnimationUtils.createCircularReveal(myView, cx, cy, (float)width, 0);
-//
-//        anim.setDuration((long)220);
-//
-//        // make the view invisible when the animation is done
-//        anim.addListener(new AnimatorListenerAdapter() {
-//            @Override
-//            public void onAnimationEnd(Animator animation) {
-//                if(!isShow)
-//                {
-//                    super.onAnimationEnd(animation);
-//                    myView.setVisibility(View.INVISIBLE);
-//                }
-//            }
-//        });
-//
-//        // make the view visible and start the animation
-//        if(isShow)
-//            myView.setVisibility(View.VISIBLE);
-//
-//        // start the animation
-//        anim.start();
-//
-//
-//    }
 
 }
