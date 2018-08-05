@@ -1,14 +1,18 @@
 package com.anmol.hibiscus.fragments;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.app.Fragment;
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.DividerItemDecoration;
@@ -17,6 +21,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewAnimationUtils;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -29,6 +34,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -100,6 +106,7 @@ public class main extends Fragment {
     Dbhelper dbhelper;
     ArrayList<String> noticeids;
     SearchView searchView;
+    RelativeLayout myView;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
@@ -110,7 +117,8 @@ public class main extends Fragment {
         notices = new ArrayList<>();
         showstar = (CircleImageView)vi.findViewById(R.id.showstar);
         searchView = (SearchView) vi.findViewById(R.id.searchview);
-
+        myView = vi.findViewById(R.id.searchlayout);
+        initSearchView();
         lv = (ListView)vi.findViewById(R.id.list);
         rv = (RecyclerView)vi.findViewById(R.id.rv);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
@@ -535,8 +543,8 @@ public class main extends Fragment {
 
         EditText txtSearch = ((EditText) searchView.findViewById(android.support.v7.appcompat.R.id.search_src_text));
         txtSearch.setHint("Search..");
-        txtSearch.setHintTextColor(Color.DKGRAY);
-        txtSearch.setTextColor(getResources().getColor(R.color.colorPrimary));
+        txtSearch.setHintTextColor(Color.WHITE);
+        txtSearch.setTextColor(getResources().getColor(R.color.white));
 
 
         // Set the cursor
@@ -551,5 +559,49 @@ public class main extends Fragment {
         }
 
     }
+//    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+//    public void circleReveal(int viewID, int posFromRight, boolean containsOverflow, final boolean isShow)
+//    {
+//
+//
+//        int width=myView.getWidth();
+//
+//        if(posFromRight>0)
+//            width-=(posFromRight*getResources().getDimensionPixelSize(R.dimen.abc_action_button_min_width_material))-(getResources().getDimensionPixelSize(R.dimen.abc_action_button_min_width_material)/ 2);
+//        if(containsOverflow)
+//            width-=getResources().getDimensionPixelSize(R.dimen.abc_action_button_min_width_overflow_material);
+//
+//        int cx=width;
+//        int cy=myView.getHeight()/2;
+//
+//        Animator anim;
+//        if(isShow)
+//            anim = ViewAnimationUtils.createCircularReveal(myView, cx, cy, 0,(float)width);
+//        else
+//            anim = ViewAnimationUtils.createCircularReveal(myView, cx, cy, (float)width, 0);
+//
+//        anim.setDuration((long)220);
+//
+//        // make the view invisible when the animation is done
+//        anim.addListener(new AnimatorListenerAdapter() {
+//            @Override
+//            public void onAnimationEnd(Animator animation) {
+//                if(!isShow)
+//                {
+//                    super.onAnimationEnd(animation);
+//                    myView.setVisibility(View.INVISIBLE);
+//                }
+//            }
+//        });
+//
+//        // make the view visible and start the animation
+//        if(isShow)
+//            myView.setVisibility(View.VISIBLE);
+//
+//        // start the animation
+//        anim.start();
+//
+//
+//    }
 
 }

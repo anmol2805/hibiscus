@@ -3,7 +3,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
-
     >
     <RelativeLayout
         android:layout_width="match_parent"
@@ -15,22 +14,33 @@
             android:scaleType="centerCrop"
             android:src="@drawable/hibif"
             android:elevation="16dp"
+            android:id="@+id/icon"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             android:layout_margin="10dp"
             />
-
-        <android.support.v7.widget.SearchView
-            android:id="@+id/searchview"
-            android:layout_width="wrap_content"
+        <RelativeLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_toStartOf="@+id/showstar"
             android:layout_toLeftOf="@+id/showstar"
-
+            android:layout_toEndOf="@+id/icon"
+            android:layout_toRightOf="@+id/icon"
+            android:id="@+id/searchlayout"
             >
+            <android.support.v7.widget.SearchView
+                android:id="@+id/searchview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
 
-        </android.support.v7.widget.SearchView>
+                >
+
+            </android.support.v7.widget.SearchView>
+
+        </RelativeLayout>
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:layout_width="25dp"
