@@ -85,25 +85,39 @@ public class NoticeDataActivity extends AppCompatActivity {
         dbb = new Dbbookshelper(this);
         db = new Dbhelper(this);
         final InterstitialAd interstitialAdnotice = new InterstitialAd(this);
-        interstitialAdnotice.setAdUnitId("ca-app-pub-5827006149924215/9013567438");
-        interstitialAdnotice.loadAd(new AdRequest.Builder().build());
-        interstitialAdnotice.setAdListener(new AdListener() {
+        FirebaseDatabase.getInstance().getReference().child("dynamiclocks").addValueEventListener(new ValueEventListener() {
             @Override
-            public void onAdLoaded() {
-                super.onAdLoaded();
-                if (interstitialAdnotice.isLoaded()) {
-                    interstitialAdnotice.show();
-                } else {
-                    loadview();
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                Boolean adlock = dataSnapshot.child("adlock").getValue(Boolean.class);
+                if(!adlock){
+                    interstitialAdnotice.setAdUnitId("ca-app-pub-5827006149924215/9013567438");
+                    interstitialAdnotice.loadAd(new AdRequest.Builder().build());
+                    interstitialAdnotice.setAdListener(new AdListener() {
+                        @Override
+                        public void onAdLoaded() {
+                            super.onAdLoaded();
+                            if (interstitialAdnotice.isLoaded()) {
+                                interstitialAdnotice.show();
+                            } else {
+                                loadview();
+                            }
+                        }
+
+                        @Override
+                        public void onAdClosed() {
+                            super.onAdClosed();
+                            loadview();
+                        }
+                    });
                 }
             }
 
             @Override
-            public void onAdClosed() {
-                super.onAdClosed();
-                loadview();
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
             }
         });
+
         if (interstitialAdnotice.isLoaded()) {
             interstitialAdnotice.show();
         } else {
