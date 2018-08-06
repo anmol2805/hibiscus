@@ -123,9 +123,72 @@
                 app:rippleColor="@color/colorAccent"
 
                 app:srcCompat="@drawable/plus5" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:id="@+id/pinned"
+                >
 
+                <TextView
+                    android:id="@+id/head"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginTop="5dp"
+                    android:padding="@dimen/textmargin"
+                    android:layout_marginRight="5dp"
+                    android:textColor="@color/colorPrimary"
+                    android:textStyle="bold"
+                    android:visibility="gone"
+                    app:fontFamily="@font/lato_regular" />
+
+                <TextView
+                    android:id="@+id/body"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:textColor="#000"
+                    android:paddingTop="@dimen/textmargin"
+                    android:paddingBottom="@dimen/textmargin"
+                    android:paddingLeft="@dimen/textmargin"
+                    android:paddingStart="@dimen/textmargin"
+                    android:paddingEnd="3dp"
+                    android:paddingRight="3dp"
+                    android:textSize="13sp"
+                    android:textStyle="italic"
+                    android:visibility="gone"
+
+                    app:fontFamily="@font/lato_regular" />
+
+                <Button
+                    android:id="@+id/work"
+                    android:layout_width="wrap_content"
+                    android:layout_height="25dp"
+                    android:layout_gravity="center"
+                    android:textSize="12sp"
+                    android:textColor="#000"
+                    android:background="@drawable/round_button2"
+                    android:layout_marginBottom="5dp"
+                    android:visibility="gone"
+                    />
+                <View
+                    android:id="@+id/margin"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginLeft="4dp"
+                    android:layout_marginRight="4dp"
+                    android:background="#3f3f3f"
+                    />
+
+            </LinearLayout>
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/list"
+                android:layout_below="@+id/pinned"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="60dp"
