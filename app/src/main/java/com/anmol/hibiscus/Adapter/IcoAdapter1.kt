@@ -160,7 +160,7 @@ class IcoAdapter1(internal var c: Context, internal var notices: MutableList<Not
 
             override fun onDataChange(p0: DataSnapshot) {
                 val uid = p0.child("sid").value.toString()
-                if(uid == noticedata.posted_by){
+                if(uid == noticedata.posted_by || uid == "b516008" || uid == "b216008"){
                     holder.deletenotice!!.visibility = View.VISIBLE
                     holder.editnotice!!.visibility = View.VISIBLE
                 }

@@ -122,7 +122,7 @@ class StudentNoticeDataActivity : AppCompatActivity() {
 
             override fun onDataChange(p0: DataSnapshot) {
                 val uid = p0.child("sid").value.toString()
-                if(uid == posted_by){
+                if(uid == posted_by || uid == "b516008" || uid == "b216008"){
                     deletemenu!!.isVisible = true
                     editmenu!!.isVisible = true
                 }
