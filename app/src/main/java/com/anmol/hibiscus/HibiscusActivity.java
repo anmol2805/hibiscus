@@ -205,60 +205,74 @@ public class HibiscusActivity extends AppCompatActivity
     }
 
     private void checkupdatestatus() {
-        DatabaseReference dtb = FirebaseDatabase.getInstance().getReference().getRoot();
-        dtb.child("banner").addValueEventListener(new ValueEventListener() {
+        final DatabaseReference dtb = FirebaseDatabase.getInstance().getReference().getRoot();
+        dtb.child("dynamiclocks").addValueEventListener(new ValueEventListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if(dataSnapshot.child("vname").getValue(String.class)!=null){
-                    String updateversion = dataSnapshot.child("vname").getValue(String.class);
-                    try {
-                        PackageInfo pinfo = getPackageManager().getPackageInfo(getPackageName(),0);
-                        String version = pinfo.versionName.trim();
-                        AlertDialog dialog = new AlertDialog.Builder(HibiscusActivity.this)
-                                .setTitle("New version available")
-                                .setMessage("Please, update app to new version to continue!!!")
-                                .setCancelable(false)
-                                .setPositiveButton("Update", new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialogInterface, int i) {
-                                        Uri uri = Uri.parse("market://details?id=" + "com.anmol.hibiscus");
-                                        Intent goToMarket = new Intent(Intent.ACTION_VIEW, uri);
-                                        // To count with Play market backstack, After pressing back button,
-                                        // to taken back to our application, we need to add following flags to intent.
-                                        goToMarket.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
-                                        goToMarket.addFlags(Intent.FLAG_ACTIVITY_NEW_DOCUMENT);
-                                        goToMarket.addFlags(Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
-                                        try{
-                                            startActivity(goToMarket);
-                                        }
-                                        catch (ActivityNotFoundException e){
-                                            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://play.google.com/store/apps/details?id=" + "com.anmol.hibiscus")));
-                                        }
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                Boolean upd = dataSnapshot.child("updatelock").getValue(Boolean.class);
+                if(!upd){
+                    dtb.child("banner").addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            if(dataSnapshot.child("vname").getValue(String.class)!=null){
+                                String updateversion = dataSnapshot.child("vname").getValue(String.class);
+                                try {
+                                    PackageInfo pinfo = getPackageManager().getPackageInfo(getPackageName(),0);
+                                    String version = pinfo.versionName.trim();
+                                    AlertDialog dialog = new AlertDialog.Builder(HibiscusActivity.this)
+                                            .setTitle("New version available")
+                                            .setMessage("Please, update app to new version to continue!!!")
+                                            .setCancelable(false)
+                                            .setPositiveButton("Update", new DialogInterface.OnClickListener() {
+                                                @Override
+                                                public void onClick(DialogInterface dialogInterface, int i) {
+                                                    Uri uri = Uri.parse("market://details?id=" + "com.anmol.hibiscus");
+                                                    Intent goToMarket = new Intent(Intent.ACTION_VIEW, uri);
+                                                    // To count with Play market backstack, After pressing back button,
+                                                    // to taken back to our application, we need to add following flags to intent.
+                                                    goToMarket.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+                                                    goToMarket.addFlags(Intent.FLAG_ACTIVITY_NEW_DOCUMENT);
+                                                    goToMarket.addFlags(Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
+                                                    try{
+                                                        startActivity(goToMarket);
+                                                    }
+                                                    catch (ActivityNotFoundException e){
+                                                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://play.google.com/store/apps/details?id=" + "com.anmol.hibiscus")));
+                                                    }
 
 
 
+                                                }
+                                            }).create();
+                                    if (version.equals(updateversion)){
+                                        dialog.dismiss();
                                     }
-                                }).create();
-                        if (version.equals(updateversion)){
-                            dialog.dismiss();
+                                    else {
+
+                                        dialog.show();
+                                    }
+                                } catch (PackageManager.NameNotFoundException e) {
+                                    e.printStackTrace();
+                                }
+
+
+                            }
                         }
-                        else {
 
-                            dialog.show();
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+
                         }
-                    } catch (PackageManager.NameNotFoundException e) {
-                        e.printStackTrace();
-                    }
-
-
+                    });
                 }
             }
 
             @Override
-            public void onCancelled(DatabaseError databaseError) {
+            public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
         });
+
     }
 
 
