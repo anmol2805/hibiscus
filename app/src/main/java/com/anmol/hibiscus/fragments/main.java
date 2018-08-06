@@ -59,6 +59,7 @@ import com.anmol.hibiscus.Model.Notice;
 import com.anmol.hibiscus.Mysingleton;
 import com.anmol.hibiscus.NoticeDataActivity;
 import com.anmol.hibiscus.R;
+import com.anmol.hibiscus.WebviewActivity;
 import com.anmol.hibiscus.services.RequestService;
 import com.bumptech.glide.Glide;
 import com.google.android.gms.ads.AdListener;
@@ -395,6 +396,7 @@ public class main extends Fragment {
                 String dbody = dataSnapshot.child("body").getValue(String.class);
                 String dname = dataSnapshot.child("button").child("name").getValue(String.class);
                 final String dlink = dataSnapshot.child("button").child("link").getValue(String.class);
+                final Boolean webview = dataSnapshot.child("button").child("webview").getValue(Boolean.class);
 
                 if(dhead!=null && !dhead.isEmpty()){
                     head.setText(dhead);
@@ -430,8 +432,16 @@ public class main extends Fragment {
                     @Override
                     public void onClick(View v) {
                         if(dlink!=null){
-                            Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(dlink));
-                            startActivity(browserIntent);
+                            if(webview){
+                                Intent webintent = new Intent(getActivity(),WebviewActivity.class);
+                                webintent.putExtra("weburl",dlink);
+                                startActivity(webintent);
+                            }
+                            else {
+                                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(dlink));
+                                startActivity(browserIntent);
+                            }
+
                         }
 
                     }
