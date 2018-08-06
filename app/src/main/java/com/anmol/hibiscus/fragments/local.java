@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -36,6 +37,7 @@ import com.anmol.hibiscus.Model.Notice;
 import com.anmol.hibiscus.Model.Noticel;
 import com.anmol.hibiscus.PostingActivity;
 import com.anmol.hibiscus.R;
+import com.anmol.hibiscus.WebviewActivity;
 import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -68,6 +70,9 @@ public class local extends Fragment {
     List<Notice> searchednotices;
     Button searchbtn,cancelbtn;
     EditText searchedit;
+    TextView head,body;
+    Button work;
+    View margin;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
@@ -86,6 +91,10 @@ public class local extends Fragment {
         listView.setItemAnimator(new DefaultItemAnimator());
         listView.addItemDecoration(new DividerItemDecoration(getActivity(),
                 DividerItemDecoration.VERTICAL));
+        head = (TextView)vi.findViewById(R.id.head);
+        body = (TextView)vi.findViewById(R.id.body);
+        work = (Button)vi.findViewById(R.id.work);
+        margin = (View)vi.findViewById(R.id.margin);
         pg = (ProgressBar)vi.findViewById(R.id.load);
         pg.setVisibility(View.VISIBLE);
         noticels = new ArrayList<>();
@@ -215,6 +224,71 @@ public class local extends Fragment {
 //
 //            }
 //        });
+        final DatabaseReference data = FirebaseDatabase.getInstance().getReference().getRoot().child("studentbanner");
+        data.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                String dhead = dataSnapshot.child("head").getValue(String.class);
+                String dbody = dataSnapshot.child("body").getValue(String.class);
+                String dname = dataSnapshot.child("button").child("name").getValue(String.class);
+                final String dlink = dataSnapshot.child("button").child("link").getValue(String.class);
+                final Boolean webview = dataSnapshot.child("button").child("webview").getValue(Boolean.class);
+
+                if(dhead!=null && !dhead.isEmpty()){
+                    head.setText(dhead);
+                    head.setVisibility(View.VISIBLE);
+
+                }
+                else {
+                    head.setVisibility(View.GONE);
+                }
+                if(dbody!=null && !dbody.isEmpty()){
+                    body.setText(dbody);
+                    body.setVisibility(View.VISIBLE);
+
+                }
+                else {
+                    body.setVisibility(View.GONE);
+                }
+                if(dname!=null && !dname.isEmpty()){
+                    work.setText(dname);
+                    work.setVisibility(View.VISIBLE);
+
+                }
+                else {
+                    work.setVisibility(View.GONE);
+                }
+                if((dhead==null || dhead.isEmpty())&&(dbody == null || dbody.isEmpty())&&(dname==null || dname.isEmpty())){
+                    margin.setVisibility(View.GONE);
+                }
+                else {
+                    margin.setVisibility(View.VISIBLE);
+                }
+                work.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if(dlink!=null){
+                            if(webview){
+                                Intent webintent = new Intent(getActivity(),WebviewActivity.class);
+                                webintent.putExtra("weburl",dlink);
+                                startActivity(webintent);
+                            }
+                            else {
+                                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(dlink));
+                                startActivity(browserIntent);
+                            }
+
+                        }
+
+                    }
+                });
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
 
         post.setOnClickListener(new View.OnClickListener() {
             @Override
