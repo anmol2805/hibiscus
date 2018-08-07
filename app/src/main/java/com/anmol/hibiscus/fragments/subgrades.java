@@ -76,21 +76,15 @@ public class subgrades extends Fragment{
         mycourses = new ArrayList<>();
         mysubjectgrades = new ArrayList<>();
         courselist = (ListView)vi.findViewById(R.id.list);
-        LayoutInflater layoutInflater = getActivity().getLayoutInflater();
-        ViewGroup header = (ViewGroup)layoutInflater.inflate(R.layout.header,courselist,false);
-        try{
-            courselist.addHeaderView(header);
-        }
-        catch (IndexOutOfBoundsException e){
-            e.printStackTrace();
-        }
+        
+        
 
-        q1 = (TextView)header.findViewById(R.id.q1);
-        q2 = (TextView)header.findViewById(R.id.q2);
-        ms = (TextView)header.findViewById(R.id.ms);
-        es = (TextView)header.findViewById(R.id.es);
-        fa = (TextView)header.findViewById(R.id.fa);
-        tot = (TextView)header.findViewById(R.id.tot);
+        q1 = (TextView)vi.findViewById(R.id.q1);
+        q2 = (TextView)vi.findViewById(R.id.q2);
+        ms = (TextView)vi.findViewById(R.id.ms);
+        es = (TextView)vi.findViewById(R.id.es);
+        fa = (TextView)vi.findViewById(R.id.fa);
+        tot = (TextView)vi.findViewById(R.id.tot);
         jsonObject = new JSONObject();
         auth = FirebaseAuth.getInstance();
         databaseReference = FirebaseDatabase.getInstance().getReference().child("Students").child(auth.getCurrentUser().getUid()).child("hibiscus");

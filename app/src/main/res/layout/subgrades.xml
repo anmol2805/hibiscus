@@ -44,48 +44,58 @@
         app:cardElevation="48dp"
 
         >
-        <LinearLayout
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-
-            <ProgressBar
-                android:id="@+id/load"
-                style="?android:attr/progressBarStyle"
-                android:layout_width="25dp"
-                android:layout_height="25dp"
-                android:layout_gravity="center"
-
-                android:visibility="gone" />
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/retry"
-                android:text="retry"
-                android:layout_gravity="center"
-                android:visibility="gone"
-                />
-
-            <ImageView
-                android:id="@+id/fail"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:srcCompat="@drawable/sadcloud"
-                android:layout_marginTop="100dp"
-                android:visibility="gone"
-                />
-
-            <ListView
-                android:id="@+id/list"
+            android:layout_height="match_parent">
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginBottom="60dp"
-                android:visibility="visible"
-                >
+                android:orientation="vertical">
 
-            </ListView>
+                <ProgressBar
+                    android:id="@+id/load"
+                    style="?android:attr/progressBarStyle"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_gravity="center"
 
-        </LinearLayout>
+                    android:visibility="gone" />
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/retry"
+                    android:text="retry"
+                    android:layout_gravity="center"
+                    android:visibility="gone"
+                    />
+
+                <ImageView
+                    android:id="@+id/fail"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:srcCompat="@drawable/sadcloud"
+                    android:layout_marginTop="100dp"
+                    android:visibility="gone"
+                    />
+
+                <include
+                    layout="@layout/header"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+                <ListView
+                    android:id="@+id/list"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginBottom="60dp"
+                    android:visibility="visible"
+                    >
+
+                </ListView>
+
+            </LinearLayout>
+        </ScrollView>
+
 
 
 
