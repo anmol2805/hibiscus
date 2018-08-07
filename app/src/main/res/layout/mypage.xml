@@ -16,9 +16,9 @@
         android:text="Developers"
         android:textColor="#000"
         android:textSize="18sp"
-        android:textStyle="bold"
+
         android:padding="@dimen/textmargin"
-        app:fontFamily="@font/lato_regular" />
+        app:fontFamily="@font/lato_bold" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -81,7 +81,7 @@
                 android:paddingEnd="3dp"
                 android:paddingRight="3dp"
                 android:textColor="#000"
-                android:textStyle="italic"
+
                 app:fontFamily="@font/lato_regular" />
 
             <LinearLayout
@@ -157,7 +157,6 @@
                     android:paddingEnd="3dp"
                     android:paddingRight="3dp"
                     android:textColor="#000"
-                    android:textStyle="italic"
                     app:fontFamily="@font/lato_regular" />
 
                 <LinearLayout

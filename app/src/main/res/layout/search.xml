@@ -16,8 +16,7 @@
         android:padding="@dimen/textmargin"
         android:textColor="#000"
         android:textSize="14sp"
-        android:textStyle="bold"
-        app:fontFamily="@font/lato_regular" />
+        app:fontFamily="@font/lato_bold" />
 
     <TextView
         android:id="@+id/name"
@@ -34,6 +33,6 @@
         android:paddingRight="3dp"
         android:textColor="#2F4F4F"
         android:textSize="14sp"
-        android:textStyle="italic"
+
         app:fontFamily="@font/lato_regular" />
 </LinearLayout>

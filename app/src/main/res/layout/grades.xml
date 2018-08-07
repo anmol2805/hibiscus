@@ -270,7 +270,7 @@
                         android:paddingRight="3dp"
                         android:textColor="#000"
                         android:textSize="14sp"
-                        android:textStyle="italic"
+
                         app:fontFamily="@font/lato_regular" />
 
                 </LinearLayout>

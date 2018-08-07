@@ -62,7 +62,7 @@
                 android:paddingStart="@dimen/textmargin"
                 android:paddingEnd="3dp"
                 android:paddingRight="3dp"
-                android:textStyle="italic"
+
 
                 app:fontFamily="@font/lato_regular" />
 
@@ -101,7 +101,7 @@
                 android:paddingStart="@dimen/textmargin"
                 android:paddingEnd="3dp"
                 android:paddingRight="3dp"
-                android:textStyle="italic"
+
 
                 app:fontFamily="@font/lato_regular" />
 

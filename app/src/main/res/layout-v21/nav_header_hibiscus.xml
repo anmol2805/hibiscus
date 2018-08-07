@@ -40,7 +40,7 @@
         android:text=""
         android:textColor="#000"
         android:textSize="20sp"
-        android:textStyle="italic"
+
         app:fontFamily="@font/lato_regular" />
 
 </RelativeLayout>

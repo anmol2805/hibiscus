@@ -12,8 +12,8 @@
         android:textColor="#000"
         android:padding="@dimen/textmargin"
         android:textSize="18sp"
-        android:textStyle="bold"
-        app:fontFamily="@font/lato_regular" />
+
+        app:fontFamily="@font/lato_bold" />
 
     <ImageView
         android:layout_width="wrap_content"
@@ -28,7 +28,7 @@
         android:layout_gravity="center"
         android:textColor="#2F4F4F"
         android:textSize="18sp"
-        android:textStyle="italic"
+
         android:paddingTop="@dimen/textmargin"
         android:paddingBottom="@dimen/textmargin"
         android:paddingLeft="@dimen/textmargin"
