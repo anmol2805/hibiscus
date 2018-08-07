@@ -64,5 +64,12 @@
         android:layout_marginBottom="10dp"
         app:fontFamily="@font/lato_bold"
         />
-
+    <ProgressBar
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:id="@+id/pgr"
+        android:layout_gravity="center"
+        android:layout_marginBottom="10dp"
+        android:visibility="gone"
+        />
 </LinearLayout>

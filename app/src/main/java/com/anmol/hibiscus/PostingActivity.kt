@@ -3,6 +3,7 @@ package com.anmol.hibiscus
 import android.os.Build
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import android.view.WindowManager
 import android.widget.EditText
 import android.widget.Toast
@@ -40,6 +41,8 @@ class PostingActivity : AppCompatActivity() {
         studentdatabaseid = FirebaseDatabase.getInstance().reference.child("Studentnoticeid")
         hibdatabase = FirebaseDatabase.getInstance().reference.child("Students").child(auth!!.currentUser!!.uid).child("hibiscus")
         submitnotice.setOnClickListener{
+            submitnotice.visibility = View.GONE
+            pgr.visibility = View.VISIBLE
             val c = Calendar.getInstance().time
             val df = SimpleDateFormat("dd-MM-yyyy hh:mm a")
             val formattedDate = df.format(c)
@@ -48,14 +51,18 @@ class PostingActivity : AppCompatActivity() {
             if(!noticetitlestring.isEmpty() && !noticedescription.isEmpty()){
                 hibdatabase!!.addListenerForSingleValueEvent(object :ValueEventListener{
                     override fun onCancelled(p0: DatabaseError) {
-
+                        submitnotice.visibility = View.VISIBLE
+                        pgr.visibility = View.GONE
+                        Toast.makeText(this@PostingActivity,"Network Error",Toast.LENGTH_SHORT).show()
                     }
 
                     override fun onDataChange(p0: DataSnapshot) {
                         val uid = p0.child("sid").value.toString()
                         studentdatabase!!.addListenerForSingleValueEvent(object : ValueEventListener{
                             override fun onCancelled(p0: DatabaseError) {
-
+                                submitnotice.visibility = View.VISIBLE
+                                pgr.visibility = View.GONE
+                                Toast.makeText(this@PostingActivity,"Network Error",Toast.LENGTH_SHORT).show()
                             }
 
                             override fun onDataChange(p0: DataSnapshot) {
