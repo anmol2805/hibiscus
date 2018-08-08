@@ -39,6 +39,7 @@ import com.anmol.hibiscus.PostingActivity;
 import com.anmol.hibiscus.R;
 import com.anmol.hibiscus.WebviewActivity;
 import com.bumptech.glide.Glide;
+import com.github.fabtransitionactivity.SheetLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -55,10 +56,12 @@ import de.hdodenhof.circleimageview.CircleImageView;
  * Created by anmol on 2017-08-30.
  */
 
-public class local extends Fragment {
+public class local extends Fragment implements SheetLayout.OnFabAnimationEndListener{
     FirebaseAuth auth;
     DatabaseReference databaseReference,studentdatabase;
     FloatingActionButton post;
+    SheetLayout mSheetLayout;
+    private static final int REQUEST_CODE = 1;
     List<Notice> noticels;
     RecyclerView listView;
     IcoAdapter1 noticeAdapterl;
@@ -79,6 +82,7 @@ public class local extends Fragment {
         View vi = inflater.inflate(R.layout.local,container,false);
         getActivity().setTitle("Notice Board");
         post = (FloatingActionButton)vi.findViewById(R.id.postnotice);
+        mSheetLayout = (SheetLayout)vi.findViewById(R.id.bottom_sheet);
         listView = (RecyclerView) vi.findViewById(R.id.list);
         showstar = (CircleImageView)vi.findViewById(R.id.showstar);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
@@ -101,6 +105,8 @@ public class local extends Fragment {
         auth = FirebaseAuth.getInstance();
         studentdatabase = FirebaseDatabase.getInstance().getReference().child("Studentnoticeboard");
         databaseReference = FirebaseDatabase.getInstance().getReference().child("Auth");
+        mSheetLayout.setFab(post);
+        mSheetLayout.setFabAnimationEndListener(this);
         itemClickListener = new ItemClickListener() {
             @Override
             public void onItemClick(int pos) {
@@ -293,7 +299,8 @@ public class local extends Fragment {
         post.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(getActivity(),PostingActivity.class));
+                mSheetLayout.expandFab();
+//                startActivity(new Intent(getActivity(),PostingActivity.class));
 //                final Dialog dialog = new Dialog(getActivity());
 //                dialog.setTitle("Post Notice");
 //                dialog.setContentView(R.layout.postnotice);
@@ -526,5 +533,16 @@ public class local extends Fragment {
     }
 
 
-
+    @Override
+    public void onFabAnimationEnd() {
+        Intent intent = new Intent(getActivity(), PostingActivity.class);
+        startActivityForResult(intent, REQUEST_CODE);
+    }
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == REQUEST_CODE){
+            mSheetLayout.contractFab();
+        }
+    }
 }

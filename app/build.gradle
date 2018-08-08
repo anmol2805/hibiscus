@@ -68,6 +68,7 @@ dependencies {
     implementation 'com.crashlytics.sdk.android:crashlytics:2.9.4'
     implementation 'org.jsoup:jsoup:1.11.1'
     implementation 'com.github.lzyzsd:circleprogress:1.2.1'
+    implementation 'com.github.coyarzun89:fabtransitionactivity:0.2.0'
     testImplementation 'junit:junit:4.12'
     implementation 'hani.momanii.supernova_emoji_library:supernova-emoji-library:0.0.2'
     implementation 'com.chauthai.swipereveallayout:swipe-reveal-layout:1.4.1'
