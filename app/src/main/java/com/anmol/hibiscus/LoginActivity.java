@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -123,7 +124,52 @@ public class LoginActivity extends AppCompatActivity {
                     .create();
             dialog.show();
         }
+        btnReset.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                final EditText input = new EditText(LoginActivity.this);
+                LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.MATCH_PARENT,
+                        LinearLayout.LayoutParams.MATCH_PARENT);
+                input.setLayoutParams(lp);
+                input.setHint("Enter your student id:");
+                AlertDialog dialog = new AlertDialog.Builder(LoginActivity.this)
+                        .setTitle("Changed hibiscus Password?")
+                        .setMessage("Canopy won't work properly if you had changed the password of hibiscus. You need to change password for canopy also.")
+                        .setCancelable(true)
+                        .setView(input)
+                        .setPositiveButton("Reset Password", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(final DialogInterface dialogInterface, int i) {
+                                String inputid = input.getText().toString();
+                                if(inputid.isEmpty() || inputid.length() == 7){
+                                    Toast.makeText(LoginActivity.this,"Please enter a valid Student id",Toast.LENGTH_SHORT).show();
+                                }
+                                else {
+                                    FirebaseAuth.getInstance().sendPasswordResetEmail(inputid.toLowerCase() + "@iiit-bh.ac.in").addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+                                            Toast.makeText(LoginActivity.this,"Reset Password mail sent successfully",Toast.LENGTH_LONG).show();
+                                            dialogInterface.dismiss();
+                                        }
+                                    });
+                                }
 
+
+                            }
+                        })
+                        .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                dialogInterface.dismiss();
+                            }
+                        })
+                        .create();
+
+
+                dialog.show();
+            }
+        });
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
