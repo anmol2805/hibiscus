@@ -26,6 +26,10 @@ import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.bumptech.glide.Glide;
 import com.anmol.hibiscus.fragments.complaints;
 import com.anmol.hibiscus.fragments.ebooks;
@@ -54,6 +58,9 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.iid.FirebaseInstanceId;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
@@ -72,6 +79,7 @@ public class HibiscusActivity extends AppCompatActivity
     InterstitialAd interstitialAdattendance;
     InterstitialAd interstitialAdviewgrades;
     DatabaseReference databaseReference;
+    String url = "http://139.59.23.157/api/hibi/login_test";
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -203,8 +211,68 @@ public class HibiscusActivity extends AppCompatActivity
         checkupdatestatus();
 
     }
+    private void checkpassstatus(){
+        final JSONObject jsonObject = new JSONObject();
+        FirebaseDatabase.getInstance().getReference().child("Students").child(auth.getCurrentUser().getUid()).child("hibiscus").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if(dataSnapshot.child("sid").getValue(String.class)!=null && dataSnapshot.child("pwd").getValue(String.class)!=null){
+                    String uid = dataSnapshot.child("sid").getValue(String.class);
+                    String pwd = dataSnapshot.child("pwd").getValue(String.class);
+                    try {
+                        jsonObject.put("uid",uid);
+                        jsonObject.put("pwd",pwd);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, jsonObject, new Response.Listener<JSONObject>() {
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            try {
+                                if(response.getString("result").equals("failed")){
+                                    AlertDialog dialog = new AlertDialog.Builder(HibiscusActivity.this)
+                                            .setTitle("Changed hibiscus Password?")
+                                            .setMessage("Canopy won't work properly if you had changed the password of hibiscus. You need to change password for canopy also.")
+                                            .setCancelable(false)
+                                            .setPositiveButton("Reset password", new DialogInterface.OnClickListener() {
+                                                @Override
+                                                public void onClick(DialogInterface dialogInterface, int i) {
+                                                    FirebaseAuth.getInstance().signOut();
+                                                    Intent intent = new Intent(HibiscusActivity.this,LoginActivity.class);
+                                                    intent.putExtra("type","resetpass");
+                                                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                                    startActivity(intent);
+                                                    finish();
+                                                    overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_down);
+                                                }
+                                            })
+                                            .create();
+                                    dialog.show();
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }, new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
 
-    private void checkupdatestatus() {
+                        }
+                    });
+                    Mysingleton.getInstance(HibiscusActivity.this).addToRequestqueue(jsonObjectRequest);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+
+        private void checkupdatestatus() {
         final DatabaseReference dtb = FirebaseDatabase.getInstance().getReference().getRoot();
         dtb.child("dynamiclocks").addValueEventListener(new ValueEventListener() {
             @Override
