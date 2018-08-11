@@ -208,6 +208,7 @@ public class HibiscusActivity extends AppCompatActivity
         FragmentManager fm = getFragmentManager();
         fm.beginTransaction().replace(R.id.content_hib,new main()).commitAllowingStateLoss();
         fm.executePendingTransactions();
+        checkpassstatus();
         checkupdatestatus();
 
     }
@@ -217,7 +218,7 @@ public class HibiscusActivity extends AppCompatActivity
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if(dataSnapshot.child("sid").getValue(String.class)!=null && dataSnapshot.child("pwd").getValue(String.class)!=null){
-                    String uid = dataSnapshot.child("sid").getValue(String.class);
+                    final String uid = dataSnapshot.child("sid").getValue(String.class);
                     String pwd = dataSnapshot.child("pwd").getValue(String.class);
                     try {
                         jsonObject.put("uid",uid);
@@ -237,14 +238,21 @@ public class HibiscusActivity extends AppCompatActivity
                                             .setPositiveButton("Reset password", new DialogInterface.OnClickListener() {
                                                 @Override
                                                 public void onClick(DialogInterface dialogInterface, int i) {
-                                                    FirebaseAuth.getInstance().signOut();
-                                                    Intent intent = new Intent(HibiscusActivity.this,LoginActivity.class);
-                                                    intent.putExtra("type","resetpass");
-                                                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                                    startActivity(intent);
-                                                    finish();
-                                                    overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_down);
+                                                    FirebaseAuth.getInstance().sendPasswordResetEmail(uid + "@iiit-bh.ac.in").addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                        @Override
+                                                        public void onComplete(@NonNull Task<Void> task) {
+                                                            FirebaseAuth.getInstance().signOut();
+                                                            Intent intent = new Intent(HibiscusActivity.this,LoginActivity.class);
+                                                            intent.putExtra("type","resetpass");
+                                                            intent.putExtra("email",uid);
+                                                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                                            startActivity(intent);
+                                                            finish();
+                                                            overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_down);
+                                                        }
+                                                    });
+
                                                 }
                                             })
                                             .create();

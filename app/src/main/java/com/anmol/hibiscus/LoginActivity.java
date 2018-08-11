@@ -1,8 +1,10 @@
 package com.anmol.hibiscus;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
@@ -75,8 +77,34 @@ public class LoginActivity extends AppCompatActivity {
         auth = FirebaseAuth.getInstance();
         uid = getIntent().getStringExtra("uid");
         pwd = getIntent().getStringExtra("pwd");
-
-
+        String resetpass = getIntent().getStringExtra("type");
+        final String usermail = getIntent().getStringExtra("email");
+        if(resetpass.equals("resetpass")){
+            final AlertDialog dialog = new AlertDialog.Builder(LoginActivity.this)
+                    .setTitle("Reset Password")
+                    .setMessage("We've sent you a password reset link at " + usermail + "@iiit-bh.ac.in. Reset the password you recently used in hibiscus and login again.")
+                    .setCancelable(false)
+                    .setPositiveButton("Login", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            dialogInterface.dismiss();
+                        }
+                    })
+                    .setNegativeButton("Resend Email", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(final DialogInterface dialogInterface, int i) {
+                            FirebaseAuth.getInstance().sendPasswordResetEmail(usermail + "@iiit-bh.ac.in").addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    Toast.makeText(LoginActivity.this,"Reset Password mail sent successfully",Toast.LENGTH_LONG).show();
+                                    dialogInterface.dismiss();
+                                }
+                            });
+                        }
+                    })
+                    .create();
+            dialog.show();
+        }
 
         // set the view now
         setContentView(R.layout.activity_login);
