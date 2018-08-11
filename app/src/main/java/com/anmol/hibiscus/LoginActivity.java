@@ -2,6 +2,7 @@ package com.anmol.hibiscus;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
@@ -9,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
@@ -71,7 +73,11 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            Window window = getWindow();
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            window.setStatusBarColor(getResources().getColor(R.color.colorAccent));
+        }
         setTitle("Login");
         object = new JSONObject();
         //Get Firebase auth instance
@@ -97,33 +103,35 @@ public class LoginActivity extends AppCompatActivity {
 
         //Get Firebase auth instance
         auth = FirebaseAuth.getInstance();
-
-        if(resetpass.equals("resetpass")){
-            final AlertDialog dialog = new AlertDialog.Builder(LoginActivity.this)
-                    .setTitle("Reset Password")
-                    .setMessage("We've sent you a password reset link at " + usermail + "@iiit-bh.ac.in. Reset the password you recently used in hibiscus and login again.")
-                    .setCancelable(false)
-                    .setPositiveButton("Login", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            dialogInterface.dismiss();
-                        }
-                    })
-                    .setNegativeButton("Resend Email", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(final DialogInterface dialogInterface, int i) {
-                            FirebaseAuth.getInstance().sendPasswordResetEmail(usermail + "@iiit-bh.ac.in").addOnCompleteListener(new OnCompleteListener<Void>() {
-                                @Override
-                                public void onComplete(@NonNull Task<Void> task) {
-                                    Toast.makeText(LoginActivity.this,"Reset Password mail sent successfully",Toast.LENGTH_LONG).show();
-                                    dialogInterface.dismiss();
-                                }
-                            });
-                        }
-                    })
-                    .create();
-            dialog.show();
+        if(resetpass!=null){
+            if(resetpass.equals("resetpass")){
+                final AlertDialog dialog = new AlertDialog.Builder(LoginActivity.this)
+                        .setTitle("Reset Password")
+                        .setMessage("We've sent you a password reset link at " + usermail + "@iiit-bh.ac.in. Reset the password you recently used in hibiscus and login again.")
+                        .setCancelable(false)
+                        .setPositiveButton("Login", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                dialogInterface.dismiss();
+                            }
+                        })
+                        .setNegativeButton("Resend Email", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(final DialogInterface dialogInterface, int i) {
+                                FirebaseAuth.getInstance().sendPasswordResetEmail(usermail + "@iiit-bh.ac.in").addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        Toast.makeText(LoginActivity.this,"Reset Password mail sent successfully",Toast.LENGTH_LONG).show();
+                                        dialogInterface.dismiss();
+                                    }
+                                });
+                            }
+                        })
+                        .create();
+                dialog.show();
+            }
         }
+
         btnReset.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -142,7 +150,7 @@ public class LoginActivity extends AppCompatActivity {
                             @Override
                             public void onClick(final DialogInterface dialogInterface, int i) {
                                 String inputid = input.getText().toString();
-                                if(inputid.isEmpty() || inputid.length() == 7){
+                                if(inputid.isEmpty() || !(inputid.length() == 7)){
                                     Toast.makeText(LoginActivity.this,"Please enter a valid Student id",Toast.LENGTH_SHORT).show();
                                 }
                                 else {

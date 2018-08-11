@@ -79,7 +79,7 @@ public class HibiscusActivity extends AppCompatActivity
     InterstitialAd interstitialAdattendance;
     InterstitialAd interstitialAdviewgrades;
     DatabaseReference databaseReference;
-    String url = "http://139.59.23.157/api/hibi/login_test";
+    String url = "http://14.139.198.171/api/hibi/login_test";
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -223,6 +223,7 @@ public class HibiscusActivity extends AppCompatActivity
                     try {
                         jsonObject.put("uid",uid);
                         jsonObject.put("pwd",pwd);
+                        jsonObject.put("method","encrypted");
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -230,6 +231,8 @@ public class HibiscusActivity extends AppCompatActivity
                         @Override
                         public void onResponse(JSONObject response) {
                             try {
+                                System.out.println(response);
+                                System.out.println(jsonObject);
                                 if(response.getString("result").equals("failed")){
                                     AlertDialog dialog = new AlertDialog.Builder(HibiscusActivity.this)
                                             .setTitle("Changed hibiscus Password?")
