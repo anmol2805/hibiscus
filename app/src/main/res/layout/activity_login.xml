@@ -102,11 +102,11 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dip"
-            android:background="@drawable/round_button"
-            android:text="@string/btn_forgot_password"
+            android:background="#00000000"
+            android:text="Trouble in signing in?"
             android:textAllCaps="false"
-            android:textColor="@color/colorPrimaryDark"
-            android:visibility="gone" />
+            android:textColor="@color/colorAccent"
+            android:visibility="visible" />
 
         <!-- Link to Login Screen -->
 

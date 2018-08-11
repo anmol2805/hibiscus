@@ -79,6 +79,24 @@ public class LoginActivity extends AppCompatActivity {
         pwd = getIntent().getStringExtra("pwd");
         String resetpass = getIntent().getStringExtra("type");
         final String usermail = getIntent().getStringExtra("email");
+
+        // set the view now
+        setContentView(R.layout.activity_login);
+
+        this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+
+        inputEmail = (EditText) findViewById(R.id.email);
+        inputPassword = (EditText) findViewById(R.id.password);
+        progressBar = (ProgressBar) findViewById(R.id.progressBar);
+
+        btnLogin = (Button) findViewById(R.id.btn_login);
+        btnReset = (Button) findViewById(R.id.btn_reset_password);
+
+
+
+        //Get Firebase auth instance
+        auth = FirebaseAuth.getInstance();
+
         if(resetpass.equals("resetpass")){
             final AlertDialog dialog = new AlertDialog.Builder(LoginActivity.this)
                     .setTitle("Reset Password")
@@ -105,24 +123,6 @@ public class LoginActivity extends AppCompatActivity {
                     .create();
             dialog.show();
         }
-
-        // set the view now
-        setContentView(R.layout.activity_login);
-
-        this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
-
-        inputEmail = (EditText) findViewById(R.id.email);
-        inputPassword = (EditText) findViewById(R.id.password);
-        progressBar = (ProgressBar) findViewById(R.id.progressBar);
-
-        btnLogin = (Button) findViewById(R.id.btn_login);
-        btnReset = (Button) findViewById(R.id.btn_reset_password);
-
-
-
-        //Get Firebase auth instance
-        auth = FirebaseAuth.getInstance();
-
 
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
