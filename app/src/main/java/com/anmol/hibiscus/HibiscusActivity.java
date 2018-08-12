@@ -257,32 +257,38 @@ public class HibiscusActivity extends AppCompatActivity
                                                     titleText.length(),
                                                     Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
                                             );
-                                            AlertDialog dialog = new AlertDialog.Builder(HibiscusActivity.this)
-                                                    .setTitle(ssBuilder)
-                                                    .setMessage(dataSnapshot.child("hamessage").getValue(String.class))
-                                                    .setCancelable(false)
-                                                    .setPositiveButton("Reset password", new DialogInterface.OnClickListener() {
-                                                        @Override
-                                                        public void onClick(DialogInterface dialogInterface, int i) {
-                                                            FirebaseAuth.getInstance().sendPasswordResetEmail(uid + "@iiit-bh.ac.in").addOnCompleteListener(new OnCompleteListener<Void>() {
-                                                                @Override
-                                                                public void onComplete(@NonNull Task<Void> task) {
-                                                                    FirebaseAuth.getInstance().signOut();
-                                                                    Intent intent = new Intent(HibiscusActivity.this,LoginActivity.class);
-                                                                    intent.putExtra("type","resetpass");
-                                                                    intent.putExtra("email",uid);
-                                                                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                                                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                                                    startActivity(intent);
-                                                                    finish();
-                                                                    overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_down);
-                                                                }
-                                                            });
+                                            try{
+                                                AlertDialog dialog = new AlertDialog.Builder(HibiscusActivity.this)
+                                                        .setTitle(ssBuilder)
+                                                        .setMessage(dataSnapshot.child("hamessage").getValue(String.class))
+                                                        .setCancelable(false)
+                                                        .setPositiveButton("Reset password", new DialogInterface.OnClickListener() {
+                                                            @Override
+                                                            public void onClick(DialogInterface dialogInterface, int i) {
+                                                                FirebaseAuth.getInstance().sendPasswordResetEmail(uid + "@iiit-bh.ac.in").addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                                    @Override
+                                                                    public void onComplete(@NonNull Task<Void> task) {
+                                                                        FirebaseAuth.getInstance().signOut();
+                                                                        Intent intent = new Intent(HibiscusActivity.this,LoginActivity.class);
+                                                                        intent.putExtra("type","resetpass");
+                                                                        intent.putExtra("email",uid);
+                                                                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                                                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                                                        startActivity(intent);
+                                                                        finish();
+                                                                        overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_down);
+                                                                    }
+                                                                });
 
-                                                        }
-                                                    })
-                                                    .create();
-                                            dialog.show();
+                                                            }
+                                                        })
+                                                        .create();
+                                                dialog.show();
+                                            }
+                                            catch (IllegalStateException e){
+                                                e.printStackTrace();
+                                            }
+
                                         }
 
                                         @Override

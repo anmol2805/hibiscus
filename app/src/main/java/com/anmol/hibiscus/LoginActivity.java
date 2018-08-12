@@ -183,41 +183,47 @@ public class LoginActivity extends AppCompatActivity {
                                 titleText.length(),
                                 Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
                         );
-                        AlertDialog dialog = new AlertDialog.Builder(LoginActivity.this)
-                                .setTitle(ssBuilder)
-                                .setMessage(dataSnapshot.child("resetmessage").getValue(String.class))
-                                .setCancelable(true)
-                                .setView(input)
-                                .setPositiveButton("Reset Password", new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(final DialogInterface dialogInterface, int i) {
-                                        String inputid = input.getText().toString();
-                                        if(inputid.isEmpty() || !(inputid.length() == 7)){
-                                            Toast.makeText(LoginActivity.this,"Please enter a valid Student id",Toast.LENGTH_SHORT).show();
+                        try{
+                            AlertDialog dialog = new AlertDialog.Builder(LoginActivity.this)
+                                    .setTitle(ssBuilder)
+                                    .setMessage(dataSnapshot.child("resetmessage").getValue(String.class))
+                                    .setCancelable(true)
+                                    .setView(input)
+                                    .setPositiveButton("Reset Password", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(final DialogInterface dialogInterface, int i) {
+                                            String inputid = input.getText().toString();
+                                            if(inputid.isEmpty() || !(inputid.length() == 7)){
+                                                Toast.makeText(LoginActivity.this,"Please enter a valid Student id",Toast.LENGTH_SHORT).show();
+                                            }
+                                            else {
+                                                FirebaseAuth.getInstance().sendPasswordResetEmail(inputid.toLowerCase() + "@iiit-bh.ac.in").addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                    @Override
+                                                    public void onComplete(@NonNull Task<Void> task) {
+                                                        Toast.makeText(LoginActivity.this,"Reset Password mail sent successfully",Toast.LENGTH_LONG).show();
+                                                        dialogInterface.dismiss();
+                                                    }
+                                                });
+                                            }
+
+
                                         }
-                                        else {
-                                            FirebaseAuth.getInstance().sendPasswordResetEmail(inputid.toLowerCase() + "@iiit-bh.ac.in").addOnCompleteListener(new OnCompleteListener<Void>() {
-                                                @Override
-                                                public void onComplete(@NonNull Task<Void> task) {
-                                                    Toast.makeText(LoginActivity.this,"Reset Password mail sent successfully",Toast.LENGTH_LONG).show();
-                                                    dialogInterface.dismiss();
-                                                }
-                                            });
+                                    })
+                                    .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialogInterface, int i) {
+                                            dialogInterface.dismiss();
                                         }
+                                    })
+                                    .create();
 
 
-                                    }
-                                })
-                                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialogInterface, int i) {
-                                        dialogInterface.dismiss();
-                                    }
-                                })
-                                .create();
+                            dialog.show();
+                        }
+                        catch (IllegalStateException e){
+                            e.printStackTrace();
+                        }
 
-
-                        dialog.show();
                     }
 
                     @Override
