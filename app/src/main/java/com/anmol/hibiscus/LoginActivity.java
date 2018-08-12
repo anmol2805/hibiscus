@@ -116,7 +116,7 @@ public class LoginActivity extends AppCompatActivity {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         String titleText = dataSnapshot.child("logintitle").getValue(String.class);
-
+                        assert titleText != null;
                         // Initialize a new foreground color span instance
                         ForegroundColorSpan foregroundColorSpan = new ForegroundColorSpan(getResources().getColor(R.color.colorAccent));
 
@@ -124,7 +124,7 @@ public class LoginActivity extends AppCompatActivity {
                         SpannableStringBuilder ssBuilder = new SpannableStringBuilder(titleText);
 
                         // Apply the text color span
-                        assert titleText != null;
+
                         ssBuilder.setSpan(
                                 foregroundColorSpan,
                                 0,
