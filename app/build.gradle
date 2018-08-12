@@ -16,10 +16,10 @@ android {
         applicationId "com.anmol.hibiscus"
         minSdkVersion 15
         targetSdkVersion 27
-        versionName '2.7.0'
+        versionName '3.0'
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
-        versionCode 11
+        versionCode 12
         signingConfig signingConfigs.config
     }
     buildTypes {
@@ -74,23 +74,6 @@ dependencies {
     implementation 'com.chauthai.swipereveallayout:swipe-reveal-layout:1.4.1'
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 apply plugin: 'com.google.gms.google-services'
 apply plugin: 'kotlin-android-extensions'
 repositories {

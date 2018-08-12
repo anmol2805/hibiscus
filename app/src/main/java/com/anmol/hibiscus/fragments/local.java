@@ -160,76 +160,7 @@ public class local extends Fragment implements SheetLayout.OnFabAnimationEndList
             }
         });
 
-//        databaseReference.addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(DataSnapshot dataSnapshot) {
-//                if(dataSnapshot.hasChild(auth.getCurrentUser().getUid())){
-//                    Boolean status = (Boolean) dataSnapshot.child(auth.getCurrentUser().getUid()).getValue();
-//                    if(status){
-//                        post.setVisibility(View.VISIBLE);
-//                    }
-//                }
-//            }
-//
-//            @Override
-//            public void onCancelled(DatabaseError databaseError) {
-//
-//            }
-//        });
-//        Dbstudentnoticebookshelper dbstudentnoticebookshelper = new Dbstudentnoticebookshelper(getActivity());
-//        Dbstudentnoticefirstopenhelper dbstudentnoticefirstopenhelper = new Dbstudentnoticefirstopenhelper(getActivity());
-//        final List<String> boomarks = dbstudentnoticebookshelper.readbook();
-//        final List<String> firstopens = dbstudentnoticefirstopenhelper.readbook();
-//        studentdatabase.addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(DataSnapshot dataSnapshot) {
-//                size = dataSnapshot.getChildrenCount();
-//                noticels.clear();
-//                for (long i=size;i>0;i--){
-//
-//                    if(dataSnapshot.hasChild(String.valueOf(i))){
-//                        String title = dataSnapshot.child(String.valueOf(i)).child("title").getValue().toString();
-//                        String description = dataSnapshot.child(String.valueOf(i)).child("description").getValue().toString();
-//                        String posted_by = dataSnapshot.child(String.valueOf(i)).child("postedby").getValue().toString();
-//                        String date = dataSnapshot.child(String.valueOf(i)).child("time").getValue().toString();
-//                        String id = String.valueOf(i);
-//                        int j = 0;
-//                        Boolean booked = false;
-//                        while(j<boomarks.size()){
-//                            if(boomarks.get(j).equals(id)){
-//                                booked = true;
-//                            }
-//                            j++;
-//                        }
-//                        int k = 0;
-//                        Boolean firstopen = false;
-//                        while(k<firstopens.size()){
-//                            if(firstopens.get(k).equals(id)){
-//                                firstopen = true;
-//                            }
-//                            k++;
-//                        }
-//                        Notice noticel = new Notice(title,date,posted_by,description,id,booked,firstopen);
-//                        noticels.add(noticel);
-//                    }
-//
-//                }
-//                if(getActivity()!=null){
-//                    pg.setVisibility(View.GONE);
-//                    noticeAdapterl = new IcoAdapter1(getActivity(),noticels,itemClickListener);
-//                    noticeAdapterl.notifyDataSetChanged();
-//                    listView.setAdapter(noticeAdapterl);
-//                    System.out.println(noticels);
-//                }
-//
-//
-//            }
-//
-//            @Override
-//            public void onCancelled(DatabaseError databaseError) {
-//
-//            }
-//        });
+
         final DatabaseReference data = FirebaseDatabase.getInstance().getReference().getRoot().child("studentbanner");
         data.addValueEventListener(new ValueEventListener() {
             @Override
@@ -300,39 +231,7 @@ public class local extends Fragment implements SheetLayout.OnFabAnimationEndList
             @Override
             public void onClick(View view) {
                 mSheetLayout.expandFab();
-//                startActivity(new Intent(getActivity(),PostingActivity.class));
-//                final Dialog dialog = new Dialog(getActivity());
-//                dialog.setTitle("Post Notice");
-//                dialog.setContentView(R.layout.postnotice);
-//                dialog.setCancelable(false);
-//                final EditText date = (EditText)dialog.findViewById(R.id.date);
-//                final EditText title = (EditText)dialog.findViewById(R.id.titlen);
-//                final EditText postedby = (EditText)dialog.findViewById(R.id.postedby);
-//                final EditText descript = (EditText)dialog.findViewById(R.id.description);
-//                final EditText attent = (EditText)dialog.findViewById(R.id.attention);
-//                Button postn = (Button)dialog.findViewById(R.id.postn);
-//                Button cancel = (Button)dialog.findViewById(R.id.canceled);
-//                postn.setOnClickListener(new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View view) {
-//
-//                        String d = date.getText().toString();
-//                        String t = title.getText().toString();
-//                        String p = postedby.getText().toString();
-//                        String de = descript.getText().toString();
-//                        String at = attent.getText().toString();
-//                        Noticel noticel = new Noticel(t,d,p,at,de);
-//                        studentdatabase.child(String.valueOf(size)).setValue(noticel);
-//                        dialog.dismiss();
-//                    }
-//                });
-//                cancel.setOnClickListener(new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View view) {
-//                        dialog.dismiss();
-//                    }
-//                });
-//                dialog.show();
+
             }
         });
         return vi;
