@@ -120,7 +120,8 @@
                     android:scheme="https" />
             </intent-filter>
         </activity>
-        <activity android:name=".WebviewActivity"></activity>
+        <activity android:name=".WebviewActivity" />
+        <activity android:name=".WhatsnewActivity"></activity>
     </application>
 
 </manifest>
