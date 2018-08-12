@@ -7,12 +7,16 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
+import android.text.SpannableStringBuilder;
+import android.text.Spanned;
+import android.text.style.ForegroundColorSpan;
 import android.view.Gravity;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -234,8 +238,24 @@ public class HibiscusActivity extends AppCompatActivity
                                 System.out.println(response);
                                 System.out.println(jsonObject);
                                 if(response.getString("result").equals("failed")){
+
+                                    String titleText = "Changed hibiscus Password?";
+
+                                    // Initialize a new foreground color span instance
+                                    ForegroundColorSpan foregroundColorSpan = new ForegroundColorSpan(getResources().getColor(R.color.colorAccent));
+
+                                    // Initialize a new spannable string builder instance
+                                    SpannableStringBuilder ssBuilder = new SpannableStringBuilder(titleText);
+
+                                    // Apply the text color span
+                                    ssBuilder.setSpan(
+                                            foregroundColorSpan,
+                                            0,
+                                            titleText.length(),
+                                            Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+                                    );
                                     AlertDialog dialog = new AlertDialog.Builder(HibiscusActivity.this)
-                                            .setTitle("Changed hibiscus Password?")
+                                            .setTitle(ssBuilder)
                                             .setMessage("Canopy won't work properly if you had changed the password of hibiscus. You need to change password for canopy also.")
                                             .setCancelable(false)
                                             .setPositiveButton("Reset password", new DialogInterface.OnClickListener() {

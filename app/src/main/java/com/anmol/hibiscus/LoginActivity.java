@@ -2,12 +2,16 @@ package com.anmol.hibiscus;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.text.SpannableStringBuilder;
+import android.text.Spanned;
 import android.text.TextUtils;
+import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
@@ -105,8 +109,23 @@ public class LoginActivity extends AppCompatActivity {
         auth = FirebaseAuth.getInstance();
         if(resetpass!=null){
             if(resetpass.equals("resetpass")){
+                String titleText = "Reset Password";
+
+                // Initialize a new foreground color span instance
+                ForegroundColorSpan foregroundColorSpan = new ForegroundColorSpan(getResources().getColor(R.color.colorAccent));
+
+                // Initialize a new spannable string builder instance
+                SpannableStringBuilder ssBuilder = new SpannableStringBuilder(titleText);
+
+                // Apply the text color span
+                ssBuilder.setSpan(
+                        foregroundColorSpan,
+                        0,
+                        titleText.length(),
+                        Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+                );
                 final AlertDialog dialog = new AlertDialog.Builder(LoginActivity.this)
-                        .setTitle("Reset Password")
+                        .setTitle(ssBuilder)
                         .setMessage("We've sent you a password reset link at " + usermail + "@iiit-bh.ac.in. Reset the password you recently used in hibiscus and login again.")
                         .setCancelable(false)
                         .setPositiveButton("Login", new DialogInterface.OnClickListener() {
@@ -139,10 +158,26 @@ public class LoginActivity extends AppCompatActivity {
                 LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
                         LinearLayout.LayoutParams.MATCH_PARENT,
                         LinearLayout.LayoutParams.MATCH_PARENT);
+                lp.setMargins(10,5,10,5);
                 input.setLayoutParams(lp);
                 input.setHint("Enter your student id:");
+                String titleText = "Changed hibiscus Password?";
+
+                // Initialize a new foreground color span instance
+                ForegroundColorSpan foregroundColorSpan = new ForegroundColorSpan(getResources().getColor(R.color.colorAccent));
+
+                // Initialize a new spannable string builder instance
+                SpannableStringBuilder ssBuilder = new SpannableStringBuilder(titleText);
+
+                // Apply the text color span
+                ssBuilder.setSpan(
+                        foregroundColorSpan,
+                        0,
+                        titleText.length(),
+                        Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+                );
                 AlertDialog dialog = new AlertDialog.Builder(LoginActivity.this)
-                        .setTitle("Changed hibiscus Password?")
+                        .setTitle(ssBuilder)
                         .setMessage("Canopy won't work properly if you had changed the password of hibiscus. You need to change password for canopy also.")
                         .setCancelable(true)
                         .setView(input)
