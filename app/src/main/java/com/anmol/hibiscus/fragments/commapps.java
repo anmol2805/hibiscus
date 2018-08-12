@@ -99,6 +99,8 @@ public class commapps extends Fragment {
                 else{
                     String html = dataSnapshot.child("html").getValue(String.class);
                     progressBar.setVisibility(View.GONE);
+                    retry.setVisibility(View.GONE);
+                    fail.setVisibility(View.GONE);
                     grd.loadData(html, "text/html; charset=utf-8", "UTF-8");
                 }
             }
