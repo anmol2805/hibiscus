@@ -238,48 +238,59 @@ public class HibiscusActivity extends AppCompatActivity
                                 System.out.println(response);
                                 System.out.println(jsonObject);
                                 if(response.getString("result").equals("failed")){
+                                    FirebaseDatabase.getInstance().getReference().child("passwordreset").addValueEventListener(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                            String titleText = dataSnapshot.child("hatitle").getValue(String.class);
 
-                                    String titleText = "Changed hibiscus Password?";
+                                            // Initialize a new foreground color span instance
+                                            ForegroundColorSpan foregroundColorSpan = new ForegroundColorSpan(getResources().getColor(R.color.colorAccent));
 
-                                    // Initialize a new foreground color span instance
-                                    ForegroundColorSpan foregroundColorSpan = new ForegroundColorSpan(getResources().getColor(R.color.colorAccent));
+                                            // Initialize a new spannable string builder instance
+                                            SpannableStringBuilder ssBuilder = new SpannableStringBuilder(titleText);
 
-                                    // Initialize a new spannable string builder instance
-                                    SpannableStringBuilder ssBuilder = new SpannableStringBuilder(titleText);
-
-                                    // Apply the text color span
-                                    ssBuilder.setSpan(
-                                            foregroundColorSpan,
-                                            0,
-                                            titleText.length(),
-                                            Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
-                                    );
-                                    AlertDialog dialog = new AlertDialog.Builder(HibiscusActivity.this)
-                                            .setTitle(ssBuilder)
-                                            .setMessage("Canopy won't work properly if you had changed the password of hibiscus. You need to change password for canopy also.")
-                                            .setCancelable(false)
-                                            .setPositiveButton("Reset password", new DialogInterface.OnClickListener() {
-                                                @Override
-                                                public void onClick(DialogInterface dialogInterface, int i) {
-                                                    FirebaseAuth.getInstance().sendPasswordResetEmail(uid + "@iiit-bh.ac.in").addOnCompleteListener(new OnCompleteListener<Void>() {
+                                            // Apply the text color span
+                                            assert titleText != null;
+                                            ssBuilder.setSpan(
+                                                    foregroundColorSpan,
+                                                    0,
+                                                    titleText.length(),
+                                                    Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+                                            );
+                                            AlertDialog dialog = new AlertDialog.Builder(HibiscusActivity.this)
+                                                    .setTitle(ssBuilder)
+                                                    .setMessage(dataSnapshot.child("hamessage").getValue(String.class))
+                                                    .setCancelable(false)
+                                                    .setPositiveButton("Reset password", new DialogInterface.OnClickListener() {
                                                         @Override
-                                                        public void onComplete(@NonNull Task<Void> task) {
-                                                            FirebaseAuth.getInstance().signOut();
-                                                            Intent intent = new Intent(HibiscusActivity.this,LoginActivity.class);
-                                                            intent.putExtra("type","resetpass");
-                                                            intent.putExtra("email",uid);
-                                                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                                            startActivity(intent);
-                                                            finish();
-                                                            overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_down);
-                                                        }
-                                                    });
+                                                        public void onClick(DialogInterface dialogInterface, int i) {
+                                                            FirebaseAuth.getInstance().sendPasswordResetEmail(uid + "@iiit-bh.ac.in").addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                                @Override
+                                                                public void onComplete(@NonNull Task<Void> task) {
+                                                                    FirebaseAuth.getInstance().signOut();
+                                                                    Intent intent = new Intent(HibiscusActivity.this,LoginActivity.class);
+                                                                    intent.putExtra("type","resetpass");
+                                                                    intent.putExtra("email",uid);
+                                                                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                                                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                                                    startActivity(intent);
+                                                                    finish();
+                                                                    overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_down);
+                                                                }
+                                                            });
 
-                                                }
-                                            })
-                                            .create();
-                                    dialog.show();
+                                                        }
+                                                    })
+                                                    .create();
+                                            dialog.show();
+                                        }
+
+                                        @Override
+                                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                        }
+                                    });
+
                                 }
                             } catch (JSONException e) {
                                 e.printStackTrace();
