@@ -88,7 +88,7 @@ public class AttendanceAdapter extends ArrayAdapter<Attendance> {
             attendance.setText(attstatus);
 
             teacher.setText(attendances.get(position).getName());
-
+            submame.setText(attendances.get(position).getSub());
             subcode.setText(attendances.get(position).getSubcode());
             return v;
         }
