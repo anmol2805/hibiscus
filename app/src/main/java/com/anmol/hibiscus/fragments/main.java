@@ -152,11 +152,11 @@ public class main extends Fragment {
         final DatabaseReference data = FirebaseDatabase.getInstance().getReference().getRoot().child("banner");
         dbhelper = new Dbhelper(getActivity());
         noticerefresh = (SwipeRefreshLayout)vi.findViewById(R.id.noticerefresh);
-//        refresh.setOnClickListener(new View.OnClickListener() {
+//        refresh.setOnClickListener(newfeature View.OnClickListener() {
 //            @Override
 //            public void onClick(View v) {
 //
-//                Intent intent = new Intent(getActivity(), RequestService.class);
+//                Intent intent = newfeature Intent(getActivity(), RequestService.class);
 //                getActivity().startService(intent);
 //                Toast.makeText(getActivity(),"Please Wait...",Toast.LENGTH_SHORT).show();
 //                refresh.startAnimation(rotate);
@@ -270,7 +270,7 @@ public class main extends Fragment {
                                                     }
                                                 }
                                                 if(k==0){
-                                                    System.out.print("noticestatus:new entry");
+                                                    System.out.print("noticestatus:newfeature entry");
                                                     dbhelper.insertData(notice);
                                                 }
                                                 else{
@@ -286,7 +286,7 @@ public class main extends Fragment {
                                             notices = dbhelper.readData(query);
                                             if (!notices.isEmpty()){
                                                 progressBar.setVisibility(View.GONE);
-//                                                adapter = new NoticeAdapter(getActivity(),R.layout.notice,notices);
+//                                                adapter = newfeature NoticeAdapter(getActivity(),R.layout.notice,notices);
 //                                                adapter.notifyDataSetChanged();
 //                                                lv.setAdapter(adapter);
                                                 icoAdapter = new IcoAdapter(getActivity(),notices,itemClickListener);
@@ -313,7 +313,7 @@ public class main extends Fragment {
                                                         }
                                                         if (getActivity() != null) {
                                                             progressBar.setVisibility(View.GONE);
-//                                                            adapter = new NoticeAdapter(getActivity(), R.layout.notice, notices);
+//                                                            adapter = newfeature NoticeAdapter(getActivity(), R.layout.notice, notices);
 //                                                            adapter.notifyDataSetChanged();
 //                                                            lv.setAdapter(adapter);
                                                             icoAdapter = new IcoAdapter(getActivity(),notices,itemClickListener);
@@ -350,7 +350,7 @@ public class main extends Fragment {
 //                                            postedby = object0.getString("posted_by");
 //                                            attention = object0.getString("attention");
 //                                            id = object0.getString("id");
-//                                            Notice notice = new Notice(title,date,postedby,attention,id);
+//                                            Notice notice = newfeature Notice(title,date,postedby,attention,id);
 //                                            FirebaseDatabase.getInstance().getReference().child("Notices").setValue(notice);
 //                                        } catch (JSONException e) {
 //                                            e.printStackTrace();
@@ -455,11 +455,11 @@ public class main extends Fragment {
         });
 
 
-//        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//        lv.setOnItemClickListener(newfeature AdapterView.OnItemClickListener() {
 //            @Override
 //            public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
 //                try{
-//                    Intent i = new Intent(getActivity(),NoticeDataActivity.class);
+//                    Intent i = newfeature Intent(getActivity(),NoticeDataActivity.class);
 //                    i.putExtra("id",notices.get(position).getId());
 //                    i.putExtra("uid",uid);
 //                    i.putExtra("pwd",pwd);
@@ -610,7 +610,7 @@ public class main extends Fragment {
                     }
                     if(getActivity()!=null){
                         progressBar.setVisibility(View.GONE);
-//                        adapter = new NoticeAdapter(getActivity(),R.layout.notice,notices);
+//                        adapter = newfeature NoticeAdapter(getActivity(),R.layout.notice,notices);
 //                        adapter.notifyDataSetChanged();
 //                        lv.setAdapter(adapter);
                         icoAdapter = new IcoAdapter(getActivity(),notices,itemClickListener);

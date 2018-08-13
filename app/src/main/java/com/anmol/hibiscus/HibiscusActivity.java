@@ -243,10 +243,10 @@ public class HibiscusActivity extends AppCompatActivity
                                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                                             String titleText = dataSnapshot.child("hatitle").getValue(String.class);
 
-                                            // Initialize a new foreground color span instance
+                                            // Initialize a newfeature foreground color span instance
                                             ForegroundColorSpan foregroundColorSpan = new ForegroundColorSpan(getResources().getColor(R.color.colorAccent));
 
-                                            // Initialize a new spannable string builder instance
+                                            // Initialize a newfeature spannable string builder instance
                                             SpannableStringBuilder ssBuilder = new SpannableStringBuilder(titleText);
 
                                             // Apply the text color span
@@ -337,7 +337,7 @@ public class HibiscusActivity extends AppCompatActivity
                                     String version = pinfo.versionName.trim();
                                     AlertDialog dialog = new AlertDialog.Builder(HibiscusActivity.this)
                                             .setTitle("New version available")
-                                            .setMessage("Please, update app to new version to continue!!!")
+                                            .setMessage("Please, update app to newfeature version to continue!!!")
                                             .setCancelable(false)
                                             .setPositiveButton("Update", new DialogInterface.OnClickListener() {
                                                 @Override
@@ -530,7 +530,7 @@ public class HibiscusActivity extends AppCompatActivity
 
         }
 //        else if(id == R.id.nav_elib){
-//            fm.beginTransaction().replace(R.id.content_hib,new ebooks()).commit();
+//            fm.beginTransaction().replace(R.id.content_hib,newfeature ebooks()).commit();
 //        }
         else if(id == R.id.nav_students){
             fm.beginTransaction().replace(R.id.content_hib,new students()).commitAllowingStateLoss();

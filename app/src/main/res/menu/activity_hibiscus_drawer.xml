@@ -103,6 +103,10 @@
                     android:icon="@drawable/dev"
                     android:title="Developers" />
                 <item
+                    android:id="@+id/nav_wn"
+                    android:icon="@drawable/newfeature"
+                    android:title="What's  new" />
+                <item
                     android:id="@+id/nav_help"
                     android:icon="@drawable/logh"
                     android:title="Logout" />

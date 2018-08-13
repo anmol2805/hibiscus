@@ -72,13 +72,13 @@ public class SplashActivity extends AppCompatActivity {
             startActivity(new Intent(SplashActivity.this,LoginActivity.class));
         }
         else{
-//            Intent intent = new Intent(this, RequestService.class);
+//            Intent intent = newfeature Intent(this, RequestService.class);
 //            startService(intent);
 //            mdatabase = FirebaseDatabase.getInstance().getReference().child("Notice");
 //            final DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("Students").child(auth.getCurrentUser().getUid()).child("hibiscus");
             progressBar = (ProgressBar)findViewById(R.id.load);
             progressBar.setVisibility(View.VISIBLE);
-            //notices = new ArrayList<>();
+            //notices = newfeature ArrayList<>();
 
             img = (ImageView)findViewById(R.id.imageView2);
             animFadein = AnimationUtils.loadAnimation(getApplicationContext(),
@@ -92,17 +92,17 @@ public class SplashActivity extends AppCompatActivity {
                 noticeids.add(notices1.get(i).getId());
             }
             loaddata(noticeids);
-//            Handler handler = new Handler();
+//            Handler handler = newfeature Handler();
 //
 //
-//            handler.postDelayed(new Runnable() {
+//            handler.postDelayed(newfeature Runnable() {
 //                @Override
 //                public void run() {
 //                    progressBar.setVisibility(View.INVISIBLE);
-//                    Intent intent = new Intent(SplashActivity.this, HibiscusActivity.class);
+//                    Intent intent = newfeature Intent(SplashActivity.this, HibiscusActivity.class);
 //                    startActivity(intent);
 //                    overridePendingTransition(R.anim.still,R.anim.slide_in_up);
-//                    databaseReference.addValueEventListener(new ValueEventListener() {
+//                    databaseReference.addValueEventListener(newfeature ValueEventListener() {
 //                        @Override
 //                        public void onDataChange(DataSnapshot dataSnapshot) {
 //                            if(dataSnapshot!=null && dataSnapshot.child("sid").getValue()!=null && dataSnapshot.child("pwd").getValue()!=null){
@@ -124,7 +124,7 @@ public class SplashActivity extends AppCompatActivity {
 //
 //                        }
 //                    });
-//                    Intent intent = new Intent(SplashActivity.this, RequestServiceGrades.class);
+//                    Intent intent = newfeature Intent(SplashActivity.this, RequestServiceGrades.class);
 //                    startService(intent);
 //                }
 //            },3000);
@@ -175,7 +175,7 @@ public class SplashActivity extends AppCompatActivity {
                                         }
                                     }
                                     if(k==0){
-                                        System.out.print("noticestatus:new entry");
+                                        System.out.print("noticestatus:newfeature entry");
                                         dbhelper.insertData(notice);
                                     }
                                     else{

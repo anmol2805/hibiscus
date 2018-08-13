@@ -122,7 +122,7 @@ public class GradesAdapter extends ArrayAdapter<Mysubjectgrade> {
 
 
 //            DatabaseReference db = FirebaseDatabase.getInstance().getReference().child("Students").child(auth.getCurrentUser().getUid()).child("subject_grades");
-//            db.child(mysubjectgrades.get(position).getId()).addValueEventListener(new ValueEventListener() {
+//            db.child(mysubjectgrades.get(position).getId()).addValueEventListener(newfeature ValueEventListener() {
 //                @Override
 //                public void onDataChange(DataSnapshot dataSnapshot) {
 //                    if(!dataSnapshot.exists() || !dataSnapshot.hasChildren()){

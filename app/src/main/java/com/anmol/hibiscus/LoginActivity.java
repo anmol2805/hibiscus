@@ -117,10 +117,10 @@ public class LoginActivity extends AppCompatActivity {
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         String titleText = dataSnapshot.child("logintitle").getValue(String.class);
                         assert titleText != null;
-                        // Initialize a new foreground color span instance
+                        // Initialize a newfeature foreground color span instance
                         ForegroundColorSpan foregroundColorSpan = new ForegroundColorSpan(getResources().getColor(R.color.colorAccent));
 
-                        // Initialize a new spannable string builder instance
+                        // Initialize a newfeature spannable string builder instance
                         SpannableStringBuilder ssBuilder = new SpannableStringBuilder(titleText);
 
                         // Apply the text color span
@@ -187,10 +187,10 @@ public class LoginActivity extends AppCompatActivity {
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         String titleText = dataSnapshot.child("resettitle").getValue(String.class);
 
-                        // Initialize a new foreground color span instance
+                        // Initialize a newfeature foreground color span instance
                         ForegroundColorSpan foregroundColorSpan = new ForegroundColorSpan(getResources().getColor(R.color.colorAccent));
 
-                        // Initialize a new spannable string builder instance
+                        // Initialize a newfeature spannable string builder instance
                         SpannableStringBuilder ssBuilder = new SpannableStringBuilder(titleText);
 
                         // Apply the text color span

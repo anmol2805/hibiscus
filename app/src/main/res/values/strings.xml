@@ -64,5 +64,11 @@
         <item>7th semester</item>
         <item>8th semester</item>
     </string-array>
-
+    <string name="whatsnew">
+        * Student Noticeboard is restructured and now fully functional.
+        * Only 50 notices at a time is removed.
+        * Realtime search feature in noticeboard.
+        * Bookmark your important notices.
+        * Bug fixes
+    </string>
 </resources>

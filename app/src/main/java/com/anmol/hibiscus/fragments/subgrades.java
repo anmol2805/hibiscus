@@ -162,7 +162,7 @@ public class subgrades extends Fragment{
                                                 }
                                             }
                                             mysubjectgrades.add(mysubjectgrade);
-//                                            Mycourse mycourse = new Mycourse(subject,professor,credits,id);
+//                                            Mycourse mycourse = newfeature Mycourse(subject,professor,credits,id);
 //                                            mycourses.add(mycourse);
                                         }
                                         else{
@@ -191,7 +191,7 @@ public class subgrades extends Fragment{
                                                 }
                                             }
                                             mysubjectgrades.add(mysubjectgrade);
-//                                            Mycourse mycourse = new Mycourse(subject,professor,credits,id);
+//                                            Mycourse mycourse = newfeature Mycourse(subject,professor,credits,id);
 //                                            mycourses.add(mycourse);
                                         }
                                         if(getActivity()!=null){

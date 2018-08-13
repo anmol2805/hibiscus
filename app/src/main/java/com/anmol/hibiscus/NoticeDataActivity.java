@@ -132,7 +132,7 @@ public class NoticeDataActivity extends AppCompatActivity {
         bookmarksmenu = menu.findItem(R.id.action_book);
         bookmarksmenu.setIcon(R.drawable.starwhite);
         List<Notice> notices = new ArrayList<>();
-//        List<String> data = new ArrayList<String>();
+//        List<String> data = newfeature ArrayList<String>();
 //        data.clear();
 //        data = dbb.readbook();
         notices.clear();
@@ -406,7 +406,7 @@ public class NoticeDataActivity extends AppCompatActivity {
                                         }
                                     }
                                     if(k==0){
-                                        System.out.print("noticestatus:new entry");
+                                        System.out.print("noticestatus:newfeature entry");
                                         dbhelper.insertData(notice);
                                     }
                                     else{
