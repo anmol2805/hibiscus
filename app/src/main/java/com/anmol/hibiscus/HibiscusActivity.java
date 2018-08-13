@@ -547,7 +547,19 @@ public class HibiscusActivity extends AppCompatActivity
         }else if(id == R.id.nav_con){
             fm.beginTransaction().replace(R.id.content_hib,new mypage()).commitAllowingStateLoss();
             fm.executePendingTransactions();
-        } else if (id == R.id.nav_help) {
+        }
+        else if(id == R.id.nav_wn){
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    final Dialog dialog = new Dialog(HibiscusActivity.this);
+                    dialog.setTitle("What's new");
+                    dialog.setContentView(R.layout.activity_whatsnew);
+                    dialog.show();
+                }
+            },200);
+        }
+        else if (id == R.id.nav_help) {
             FirebaseAuth.getInstance().signOut();
             handler.postDelayed(new Runnable() {
                 @Override

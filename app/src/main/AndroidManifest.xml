@@ -121,7 +121,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".WebviewActivity" />
-        <activity android:name=".WhatsnewActivity"></activity>
+
     </application>
 
 </manifest>

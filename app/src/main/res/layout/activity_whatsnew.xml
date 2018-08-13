@@ -24,7 +24,7 @@
         android:layout_height="wrap_content"
         android:fontFamily="@font/lato_regular"
         android:layout_marginTop="5dp"
-        android:text="* Student Noticeboard is restructured and is functional now."
+        android:text="- Student Noticeboard is restructured and is functional now."
         />
     <TextView
 
@@ -32,26 +32,33 @@
         android:layout_height="wrap_content"
         android:fontFamily="@font/lato_regular"
         android:layout_marginTop="5dp"
-        android:text="* Only 50 notices at a time is removed." />
+        android:text="- Access to only 50 notices at a time is changed. Students can view past notices also." />
     <TextView
 
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:fontFamily="@font/lato_regular"
         android:layout_marginTop="5dp"
-        android:text="* Realtime search feature introduced in noticeboard." />
+        android:text="- Realtime search feature introduced in noticeboard." />
     <TextView
 
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:fontFamily="@font/lato_regular"
         android:layout_marginTop="5dp"
-        android:text="* Bookmark your important notices." />
+        android:text="- Bookmark your important notices." />
     <TextView
 
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:fontFamily="@font/lato_regular"
         android:layout_marginTop="5dp"
-        android:text="* Bug fixes" />
+        android:text="- Notice sharing feature is added." />
+    <TextView
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/lato_regular"
+        android:layout_marginTop="5dp"
+        android:text="- Bug fixes" />
 </LinearLayout>
