@@ -303,6 +303,8 @@ public class local extends Fragment implements SheetLayout.OnFabAnimationEndList
                                     if(noticels.get(j).getTitle().toLowerCase().contains(charSequence) ||
                                             noticels.get(j).getTitle().toUpperCase().contains(charSequence) ||
                                             noticels.get(j).getPosted_by().toLowerCase().contains(charSequence) ||
+                                            noticels.get(j).getTitle().contains(charSequence) ||
+                                            noticels.get(j).getPosted_by().contains(charSequence) ||
                                             noticels.get(j).getPosted_by().toUpperCase().contains(charSequence)
                                             ){
                                         searchednotices.add(noticels.get(j));
@@ -403,6 +405,8 @@ public class local extends Fragment implements SheetLayout.OnFabAnimationEndList
                             if(noticels.get(j).getTitle().toLowerCase().contains(charSequence) ||
                                     noticels.get(j).getTitle().toUpperCase().contains(charSequence) ||
                                     noticels.get(j).getPosted_by().toLowerCase().contains(charSequence) ||
+                                    noticels.get(j).getTitle().contains(charSequence) ||
+                                    noticels.get(j).getPosted_by().contains(charSequence) ||
                                     noticels.get(j).getPosted_by().toUpperCase().contains(charSequence)
                                     ){
                                 searchednotices.add(noticels.get(j));

@@ -513,6 +513,9 @@ public class main extends Fragment {
                                     notices.get(j).getAttention().toLowerCase().contains(charSequence) ||
                                     notices.get(j).getAttention().toUpperCase().contains(charSequence) ||
                                     notices.get(j).getPosted_by().toLowerCase().contains(charSequence) ||
+                                    notices.get(j).getTitle().contains(charSequence) ||
+                                    notices.get(j).getAttention().contains(charSequence) ||
+                                    notices.get(j).getPosted_by().contains(charSequence) ||
                                     notices.get(j).getPosted_by().toUpperCase().contains(charSequence)
                                     ){
                                 searchednotices.add(notices.get(j));
@@ -566,6 +569,9 @@ public class main extends Fragment {
                                 notices.get(j).getAttention().toLowerCase().contains(charSequence) ||
                                 notices.get(j).getAttention().toUpperCase().contains(charSequence) ||
                                 notices.get(j).getPosted_by().toLowerCase().contains(charSequence) ||
+                                notices.get(j).getTitle().contains(charSequence) ||
+                                notices.get(j).getAttention().contains(charSequence) ||
+                                notices.get(j).getPosted_by().contains(charSequence) ||
                                 notices.get(j).getPosted_by().toUpperCase().contains(charSequence)
                                 ){
                                 searchednotices.add(notices.get(j));
@@ -634,6 +640,9 @@ public class main extends Fragment {
                                             notices.get(j).getAttention().toLowerCase().contains(charSequence) ||
                                             notices.get(j).getAttention().toUpperCase().contains(charSequence) ||
                                             notices.get(j).getPosted_by().toLowerCase().contains(charSequence) ||
+                                            notices.get(j).getTitle().contains(charSequence) ||
+                                            notices.get(j).getAttention().contains(charSequence) ||
+                                            notices.get(j).getPosted_by().contains(charSequence) ||
                                             notices.get(j).getPosted_by().toUpperCase().contains(charSequence)
                                             ){
                                         searchednotices.add(notices.get(j));

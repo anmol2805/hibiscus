@@ -112,62 +112,59 @@ public class LoginActivity extends AppCompatActivity {
         auth = FirebaseAuth.getInstance();
         if(resetpass!=null){
             if(resetpass.equals("resetpass")){
-                FirebaseDatabase.getInstance().getReference().child("passwordreset").addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        String titleText = dataSnapshot.child("logintitle").getValue(String.class);
-                        assert titleText != null;
-                        // Initialize a newfeature foreground color span instance
-                        ForegroundColorSpan foregroundColorSpan = new ForegroundColorSpan(getResources().getColor(R.color.colorAccent));
+                String titleText = "Reset Password";
 
-                        // Initialize a newfeature spannable string builder instance
-                        SpannableStringBuilder ssBuilder = new SpannableStringBuilder(titleText);
+                // Initialize a newfeature foreground color span instance
+                ForegroundColorSpan foregroundColorSpan = new ForegroundColorSpan(getResources().getColor(R.color.colorAccent));
 
-                        // Apply the text color span
+                // Initialize a newfeature spannable string builder instance
+                SpannableStringBuilder ssBuilder = new SpannableStringBuilder(titleText);
 
-                        ssBuilder.setSpan(
-                                foregroundColorSpan,
-                                0,
-                                titleText.length(),
-                                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
-                        );
-                        try{
-                            final AlertDialog dialog = new AlertDialog.Builder(LoginActivity.this)
-                                    .setTitle(ssBuilder)
-                                    .setMessage(dataSnapshot.child("login1").getValue(String.class) + usermail + "@iiit-bh.ac.in ." + dataSnapshot.child("login2").getValue(String.class))
-                                    .setCancelable(false)
-                                    .setPositiveButton("Login", new DialogInterface.OnClickListener() {
+                // Apply the text color span
+
+                ssBuilder.setSpan(
+                        foregroundColorSpan,
+                        0,
+                        titleText.length(),
+                        Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+                );
+                    final AlertDialog dialog = new AlertDialog.Builder(LoginActivity.this)
+                            .setTitle(ssBuilder)
+                            .setMessage("We've sent you a password reset link at " + usermail + "@iiit-bh.ac.in . Reset Canopy password with your new Hibiscus password and login again.")
+                            .setCancelable(false)
+                            .setPositiveButton("Login", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    dialogInterface.dismiss();
+                                }
+                            })
+                            .setNegativeButton("Resend Email", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(final DialogInterface dialogInterface, int i) {
+                                    FirebaseAuth.getInstance().sendPasswordResetEmail(usermail + "@iiit-bh.ac.in").addOnCompleteListener(new OnCompleteListener<Void>() {
                                         @Override
-                                        public void onClick(DialogInterface dialogInterface, int i) {
+                                        public void onComplete(@NonNull Task<Void> task) {
+                                            Toast.makeText(LoginActivity.this,"Password reset mail sent successfully",Toast.LENGTH_LONG).show();
                                             dialogInterface.dismiss();
                                         }
-                                    })
-                                    .setNegativeButton("Resend Email", new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(final DialogInterface dialogInterface, int i) {
-                                            FirebaseAuth.getInstance().sendPasswordResetEmail(usermail + "@iiit-bh.ac.in").addOnCompleteListener(new OnCompleteListener<Void>() {
-                                                @Override
-                                                public void onComplete(@NonNull Task<Void> task) {
-                                                    Toast.makeText(LoginActivity.this,"Password reset mail sent successfully",Toast.LENGTH_LONG).show();
-                                                    dialogInterface.dismiss();
-                                                }
-                                            });
-                                        }
-                                    })
-                                    .create();
-                            dialog.show();
-                        }
-                        catch (IllegalStateException e){
-                            e.printStackTrace();
-                        }
+                                    });
+                                }
+                            })
+                            .create();
+                    dialog.show();
 
-                    }
 
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                    }
-                });
+//                FirebaseDatabase.getInstance().getReference().child("passwordreset").addValueEventListener(new ValueEventListener() {
+//                    @Override
+//                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//
+//                    }
+//
+//                    @Override
+//                    public void onCancelled(@NonNull DatabaseError databaseError) {
+//
+//                    }
+//                });
 
             }
         }
@@ -182,73 +179,60 @@ public class LoginActivity extends AppCompatActivity {
                 lp.setMargins(10,5,10,5);
                 input.setLayoutParams(lp);
                 input.setHint("Enter your student id:");
-                FirebaseDatabase.getInstance().getReference().child("passwordreset").addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        String titleText = dataSnapshot.child("resettitle").getValue(String.class);
+                String titleText = "Changed hibiscus Password?";
 
-                        // Initialize a newfeature foreground color span instance
-                        ForegroundColorSpan foregroundColorSpan = new ForegroundColorSpan(getResources().getColor(R.color.colorAccent));
+                // Initialize a newfeature foreground color span instance
+                ForegroundColorSpan foregroundColorSpan = new ForegroundColorSpan(getResources().getColor(R.color.colorAccent));
 
-                        // Initialize a newfeature spannable string builder instance
-                        SpannableStringBuilder ssBuilder = new SpannableStringBuilder(titleText);
+                // Initialize a newfeature spannable string builder instance
+                SpannableStringBuilder ssBuilder = new SpannableStringBuilder(titleText);
 
-                        // Apply the text color span
-                        assert titleText != null;
-                        ssBuilder.setSpan(
-                                foregroundColorSpan,
-                                0,
-                                titleText.length(),
-                                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
-                        );
-                        try{
-                            AlertDialog dialog = new AlertDialog.Builder(LoginActivity.this)
-                                    .setTitle(ssBuilder)
-                                    .setMessage(dataSnapshot.child("resetmessage").getValue(String.class))
-                                    .setCancelable(true)
-                                    .setView(input)
-                                    .setPositiveButton("Reset Password", new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(final DialogInterface dialogInterface, int i) {
-                                            String inputid = input.getText().toString();
-                                            if(inputid.isEmpty() || !(inputid.length() == 7)){
-                                                Toast.makeText(LoginActivity.this,"Please enter a valid Student id",Toast.LENGTH_SHORT).show();
+                // Apply the text color span
+
+                ssBuilder.setSpan(
+                        foregroundColorSpan,
+                        0,
+                        titleText.length(),
+                        Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+                );
+
+                    AlertDialog dialog = new AlertDialog.Builder(LoginActivity.this)
+                            .setTitle(ssBuilder)
+                            .setMessage("Canopy will not work properly if you've changed your hibiscus password. You need to reset the same for canopy also.")
+                            .setCancelable(true)
+                            .setView(input)
+                            .setPositiveButton("Reset Password", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(final DialogInterface dialogInterface, int i) {
+                                    String inputid = input.getText().toString();
+                                    if(inputid.isEmpty() || !(inputid.length() == 7)){
+                                        Toast.makeText(LoginActivity.this,"Please enter a valid Student id",Toast.LENGTH_SHORT).show();
+                                    }
+                                    else {
+                                        FirebaseAuth.getInstance().sendPasswordResetEmail(inputid.toLowerCase() + "@iiit-bh.ac.in").addOnCompleteListener(new OnCompleteListener<Void>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<Void> task) {
+                                                Toast.makeText(LoginActivity.this,"Reset Password mail sent successfully",Toast.LENGTH_LONG).show();
+                                                dialogInterface.dismiss();
                                             }
-                                            else {
-                                                FirebaseAuth.getInstance().sendPasswordResetEmail(inputid.toLowerCase() + "@iiit-bh.ac.in").addOnCompleteListener(new OnCompleteListener<Void>() {
-                                                    @Override
-                                                    public void onComplete(@NonNull Task<Void> task) {
-                                                        Toast.makeText(LoginActivity.this,"Reset Password mail sent successfully",Toast.LENGTH_LONG).show();
-                                                        dialogInterface.dismiss();
-                                                    }
-                                                });
-                                            }
+                                        });
+                                    }
 
 
-                                        }
-                                    })
-                                    .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialogInterface, int i) {
-                                            dialogInterface.dismiss();
-                                        }
-                                    })
-                                    .create();
+                                }
+                            })
+                            .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    dialogInterface.dismiss();
+                                }
+                            })
+                            .create();
 
 
-                            dialog.show();
-                        }
-                        catch (IllegalStateException e){
-                            e.printStackTrace();
-                        }
+                    dialog.show();
 
-                    }
 
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                    }
-                });
 
             }
         });
