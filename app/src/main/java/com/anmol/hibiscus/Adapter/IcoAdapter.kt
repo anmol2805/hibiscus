@@ -89,13 +89,7 @@ class IcoAdapter(internal var c: Context, internal var notices: MutableList<Noti
 
         
         holder.noticelayout?.setOnClickListener {
-            if (!read){
-                holder.mtitle?.typeface = typeface
-                holder.dates?.typeface = typeface
-                holder.pstdby?.typeface = typeface
-                holder.attent?.typeface = typeface
-                db.updatereadnotice(true,noticedata.id)
-            }
+
             val intent2 = Intent(c, NoticeDataActivity::class.java)
             intent2.putExtra("id",noticedata.id)
             intent2.putExtra("title",noticedata.title)
@@ -113,6 +107,13 @@ class IcoAdapter(internal var c: Context, internal var notices: MutableList<Noti
                 c.startActivity(intent2,optionsCompat.toBundle())
             }else{
                 c.startActivity(intent2)
+            }
+            if (!read){
+                holder.mtitle?.typeface = typeface
+                holder.dates?.typeface = typeface
+                holder.pstdby?.typeface = typeface
+                holder.attent?.typeface = typeface
+                db.updatereadnotice(true,noticedata.id)
             }
         }
 
