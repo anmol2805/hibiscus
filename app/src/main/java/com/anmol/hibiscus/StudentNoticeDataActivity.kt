@@ -55,16 +55,21 @@ class StudentNoticeDataActivity : AppCompatActivity() {
         if (appLinkData != null) {
             id = appLinkData.lastPathSegment
             val studentdatabase = FirebaseDatabase.getInstance().reference.child("Studentnoticeboard")
-            studentdatabase.child(id!!).addListenerForSingleValueEvent(object : ValueEventListener{
+            studentdatabase.child(id!!).addValueEventListener(object : ValueEventListener{
                 override fun onCancelled(p0: DatabaseError) {
 
                 }
-                override fun onDataChange(p0: DataSnapshot) = if(!(p0.child("deleted").value as Boolean)){
-                    putvalues(id,p0.child("postedby").value.toString(),p0.child("title").value.toString(),p0.child("description").value.toString(),p0.child("time").value.toString())
-                }
-                else{
-                    Toast.makeText(this@StudentNoticeDataActivity,"Notice is deleted",Toast.LENGTH_SHORT).show()
-                    putvalues("","","","","")
+                override fun onDataChange(p0: DataSnapshot){
+                    if(p0.child("deleted").value!=null){
+                        if(!(p0.child("deleted").value as Boolean)){
+                            putvalues(id,p0.child("postedby").value.toString(),p0.child("title").value.toString(),p0.child("description").value.toString(),p0.child("time").value.toString())
+                        }
+                        else{
+                            Toast.makeText(this@StudentNoticeDataActivity,"Notice is deleted",Toast.LENGTH_SHORT).show()
+                            putvalues("","","","","")
+                        }
+                    }
+
                 }
 
             })
