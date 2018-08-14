@@ -11,7 +11,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Canopy v3.0"
+        android:text="Canopy v3.0.1"
         android:textColor="#000"
         android:fontFamily="@font/lato_bold"
         android:textAlignment="center"
