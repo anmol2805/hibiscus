@@ -40,7 +40,7 @@ import kotlin.collections.ArrayList
 /**
  * Created by anmol on 2/27/2018.
  */
-class IcoAdapter(internal var c: Context, internal var notices: MutableList<Notice>, private val mitemClickListener: ItemClickListener): RecyclerView.Adapter<IcoAdapter.MyViewHolder>(){
+class IcoAdapter(var c: Context?=null, internal var notices: MutableList<Notice>, private val mitemClickListener: ItemClickListener): RecyclerView.Adapter<IcoAdapter.MyViewHolder>(){
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         val v = LayoutInflater.from(c).inflate(R.layout.notice,parent,false)
@@ -54,16 +54,16 @@ class IcoAdapter(internal var c: Context, internal var notices: MutableList<Noti
     @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val noticedata = notices[position]
-        val db = Dbhelper(c)
+        val db = Dbhelper(c!!)
         val typeface = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            c.resources.getFont(R.font.lato_regular)
+            c!!.resources.getFont(R.font.lato_regular)
         } else{
-            ResourcesCompat.getFont(c,R.font.lato_regular)
+            ResourcesCompat.getFont(c!!,R.font.lato_regular)
         }
         val typefacebold = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            c.resources.getFont(R.font.lato_black)
+            c!!.resources.getFont(R.font.lato_black)
         } else{
-            ResourcesCompat.getFont(c,R.font.lato_black)
+            ResourcesCompat.getFont(c!!,R.font.lato_black)
         }
         val read = if(!noticedata.read){
             holder.mtitle?.typeface = typefacebold
@@ -104,9 +104,9 @@ class IcoAdapter(internal var c: Context, internal var notices: MutableList<Noti
                 val pair3:Pair<View,String> = Pair.create(holder.itemView.findViewById(R.id.attention),"myatt")
                 val pair4:Pair<View,String> = Pair.create(holder.itemView.findViewById(R.id.posted),"mypost")
                 val optionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation(c as Activity,pair1,pair2,pair3,pair4)
-                c.startActivity(intent2,optionsCompat.toBundle())
+                c!!.startActivity(intent2,optionsCompat.toBundle())
             }else{
-                c.startActivity(intent2)
+                c!!.startActivity(intent2)
             }
             if (!read){
                 holder.mtitle?.typeface = typeface
@@ -118,11 +118,11 @@ class IcoAdapter(internal var c: Context, internal var notices: MutableList<Noti
         }
 
         val book = if(!noticedata.bookmark){
-            Glide.with(c).load(R.drawable.star1).into(holder.starnotice)
+            Glide.with(c!!).load(R.drawable.star1).into(holder.starnotice)
             false
         }
         else{
-            Glide.with(c).load(R.drawable.stargolden).into(holder.starnotice)
+            Glide.with(c!!).load(R.drawable.stargolden).into(holder.starnotice)
             true
         }
 
@@ -131,11 +131,11 @@ class IcoAdapter(internal var c: Context, internal var notices: MutableList<Noti
         holder.starnotice?.setOnClickListener{
             if(!book){
                 db.updatebooknotice(true,noticedata.id)
-                Glide.with(c).load(R.drawable.stargolden).into(holder.starnotice)
+                Glide.with(c!!).load(R.drawable.stargolden).into(holder.starnotice)
             }
             else{
                 db.updatebooknotice(false,noticedata.id)
-                Glide.with(c).load(R.drawable.star1).into(holder.starnotice)
+                Glide.with(c!!).load(R.drawable.star1).into(holder.starnotice)
             }
         }
         holder.sharenotice?.setOnClickListener{
@@ -143,7 +143,7 @@ class IcoAdapter(internal var c: Context, internal var notices: MutableList<Noti
             shareintent.action = Intent.ACTION_SEND
             shareintent.type = "text/plain"
             shareintent.putExtra(Intent.EXTRA_TEXT,noticedata.title + " :\nhttps://canopydevelopers.com/sharednotice/" + noticedata.id)
-            c.startActivity(Intent.createChooser(shareintent,"Share notice"))
+            c!!.startActivity(Intent.createChooser(shareintent,"Share notice"))
         }
 
 

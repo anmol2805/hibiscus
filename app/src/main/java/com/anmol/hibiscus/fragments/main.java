@@ -285,13 +285,13 @@ public class main extends Fragment {
                                             String query = "Select * from notice_table ORDER BY notice_id DESC";
                                             notices = dbhelper.readData(query);
                                             if (!notices.isEmpty()){
-                                                progressBar.setVisibility(View.GONE);
-//                                                adapter = newfeature NoticeAdapter(getActivity(),R.layout.notice,notices);
-//                                                adapter.notifyDataSetChanged();
-//                                                lv.setAdapter(adapter);
-                                                icoAdapter = new IcoAdapter(getActivity(),notices,itemClickListener);
-                                                icoAdapter.notifyDataSetChanged();
-                                                rv.setAdapter(icoAdapter);
+                                                if(getActivity()!=null){
+                                                    progressBar.setVisibility(View.GONE);
+                                                    icoAdapter = new IcoAdapter(getActivity(),notices,itemClickListener);
+                                                    icoAdapter.notifyDataSetChanged();
+                                                    rv.setAdapter(icoAdapter);
+                                                }
+
 
                                             }
                                             else {
@@ -491,12 +491,14 @@ public class main extends Fragment {
 
         notices = dbhelper.readData(querybook);
         if (!notices.isEmpty()){
+            if(getActivity()!=null){
+                progressBar.setVisibility(View.GONE);
 
-            progressBar.setVisibility(View.GONE);
+                icoAdapter = new IcoAdapter(getActivity(),notices,itemClickListener);
+                icoAdapter.notifyDataSetChanged();
+                rv.setAdapter(icoAdapter);
+            }
 
-            icoAdapter = new IcoAdapter(getActivity(),notices,itemClickListener);
-            icoAdapter.notifyDataSetChanged();
-            rv.setAdapter(icoAdapter);
             searchedit.addTextChangedListener(new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -521,10 +523,13 @@ public class main extends Fragment {
                                 searchednotices.add(notices.get(j));
                             }
                         }
-                        progressBar.setVisibility(View.GONE);
-                        icoAdapter = new IcoAdapter(getActivity(),searchednotices,itemClickListener);
-                        icoAdapter.notifyDataSetChanged();
-                        rv.setAdapter(icoAdapter);
+                        if(getActivity()!=null){
+                            progressBar.setVisibility(View.GONE);
+                            icoAdapter = new IcoAdapter(getActivity(),searchednotices,itemClickListener);
+                            icoAdapter.notifyDataSetChanged();
+                            rv.setAdapter(icoAdapter);
+                        }
+
                     }
 
 
@@ -535,10 +540,13 @@ public class main extends Fragment {
             });
         }
         else {
-            Toast.makeText(getActivity(),"You don't have any starred notices yet",Toast.LENGTH_SHORT).show();
-            loadnotice();
-            starred = false;
-            Glide.with(getActivity()).load(R.drawable.starunfillwhite).into(showstar);
+            if(getActivity()!=null){
+                Toast.makeText(getActivity(),"You don't have any starred notices yet",Toast.LENGTH_SHORT).show();
+                loadnotice();
+                starred = false;
+                Glide.with(getActivity()).load(R.drawable.starunfillwhite).into(showstar);
+
+            }
 
         }
 
@@ -577,10 +585,13 @@ public class main extends Fragment {
                                 searchednotices.add(notices.get(j));
                         }
                     }
-                    progressBar.setVisibility(View.GONE);
-                    icoAdapter = new IcoAdapter(getActivity(),searchednotices,itemClickListener);
-                    icoAdapter.notifyDataSetChanged();
-                    rv.setAdapter(icoAdapter);
+                    if(getActivity()!=null){
+                        progressBar.setVisibility(View.GONE);
+                        icoAdapter = new IcoAdapter(getActivity(),searchednotices,itemClickListener);
+                        icoAdapter.notifyDataSetChanged();
+                        rv.setAdapter(icoAdapter);
+                    }
+
                 }
             }
 
@@ -590,11 +601,13 @@ public class main extends Fragment {
             }
         });
         if (!notices.isEmpty()){
+            if(getActivity()!=null){
+                progressBar.setVisibility(View.GONE);
+                icoAdapter = new IcoAdapter(getActivity(),notices,itemClickListener);
+                icoAdapter.notifyDataSetChanged();
+                rv.setAdapter(icoAdapter);
+            }
 
-            progressBar.setVisibility(View.GONE);
-            icoAdapter = new IcoAdapter(getActivity(),notices,itemClickListener);
-            icoAdapter.notifyDataSetChanged();
-            rv.setAdapter(icoAdapter);
 
         }
         else {
@@ -648,11 +661,14 @@ public class main extends Fragment {
                                         searchednotices.add(notices.get(j));
                                     }
                                 }
-                                progressBar.setVisibility(View.GONE);
-                                icoAdapter = new IcoAdapter(getActivity(),searchednotices,itemClickListener);
-                                icoAdapter.notifyDataSetChanged();
-                                rv.setAdapter(icoAdapter);
-                            }
+                                if(getActivity()!=null){
+                                    progressBar.setVisibility(View.GONE);
+                                    icoAdapter = new IcoAdapter(getActivity(),searchednotices,itemClickListener);
+                                    icoAdapter.notifyDataSetChanged();
+                                    rv.setAdapter(icoAdapter);
+
+                                }
+                                                            }
                         }
 
                         @Override
