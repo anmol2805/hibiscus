@@ -100,7 +100,7 @@ public class HibiscusActivity extends AppCompatActivity
         toggle.syncState();
         toggle.setDrawerIndicatorEnabled(false);
         auth = FirebaseAuth.getInstance();
-        databaseReference = FirebaseDatabase.getInstance().getReference().child("Students").child(auth.getCurrentUser().getUid()).child("hibiscus");
+
 
         setTitle("IIITcloud");
         System.out.println("notiftoken" + FirebaseInstanceId.getInstance().getToken());
@@ -109,46 +109,59 @@ public class HibiscusActivity extends AppCompatActivity
         View header = navigationView.getHeaderView(0);
         final CircleImageView imageView = (CircleImageView) header.findViewById(R.id.dph);
         final TextView sid = (TextView)header.findViewById(R.id.sid);
-        databaseReference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if(dataSnapshot.child("sid").getValue(String.class)!=null){
-                    String uid = dataSnapshot.child("sid").getValue(String.class);
-                    String uidu = uid.toUpperCase();
-                    String urlid = "https://hib.iiit-bh.ac.in/Hibiscus/docs/iiit/Photos/" + uidu + ".jpg";
-                    Glide.with(getApplicationContext()).load(urlid).into(imageView);
-                    sid.setText(uidu);
-                    String yr = String.valueOf(uidu.charAt(2)) + String.valueOf(uidu.charAt(3));
-                    int y = Integer.parseInt(yr);
-                    Calendar c = Calendar.getInstance();
-                    int year = c.get(Calendar.YEAR);
-                    String cr = String.valueOf(year);
-                    int month = c.get(Calendar.MONTH);
-                    String cyr = String.valueOf(cr.charAt(2)) + String.valueOf(cr.charAt(3));
-                    year = Integer.parseInt(cyr);
-                    if(month>6){
-                        sem = 2*(year - y) + 1;
-                    }
-                    else{
-                        sem = 2*(year - y);
-                    }
-                    if(sem<9){
-                        Map<String,Object> map = new HashMap<>();
-                        map.put("semester",sem);
-                        FirebaseDatabase.getInstance().getReference().child("Students").child(auth.getCurrentUser().getUid()).child("hibiscus").updateChildren(map);
+        if(auth.getCurrentUser()!=null){
+            databaseReference = FirebaseDatabase.getInstance().getReference().child("Students").child(auth.getCurrentUser().getUid()).child("hibiscus");
+            databaseReference.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    if(dataSnapshot.child("sid").getValue(String.class)!=null){
+                        String uid = dataSnapshot.child("sid").getValue(String.class);
+                        String uidu = uid.toUpperCase();
+                        String urlid = "https://hib.iiit-bh.ac.in/Hibiscus/docs/iiit/Photos/" + uidu + ".jpg";
+                        Glide.with(getApplicationContext()).load(urlid).into(imageView);
+                        sid.setText(uidu);
+                        String yr = String.valueOf(uidu.charAt(2)) + String.valueOf(uidu.charAt(3));
+                        int y = Integer.parseInt(yr);
+                        Calendar c = Calendar.getInstance();
+                        int year = c.get(Calendar.YEAR);
+                        String cr = String.valueOf(year);
+                        int month = c.get(Calendar.MONTH);
+                        String cyr = String.valueOf(cr.charAt(2)) + String.valueOf(cr.charAt(3));
+                        year = Integer.parseInt(cyr);
+                        if(month>6){
+                            sem = 2*(year - y) + 1;
+                        }
+                        else{
+                            sem = 2*(year - y);
+                        }
+                        if(sem<9){
+                            Map<String,Object> map = new HashMap<>();
+                            map.put("semester",sem);
+                            FirebaseDatabase.getInstance().getReference().child("Students").child(auth.getCurrentUser().getUid()).child("hibiscus").updateChildren(map);
+                        }
+
+
                     }
 
 
                 }
 
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
 
-            }
+                }
+            });
+        }
+        else{
+            FirebaseAuth.getInstance().signOut();
+            Intent intent = new Intent(HibiscusActivity.this,LoginActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+            finish();
+            overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_down);
+        }
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
         interstitialAdsubgrades = new InterstitialAd(this);
         interstitialAdattendance = new InterstitialAd(this);
         interstitialAdviewgrades = new InterstitialAd(this);
@@ -218,27 +231,28 @@ public class HibiscusActivity extends AppCompatActivity
     }
     private void checkpassstatus(){
         final JSONObject jsonObject = new JSONObject();
-        FirebaseDatabase.getInstance().getReference().child("Students").child(auth.getCurrentUser().getUid()).child("hibiscus").addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if(dataSnapshot.child("sid").getValue(String.class)!=null && dataSnapshot.child("pwd").getValue(String.class)!=null){
-                    final String uid = dataSnapshot.child("sid").getValue(String.class);
-                    String pwd = dataSnapshot.child("pwd").getValue(String.class);
-                    try {
-                        jsonObject.put("uid",uid);
-                        jsonObject.put("pwd",pwd);
-                        jsonObject.put("method","encrypted");
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                    JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, jsonObject, new Response.Listener<JSONObject>() {
-                        @Override
-                        public void onResponse(JSONObject response) {
-                            try {
-                                System.out.println(response);
-                                System.out.println(jsonObject);
+        if(auth.getCurrentUser()!=null){
+            FirebaseDatabase.getInstance().getReference().child("Students").child(auth.getCurrentUser().getUid()).child("hibiscus").addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    if(dataSnapshot.child("sid").getValue(String.class)!=null && dataSnapshot.child("pwd").getValue(String.class)!=null){
+                        final String uid = dataSnapshot.child("sid").getValue(String.class);
+                        String pwd = dataSnapshot.child("pwd").getValue(String.class);
+                        try {
+                            jsonObject.put("uid",uid);
+                            jsonObject.put("pwd",pwd);
+                            jsonObject.put("method","encrypted");
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, jsonObject, new Response.Listener<JSONObject>() {
+                            @Override
+                            public void onResponse(JSONObject response) {
+                                try {
+                                    System.out.println(response);
+                                    System.out.println(jsonObject);
 
-                                if(response.getString("result").equals("failed")){
+                                    if(response.getString("result").equals("failed")){
 //                                    FirebaseDatabase.getInstance().getReference().child("passwordreset").addValueEventListener(new ValueEventListener() {
 //                                        @Override
 //                                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -257,66 +271,77 @@ public class HibiscusActivity extends AppCompatActivity
 //
 //                                        }
 //                                    });
-                                    String titleText = "Password change detected!";
+                                        String titleText = "Password change detected!";
 
-                                    // Initialize a newfeature foreground color span instance
-                                    ForegroundColorSpan foregroundColorSpan = new ForegroundColorSpan(getResources().getColor(R.color.colorAccent));
+                                        // Initialize a newfeature foreground color span instance
+                                        ForegroundColorSpan foregroundColorSpan = new ForegroundColorSpan(getResources().getColor(R.color.colorAccent));
 
-                                    // Initialize a newfeature spannable string builder instance
-                                    SpannableStringBuilder ssBuilder = new SpannableStringBuilder(titleText);
+                                        // Initialize a newfeature spannable string builder instance
+                                        SpannableStringBuilder ssBuilder = new SpannableStringBuilder(titleText);
 
-                                    ssBuilder.setSpan(
-                                            foregroundColorSpan,
-                                            0,
-                                            titleText.length(),
-                                            Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
-                                    );
-                                    AlertDialog dialog = new AlertDialog.Builder(HibiscusActivity.this)
-                                            .setTitle(ssBuilder)
-                                            .setMessage("Canopy detected a password change for your Hibiscus account. We suggest resetting the Canopy password with your new Hibiscus password to continue using the service.")
-                                            .setCancelable(false)
-                                            .setPositiveButton("Reset password", new DialogInterface.OnClickListener() {
-                                                @Override
-                                                public void onClick(DialogInterface dialogInterface, int i) {
-                                                    FirebaseAuth.getInstance().sendPasswordResetEmail(uid + "@iiit-bh.ac.in").addOnCompleteListener(new OnCompleteListener<Void>() {
-                                                        @Override
-                                                        public void onComplete(@NonNull Task<Void> task) {
-                                                            FirebaseAuth.getInstance().signOut();
-                                                            Intent intent = new Intent(HibiscusActivity.this,LoginActivity.class);
-                                                            intent.putExtra("type","resetpass");
-                                                            intent.putExtra("email",uid);
-                                                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                                            startActivity(intent);
-                                                            finish();
-                                                            overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_down);
-                                                        }
-                                                    });
+                                        ssBuilder.setSpan(
+                                                foregroundColorSpan,
+                                                0,
+                                                titleText.length(),
+                                                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+                                        );
+                                        AlertDialog dialog = new AlertDialog.Builder(HibiscusActivity.this)
+                                                .setTitle(ssBuilder)
+                                                .setMessage("Canopy detected a password change for your Hibiscus account. We suggest resetting the Canopy password with your new Hibiscus password to continue using the service.")
+                                                .setCancelable(false)
+                                                .setPositiveButton("Reset password", new DialogInterface.OnClickListener() {
+                                                    @Override
+                                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                                        FirebaseAuth.getInstance().sendPasswordResetEmail(uid + "@iiit-bh.ac.in").addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                            @Override
+                                                            public void onComplete(@NonNull Task<Void> task) {
+                                                                FirebaseAuth.getInstance().signOut();
+                                                                Intent intent = new Intent(HibiscusActivity.this,LoginActivity.class);
+                                                                intent.putExtra("type","resetpass");
+                                                                intent.putExtra("email",uid);
+                                                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                                                startActivity(intent);
+                                                                finish();
+                                                                overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_down);
+                                                            }
+                                                        });
 
-                                                }
-                                            })
-                                            .create();
-                                    dialog.show();
+                                                    }
+                                                })
+                                                .create();
+                                        dialog.show();
+                                    }
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
                                 }
-                            } catch (JSONException e) {
-                                e.printStackTrace();
                             }
-                        }
-                    }, new Response.ErrorListener() {
-                        @Override
-                        public void onErrorResponse(VolleyError error) {
+                        }, new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
 
-                        }
-                    });
-                    Mysingleton.getInstance(HibiscusActivity.this).addToRequestqueue(jsonObjectRequest);
+                            }
+                        });
+                        Mysingleton.getInstance(HibiscusActivity.this).addToRequestqueue(jsonObjectRequest);
+                    }
                 }
-            }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
 
-            }
-        });
+                }
+            });
+        }
+        else{
+            FirebaseAuth.getInstance().signOut();
+            Intent intent = new Intent(HibiscusActivity.this,LoginActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+            finish();
+            overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_down);
+        }
+
     }
 
 
