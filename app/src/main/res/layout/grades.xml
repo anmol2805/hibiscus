@@ -20,11 +20,10 @@
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
             android:layout_weight="1"
-            android:text="TextView"
+            android:padding="@dimen/textmargin"
             android:textColor="#000"
             android:textSize="14sp"
             android:textStyle="bold"
-            android:padding="@dimen/textmargin"
 
             app:fontFamily="@font/lato_regular" />
 

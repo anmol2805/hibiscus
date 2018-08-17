@@ -369,93 +369,105 @@ public class NoticeDataActivity extends AppCompatActivity {
         final JSONObject jsonObject = new JSONObject();
         FirebaseAuth auth = FirebaseAuth.getInstance();
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().getRoot();
-        databaseReference.child("Students").child(auth.getCurrentUser().getUid()).child("hibiscus").addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if(dataSnapshot.child("sid").getValue(String.class)!=null && dataSnapshot.child("pwd").getValue(String.class)!=null){
-                    uid = dataSnapshot.child("sid").getValue(String.class);
-                    pwd = dataSnapshot.child("pwd").getValue(String.class);
-                    try {
-                        jsonObject.put("uid",uid);
-                        jsonObject.put("pwd",pwd);
-                        jsonObject.put("pass","encrypt");
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                    JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, getResources().getString(R.string.notice_url), jsonObject, new Response.Listener<JSONObject>() {
-                        @Override
-                        public void onResponse(JSONObject response) {
+        if(auth.getCurrentUser()!=null){
+            databaseReference.child("Students").child(auth.getCurrentUser().getUid()).child("hibiscus").addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    if(dataSnapshot.child("sid").getValue(String.class)!=null && dataSnapshot.child("pwd").getValue(String.class)!=null){
+                        uid = dataSnapshot.child("sid").getValue(String.class);
+                        pwd = dataSnapshot.child("pwd").getValue(String.class);
+                        try {
+                            jsonObject.put("uid",uid);
+                            jsonObject.put("pwd",pwd);
+                            jsonObject.put("pass","encrypt");
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, getResources().getString(R.string.notice_url), jsonObject, new Response.Listener<JSONObject>() {
+                            @Override
+                            public void onResponse(JSONObject response) {
 
-                            try {
-                                int c = 0;
-                                while (c<response.getJSONArray("Notices").length()){
+                                try {
+                                    int c = 0;
+                                    while (c<response.getJSONArray("Notices").length()){
 
-                                    JSONObject object = response.getJSONArray("Notices").getJSONObject(c);
+                                        JSONObject object = response.getJSONArray("Notices").getJSONObject(c);
 
 
-                                    String mtitle = object.getString("title");
-                                    String mdate = object.getString("date");
-                                    String postedby = object.getString("posted_by");
-                                    String attention = object.getString("attention");
-                                    String mid = object.getString("id");
-                                    Notice notice = new Notice(mtitle,mdate,postedby,attention,mid,false,false);
-                                    int k=0;
-                                    for(int j = 0;j<noticeids.size();j++){
-                                        if(noticeids.get(j).equals(NoticeDataActivity.this.id)){
-                                            k=1;
+                                        String mtitle = object.getString("title");
+                                        String mdate = object.getString("date");
+                                        String postedby = object.getString("posted_by");
+                                        String attention = object.getString("attention");
+                                        String mid = object.getString("id");
+                                        Notice notice = new Notice(mtitle,mdate,postedby,attention,mid,false,false);
+                                        int k=0;
+                                        for(int j = 0;j<noticeids.size();j++){
+                                            if(noticeids.get(j).equals(NoticeDataActivity.this.id)){
+                                                k=1;
+                                            }
                                         }
+                                        if(k==0){
+                                            System.out.print("noticestatus:newfeature entry");
+                                            dbhelper.insertData(notice);
+                                        }
+                                        else{
+                                            System.out.print("noticestatus:already present");
+                                        }
+                                        dbhelper.updatenotice(notice);
+                                        c++;
                                     }
-                                    if(k==0){
-                                        System.out.print("noticestatus:newfeature entry");
-                                        dbhelper.insertData(notice);
+                                    String query = "Select * from notice_table WHERE notice_id="+id;
+                                    List<Notice> notices = new ArrayList<>();
+                                    notices.clear();
+                                    notices = dbhelper.readData(query);
+                                    try{
+                                        title = notices.get(0).getTitle();
+                                        date = notices.get(0).getDate();
+                                        att = notices.get(0).getAttention();
+                                        post = notices.get(0).getPosted_by();
+                                        System.out.println(notices);
                                     }
-                                    else{
-                                        System.out.print("noticestatus:already present");
+                                    catch (IndexOutOfBoundsException e){
+                                        e.printStackTrace();
+
                                     }
-                                    dbhelper.updatenotice(notice);
-                                    c++;
-                                }
-                                String query = "Select * from notice_table WHERE notice_id="+id;
-                                List<Notice> notices = new ArrayList<>();
-                                notices.clear();
-                                notices = dbhelper.readData(query);
-                                try{
-                                    title = notices.get(0).getTitle();
-                                    date = notices.get(0).getDate();
-                                    att = notices.get(0).getAttention();
-                                    post = notices.get(0).getPosted_by();
-                                    System.out.println(notices);
-                                }
-                                catch (IndexOutOfBoundsException e){
+
+
+                                } catch (JSONException e) {
                                     e.printStackTrace();
-
                                 }
 
-
-                            } catch (JSONException e) {
-                                e.printStackTrace();
                             }
+                        }, new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
 
-                        }
-                    }, new Response.ErrorListener() {
-                        @Override
-                        public void onErrorResponse(VolleyError error) {
-
-                        }
-                    });
-                    Mysingleton.getInstance(getApplicationContext()).addToRequestqueue(jsonObjectRequest);
+                            }
+                        });
+                        Mysingleton.getInstance(getApplicationContext()).addToRequestqueue(jsonObjectRequest);
 
 
+
+                    }
 
                 }
 
-            }
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
+                }
+            });
+        }
+        else{
+            FirebaseAuth.getInstance().signOut();
+            Intent intent = new Intent(NoticeDataActivity.this,LoginActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+            finish();
+            overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_down);
+        }
 
-            }
-        });
     }
     @Override
     public boolean onSupportNavigateUp() {

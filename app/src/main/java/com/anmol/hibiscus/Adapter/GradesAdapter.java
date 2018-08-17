@@ -81,7 +81,6 @@ public class GradesAdapter extends ArrayAdapter<Mysubjectgrade> {
             refreshgrd.setVisibility(View.VISIBLE);
             subjectpgr.setVisibility(View.GONE);
             TextView text = (TextView)v.findViewById(R.id.subject);
-            text.setText(mysubjectgrades.get(position).getName());
             final TextView q1 = (TextView)v.findViewById(R.id.q1);
             final TextView q2 = (TextView)v.findViewById(R.id.q2);
             final TextView ms = (TextView)v.findViewById(R.id.ms);
@@ -91,314 +90,278 @@ public class GradesAdapter extends ArrayAdapter<Mysubjectgrade> {
             final TextView tot = (TextView)v.findViewById(R.id.tot);
             final LinearLayout l1 = (LinearLayout)v.findViewById(R.id.l1);
             final LinearLayout l2 = (LinearLayout)v.findViewById(R.id.l2);
-
             final Button load = (Button)v.findViewById(R.id.pg);
             final ProgressBar lg = (ProgressBar)v.findViewById(R.id.lg);
+            try{
+                text.setText(mysubjectgrades.get(position).getName());
+                if(mysubjectgrades.get(position).getHide()){
+                    load.setVisibility(View.GONE);
+                    l1.setVisibility(View.VISIBLE);
+                    l2.setVisibility(View.VISIBLE);
+                }
+                else {
+                    load.setVisibility(View.VISIBLE);
+                    l1.setVisibility(View.GONE);
+                    l2.setVisibility(View.GONE);
+                }
+                String quiz1 = mysubjectgrades.get(position).getQuiz1();
+                String quiz2 = mysubjectgrades.get(position).getQuiz2();
+                String midsem = mysubjectgrades.get(position).getMidsem();
+                String endsem = mysubjectgrades.get(position).getEndsem();
+                String faculty = mysubjectgrades.get(position).getFaculty_assessment();
+                String gpa = mysubjectgrades.get(position).getGrade_point();
+                String total = mysubjectgrades.get(position).getSubtotal();
+                q1.setText(quiz1);
+                q2.setText(quiz2);
+                ms.setText(midsem);
+                es.setText(endsem);
+                fa.setText(faculty);
+                cgpa.setText(gpa);
+                tot.setText(total);
+                refreshgrd.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        refreshgrd.setVisibility(View.GONE);
+                        subjectpgr.setVisibility(View.VISIBLE);
+                        databaseReference.addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                if(dataSnapshot!=null && dataSnapshot.child("sid").getValue()!=null && dataSnapshot.child("pwd").getValue()!=null) {
+                                    uid = dataSnapshot.child("sid").getValue().toString();
+                                    pwd = dataSnapshot.child("pwd").getValue().toString();
+                                }
+                                try {
+                                    jsonObject.put("sub_code",mysubjectgrades.get(position).getId());
+                                    jsonObject.put("pass","encrypt");
+                                    jsonObject.put("uid",uid);
+                                    jsonObject.put("pwd",pwd);
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                                final JsonObjectRequest jsonObjectRequestc = new JsonObjectRequest(Request.Method.POST, context.getResources().getString(R.string.subgrades_url), jsonObject, new Response.Listener<JSONObject>() {
+                                    @Override
+                                    public void onResponse(JSONObject response) {
+                                        try {
 
-            if(mysubjectgrades.get(position).getHide()){
-                load.setVisibility(View.GONE);
-                l1.setVisibility(View.VISIBLE);
-                l2.setVisibility(View.VISIBLE);
-            }
-            else {
-                load.setVisibility(View.VISIBLE);
-                l1.setVisibility(View.GONE);
-                l2.setVisibility(View.GONE);
-            }
-            String quiz1 = mysubjectgrades.get(position).getQuiz1();
-            String quiz2 = mysubjectgrades.get(position).getQuiz2();
-            String midsem = mysubjectgrades.get(position).getMidsem();
-            String endsem = mysubjectgrades.get(position).getEndsem();
-            String faculty = mysubjectgrades.get(position).getFaculty_assessment();
-            String gpa = mysubjectgrades.get(position).getGrade_point();
-            String total = mysubjectgrades.get(position).getSubtotal();
-            q1.setText(quiz1);
-            q2.setText(quiz2);
-            ms.setText(midsem);
-            es.setText(endsem);
-            fa.setText(faculty);
-            cgpa.setText(gpa);
-            tot.setText(total);
+                                            int c = 0;
+                                            float m1 = 0,m2 = 0,m3 = 0,m4 = 0,m5 = 0;
+                                            JSONObject object = response.getJSONArray("Notices").getJSONObject(c);
+                                            subjectpgr.setVisibility(View.GONE);
+                                            refreshgrd.setVisibility(View.VISIBLE);
+                                            String q1s = object.getString("quiz1");
+                                            String q2s = object.getString("quiz2");
+                                            String q3s = object.getString("midsem");
+                                            String q4s = object.getString("endsem");
+                                            String q5s = object.getString("faculty_assessment");
+                                            String fq1s,fq2s,fq3s,fq4s,fq5s,fgpa,ftot;
+                                            fgpa = object.getString("grade_point");
+
+                                            if(!q1s.isEmpty() && !Character.isLetter(q1s.charAt(0))){
+                                                m1 = Float.parseFloat(q1s);
+                                                fq1s = q1s;
+
+                                            }
+                                            else{
+                                                fq1s = "";
+                                                m1 = 0;
+                                            }
+                                            if(!q2s.isEmpty() && !Character.isLetter(q2s.charAt(0))){
+                                                m2 = Float.parseFloat(q2s);
+                                                fq2s = q2s;
+
+                                            }
+                                            else{
+                                                fq2s = "";
+                                                m2 = 0;
+                                            }
+                                            if(!q3s.isEmpty()&& !Character.isLetter(q3s.charAt(0))){
+                                                m3 = Float.parseFloat(q3s);
+                                                fq3s = q3s;
+
+                                            }
+                                            else{
+                                                fq3s = "";
+                                                m3 = 0;
+                                            }
+                                            if(!q4s.isEmpty()&& !Character.isLetter(q4s.charAt(0))){
+                                                m4 = Float.parseFloat(q4s);
+                                                fq4s = q4s;
+
+                                            }
+                                            else{
+                                                fq4s = "";
+                                                m4 = 0;
+                                            }
+                                            if(!q5s.isEmpty()&& !Character.isLetter(q5s.charAt(0))){
+                                                m5 = Float.parseFloat(q5s);
+                                                fq5s = q5s;
+
+                                            }
+                                            else{
+                                                fq5s = "";
+                                                m5 = 0;
+                                            }
+
+                                            float total = m1+m2+m3+m4+m5;
+                                            ftot = String.format("%.2f",total);
+                                            Subjectgrd subjectgrd = new Subjectgrd(fq1s,fq2s,fq3s,fq4s,fq5s,fgpa,ftot);
+                                            DatabaseReference db = FirebaseDatabase.getInstance().getReference().child("Students").child(auth.getCurrentUser().getUid()).child("subject_grades");
+                                            db.child(mysubjectgrades.get(position).getId()).setValue(subjectgrd);
+                                            Toast.makeText(context,"Updated Successfully",Toast.LENGTH_SHORT).show();
 
 
-//            DatabaseReference db = FirebaseDatabase.getInstance().getReference().child("Students").child(auth.getCurrentUser().getUid()).child("subject_grades");
-//            db.child(mysubjectgrades.get(position).getId()).addValueEventListener(newfeature ValueEventListener() {
-//                @Override
-//                public void onDataChange(DataSnapshot dataSnapshot) {
-//                    if(!dataSnapshot.exists() || !dataSnapshot.hasChildren()){
-//                        load.setVisibility(View.VISIBLE);
-//                        l1.setVisibility(View.GONE);
-//                        l2.setVisibility(View.GONE);
-//                        lg.setVisibility(View.GONE);
-//                    }
-//                    else{
-//                        lg.setVisibility(View.GONE);
-//                        load.setVisibility(View.GONE);
-//                        l1.setVisibility(View.VISIBLE);
-//                        l2.setVisibility(View.VISIBLE);
-//                        String quiz1 = dataSnapshot.child("quiz1").getValue(String.class);
-//                        String quiz2 = dataSnapshot.child("quiz2").getValue(String.class);
-//                        String midsem = dataSnapshot.child("midsem").getValue(String.class);
-//                        String endsem = dataSnapshot.child("endsem").getValue(String.class);
-//                        String faculty = dataSnapshot.child("faculty_assessment").getValue(String.class);
-//                        String gpa = dataSnapshot.child("grade_point").getValue(String.class);
-//                        String total = dataSnapshot.child("subtotal").getValue(String.class);
-//                        q1.setText(quiz1);
-//                        q2.setText(quiz2);
-//                        ms.setText(midsem);
-//                        es.setText(endsem);
-//                        fa.setText(faculty);
-//                        cgpa.setText(gpa);
-//                        tot.setText(total);
-//                        send(quiz1,quiz2,midsem,endsem,faculty,total);
-//
-//                    }
-//                }
-//
-//                @Override
-//                public void onCancelled(DatabaseError databaseError) {
-//
-//                }
-//            });
-            refreshgrd.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    refreshgrd.setVisibility(View.GONE);
-                    subjectpgr.setVisibility(View.VISIBLE);
-                    databaseReference.addValueEventListener(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(DataSnapshot dataSnapshot) {
-                            if(dataSnapshot!=null && dataSnapshot.child("sid").getValue()!=null && dataSnapshot.child("pwd").getValue()!=null) {
-                                uid = dataSnapshot.child("sid").getValue().toString();
-                                pwd = dataSnapshot.child("pwd").getValue().toString();
-                            }
-                            try {
-                                jsonObject.put("sub_code",mysubjectgrades.get(position).getId());
-                                jsonObject.put("pass","encrypt");
-                                jsonObject.put("uid",uid);
-                                jsonObject.put("pwd",pwd);
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-                            final JsonObjectRequest jsonObjectRequestc = new JsonObjectRequest(Request.Method.POST, context.getResources().getString(R.string.subgrades_url), jsonObject, new Response.Listener<JSONObject>() {
-                                @Override
-                                public void onResponse(JSONObject response) {
-                                    try {
+                                        } catch (JSONException e) {
+                                            e.printStackTrace();
+                                        }
 
-                                        int c = 0;
-                                        float m1 = 0,m2 = 0,m3 = 0,m4 = 0,m5 = 0;
-                                        JSONObject object = response.getJSONArray("Notices").getJSONObject(c);
+                                    }
+                                }, new Response.ErrorListener() {
+                                    @Override
+                                    public void onErrorResponse(VolleyError error) {
                                         subjectpgr.setVisibility(View.GONE);
                                         refreshgrd.setVisibility(View.VISIBLE);
-                                        String q1s = object.getString("quiz1");
-                                        String q2s = object.getString("quiz2");
-                                        String q3s = object.getString("midsem");
-                                        String q4s = object.getString("endsem");
-                                        String q5s = object.getString("faculty_assessment");
-                                        String fq1s,fq2s,fq3s,fq4s,fq5s,fgpa,ftot;
-                                        fgpa = object.getString("grade_point");
-
-                                        if(!q1s.isEmpty() && !Character.isLetter(q1s.charAt(0))){
-                                            m1 = Float.parseFloat(q1s);
-                                            fq1s = q1s;
-
-                                        }
-                                        else{
-                                            fq1s = "";
-                                            m1 = 0;
-                                        }
-                                        if(!q2s.isEmpty() && !Character.isLetter(q2s.charAt(0))){
-                                            m2 = Float.parseFloat(q2s);
-                                            fq2s = q2s;
-
-                                        }
-                                        else{
-                                            fq2s = "";
-                                            m2 = 0;
-                                        }
-                                        if(!q3s.isEmpty()&& !Character.isLetter(q3s.charAt(0))){
-                                            m3 = Float.parseFloat(q3s);
-                                            fq3s = q3s;
-
-                                        }
-                                        else{
-                                            fq3s = "";
-                                            m3 = 0;
-                                        }
-                                        if(!q4s.isEmpty()&& !Character.isLetter(q4s.charAt(0))){
-                                            m4 = Float.parseFloat(q4s);
-                                            fq4s = q4s;
-
-                                        }
-                                        else{
-                                            fq4s = "";
-                                            m4 = 0;
-                                        }
-                                        if(!q5s.isEmpty()&& !Character.isLetter(q5s.charAt(0))){
-                                            m5 = Float.parseFloat(q5s);
-                                            fq5s = q5s;
-
-                                        }
-                                        else{
-                                            fq5s = "";
-                                            m5 = 0;
-                                        }
-
-                                        float total = m1+m2+m3+m4+m5;
-                                        ftot = String.format("%.2f",total);
-                                        Subjectgrd subjectgrd = new Subjectgrd(fq1s,fq2s,fq3s,fq4s,fq5s,fgpa,ftot);
-                                        DatabaseReference db = FirebaseDatabase.getInstance().getReference().child("Students").child(auth.getCurrentUser().getUid()).child("subject_grades");
-                                        db.child(mysubjectgrades.get(position).getId()).setValue(subjectgrd);
-                                        Toast.makeText(context,"Updated Successfully",Toast.LENGTH_SHORT).show();
-
-
-                                    } catch (JSONException e) {
-                                        e.printStackTrace();
                                     }
-
-                                }
-                            }, new Response.ErrorListener() {
-                                @Override
-                                public void onErrorResponse(VolleyError error) {
-                                    subjectpgr.setVisibility(View.GONE);
-                                    refreshgrd.setVisibility(View.VISIBLE);
-                                }
-                            });
-                            Mysingleton.getInstance(context).addToRequestqueue(jsonObjectRequestc);
-                        }
-
-                        @Override
-                        public void onCancelled(DatabaseError databaseError) {
-
-                        }
-                    });
-                }
-            });
-            load.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    load.setVisibility(View.GONE);
-                    lg.setVisibility(View.VISIBLE);
-                    databaseReference.addValueEventListener(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(DataSnapshot dataSnapshot) {
-                            if(dataSnapshot!=null && dataSnapshot.child("sid").getValue()!=null && dataSnapshot.child("pwd").getValue()!=null) {
-                                uid = dataSnapshot.child("sid").getValue().toString();
-                                pwd = dataSnapshot.child("pwd").getValue().toString();
+                                });
+                                Mysingleton.getInstance(context).addToRequestqueue(jsonObjectRequestc);
                             }
-                            try {
-                                jsonObject.put("sub_code",mysubjectgrades.get(position).getId());
-                                jsonObject.put("pass","encrypt");
-                                jsonObject.put("uid",uid);
-                                jsonObject.put("pwd",pwd);
-                            } catch (JSONException e) {
-                                e.printStackTrace();
+
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+
                             }
-                            final JsonObjectRequest jsonObjectRequestc = new JsonObjectRequest(Request.Method.POST, context.getResources().getString(R.string.subgrades_url), jsonObject, new Response.Listener<JSONObject>() {
-                                @Override
-                                public void onResponse(JSONObject response) {
-                                    try {
+                        });
+                    }
+                });
+                load.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        load.setVisibility(View.GONE);
+                        lg.setVisibility(View.VISIBLE);
+                        databaseReference.addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                if(dataSnapshot!=null && dataSnapshot.child("sid").getValue()!=null && dataSnapshot.child("pwd").getValue()!=null) {
+                                    uid = dataSnapshot.child("sid").getValue().toString();
+                                    pwd = dataSnapshot.child("pwd").getValue().toString();
+                                }
+                                try {
+                                    jsonObject.put("sub_code",mysubjectgrades.get(position).getId());
+                                    jsonObject.put("pass","encrypt");
+                                    jsonObject.put("uid",uid);
+                                    jsonObject.put("pwd",pwd);
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                                final JsonObjectRequest jsonObjectRequestc = new JsonObjectRequest(Request.Method.POST, context.getResources().getString(R.string.subgrades_url), jsonObject, new Response.Listener<JSONObject>() {
+                                    @Override
+                                    public void onResponse(JSONObject response) {
+                                        try {
 
-                                        int c = 0;
-                                        float m1 = 0,m2 = 0,m3 = 0,m4 = 0,m5 = 0;
-                                        JSONObject object = response.getJSONArray("Notices").getJSONObject(c);
-                                        lg.setVisibility(View.GONE);
-                                        l1.setVisibility(View.VISIBLE);
-                                        l2.setVisibility(View.VISIBLE);
-                                        String q1s = object.getString("quiz1");
-                                        String q2s = object.getString("quiz2");
-                                        String q3s = object.getString("midsem");
-                                        String q4s = object.getString("endsem");
-                                        String q5s = object.getString("faculty_assessment");
-                                        String fq1s,fq2s,fq3s,fq4s,fq5s,fgpa,ftot;
-                                        fgpa = object.getString("grade_point");
-
-                                        if(!q1s.isEmpty() && !Character.isLetter(q1s.charAt(0))){
-                                            m1 = Float.parseFloat(q1s);
-                                            fq1s = q1s;
-
-                                        }
-                                        else{
-                                            fq1s = "";
-                                            m1 = 0;
-                                        }
-                                        if(!q2s.isEmpty() && !Character.isLetter(q2s.charAt(0))){
-                                            m2 = Float.parseFloat(q2s);
-                                            fq2s = q2s;
-
-                                        }
-                                        else{
-                                            fq2s = "";
-                                            m2 = 0;
-                                        }
-                                        if(!q3s.isEmpty()&& !Character.isLetter(q3s.charAt(0))){
-                                            m3 = Float.parseFloat(q3s);
-                                            fq3s = q3s;
-
-                                        }
-                                        else{
-                                            fq3s = "";
-                                            m3 = 0;
-                                        }
-                                        if(!q4s.isEmpty()&& !Character.isLetter(q4s.charAt(0))){
-                                            m4 = Float.parseFloat(q4s);
-                                            fq4s = q4s;
-
-                                        }
-                                        else{
-                                            fq4s = "";
-                                            m4 = 0;
-                                        }
-                                        if(!q5s.isEmpty()&& !Character.isLetter(q5s.charAt(0))){
-                                            m5 = Float.parseFloat(q5s);
-                                            fq5s = q5s;
-
-                                        }
-                                        else{
-                                            fq5s = "";
-                                            m5 = 0;
-                                        }
-
-                                        float total = m1+m2+m3+m4+m5;
-                                        ftot = String.format("%.2f",total);
-                                        Subjectgrd subjectgrd = new Subjectgrd(fq1s,fq2s,fq3s,fq4s,fq5s,fgpa,ftot);
-                                        DatabaseReference db = FirebaseDatabase.getInstance().getReference().child("Students").child(auth.getCurrentUser().getUid()).child("subject_grades");
-                                        db.child(mysubjectgrades.get(position).getId()).setValue(subjectgrd);
-
-                                        if(response.getJSONArray("Notices")==null){
-                                            Toast.makeText(context,"null",Toast.LENGTH_SHORT).show();
+                                            int c = 0;
+                                            float m1 = 0,m2 = 0,m3 = 0,m4 = 0,m5 = 0;
+                                            JSONObject object = response.getJSONArray("Notices").getJSONObject(c);
                                             lg.setVisibility(View.GONE);
-                                            load.setVisibility(View.VISIBLE);
-                                            l1.setVisibility(View.GONE);
-                                            l2.setVisibility(View.GONE);
+                                            l1.setVisibility(View.VISIBLE);
+                                            l2.setVisibility(View.VISIBLE);
+                                            String q1s = object.getString("quiz1");
+                                            String q2s = object.getString("quiz2");
+                                            String q3s = object.getString("midsem");
+                                            String q4s = object.getString("endsem");
+                                            String q5s = object.getString("faculty_assessment");
+                                            String fq1s,fq2s,fq3s,fq4s,fq5s,fgpa,ftot;
+                                            fgpa = object.getString("grade_point");
+
+                                            if(!q1s.isEmpty() && !Character.isLetter(q1s.charAt(0))){
+                                                m1 = Float.parseFloat(q1s);
+                                                fq1s = q1s;
+
+                                            }
+                                            else{
+                                                fq1s = "";
+                                                m1 = 0;
+                                            }
+                                            if(!q2s.isEmpty() && !Character.isLetter(q2s.charAt(0))){
+                                                m2 = Float.parseFloat(q2s);
+                                                fq2s = q2s;
+
+                                            }
+                                            else{
+                                                fq2s = "";
+                                                m2 = 0;
+                                            }
+                                            if(!q3s.isEmpty()&& !Character.isLetter(q3s.charAt(0))){
+                                                m3 = Float.parseFloat(q3s);
+                                                fq3s = q3s;
+
+                                            }
+                                            else{
+                                                fq3s = "";
+                                                m3 = 0;
+                                            }
+                                            if(!q4s.isEmpty()&& !Character.isLetter(q4s.charAt(0))){
+                                                m4 = Float.parseFloat(q4s);
+                                                fq4s = q4s;
+
+                                            }
+                                            else{
+                                                fq4s = "";
+                                                m4 = 0;
+                                            }
+                                            if(!q5s.isEmpty()&& !Character.isLetter(q5s.charAt(0))){
+                                                m5 = Float.parseFloat(q5s);
+                                                fq5s = q5s;
+
+                                            }
+                                            else{
+                                                fq5s = "";
+                                                m5 = 0;
+                                            }
+
+                                            float total = m1+m2+m3+m4+m5;
+                                            ftot = String.format("%.2f",total);
+                                            Subjectgrd subjectgrd = new Subjectgrd(fq1s,fq2s,fq3s,fq4s,fq5s,fgpa,ftot);
+                                            DatabaseReference db = FirebaseDatabase.getInstance().getReference().child("Students").child(auth.getCurrentUser().getUid()).child("subject_grades");
+                                            db.child(mysubjectgrades.get(position).getId()).setValue(subjectgrd);
+
+                                            if(response.getJSONArray("Notices")==null){
+                                                Toast.makeText(context,"null",Toast.LENGTH_SHORT).show();
+                                                lg.setVisibility(View.GONE);
+                                                load.setVisibility(View.VISIBLE);
+                                                l1.setVisibility(View.GONE);
+                                                l2.setVisibility(View.GONE);
+                                            }
+
+                                        } catch (JSONException e) {
+                                            e.printStackTrace();
                                         }
 
-                                    } catch (JSONException e) {
-                                        e.printStackTrace();
                                     }
+                                }, new Response.ErrorListener() {
+                                    @Override
+                                    public void onErrorResponse(VolleyError error) {
+                                        Toast.makeText(context,"Network Error!!!",Toast.LENGTH_SHORT).show();
+                                        lg.setVisibility(View.GONE);
+                                        load.setVisibility(View.VISIBLE);
+                                        l1.setVisibility(View.GONE);
+                                        l2.setVisibility(View.GONE);
+                                    }
+                                });
+                                Mysingleton.getInstance(context).addToRequestqueue(jsonObjectRequestc);
+                            }
 
-                                }
-                            }, new Response.ErrorListener() {
-                                @Override
-                                public void onErrorResponse(VolleyError error) {
-                                    Toast.makeText(context,"Network Error!!!",Toast.LENGTH_SHORT).show();
-                                    lg.setVisibility(View.GONE);
-                                    load.setVisibility(View.VISIBLE);
-                                    l1.setVisibility(View.GONE);
-                                    l2.setVisibility(View.GONE);
-                                }
-                            });
-                            Mysingleton.getInstance(context).addToRequestqueue(jsonObjectRequestc);
-                        }
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
 
-                        @Override
-                        public void onCancelled(DatabaseError databaseError) {
+                            }
+                        });
 
-                        }
-                    });
+                    }
+                });
 
-                }
-            });
+            }
+            catch(IndexOutOfBoundsException e){
+                e.printStackTrace();
+            }
 
 
 
