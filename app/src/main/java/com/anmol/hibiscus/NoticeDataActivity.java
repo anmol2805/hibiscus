@@ -205,63 +205,75 @@ public class NoticeDataActivity extends AppCompatActivity {
         a.setText(att);
         t.setText(title);
         FirebaseAuth auth =FirebaseAuth.getInstance();
-        final DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("Students").child(auth.getCurrentUser().getUid()).child("hibiscus");
-        databaseReference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if(dataSnapshot.child("sid").getValue(String.class)!=null && dataSnapshot.child("pwd").getValue(String.class)!=null) {
-                    uid = dataSnapshot.child("sid").getValue(String.class);
-                    pwd = dataSnapshot.child("pwd").getValue(String.class);
-                    object = new JSONObject();
-                    try {
-                        object.put("uid",uid);
-                        object.put("pwd",pwd);
-                        object.put("id",id);
-                        object.put("pass","encrypt");
-                    } catch (JSONException e) {
-                        e.printStackTrace();
+        if(auth.getCurrentUser()!=null){
+            final DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("Students").child(auth.getCurrentUser().getUid()).child("hibiscus");
+            databaseReference.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    if(dataSnapshot.child("sid").getValue(String.class)!=null && dataSnapshot.child("pwd").getValue(String.class)!=null) {
+                        uid = dataSnapshot.child("sid").getValue(String.class);
+                        pwd = dataSnapshot.child("pwd").getValue(String.class);
+                        object = new JSONObject();
+                        try {
+                            object.put("uid",uid);
+                            object.put("pwd",pwd);
+                            object.put("id",id);
+                            object.put("pass","encrypt");
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        request(object, 0);
+                        retry.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                request(object, 1);
+
+                            }
+                        });
+                        pn.setVisibility(View.VISIBLE);
+                        FirebaseDatabase.getInstance().getReference().child("NoticeData").addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                if(dataSnapshot.hasChild(id)
+                                        && !dataSnapshot.child(id).child("notice").getValue(String.class).contains("null")
+                                        && dataSnapshot.child(id).child("notice").getValue()!=null
+                                        && dataSnapshot.child(id).child("notice").getValue(String.class)!=null
+                                        && dataSnapshot.child(id).child("notice")!=null
+                                        && dataSnapshot.child(id).child("notice").exists()
+                                        ){
+                                    System.out.println("notice:" + "firebase");
+                                    nd.loadData(dataSnapshot.child(id).child("notice").getValue(String.class), "text/html; charset=utf-8", "UTF-8");
+                                    pn.setVisibility(View.GONE);
+                                }
+                                else {
+                                    request(object,1);
+                                }
+                            }
+
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+
+                            }
+                        });
                     }
-                    request(object, 0);
-                    retry.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            request(object, 1);
-
-                        }
-                    });
-                    pn.setVisibility(View.VISIBLE);
-                    FirebaseDatabase.getInstance().getReference().child("NoticeData").addValueEventListener(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(DataSnapshot dataSnapshot) {
-                            if(dataSnapshot.hasChild(id)
-                                    && !dataSnapshot.child(id).child("notice").getValue(String.class).contains("null")
-                                    && dataSnapshot.child(id).child("notice").getValue()!=null
-                                    && dataSnapshot.child(id).child("notice").getValue(String.class)!=null
-                                    && dataSnapshot.child(id).child("notice")!=null
-                                    && dataSnapshot.child(id).child("notice").exists()
-                                    ){
-                                System.out.println("notice:" + "firebase");
-                                nd.loadData(dataSnapshot.child(id).child("notice").getValue(String.class), "text/html; charset=utf-8", "UTF-8");
-                                pn.setVisibility(View.GONE);
-                            }
-                            else {
-                                request(object,1);
-                            }
-                        }
-
-                        @Override
-                        public void onCancelled(DatabaseError databaseError) {
-
-                        }
-                    });
                 }
-            }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
 
-            }
-        });
+                }
+            });
+        }
+        else{
+            FirebaseAuth.getInstance().signOut();
+            Intent intent = new Intent(NoticeDataActivity.this,LoginActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+            finish();
+            overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_down);
+        }
+
 
     }
 
