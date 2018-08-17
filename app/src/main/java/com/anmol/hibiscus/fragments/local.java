@@ -412,10 +412,12 @@ public class local extends Fragment implements SheetLayout.OnFabAnimationEndList
                                 searchednotices.add(noticels.get(j));
                             }
                         }
+                        if(getActivity()!=null){
+                            noticeAdapterl = new IcoAdapter1(getActivity(),searchednotices,itemClickListener);
+                            noticeAdapterl.notifyDataSetChanged();
+                            listView.setAdapter(noticeAdapterl);
+                        }
 
-                        noticeAdapterl = new IcoAdapter1(getActivity(),searchednotices,itemClickListener);
-                        noticeAdapterl.notifyDataSetChanged();
-                        listView.setAdapter(noticeAdapterl);
                     }
 
 

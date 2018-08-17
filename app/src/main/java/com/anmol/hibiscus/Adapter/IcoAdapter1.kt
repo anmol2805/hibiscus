@@ -51,7 +51,7 @@ import kotlin.collections.HashMap
 /**
  * Created by anmol on 2/27/2018.
  */
-class IcoAdapter1(internal var c: Context, internal var notices: MutableList<Notice>, private val mitemClickListener: ItemClickListener): RecyclerView.Adapter<IcoAdapter1.MyViewHolder>(){
+class IcoAdapter1(var c: Context?=null, internal var notices: MutableList<Notice>, private val mitemClickListener: ItemClickListener): RecyclerView.Adapter<IcoAdapter1.MyViewHolder>(){
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         val v = LayoutInflater.from(c).inflate(R.layout.notice1,parent,false)
@@ -65,17 +65,17 @@ class IcoAdapter1(internal var c: Context, internal var notices: MutableList<Not
     @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val noticedata = notices[position]
-        val db = Dbstudentnoticebookshelper(c)
-        val dbfo = Dbstudentnoticefirstopenhelper(c)
+        val db = Dbstudentnoticebookshelper(c!!)
+        val dbfo = Dbstudentnoticefirstopenhelper(c!!)
         val typeface = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            c.resources.getFont(R.font.lato_regular)
+            c!!.resources.getFont(R.font.lato_regular)
         } else{
-            ResourcesCompat.getFont(c,R.font.lato_regular)
+            ResourcesCompat.getFont(c!!,R.font.lato_regular)
         }
         val typefacebold = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            c.resources.getFont(R.font.lato_black)
+            c!!.resources.getFont(R.font.lato_black)
         } else{
-            ResourcesCompat.getFont(c,R.font.lato_black)
+            ResourcesCompat.getFont(c!!,R.font.lato_black)
         }
         val read = if(!noticedata.read){
             holder.mtitle?.typeface = typefacebold
@@ -112,9 +112,9 @@ class IcoAdapter1(internal var c: Context, internal var notices: MutableList<Not
                 val pair2:Pair<View,String> = Pair.create(holder.itemView.findViewById(R.id.title),"mytext")
                 val pair4:Pair<View,String> = Pair.create(holder.itemView.findViewById(R.id.posted),"mypost")
                 val optionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation(c as Activity,pair1,pair2,pair4)
-                c.startActivity(intent2,optionsCompat.toBundle())
+                c!!.startActivity(intent2,optionsCompat.toBundle())
             }else{
-                c.startActivity(intent2)
+                c!!.startActivity(intent2)
             }
             if (!read){
                 holder.mtitle?.typeface = typeface
@@ -150,7 +150,7 @@ class IcoAdapter1(internal var c: Context, internal var notices: MutableList<Not
             shareintent.action = Intent.ACTION_SEND
             shareintent.type = "text/plain"
             shareintent.putExtra(Intent.EXTRA_TEXT,noticedata.title + " :\nhttps://canopydevelopers.com/sharedstudentnotice/" + noticedata.id)
-            c.startActivity(Intent.createChooser(shareintent,"Share notice"))
+            c!!.startActivity(Intent.createChooser(shareintent,"Share notice"))
         }
         val auth = FirebaseAuth.getInstance()
         val hibdatabase = FirebaseDatabase.getInstance().reference.child("Students").child(auth!!.currentUser!!.uid).child("hibiscus")
@@ -182,7 +182,7 @@ class IcoAdapter1(internal var c: Context, internal var notices: MutableList<Not
 //            val alertDialog = alertDialogBuilder.create()
 //            alertDialog.show()
 
-            val dialog = AlertDialog.Builder(c)
+            val dialog = AlertDialog.Builder(c!!)
                     .setTitle("Confirm")
                     .setMessage("Are you sure you want to delete this notice?")
                     .setPositiveButton("Delete") { dialogInterface, i ->
@@ -203,7 +203,7 @@ class IcoAdapter1(internal var c: Context, internal var notices: MutableList<Not
             intent.putExtra("title",noticedata.title)
             intent.putExtra("description",noticedata.attention)
             intent.putExtra("id",noticedata.id)
-            c.startActivity(intent)
+            c!!.startActivity(intent)
         }
 
 
