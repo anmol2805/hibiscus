@@ -22,9 +22,7 @@ import com.anmol.hibiscus.Mysingleton;
 import com.anmol.hibiscus.R;
 import com.anmol.hibiscus.Rasoi.Adapter.Mess1Adapter;
 import com.anmol.hibiscus.Rasoi.Model.mess1;
-import com.anmol.hibiscus.Rasoi.Services.MessStatusService;
-import com.anmol.hibiscus.Rasoi.Services.MessStatusService2;
-import com.anmol.hibiscus.Rasoi.Services.UpcomingWeekService;
+
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -63,16 +61,7 @@ public class ground extends Fragment {
         ViewGroup footer = (ViewGroup)layoutInflater.inflate(R.layout.footer,list,false);
         list.addFooterView(footer,null,false);
         bookm1 = (Button)footer.findViewById(R.id.bookm1);
-        Intent intent = new Intent(getActivity(), MessStatusService.class);
-        getActivity().startService(intent);
-        Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                Intent intent1 = new Intent(getActivity(), MessStatusService2.class);
-                getActivity().startService(intent1);
-            }
-        },1000);
+
         db.child("messStatus").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -89,14 +78,7 @@ public class ground extends Fragment {
 
             }
         });
-        load.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                load.setVisibility(View.GONE);
-                Intent intent = new Intent(getActivity(), MessStatusService.class);
-                getActivity().startService(intent);
-            }
-        });
+
         db.child("messStatus").child("mess1").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -138,10 +120,7 @@ public class ground extends Fragment {
                                                 JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, "http://14.139.198.171/api/rosei/booking", jsonObject, new Response.Listener<JSONObject>() {
                                                     @Override
                                                     public void onResponse(JSONObject response) {
-                                                        Intent intent = new Intent(getActivity(),UpcomingWeekService.class);
-                                                        getActivity().startService(intent);
-                                                        Intent intent1 = new Intent(getActivity(), MessStatusService2.class);
-                                                        getActivity().startService(intent1);
+
                                                     }
                                                 }, new Response.ErrorListener() {
                                                     @Override

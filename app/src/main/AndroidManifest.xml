@@ -91,6 +91,7 @@
         <service android:name=".services.RequestServiceAttendance" />
         <service android:name=".services.RequestServiceGrades" />
         <service android:name=".services.RequestServiceCourses" />
+        <service android:name=".Rasoi.Services.NotifyService" />
 
         <activity
             android:name=".Courselistnotice"
@@ -121,6 +122,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".WebviewActivity" />
+        <activity android:name=".Rasoi.Book_Activity" />
 
     </application>
 

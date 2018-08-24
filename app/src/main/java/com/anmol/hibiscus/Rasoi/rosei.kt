@@ -23,8 +23,7 @@ import com.anmol.hibiscus.Rasoi.Adapter.GridAdapter
 import com.anmol.hibiscus.Rasoi.Adapter.ViewpageAdapter
 import com.anmol.hibiscus.Rasoi.Model.Coupon
 import com.anmol.hibiscus.Rasoi.Model.MessStatus
-import com.anmol.hibiscus.Rasoi.Services.MessStatusService
-import com.anmol.hibiscus.Rasoi.Services.MessStatusService2
+
 import com.bumptech.glide.Glide
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
