@@ -17,13 +17,7 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.anmol.rosei.Adapter.Mess2Adapter;
-import com.anmol.rosei.Model.mess2;
-import com.anmol.rosei.Mysingleton;
-import com.anmol.rosei.R;
-import com.anmol.rosei.Services.MessStatusService;
-import com.anmol.rosei.Services.MessStatusService2;
-import com.anmol.rosei.Services.UpcomingWeekService;
+
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;

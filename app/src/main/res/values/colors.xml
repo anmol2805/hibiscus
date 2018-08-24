@@ -28,4 +28,12 @@
     <color name="grey3">#616161</color>
     <color name="grey4">#424242</color>
     <color name="pgrcolor">#3498db</color>
+    <color name="trans">#00000000</color>
+    <color name="veg">#008200</color>
+    <color name="nonveg">#964122</color>
+    <color name="dull">#eaeaea</color>
+    <color name="nonveglit">#dc3545</color>
+    <color name="veglit">#28a745</color>
+    <color name="inactivered">#bc8d7c</color>
+    <color name="inactivegreen">#75b675</color>
 </resources>
