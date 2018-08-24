@@ -34,6 +34,7 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.anmol.hibiscus.Rasoi.rosei;
 import com.bumptech.glide.Glide;
 import com.anmol.hibiscus.fragments.complaints;
 import com.anmol.hibiscus.fragments.ebooks;
@@ -486,6 +487,15 @@ public class HibiscusActivity extends AppCompatActivity
                 @Override
                 public void run() {
                     fm.beginTransaction().replace(R.id.content_hib,new local()).commitAllowingStateLoss();
+                    fm.executePendingTransactions();
+                }
+            },175);}
+
+        else if (id == R.id.nav_rasoi) {
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    fm.beginTransaction().replace(R.id.content_hib,new rosei()).commitAllowingStateLoss();
                     fm.executePendingTransactions();
                 }
             },175);}
