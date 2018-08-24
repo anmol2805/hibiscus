@@ -8,8 +8,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.anmol.rosei.Model.MessStatus;
-import com.anmol.rosei.R;
+
+import com.anmol.hibiscus.R;
+import com.anmol.hibiscus.Rasoi.Model.MessStatus;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
