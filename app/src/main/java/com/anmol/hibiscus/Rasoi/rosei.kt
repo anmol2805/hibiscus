@@ -180,8 +180,7 @@ class rosei : Fragment() {
                             viewPager!!.visibility=View.GONE
                             cd!!.visibility= View.VISIBLE
                             messStatuses.clear()
-                            val dfs:DateFormatSymbols?=null
-                            val days = dfs!!.shortWeekdays
+                            val days = arrayOf("Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun")
                             var i = 0
                             val nil = "NotIssued"
                             var day: String?
@@ -193,17 +192,17 @@ class rosei : Fragment() {
                             while (i<7){
                                 date = format.format(calendar.time)
                                 calendar.add(Calendar.DAY_OF_MONTH, 1)
-                                day = if(i == 6){
-                                    days[0]
-                                } else{
-                                    days[i+1]
-                                }
+                                day = days[i]
 
                                 val messStatus = MessStatus(nil, nil, nil, date, day)
                                 messStatuses.add(messStatus)
                                 i++
                             }
                             if(activity!=null){
+                                if (!messStatuses.isEmpty()) {
+                                    gridAdapter = GridAdapter(activity, messStatuses)
+                                    gridview!!.adapter = gridAdapter
+                                }
                                 Toast.makeText(activity,"You haven't booked any coupons for this week.",Toast.LENGTH_SHORT).show()
                             }
 
