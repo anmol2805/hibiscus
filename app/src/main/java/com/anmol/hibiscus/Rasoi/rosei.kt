@@ -1,19 +1,15 @@
 package com.anmol.hibiscus.Rasoi
 
 import android.app.Fragment
-import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
-import android.os.Handler
 
 import android.support.v4.view.ViewPager
-import android.support.v7.app.AlertDialog
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.animation.Animation
 import android.widget.Button
 import android.widget.Toast
 
@@ -24,22 +20,19 @@ import com.anmol.hibiscus.Rasoi.Adapter.ViewpageAdapter
 import com.anmol.hibiscus.Rasoi.Model.Coupon
 import com.anmol.hibiscus.Rasoi.Model.MessStatus
 
-import com.bumptech.glide.Glide
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import java.text.DateFormatSymbols
 
-import java.text.DateFormat
 import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.ArrayList
 import java.util.Calendar
 import java.util.Date
-
-import de.hdodenhof.circleimageview.CircleImageView
 
 class rosei : Fragment() {
     internal var auth = FirebaseAuth.getInstance()
@@ -180,6 +173,30 @@ class rosei : Fragment() {
                             }
                         }
                         else{
+                            messStatuses.clear()
+                            val dfs:DateFormatSymbols?=null
+                            val days = dfs!!.shortWeekdays
+                            var i = 0
+                            val nil = "NotIssued"
+                            var day: String?
+                            var date: String?
+                            val format = SimpleDateFormat("dd-MM-yyyy")
+                            val calendar = Calendar.getInstance()
+                            calendar.firstDayOfWeek = Calendar.MONDAY
+                            calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY)
+                            while (i<7){
+                                date = format.format(calendar.time)
+                                calendar.add(Calendar.DAY_OF_MONTH, 1)
+                                day = if(i == 6){
+                                    days[0]
+                                } else{
+                                    days[i+1]
+                                }
+
+                                val messStatus = MessStatus(nil, nil, nil, date, day)
+                                messStatuses.add(messStatus)
+                                i++
+                            }
                             if(activity!=null){
                                 Toast.makeText(activity,"You haven't booked any coupons for this week.",Toast.LENGTH_SHORT).show()
                             }
