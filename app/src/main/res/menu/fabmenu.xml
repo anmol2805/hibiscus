@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    >
+    <item
+        android:id="@+id/bmc"
+        android:icon="@drawable/bookcoupon"
+        android:title="Book next week coupons"
+        />
+    <item
+        android:id="@+id/emc"
+        android:icon="@drawable/editmenu"
+        android:title="Edit your coupons"
+        />
+    <item
+        android:id="@+id/bfc"
+        android:icon="@drawable/friendcoupon"
+        android:title="Book coupon for your friend"
+        />
+</menu>
