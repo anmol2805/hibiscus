@@ -3,12 +3,14 @@ package com.anmol.hibiscus.Rasoi
 import android.app.Fragment
 import android.content.Intent
 import android.os.Bundle
+import android.support.design.internal.NavigationMenu
 
 import android.support.v4.view.ViewPager
 import android.support.v7.widget.CardView
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
@@ -27,6 +29,7 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+
 import java.text.DateFormatSymbols
 
 import java.text.ParseException
@@ -47,6 +50,7 @@ class rosei : Fragment() {
     internal var coupons: MutableList<Coupon> = ArrayList()
     var viewpageAdapter:ViewpageAdapter?=null
     var cd:CardView?=null
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val vi = inflater.inflate(R.layout.activity_rosei, container, false)
         activity.title = "IIIT Rasoi"
@@ -54,10 +58,12 @@ class rosei : Fragment() {
         logout = vi.findViewById<View>(R.id.logout) as Button
         viewPager = vi.findViewById<View>(R.id.viewpager) as ViewPager
         gridview = vi.findViewById<View>(R.id.gridrecycler) as RecyclerView
+
         cd = vi.findViewById(R.id.nocoupons)
         cd!!.visibility = View.GONE
         gridview!!.setHasFixedSize(true)
         gridview!!.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
+
         book!!.setOnClickListener { startActivity(Intent(activity, Book_Activity::class.java)) }
         val dateFormat = SimpleDateFormat("yyyy-MM-dd")
         val cal = Calendar.getInstance()
