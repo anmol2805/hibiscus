@@ -48,6 +48,8 @@ class ground : Fragment() {
     internal lateinit var total: TextView
     internal lateinit var bookm1: Button
     internal var db = FirebaseDatabase.getInstance().reference.child("students").child(auth.currentUser!!.uid)
+    internal var databaseReference = FirebaseDatabase.getInstance().reference.child("Students").child(auth.currentUser!!.uid).child("hibiscus")
+    internal var messdb = FirebaseDatabase.getInstance().reference.child("Rasoi").child("menu").child("mess1")
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle): View? {
         val v = inflater.inflate(R.layout.ground, container, false)
         load = v.findViewById<View>(R.id.load) as Button
@@ -73,7 +75,58 @@ class ground : Fragment() {
 
             }
         })
+        databaseReference.addValueEventListener(object:ValueEventListener{
+            override fun onCancelled(p0: DatabaseError) {
+                if(activity!=null){
+                    Toast.makeText(activity,"Something went wrong!!!",Toast.LENGTH_SHORT).show()
+                }
+            }
 
+            override fun onDataChange(p0: DataSnapshot) {
+                val sid = p0.child("sid").value as String
+                messdb.addValueEventListener(object : ValueEventListener{
+                    override fun onCancelled(error: DatabaseError) {
+
+                    }
+
+                    override fun onDataChange(menu: DataSnapshot) {
+                            val statusdb = FirebaseDatabase.getInstance().reference.child("Rasoi").child(sid).child("nextweek")
+                            statusdb.addValueEventListener(object :ValueEventListener{
+                                override fun onCancelled(statuserror: DatabaseError) {
+
+                                }
+
+                                override fun onDataChange(status: DataSnapshot) {
+                                    var i = 0
+                                    while (i<7){
+                                        if(menu.child(i.toString()).exists()){
+                                            val data = menu.child(i.toString())
+                                            val brkfast = data.child("breakfast").value!!.toString()
+                                            val lnch = data.child("lunch").value!!.toString()
+                                            val dinnr = data.child("dinner").value!!.toString()
+                                            val bp = data.child("bp").value!!
+                                            val lp = data.child("lp").value!!
+                                            val dp = data.child("dp").value!!
+                                        }
+                                        if(status.child(i.toString()).exists()){
+                                            val data = status.child(i.toString())
+                                            val bs = data.child("bs").value!!.toString()
+                                            val ls = data.child("ls").value!!.toString()
+                                            val ds = data.child("ds").value!!.toString()
+                                        }
+                                        i++
+                                    }
+                                }
+
+                            })
+
+
+                    }
+
+                })
+            }
+
+        })
         db.child("messStatus").child("mess1").addValueEventListener(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 mess1s.clear()
