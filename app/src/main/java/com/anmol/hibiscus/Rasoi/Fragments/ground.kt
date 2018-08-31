@@ -31,8 +31,8 @@ import com.google.firebase.database.ValueEventListener
 
 import org.json.JSONException
 import org.json.JSONObject
-
-import java.util.ArrayList
+import java.text.SimpleDateFormat
+import java.util.*
 
 /**
  * Created by anmol on 10/20/2017.
@@ -61,20 +61,20 @@ class ground : Fragment() {
         list.addFooterView(footer, null, false)
         bookm1 = footer.findViewById<View>(R.id.bookm1) as Button
 
-        db.child("messStatus").addValueEventListener(object : ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                if (dataSnapshot.child("amount1").getValue(String::class.java) != null) {
-                    amt1.text = dataSnapshot.child("amount1").getValue(String::class.java)
-                }
-                if (dataSnapshot.child("total").getValue(String::class.java) != null) {
-                    total.text = dataSnapshot.child("total").getValue(String::class.java)
-                }
-            }
-
-            override fun onCancelled(databaseError: DatabaseError) {
-
-            }
-        })
+//        db.child("messStatus").addValueEventListener(object : ValueEventListener {
+//            override fun onDataChange(dataSnapshot: DataSnapshot) {
+//                if (dataSnapshot.child("amount1").getValue(String::class.java) != null) {
+//                    amt1.text = dataSnapshot.child("amount1").getValue(String::class.java)
+//                }
+//                if (dataSnapshot.child("total").getValue(String::class.java) != null) {
+//                    total.text = dataSnapshot.child("total").getValue(String::class.java)
+//                }
+//            }
+//
+//            override fun onCancelled(databaseError: DatabaseError) {
+//
+//            }
+//        })
         databaseReference.addValueEventListener(object:ValueEventListener{
             override fun onCancelled(p0: DatabaseError) {
                 if(activity!=null){
@@ -97,25 +97,56 @@ class ground : Fragment() {
                                 }
 
                                 override fun onDataChange(status: DataSnapshot) {
+                                    mess1s.clear()
+                                    var dates:String?=null
+                                    val format = SimpleDateFormat("EEEE-dd-MM-yyyy")
+                                    val calendar = Calendar.getInstance()
+                                    calendar.firstDayOfWeek = Calendar.MONDAY
+                                    calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY)
+                                    calendar.add(Calendar.DAY_OF_MONTH,7)
                                     var i = 0
                                     while (i<7){
+                                        dates = format.format(calendar.time)
+                                        calendar.add(Calendar.DAY_OF_MONTH, 1)
+                                        var bs = "notissued"
+                                        var ls = "notissued"
+                                        var ds = "notissued"
+                                        var brkfast:String?=null
+                                        var lnch:String?=null
+                                        var dinnr:String?=null
+                                        var bp:Long?=null
+                                        var lp:Long?=null
+                                        var dp:Long?=null
                                         if(menu.child(i.toString()).exists()){
                                             val data = menu.child(i.toString())
-                                            val brkfast = data.child("breakfast").value!!.toString()
-                                            val lnch = data.child("lunch").value!!.toString()
-                                            val dinnr = data.child("dinner").value!!.toString()
-                                            val bp = data.child("bp").value!!
-                                            val lp = data.child("lp").value!!
-                                            val dp = data.child("dp").value!!
+                                            brkfast = data.child("breakfast").value!!.toString()
+                                            lnch = data.child("lunch").value!!.toString()
+                                            dinnr = data.child("dinner").value!!.toString()
+                                            bp = data.child("bp").value!! as Long
+                                            lp = data.child("lp").value!! as Long
+                                            dp = data.child("dp").value!! as Long
                                         }
                                         if(status.child(i.toString()).exists()){
                                             val data = status.child(i.toString())
-                                            val bs = data.child("bs").value!!.toString()
-                                            val ls = data.child("ls").value!!.toString()
-                                            val ds = data.child("ds").value!!.toString()
+                                            bs = data.child("bs").value!!.toString()
+                                            ls = data.child("ls").value!!.toString()
+                                            ds = data.child("ds").value!!.toString()
                                         }
+                                        else{
+
+                                        }
+                                        val mess1 = mess1(dates, brkfast, lnch, dinnr, bs, ls, ds,bp,lp,dp)
+                                        mess1s.add(mess1)
                                         i++
                                     }
+                                    if (activity != null) {
+                                        mess1Adapter = Mess1Adapter(activity, R.layout.menu, mess1s)
+                                        mess1Adapter.notifyDataSetChanged()
+                                        load.visibility = View.GONE
+                                        list.adapter = mess1Adapter
+
+                                    }
+
                                 }
 
                             })
@@ -127,35 +158,7 @@ class ground : Fragment() {
             }
 
         })
-        db.child("messStatus").child("mess1").addValueEventListener(object : ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                mess1s.clear()
-                for (data in dataSnapshot.children) {
-                    val day = data.child("date").value!!.toString()
-                    val brkfast = data.child("brkfast").value!!.toString()
-                    val lnch = data.child("lnch").value!!.toString()
-                    val dinnr = data.child("dinnr").value!!.toString()
-                    val bs = data.child("bs").value!!.toString()
-                    val ls = data.child("ls").value!!.toString()
-                    val ds = data.child("ds").value!!.toString()
-                    val mess1 = mess1(day, brkfast, lnch, dinnr, bs, ls, ds)
-                    mess1s.add(mess1)
-                }
-                if (activity != null) {
-                    mess1Adapter = Mess1Adapter(activity, R.layout.menu, mess1s)
-                    mess1Adapter.notifyDataSetChanged()
-                    load.visibility = View.GONE
-                    list.adapter = mess1Adapter
 
-                }
-
-
-            }
-
-            override fun onCancelled(databaseError: DatabaseError) {
-
-            }
-        })
 
         return v
     }

@@ -7,11 +7,12 @@ package com.anmol.hibiscus.Rasoi.Model;
 public class mess1 {
 
     String date,brkfast,lnch,dinnr,bs,ls,ds;
+    Long bp,lp,dp;
 
     public mess1() {
     }
 
-    public mess1(String date, String brkfast, String lnch, String dinnr, String bs, String ls, String ds) {
+    public mess1(String date, String brkfast, String lnch, String dinnr, String bs, String ls, String ds, Long bp,Long lp, Long dp) {
         this.date = date;
         this.brkfast = brkfast;
         this.lnch = lnch;
@@ -19,6 +20,34 @@ public class mess1 {
         this.bs = bs;
         this.ls = ls;
         this.ds = ds;
+        this.lp = lp;
+        this.bp = bp;
+        this.dp = dp;
+
+    }
+
+    public Long getBp() {
+        return bp;
+    }
+
+    public void setBp(Long bp) {
+        this.bp = bp;
+    }
+
+    public Long getLp() {
+        return lp;
+    }
+
+    public void setLp(Long lp) {
+        this.lp = lp;
+    }
+
+    public Long getDp() {
+        return dp;
+    }
+
+    public void setDp(Long dp) {
+        this.dp = dp;
     }
 
     public String getBs() {
