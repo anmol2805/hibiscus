@@ -37,6 +37,7 @@ import java.text.SimpleDateFormat
 import java.util.ArrayList
 import java.util.Calendar
 import java.util.Date
+import com.github.clans.fab.FloatingActionButton
 
 class rosei : Fragment() {
     internal var auth = FirebaseAuth.getInstance()
@@ -50,6 +51,9 @@ class rosei : Fragment() {
     internal var coupons: MutableList<Coupon> = ArrayList()
     var viewpageAdapter:ViewpageAdapter?=null
     var cd:CardView?=null
+    var bmc:FloatingActionButton?=null
+    var eyc:FloatingActionButton?=null
+    var bfc:FloatingActionButton?=null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val vi = inflater.inflate(R.layout.activity_rosei, container, false)
@@ -63,7 +67,18 @@ class rosei : Fragment() {
         cd!!.visibility = View.GONE
         gridview!!.setHasFixedSize(true)
         gridview!!.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
+        bmc = vi.findViewById(R.id.bmc)
+        bfc = vi.findViewById(R.id.bfc)
+        eyc = vi.findViewById(R.id.eyc)
+        bmc!!.setOnClickListener {
 
+        }
+        bfc!!.setOnClickListener {
+
+        }
+        eyc!!.setOnClickListener {
+
+        }
         book!!.setOnClickListener { startActivity(Intent(activity, Book_Activity::class.java)) }
         val dateFormat = SimpleDateFormat("yyyy-MM-dd")
         val cal = Calendar.getInstance()

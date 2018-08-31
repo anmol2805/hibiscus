@@ -5,12 +5,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="#fff"
     android:layout_marginBottom="50dp">
 
     <Button
         android:id="@+id/book"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginStart="10dp"
@@ -47,6 +48,7 @@
         android:layout_marginTop="20dp"
         android:layout_marginEnd="20dp"
         android:layout_marginBottom="20dp"
+        android:visibility="invisible"
         android:background="@drawable/rasoiicon" />
 
 
@@ -161,8 +163,8 @@
         android:id="@+id/menu"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentTop="true"
         android:layout_marginRight="10dp"
         android:layout_marginBottom="10dp"
         android:layout_marginLeft="10dp"
@@ -198,19 +200,35 @@
         fab:menu_labels_maxLines="-1"
         fab:menu_labels_style="@style/MenuLabelsStyle"
         fab:menu_labels_position="left"
-        fab:menu_openDirection="up"
+        fab:menu_openDirection="down"
         fab:menu_backgroundColor="@android:color/transparent"
-        fab:menu_fab_label="your_label_here"
+
         fab:menu_fab_show_animation="@anim/my_show_animation"
+        android:elevation="10dp"
         fab:menu_fab_hide_animation="@anim/my_hide_animation">
 
         <com.github.clans.fab.FloatingActionButton
-            android:id="@+id/menu_item"
+            android:id="@+id/bfc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/friendcoupon"
+            fab:fab_size="mini"
+            fab:fab_label="Book coupons for your friend" />
+
+        <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/eyc"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/editmenu"
             fab:fab_size="mini"
-            fab:fab_label="Menu item 1" />
+            fab:fab_label="Edit your coupon" />
+        <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/bmc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/bookcoupon"
+            fab:fab_size="mini"
+            fab:fab_label="Book next week coupons" />
 
     </com.github.clans.fab.FloatingActionMenu>
 
