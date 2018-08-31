@@ -26,10 +26,7 @@ import java.util.List;
 public class Book_Activity extends AppCompatActivity {
     Button m1,m2;
 
-    List<mess1> mess1s = new ArrayList<>();
-    List<mess2> mess2s = new ArrayList<>();
-    Mess1Adapter mess1Adapter;
-    Mess2Adapter mess2Adapter;
+
 
     FirebaseAuth auth = FirebaseAuth.getInstance();
     DatabaseReference db = FirebaseDatabase.getInstance().getReference().child("students").child(auth.getCurrentUser().getUid());
@@ -49,8 +46,7 @@ public class Book_Activity extends AppCompatActivity {
         m2.setTextColor(getResources().getColor(R.color.colorPrimary));
         m1.setTextColor(getResources().getColor(R.color.white));
         m1.setBackground(getResources().getDrawable(R.drawable.round_button));
-//        Intent intent = new Intent(Book_Activity.this, MessStatusService.class);
-//        startService(intent);
+
         FragmentManager fm = getFragmentManager();
         fm.beginTransaction().replace(R.id.content,new ground()).commit();
 
