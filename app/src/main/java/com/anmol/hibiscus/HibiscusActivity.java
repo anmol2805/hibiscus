@@ -122,23 +122,63 @@ public class HibiscusActivity extends AppCompatActivity
                         Glide.with(getApplicationContext()).load(urlid).into(imageView);
                         sid.setText(uidu);
                         String yr = String.valueOf(uidu.charAt(2)) + String.valueOf(uidu.charAt(3));
-                        int y = Integer.parseInt(yr);
-                        Calendar c = Calendar.getInstance();
-                        int year = c.get(Calendar.YEAR);
-                        String cr = String.valueOf(year);
-                        int month = c.get(Calendar.MONTH);
-                        String cyr = String.valueOf(cr.charAt(2)) + String.valueOf(cr.charAt(3));
-                        year = Integer.parseInt(cyr);
-                        if(month>6){
-                            sem = 2*(year - y) + 1;
+                        try{
+                            int y = Integer.parseInt(yr);
+                            Calendar c = Calendar.getInstance();
+                            int year = c.get(Calendar.YEAR);
+                            String cr = String.valueOf(year);
+                            int month = c.get(Calendar.MONTH);
+                            String cyr = String.valueOf(cr.charAt(2)) + String.valueOf(cr.charAt(3));
+                            year = Integer.parseInt(cyr);
+                            if(month>6){
+                                sem = 2*(year - y) + 1;
+                            }
+                            else{
+                                sem = 2*(year - y);
+                            }
+                            if(sem<9){
+                                Map<String,Object> map = new HashMap<>();
+                                map.put("semester",sem);
+                                FirebaseDatabase.getInstance().getReference().child("Students").child(auth.getCurrentUser().getUid()).child("hibiscus").updateChildren(map);
+                            }
+
                         }
-                        else{
-                            sem = 2*(year - y);
-                        }
-                        if(sem<9){
-                            Map<String,Object> map = new HashMap<>();
-                            map.put("semester",sem);
-                            FirebaseDatabase.getInstance().getReference().child("Students").child(auth.getCurrentUser().getUid()).child("hibiscus").updateChildren(map);
+                        catch (NumberFormatException e){
+                            e.printStackTrace();
+                            String titleText = "user Id not compatible";
+
+                            // Initialize a newfeature foreground color span instance
+                            ForegroundColorSpan foregroundColorSpan = new ForegroundColorSpan(getResources().getColor(R.color.colorAccent));
+
+                            // Initialize a newfeature spannable string builder instance
+                            SpannableStringBuilder ssBuilder = new SpannableStringBuilder(titleText);
+
+                            ssBuilder.setSpan(
+                                    foregroundColorSpan,
+                                    0,
+                                    titleText.length(),
+                                    Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+                            );
+                            AlertDialog dialog = new AlertDialog.Builder(HibiscusActivity.this)
+                                    .setTitle(ssBuilder)
+                                    .setMessage("Canopy is only for students and work only with student ids. Canopy is not compatible with this id. Please logout and login as student to continue our services.")
+                                    .setCancelable(false)
+                                    .setPositiveButton("Logout", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialogInterface, int i) {
+                                            FirebaseAuth.getInstance().signOut();
+                                            Intent intent = new Intent(HibiscusActivity.this,LoginActivity.class);
+                                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                            startActivity(intent);
+                                            finish();
+                                            overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_down);
+
+
+                                        }
+                                    })
+                                    .create();
+                            dialog.show();
                         }
 
 
