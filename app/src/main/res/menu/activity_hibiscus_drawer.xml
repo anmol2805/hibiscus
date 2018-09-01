@@ -23,10 +23,10 @@
                 android:id="@+id/menumy"
                 android:checkableBehavior="single"
                 >
-                <item
-                    android:id="@+id/nav_rasoi"
-                    android:icon="@drawable/rasoimenu"
-                    android:title="IIIT Rasoi" />
+                <!--<item-->
+                    <!--android:id="@+id/nav_rasoi"-->
+                    <!--android:icon="@drawable/rasoimenu"-->
+                    <!--android:title="IIIT Rasoi" />-->
                 <item
                     android:id="@+id/nav_myapps"
                     android:icon="@drawable/attendance"

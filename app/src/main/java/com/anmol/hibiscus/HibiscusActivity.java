@@ -491,14 +491,14 @@ public class HibiscusActivity extends AppCompatActivity
                 }
             },175);}
 
-        else if (id == R.id.nav_rasoi) {
-            handler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    fm.beginTransaction().replace(R.id.content_hib,new rosei()).commitAllowingStateLoss();
-                    fm.executePendingTransactions();
-                }
-            },175);}
+//        else if (id == R.id.nav_rasoi) {
+//            handler.postDelayed(new Runnable() {
+//                @Override
+//                public void run() {
+//                    fm.beginTransaction().replace(R.id.content_hib,new rosei()).commitAllowingStateLoss();
+//                    fm.executePendingTransactions();
+//                }
+//            },175);}
             else if (id == R.id.nav_myapps) {
 
                 handler.postDelayed(new Runnable() {
