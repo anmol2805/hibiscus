@@ -9,6 +9,7 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.provider.ContactsContract;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
@@ -55,6 +56,7 @@ import com.anmol.hibiscus.ExpandableSearchView;
 import com.anmol.hibiscus.Helpers.Dbbookshelper;
 import com.anmol.hibiscus.Helpers.Dbhelper;
 import com.anmol.hibiscus.Interfaces.ItemClickListener;
+import com.anmol.hibiscus.Interfaces.NLoadMore;
 import com.anmol.hibiscus.Model.Notice;
 import com.anmol.hibiscus.Mysingleton;
 import com.anmol.hibiscus.NoticeDataActivity;
@@ -116,6 +118,7 @@ public class main extends Fragment {
     EditText searchedit;
     LinearLayout myView;
     List<Notice> searchednotices;
+    Boolean isLoading = false;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
@@ -132,7 +135,7 @@ public class main extends Fragment {
         searchedit = vi.findViewById(R.id.searchedit);
         lv = (ListView)vi.findViewById(R.id.list);
         rv = (RecyclerView)vi.findViewById(R.id.rv);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
+        final LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         rv.setLayoutManager(layoutManager);
         rv.setHasFixedSize(true);
         rv.setItemAnimator(new DefaultItemAnimator());
@@ -194,7 +197,32 @@ public class main extends Fragment {
         });
         starred = false;
         Glide.with(getActivity()).load(R.drawable.starunfillwhite).into(showstar);
-        loadnotice();
+        icoAdapter = new IcoAdapter(getActivity(),notices,itemClickListener);
+        rv.setAdapter(icoAdapter);
+        loadnotice(0,40,true);
+
+        rv.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                if(dy > 0){
+                    int visibleItemcount = layoutManager.getChildCount();
+                    int totalItemcount = layoutManager.getItemCount();
+                    int pastVisibleitems = layoutManager.findFirstVisibleItemPosition();
+                    if(visibleItemcount + pastVisibleitems >= totalItemcount && !isLoading){
+                        progressBar.setVisibility(View.VISIBLE);
+                        Handler handler2 = new Handler();
+                        handler2.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                loadnotice(40,0,false);
+                            }
+                        },2500);
+                        isLoading = true;
+                    }
+                }
+            }
+        });
         showstar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -206,7 +234,7 @@ public class main extends Fragment {
                 else{
                     starred = false;
                     Glide.with(getActivity()).load(R.drawable.starunfillwhite).into(showstar);
-                    loadnotice();
+                    loadnotice(0,0,true);
                 }
             }
         });
@@ -222,6 +250,12 @@ public class main extends Fragment {
         noticerefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
+                String query = "Select * from notice_table ORDER BY notice_id DESC";
+                List<Notice> allnotices = dbhelper.readData(query);
+                noticeids = new ArrayList<>();
+                for(int i = 0;i<allnotices.size();i++){
+                    noticeids.add(allnotices.get(i).getId());
+                }
                 notices = new ArrayList<>();
                 auth = FirebaseAuth.getInstance();
                 final DatabaseReference databaseReference,noticedatabase,attendancedatabase,gradesdatabase;
@@ -542,7 +576,7 @@ public class main extends Fragment {
         else {
             if(getActivity()!=null){
                 Toast.makeText(getActivity(),"You don't have any starred notices yet",Toast.LENGTH_SHORT).show();
-                loadnotice();
+                loadnotice(0,0,true);
                 starred = false;
                 Glide.with(getActivity()).load(R.drawable.starunfillwhite).into(showstar);
 
@@ -552,14 +586,22 @@ public class main extends Fragment {
 
     }
 
-    private void loadnotice() {
-        notices.clear();
-        String query = "Select * from notice_table ORDER BY notice_id DESC";
-        notices = dbhelper.readData(query);
-        noticeids = new ArrayList<>();
-        for(int i = 0;i<notices.size();i++){
-            noticeids.add(notices.get(i).getId());
+    private void loadnotice(int offset,int numofnotices,Boolean clear) {
+
+        if(clear){
+            notices.clear();
         }
+        String query;
+        if(numofnotices == 0){
+            query = "Select * from notice_table ORDER BY notice_id DESC LIMIT -1 OFFSET " + offset;
+        }
+        else
+        {
+            query = "Select * from notice_table ORDER BY notice_id DESC LIMIT " + numofnotices;
+        }
+
+        notices = dbhelper.readData(query);
+
 
         searchedit.addTextChangedListener(new TextWatcher() {
             @Override
@@ -603,9 +645,9 @@ public class main extends Fragment {
         if (!notices.isEmpty()){
             if(getActivity()!=null){
                 progressBar.setVisibility(View.GONE);
-                icoAdapter = new IcoAdapter(getActivity(),notices,itemClickListener);
+                //icoAdapter = new IcoAdapter(getActivity(),notices,itemClickListener);
                 icoAdapter.notifyDataSetChanged();
-                rv.setAdapter(icoAdapter);
+//                rv.setAdapter(icoAdapter);
             }
 
 
@@ -687,6 +729,7 @@ public class main extends Fragment {
             });
 
         }
+        isLoading = false;
 
     }
 
