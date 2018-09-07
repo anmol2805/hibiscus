@@ -176,6 +176,7 @@ public class main extends Fragment {
         searchbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                isLoading = true;
                 searchedit.setVisibility(View.VISIBLE);
                 searchedit.requestFocus();
                 getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
@@ -232,11 +233,13 @@ public class main extends Fragment {
                     starred = true;
                     Glide.with(getActivity()).load(R.drawable.stargolden).into(showstar);
                     loadbook();
+                    isLoading = true;
                 }
                 else{
                     starred = false;
                     Glide.with(getActivity()).load(R.drawable.starunfillwhite).into(showstar);
-                    loadnotice(0,0,true);
+                    loadnotice(0,40,true);
+                    isLoading = false;
                 }
             }
         });
@@ -316,59 +319,61 @@ public class main extends Fragment {
                                                 //noticedatabase.child(String.valueOf(c)).setValue(notice);
                                                 c++;
                                             }
-                                            notices.clear();
-                                            loadnotices.clear();
-                                            String query = "Select * from notice_table ORDER BY notice_id DESC";
-                                            notices = dbhelper.readData(query);
-                                            loadnotices.addAll(notices);
-                                            if (!notices.isEmpty()){
-                                                if(getActivity()!=null){
-                                                    progressBar.setVisibility(View.GONE);
-                                                    //icoAdapter = new IcoAdapter(getActivity(),notices,itemClickListener);
-                                                    icoAdapter.notifyDataSetChanged();
-                                                    //rv.setAdapter(icoAdapter);
-                                                }
-
-
-                                            }
-                                            else {
-                                                mdatabase.addValueEventListener(new ValueEventListener() {
-                                                    @Override
-                                                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                                        notices.clear();
-                                                        loadnotices.clear();
-                                                        for (DataSnapshot data : dataSnapshot.getChildren()) {
-
-                                                            String title = data.child("title").getValue().toString();
-                                                            String attention = data.child("attention").getValue().toString();
-                                                            String posted_by = data.child("posted_by").getValue().toString();
-                                                            String date = data.child("date").getValue().toString();
-                                                            String id = data.child("id").getValue().toString();
-                                                            Notice notice = new Notice(title, date, posted_by, attention, id,false,false);
-                                                            loadnotices.add(notice);
-
-
-                                                        }
-                                                        if (getActivity() != null) {
-                                                            progressBar.setVisibility(View.GONE);
-//                                                            adapter = newfeature NoticeAdapter(getActivity(), R.layout.notice, notices);
-//                                                            adapter.notifyDataSetChanged();
-//                                                            lv.setAdapter(adapter);
-                                                            //icoAdapter = new IcoAdapter(getActivity(),notices,itemClickListener);
-                                                            icoAdapter.notifyDataSetChanged();
-                                                            //rv.setAdapter(icoAdapter);
-
-                                                        }
-
-
-                                                    }
-
-                                                    @Override
-                                                    public void onCancelled(DatabaseError databaseError) {
-
-                                                    }
-                                                });
-                                            }
+                                            loadnotice(0,40,true);
+                                            isLoading = false;
+//                                            notices.clear();
+//                                            loadnotices.clear();
+//                                            String query = "Select * from notice_table ORDER BY notice_id DESC";
+//                                            notices = dbhelper.readData(query);
+//                                            loadnotices.addAll(notices);
+//                                            if (!notices.isEmpty()){
+//                                                if(getActivity()!=null){
+//                                                    progressBar.setVisibility(View.GONE);
+//                                                    //icoAdapter = new IcoAdapter(getActivity(),notices,itemClickListener);
+//                                                    icoAdapter.notifyDataSetChanged();
+//                                                    //rv.setAdapter(icoAdapter);
+//                                                }
+//
+//
+//                                            }
+//                                            else {
+//                                                mdatabase.addValueEventListener(new ValueEventListener() {
+//                                                    @Override
+//                                                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//                                                        notices.clear();
+//                                                        loadnotices.clear();
+//                                                        for (DataSnapshot data : dataSnapshot.getChildren()) {
+//
+//                                                            String title = data.child("title").getValue().toString();
+//                                                            String attention = data.child("attention").getValue().toString();
+//                                                            String posted_by = data.child("posted_by").getValue().toString();
+//                                                            String date = data.child("date").getValue().toString();
+//                                                            String id = data.child("id").getValue().toString();
+//                                                            Notice notice = new Notice(title, date, posted_by, attention, id,false,false);
+//                                                            loadnotices.add(notice);
+//
+//
+//                                                        }
+//                                                        if (getActivity() != null) {
+//                                                            progressBar.setVisibility(View.GONE);
+////                                                            adapter = newfeature NoticeAdapter(getActivity(), R.layout.notice, notices);
+////                                                            adapter.notifyDataSetChanged();
+////                                                            lv.setAdapter(adapter);
+//                                                            //icoAdapter = new IcoAdapter(getActivity(),notices,itemClickListener);
+//                                                            icoAdapter.notifyDataSetChanged();
+//                                                            //rv.setAdapter(icoAdapter);
+//
+//                                                        }
+//
+//
+//                                                    }
+//
+//                                                    @Override
+//                                                    public void onCancelled(DatabaseError databaseError) {
+//
+//                                                    }
+//                                                });
+//                                            }
                                             if(getActivity()!=null){
                                                 Toast.makeText(getActivity(),"Updated Successfully",Toast.LENGTH_SHORT).show();
                                             }
@@ -560,6 +565,7 @@ public class main extends Fragment {
                 Toast.makeText(getActivity(),"You don't have any starred notices yet",Toast.LENGTH_SHORT).show();
                 loadnotice(0,40,true);
                 starred = false;
+                isLoading = false;
                 Glide.with(getActivity()).load(R.drawable.starunfillwhite).into(showstar);
 
             }
