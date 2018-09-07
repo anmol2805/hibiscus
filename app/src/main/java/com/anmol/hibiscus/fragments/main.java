@@ -42,6 +42,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -64,6 +65,7 @@ import com.anmol.hibiscus.R;
 import com.anmol.hibiscus.WebviewActivity;
 import com.anmol.hibiscus.services.RequestService;
 import com.bumptech.glide.Glide;
+import com.github.ybq.android.spinkit.SpinKitView;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.InterstitialAd;
@@ -89,9 +91,9 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class main extends Fragment {
     String url = "http://139.59.23.157/api/hibi/notice";
-    ProgressBar progressBar;
+    SpinKitView progressBar;
     String title,date,postedby,id,attention;
-    List<Notice> notices;
+    List<Notice> notices = new ArrayList<>();
     NoticeAdapter adapter;
     ListView lv;
     RecyclerView rv;
@@ -119,6 +121,7 @@ public class main extends Fragment {
     LinearLayout myView;
     List<Notice> searchednotices;
     Boolean isLoading = false;
+    List <Notice> loadnotices = new ArrayList<>();
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
@@ -126,7 +129,6 @@ public class main extends Fragment {
         getActivity().setTitle("Notice Board");
         Intent intent = new Intent(getActivity(), RequestService.class);
         getActivity().startService(intent);
-        notices = new ArrayList<>();
         searchednotices =  new ArrayList<>();
         showstar = (CircleImageView)vi.findViewById(R.id.showstar);
         myView = vi.findViewById(R.id.searchlayout);
@@ -150,7 +152,7 @@ public class main extends Fragment {
         rotate = AnimationUtils.loadAnimation(getActivity(),R.anim.rotate);
         auth = FirebaseAuth.getInstance();
         mdatabase = FirebaseDatabase.getInstance().getReference().child("Notice");
-        progressBar = (ProgressBar)vi.findViewById(R.id.load);
+        progressBar = (SpinKitView) vi.findViewById(R.id.load);
         progressBar.setVisibility(View.VISIBLE);
         final DatabaseReference data = FirebaseDatabase.getInstance().getReference().getRoot().child("banner");
         dbhelper = new Dbhelper(getActivity());
@@ -197,7 +199,7 @@ public class main extends Fragment {
         });
         starred = false;
         Glide.with(getActivity()).load(R.drawable.starunfillwhite).into(showstar);
-        icoAdapter = new IcoAdapter(getActivity(),notices,itemClickListener);
+        icoAdapter = new IcoAdapter(getActivity(),loadnotices,itemClickListener);
         rv.setAdapter(icoAdapter);
         loadnotice(0,40,true);
 
@@ -256,7 +258,6 @@ public class main extends Fragment {
                 for(int i = 0;i<allnotices.size();i++){
                     noticeids.add(allnotices.get(i).getId());
                 }
-                notices = new ArrayList<>();
                 auth = FirebaseAuth.getInstance();
                 final DatabaseReference databaseReference,noticedatabase,attendancedatabase,gradesdatabase;
                 databaseReference = FirebaseDatabase.getInstance().getReference().getRoot();
@@ -316,14 +317,16 @@ public class main extends Fragment {
                                                 c++;
                                             }
                                             notices.clear();
+                                            loadnotices.clear();
                                             String query = "Select * from notice_table ORDER BY notice_id DESC";
                                             notices = dbhelper.readData(query);
+                                            loadnotices.addAll(notices);
                                             if (!notices.isEmpty()){
                                                 if(getActivity()!=null){
                                                     progressBar.setVisibility(View.GONE);
-                                                    icoAdapter = new IcoAdapter(getActivity(),notices,itemClickListener);
+                                                    //icoAdapter = new IcoAdapter(getActivity(),notices,itemClickListener);
                                                     icoAdapter.notifyDataSetChanged();
-                                                    rv.setAdapter(icoAdapter);
+                                                    //rv.setAdapter(icoAdapter);
                                                 }
 
 
@@ -333,6 +336,7 @@ public class main extends Fragment {
                                                     @Override
                                                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                                                         notices.clear();
+                                                        loadnotices.clear();
                                                         for (DataSnapshot data : dataSnapshot.getChildren()) {
 
                                                             String title = data.child("title").getValue().toString();
@@ -341,7 +345,7 @@ public class main extends Fragment {
                                                             String date = data.child("date").getValue().toString();
                                                             String id = data.child("id").getValue().toString();
                                                             Notice notice = new Notice(title, date, posted_by, attention, id,false,false);
-                                                            notices.add(notice);
+                                                            loadnotices.add(notice);
 
 
                                                         }
@@ -350,9 +354,9 @@ public class main extends Fragment {
 //                                                            adapter = newfeature NoticeAdapter(getActivity(), R.layout.notice, notices);
 //                                                            adapter.notifyDataSetChanged();
 //                                                            lv.setAdapter(adapter);
-                                                            icoAdapter = new IcoAdapter(getActivity(),notices,itemClickListener);
+                                                            //icoAdapter = new IcoAdapter(getActivity(),notices,itemClickListener);
                                                             icoAdapter.notifyDataSetChanged();
-                                                            rv.setAdapter(icoAdapter);
+                                                            //rv.setAdapter(icoAdapter);
 
                                                         }
 
@@ -489,30 +493,6 @@ public class main extends Fragment {
         });
 
 
-//        lv.setOnItemClickListener(newfeature AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
-//                try{
-//                    Intent i = newfeature Intent(getActivity(),NoticeDataActivity.class);
-//                    i.putExtra("id",notices.get(position).getId());
-//                    i.putExtra("uid",uid);
-//                    i.putExtra("pwd",pwd);
-//
-//                    i.putExtra("title",notices.get(position).getTitle());
-//                    i.putExtra("date",notices.get(position).getDate());
-//                    i.putExtra("att",notices.get(position).getAttention());
-//                    i.putExtra("posted",notices.get(position).getPosted_by());
-//                    startActivity(i);
-//                    getActivity().overridePendingTransition(R.anim.slide_in_up,R.anim.still);
-//
-//                }
-//                catch(IndexOutOfBoundsException e){
-//                    e.printStackTrace();
-//                }
-//
-//
-//            }
-//        });
 
         return vi;
 
@@ -521,16 +501,18 @@ public class main extends Fragment {
 
     private void loadbook() {
         notices.clear();
+        loadnotices.clear();
         String querybook = "Select * from notice_table WHERE bookmark="+1+" ORDER BY notice_id DESC";
 
         notices = dbhelper.readData(querybook);
+        loadnotices.addAll(notices);
         if (!notices.isEmpty()){
             if(getActivity()!=null){
                 progressBar.setVisibility(View.GONE);
 
-                icoAdapter = new IcoAdapter(getActivity(),notices,itemClickListener);
+                //icoAdapter = new IcoAdapter(getActivity(),notices,itemClickListener);
                 icoAdapter.notifyDataSetChanged();
-                rv.setAdapter(icoAdapter);
+                //rv.setAdapter(icoAdapter);
             }
 
             searchedit.addTextChangedListener(new TextWatcher() {
@@ -541,7 +523,7 @@ public class main extends Fragment {
 
                 @Override
                 public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                    searchednotices.clear();
+                    loadnotices.clear();
 
                         for(int j=0;j<notices.size();j++){
                             if(notices.get(j).getTitle().toLowerCase().contains(charSequence) ||
@@ -554,14 +536,14 @@ public class main extends Fragment {
                                     notices.get(j).getPosted_by().contains(charSequence) ||
                                     notices.get(j).getPosted_by().toUpperCase().contains(charSequence)
                                     ){
-                                searchednotices.add(notices.get(j));
+                                loadnotices.add(notices.get(j));
                             }
                         }
                         if(getActivity()!=null){
                             progressBar.setVisibility(View.GONE);
-                            icoAdapter = new IcoAdapter(getActivity(),searchednotices,itemClickListener);
+                            //icoAdapter = new IcoAdapter(getActivity(),searchednotices,itemClickListener);
                             icoAdapter.notifyDataSetChanged();
-                            rv.setAdapter(icoAdapter);
+                            //rv.setAdapter(icoAdapter);
                         }
 
                     }
@@ -576,7 +558,7 @@ public class main extends Fragment {
         else {
             if(getActivity()!=null){
                 Toast.makeText(getActivity(),"You don't have any starred notices yet",Toast.LENGTH_SHORT).show();
-                loadnotice(0,0,true);
+                loadnotice(0,40,true);
                 starred = false;
                 Glide.with(getActivity()).load(R.drawable.starunfillwhite).into(showstar);
 
@@ -587,9 +569,9 @@ public class main extends Fragment {
     }
 
     private void loadnotice(int offset,int numofnotices,Boolean clear) {
-
+        notices.clear();
         if(clear){
-            notices.clear();
+            loadnotices.clear();
         }
         String query;
         if(numofnotices == 0){
@@ -601,8 +583,8 @@ public class main extends Fragment {
         }
 
         notices = dbhelper.readData(query);
-
-
+        loadnotices.addAll(notices);
+        //notices.addAll(dbhelper.readData(query));
         searchedit.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -611,7 +593,7 @@ public class main extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                searchednotices.clear();
+                loadnotices.clear();
                 if(!notices.isEmpty()){
                     for(int j=0;j<notices.size();j++){
                         if(notices.get(j).getTitle().toLowerCase().contains(charSequence) ||
@@ -624,14 +606,14 @@ public class main extends Fragment {
                                 notices.get(j).getPosted_by().contains(charSequence) ||
                                 notices.get(j).getPosted_by().toUpperCase().contains(charSequence)
                                 ){
-                                searchednotices.add(notices.get(j));
+                                loadnotices.add(notices.get(j));
                         }
                     }
                     if(getActivity()!=null){
                         progressBar.setVisibility(View.GONE);
-                        icoAdapter = new IcoAdapter(getActivity(),searchednotices,itemClickListener);
+                        //icoAdapter = new IcoAdapter(getActivity(),searchednotices,itemClickListener);
                         icoAdapter.notifyDataSetChanged();
-                        rv.setAdapter(icoAdapter);
+                        //rv.setAdapter(icoAdapter);
                     }
 
                 }
@@ -643,6 +625,7 @@ public class main extends Fragment {
             }
         });
         if (!notices.isEmpty()){
+            System.out.println("important:" + notices.size());
             if(getActivity()!=null){
                 progressBar.setVisibility(View.GONE);
                 //icoAdapter = new IcoAdapter(getActivity(),notices,itemClickListener);
@@ -657,6 +640,7 @@ public class main extends Fragment {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     notices.clear();
+                    loadnotices.clear();
                     for(DataSnapshot data:dataSnapshot.getChildren()){
 
                         String title = data.child("title").getValue().toString();
@@ -665,7 +649,7 @@ public class main extends Fragment {
                         String date = data.child("date").getValue().toString();
                         String id = data.child("id").getValue().toString();
                         Notice notice = new Notice(title,date,posted_by,attention,id,false,false);
-                        notices.add(notice);
+                        loadnotices.add(notice);
 
 
                     }
@@ -674,9 +658,9 @@ public class main extends Fragment {
 //                        adapter = newfeature NoticeAdapter(getActivity(),R.layout.notice,notices);
 //                        adapter.notifyDataSetChanged();
 //                        lv.setAdapter(adapter);
-                        icoAdapter = new IcoAdapter(getActivity(),notices,itemClickListener);
+                        //icoAdapter = new IcoAdapter(getActivity(),notices,itemClickListener);
                         icoAdapter.notifyDataSetChanged();
-                        rv.setAdapter(icoAdapter);
+                        //rv.setAdapter(icoAdapter);
 
                     }
                     searchedit.addTextChangedListener(new TextWatcher() {
@@ -687,7 +671,7 @@ public class main extends Fragment {
 
                         @Override
                         public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                            searchednotices.clear();
+                            loadnotices.clear();
                             if(!notices.isEmpty()){
                                 for(int j=0;j<notices.size();j++){
                                     if(notices.get(j).getTitle().toLowerCase().contains(charSequence) ||
@@ -700,14 +684,14 @@ public class main extends Fragment {
                                             notices.get(j).getPosted_by().contains(charSequence) ||
                                             notices.get(j).getPosted_by().toUpperCase().contains(charSequence)
                                             ){
-                                        searchednotices.add(notices.get(j));
+                                        loadnotices.add(notices.get(j));
                                     }
                                 }
                                 if(getActivity()!=null){
                                     progressBar.setVisibility(View.GONE);
-                                    icoAdapter = new IcoAdapter(getActivity(),searchednotices,itemClickListener);
+                                    //icoAdapter = new IcoAdapter(getActivity(),searchednotices,itemClickListener);
                                     icoAdapter.notifyDataSetChanged();
-                                    rv.setAdapter(icoAdapter);
+                                    //rv.setAdapter(icoAdapter);
 
                                 }
                                                             }
@@ -729,7 +713,7 @@ public class main extends Fragment {
             });
 
         }
-        isLoading = false;
+        //isLoading = false;
 
     }
 
