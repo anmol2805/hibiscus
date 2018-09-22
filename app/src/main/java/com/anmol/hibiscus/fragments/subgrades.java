@@ -270,27 +270,69 @@ public class subgrades extends Fragment{
         for(int i = 0;i< mysubjectgrades.size();i++){
             String quiz1 = mysubjectgrades.get(i).getQuiz1();
             if(!quiz1.isEmpty() || !quiz1.equals("")){
-                quiz1total = quiz1total + Float.parseFloat(quiz1);
+                float parsing = 0;
+                try{
+                    parsing = Float.parseFloat(quiz1);
+                }
+                catch (NumberFormatException e){
+                    e.printStackTrace();
+                }
+                quiz1total = quiz1total + parsing;
             }
             String quiz2 = mysubjectgrades.get(i).getQuiz2();
             if(!quiz2.isEmpty() || !quiz2.equals("")){
-                quiz2total = quiz2total + Float.parseFloat(quiz2);
+                float parsing = 0;
+                try{
+                    parsing = Float.parseFloat(quiz2);
+                }
+                catch (NumberFormatException e){
+                    e.printStackTrace();
+                }
+                quiz2total = quiz2total + parsing;
             }
             String midsem = mysubjectgrades.get(i).getMidsem();
             if(!midsem.isEmpty() || !midsem.equals("")){
-                midsemtotal = midsemtotal + Float.parseFloat(midsem);
+                float parsing = 0;
+                try{
+                    parsing = Float.parseFloat(midsem);
+                }
+                catch (NumberFormatException e){
+                    e.printStackTrace();
+                }
+                midsemtotal = midsemtotal + parsing;
             }
             String endsem = mysubjectgrades.get(i).getEndsem();
             if(!endsem.isEmpty() || !endsem.equals("")){
-                endsemtotal = endsemtotal + Float.parseFloat(endsem);
+                float parsing = 0;
+                try{
+                    parsing = Float.parseFloat(endsem);
+                }
+                catch (NumberFormatException e){
+                    e.printStackTrace();
+                }
+                endsemtotal = endsemtotal + parsing;
             }
             String faculty = mysubjectgrades.get(i).getFaculty_assessment();
             if(!faculty.isEmpty() || !faculty.equals("")){
-                facultytotal = facultytotal + Float.parseFloat(faculty);
+                float parsing = 0;
+                try{
+                    parsing = Float.parseFloat(faculty);
+                }
+                catch (NumberFormatException e){
+                    e.printStackTrace();
+                }
+                facultytotal = facultytotal + parsing;
             }
             String total = mysubjectgrades.get(i).getSubtotal();
             if(!total.isEmpty() || !total.equals("")){
-                subtotal = subtotal + Float.parseFloat(total);
+                float parsing = 0;
+                try{
+                    parsing = Float.parseFloat(total);
+                }
+                catch (NumberFormatException e){
+                    e.printStackTrace();
+                }
+                subtotal = subtotal + parsing;
             }
         }
         q1.setText(String.format("%.2f",quiz1total));

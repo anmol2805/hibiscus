@@ -265,7 +265,7 @@ public class HibiscusActivity extends AppCompatActivity
 
         navigationView.setNavigationItemSelectedListener(this);
         FragmentManager fm = getFragmentManager();
-        fm.beginTransaction().replace(R.id.content_hib,new main()).commitAllowingStateLoss();
+        fm.beginTransaction().replace(R.id.content_hib,new mainold()).commitAllowingStateLoss();
         fm.executePendingTransactions();
         checkpassstatus();
         checkupdatestatus();
@@ -472,7 +472,7 @@ public class HibiscusActivity extends AppCompatActivity
             overridePendingTransition(R.anim.still,R.anim.slide_out_down);
         }else {
             FragmentManager fm = getFragmentManager();
-            fm.beginTransaction().replace(R.id.content_hib,new main()).commitAllowingStateLoss();
+            fm.beginTransaction().replace(R.id.content_hib,new mainold()).commitAllowingStateLoss();
             Toast.makeText(getBaseContext(), "Double tap to exit!", Toast.LENGTH_SHORT).show();
             back_pressed = System.currentTimeMillis();
         }
