@@ -28,9 +28,6 @@ import com.anmol.hibiscus.Helpers.Dbbookshelper;
 import com.anmol.hibiscus.Helpers.Dbhelper;
 import com.anmol.hibiscus.Model.Notice;
 import com.anmol.hibiscus.Model.Noticedata;
-import com.google.android.gms.ads.AdListener;
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.InterstitialAd;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -84,45 +81,11 @@ public class NoticeDataActivity extends AppCompatActivity {
         fail = (ImageView) findViewById(R.id.fail);
         dbb = new Dbbookshelper(this);
         db = new Dbhelper(this);
-        final InterstitialAd interstitialAdnotice = new InterstitialAd(this);
-        FirebaseDatabase.getInstance().getReference().child("dynamiclocks").addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                Boolean adlock = dataSnapshot.child("adlock").getValue(Boolean.class);
-                if(!adlock){
-                    interstitialAdnotice.setAdUnitId("ca-app-pub-5827006149924215/9013567438");
-                    interstitialAdnotice.loadAd(new AdRequest.Builder().build());
-                    interstitialAdnotice.setAdListener(new AdListener() {
-                        @Override
-                        public void onAdLoaded() {
-                            super.onAdLoaded();
-                            if (interstitialAdnotice.isLoaded()) {
-                                interstitialAdnotice.show();
-                            } else {
-                                loadview();
-                            }
-                        }
 
-                        @Override
-                        public void onAdClosed() {
-                            super.onAdClosed();
-                            loadview();
-                        }
-                    });
-                }
-            }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
 
-            }
-        });
-
-        if (interstitialAdnotice.isLoaded()) {
-            interstitialAdnotice.show();
-        } else {
             loadview();
-        }
+
 
     }
     @Override

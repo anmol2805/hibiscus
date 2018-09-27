@@ -50,9 +50,6 @@ import com.anmol.hibiscus.fragments.myapps;
 import com.anmol.hibiscus.fragments.mypage;
 import com.anmol.hibiscus.fragments.students;
 import com.anmol.hibiscus.fragments.subgrades;
-import com.google.android.gms.ads.AdListener;
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.InterstitialAd;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -81,9 +78,7 @@ public class HibiscusActivity extends AppCompatActivity
     DrawerLayout drawer;
     FirebaseAuth auth;
     int sem;
-    InterstitialAd interstitialAdsubgrades;
-    InterstitialAd interstitialAdattendance;
-    InterstitialAd interstitialAdviewgrades;
+
     DatabaseReference databaseReference;
     String url = "http://14.139.198.171/api/hibi/login_test";
     @Override
@@ -204,63 +199,6 @@ public class HibiscusActivity extends AppCompatActivity
             overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_down);
         }
 
-        interstitialAdsubgrades = new InterstitialAd(this);
-        interstitialAdattendance = new InterstitialAd(this);
-        interstitialAdviewgrades = new InterstitialAd(this);
-        FirebaseDatabase.getInstance().getReference().child("dynamiclocks").addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                Boolean adlock = dataSnapshot.child("adlock").getValue(Boolean.class);
-                if(!adlock){
-                    interstitialAdsubgrades.setAdUnitId("ca-app-pub-5827006149924215/7561826910");
-                    interstitialAdsubgrades.loadAd(new AdRequest.Builder().build());
-                    interstitialAdattendance.setAdUnitId("ca-app-pub-5827006149924215/3997986426");
-                    interstitialAdattendance.loadAd(new AdRequest.Builder().build());
-                    interstitialAdviewgrades.setAdUnitId("ca-app-pub-5827006149924215/8088989261");
-                    interstitialAdviewgrades.loadAd(new AdRequest.Builder().build());
-                    interstitialAdsubgrades.setAdListener(new AdListener(){
-                        @Override
-                        public void onAdClosed() {
-                            super.onAdClosed();
-                            final FragmentManager fm = getFragmentManager();
-                            fm.beginTransaction().replace(R.id.content_hib,new subgrades()).commitAllowingStateLoss();
-                            fm.executePendingTransactions();
-                            interstitialAdsubgrades.loadAd(new AdRequest.Builder().build());
-                        }
-                    });
-                    interstitialAdattendance.setAdListener(new AdListener(){
-                        @Override
-                        public void onAdClosed() {
-                            super.onAdClosed();
-                            final FragmentManager fm = getFragmentManager();
-                            fm.beginTransaction().replace(R.id.content_hib,new myapps()).commitAllowingStateLoss();
-                            fm.executePendingTransactions();
-                            interstitialAdattendance.loadAd(new AdRequest.Builder().build());
-                        }
-                        @Override
-                        public void onAdFailedToLoad(int errorCode) {
-                            System.out.println("errorcode "+errorCode);
-                        }
-                    });
-                    interstitialAdviewgrades.setAdListener(new AdListener(){
-                        @Override
-                        public void onAdClosed() {
-                            super.onAdClosed();
-                            final FragmentManager fm = getFragmentManager();
-                            fm.beginTransaction().replace(R.id.content_hib,new commapps()).commitAllowingStateLoss();
-                            fm.executePendingTransactions();
-                            interstitialAdviewgrades.loadAd(new AdRequest.Builder().build());
-                        }
-                    });
-
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
 
 
         navigationView.setNavigationItemSelectedListener(this);
@@ -545,13 +483,10 @@ public class HibiscusActivity extends AppCompatActivity
                 handler.postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        if(interstitialAdattendance.isLoaded()){
-                            interstitialAdattendance.show();
-                        }
-                        else {
+
                             fm.beginTransaction().replace(R.id.content_hib,new myapps()).commitAllowingStateLoss();
                             fm.executePendingTransactions();
-                        }
+
 
                     }
                 },175);
@@ -572,12 +507,10 @@ public class HibiscusActivity extends AppCompatActivity
                 handler.postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        if(interstitialAdviewgrades.isLoaded()){
-                            interstitialAdviewgrades.show();
-                        }else{
+
                             fm.beginTransaction().replace(R.id.content_hib,new commapps()).commitAllowingStateLoss();
                             fm.executePendingTransactions();
-                        }
+
 
                     }
                 },225);
@@ -591,13 +524,10 @@ public class HibiscusActivity extends AppCompatActivity
             handler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    if(interstitialAdsubgrades.isLoaded()){
-                        interstitialAdsubgrades.show();
-                    }
-                    else{
+
                         fm.beginTransaction().replace(R.id.content_hib,new subgrades()).commitAllowingStateLoss();
                         fm.executePendingTransactions();
-                    }
+
 
                 }
             },175);

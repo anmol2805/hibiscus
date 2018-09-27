@@ -52,7 +52,6 @@
     <string name="moocs_url">http://14.139.198.171/api/hibi/moocs</string>
     <string name="complains_url">http://14.139.198.171/api/hibi/complaint</string>
     <string name="pc_url">http://14.139.198.171/api/hibi/complaint_post</string>
-    <string name="app_ad_id">ca-app-pub-5827006149924215~5640626183</string>
     <string-array name="semester">
         <item>Select semester</item>
         <item>1st semester</item>

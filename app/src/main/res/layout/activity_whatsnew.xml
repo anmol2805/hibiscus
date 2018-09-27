@@ -11,7 +11,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Canopy v3.0.1"
+        android:text="Canopy v3.0.3"
         android:textColor="#000"
         android:fontFamily="@font/lato_bold"
         android:textAlignment="center"
@@ -33,6 +33,13 @@
         android:fontFamily="@font/lato_regular"
         android:layout_marginTop="5dp"
         android:text="- Access to only 50 notices at a time is changed. Students can view past notices also." />
+    <TextView
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/lato_regular"
+        android:layout_marginTop="5dp"
+        android:text="- Compatibility for android Pie." />
     <TextView
 
         android:layout_width="match_parent"
