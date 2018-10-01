@@ -320,6 +320,7 @@ public class LoginActivity extends AppCompatActivity {
                                                                                             @Override
                                                                                             public void onFailure(@NonNull Exception e) {
                                                                                                 progressBar.setVisibility(View.INVISIBLE);
+                                                                                                e.printStackTrace();
                                                                                                 Toast.makeText(LoginActivity.this,"Connection Error...Please try again!!!",Toast.LENGTH_LONG).show();
                                                                                             }
                                                                                         });
@@ -374,6 +375,7 @@ public class LoginActivity extends AppCompatActivity {
                                                                     @Override
                                                                     public void onFailure(@NonNull Exception e) {
                                                                         progressBar.setVisibility(View.INVISIBLE);
+                                                                        e.printStackTrace();
                                                                         Toast.makeText(LoginActivity.this,"Connection Error...Please try again!!!",Toast.LENGTH_LONG).show();
                                                                     }
                                                                 });
@@ -409,6 +411,7 @@ public class LoginActivity extends AppCompatActivity {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         progressBar.setVisibility(View.INVISIBLE);
+                        error.printStackTrace();
                         Toast.makeText(LoginActivity.this,"Connection Error...Please try again!!!",Toast.LENGTH_SHORT).show();
 
                     }
