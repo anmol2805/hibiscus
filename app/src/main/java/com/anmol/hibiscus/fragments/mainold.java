@@ -62,9 +62,7 @@ import com.anmol.hibiscus.R;
 import com.anmol.hibiscus.WebviewActivity;
 import com.anmol.hibiscus.services.RequestService;
 import com.bumptech.glide.Glide;
-import com.google.android.gms.ads.AdListener;
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.InterstitialAd;
+
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
