@@ -111,6 +111,10 @@
                     android:icon="@drawable/newfeature"
                     android:title="What's  new" />
                 <item
+                    android:id="@+id/nav_pp"
+                    android:icon="@drawable/ppcanopy"
+                    android:title="Privacy Policy" />
+                <item
                     android:id="@+id/nav_help"
                     android:icon="@drawable/logh"
                     android:title="Logout" />

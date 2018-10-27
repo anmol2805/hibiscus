@@ -3,8 +3,9 @@
 buildscript {
     ext.kotlin_version = '1.2.51'
     repositories {
-        jcenter()
         google()
+        jcenter()
+
         maven {
             url 'https://maven.fabric.io/public'
         }
@@ -23,6 +24,7 @@ buildscript {
 
 allprojects {
     repositories {
+        google()
         jcenter()
         maven {
             url 'https://jitpack.io'
@@ -31,7 +33,7 @@ allprojects {
             url 'https://maven.google.com'
         }
         maven { url "https://dl.bintray.com/hani-momanii/maven"}
-        google()
+
         maven {
             url  "http://dl.bintray.com/lukaville/maven"
         }

@@ -35,6 +35,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.anmol.hibiscus.fragments.mainold;
+import com.anmol.hibiscus.fragments.privacypolicy;
 import com.bumptech.glide.Glide;
 import com.anmol.hibiscus.fragments.complaints;
 import com.anmol.hibiscus.fragments.ebooks;
@@ -526,6 +527,21 @@ public class HibiscusActivity extends AppCompatActivity
 
                         fm.beginTransaction().replace(R.id.content_hib,new subgrades()).commitAllowingStateLoss();
                         fm.executePendingTransactions();
+
+
+                }
+            },175);
+
+
+
+        }
+        else if(id == R.id.nav_pp){
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+
+                    fm.beginTransaction().replace(R.id.content_hib,new privacypolicy()).commitAllowingStateLoss();
+                    fm.executePendingTransactions();
 
 
                 }
