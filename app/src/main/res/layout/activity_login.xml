@@ -87,14 +87,7 @@
             android:textColor="@color/white"
             android:textStyle="bold" />
 
-        <Button
-            android:id="@+id/google_sign_in"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:background="@drawable/common_google_signin_btn_icon_dark_normal"
-            android:textAppearance="@style/TextAppearance.AppCompat"
-            android:visibility="gone" />
+
 
 
         <Button
