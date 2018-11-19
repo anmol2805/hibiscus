@@ -3,7 +3,9 @@ package com.anmol.hibiscus.services;
 import android.app.IntentService;
 import android.content.Context;
 import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.JobIntentService;
 import android.view.View;
 import android.widget.Toast;
 
@@ -36,7 +38,7 @@ import java.util.List;
  * Created by anmol on 2017-08-28.
  */
 
-public class RequestService extends IntentService {
+public class RequestService extends JobIntentService {
     FirebaseAuth auth;
     DatabaseReference databaseReference,noticedatabase,attendancedatabase,gradesdatabase;
     String url1 = "http://139.59.23.157/api/hibi/notice";
@@ -49,13 +51,16 @@ public class RequestService extends IntentService {
     String dep;
     String decrypt = "https://us-central1-iiitcloud-e9d6b.cloudfunctions.net/dcryptr?pass=";
     String title,postedby,attention,date,id;
-    public RequestService() {
-        super("RequestService");
-    }
     List<Notice> notices;
+    public static final int JOB_ID = 1;
+
+    public static void enqueueWork(Context context, Intent work) {
+        enqueueWork(context, RequestService.class, JOB_ID, work);
+    }
 
     @Override
-    protected void onHandleIntent(@Nullable Intent intent) {
+    protected void onHandleWork(@NonNull Intent intent) {
+        System.out.println("RequestService started");
         notices = new ArrayList<>();
         auth = FirebaseAuth.getInstance();
         databaseReference = FirebaseDatabase.getInstance().getReference().getRoot();
@@ -144,6 +149,9 @@ public class RequestService extends IntentService {
             intent2.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent2);
         }
-
     }
+
+
+
+
 }

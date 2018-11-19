@@ -54,8 +54,7 @@ public class courseware extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         View vi = inflater.inflate(R.layout.courseware,container,false);
         getActivity().setTitle("My Courses");
-        Intent intent = new Intent(getActivity(), RequestServiceCourses.class);
-        getActivity().startService(intent);
+        RequestServiceCourses.enqueueWork(getActivity(),new Intent());
         cl = (ProgressBar)vi.findViewById(R.id.cl);
         cl.setVisibility(View.VISIBLE);
         fail = (ImageView)vi.findViewById(R.id.fail);
@@ -148,8 +147,7 @@ public class courseware extends Fragment {
         retry.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getActivity(), RequestServiceCourses.class);
-                getActivity().startService(intent);
+                RequestServiceCourses.enqueueWork(getActivity(),new Intent());
                 retry.setVisibility(View.GONE);
                 fail.setVisibility(View.GONE);
                 cl.setVisibility(View.VISIBLE);

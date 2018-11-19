@@ -68,8 +68,7 @@ public class subgrades extends Fragment{
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         View vi = inflater.inflate(R.layout.subgrades,container,false);
         getActivity().setTitle("Subject Grades");
-        Intent intent = new Intent(getActivity(), RequestServiceCourses.class);
-        getActivity().startService(intent);
+        RequestServiceCourses.enqueueWork(getActivity(),new Intent());
 
         cl = (ProgressBar)vi.findViewById(R.id.load);
         retry = (Button)vi.findViewById(R.id.retry);
@@ -249,8 +248,7 @@ public class subgrades extends Fragment{
         retry.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getActivity(), RequestServiceCourses.class);
-                getActivity().startService(intent);
+                RequestServiceCourses.enqueueWork(getActivity(),new Intent());
                 retry.setVisibility(View.GONE);
                 fail.setVisibility(View.GONE);
                 cl.setVisibility(View.VISIBLE);

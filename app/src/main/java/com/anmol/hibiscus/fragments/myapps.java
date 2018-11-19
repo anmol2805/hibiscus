@@ -72,8 +72,7 @@ public class myapps extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         View vi = inflater.inflate(R.layout.myapps,container,false);
         getActivity().setTitle("Attendance");
-        Intent intent = new Intent(getActivity(), RequestServiceAttendance.class);
-        getActivity().startService(intent);
+        RequestServiceAttendance.enqueueWork(getActivity(),new Intent());
         progressBar = (ProgressBar)vi.findViewById(R.id.loadatt);
         progressBar.setVisibility(View.VISIBLE);
         listView = (ListView)vi.findViewById(R.id.listatt);
@@ -170,8 +169,7 @@ public class myapps extends Fragment {
             @Override
             public void onClick(View v) {
 
-                Intent intent = new Intent(getActivity(), RequestServiceAttendance.class);
-                getActivity().startService(intent);
+                RequestServiceAttendance.enqueueWork(getActivity(),new Intent());
                 Toast.makeText(getActivity(),"Please Wait...",Toast.LENGTH_SHORT).show();
                 refresh.startAnimation(rotate);
             }
@@ -179,8 +177,7 @@ public class myapps extends Fragment {
         retry.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getActivity(), RequestServiceAttendance.class);
-                getActivity().startService(intent);
+                RequestServiceAttendance.enqueueWork(getActivity(),new Intent());
                 retry.setVisibility(View.INVISIBLE);
                 fail.setVisibility(View.GONE);
                 progressBar.setVisibility(View.VISIBLE);

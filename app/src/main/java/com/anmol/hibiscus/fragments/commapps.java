@@ -55,8 +55,7 @@ public class commapps extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         View vi = inflater.inflate(R.layout.commapps,container,false);
-        Intent intent = new Intent(getActivity(), RequestServiceGrades.class);
-        getActivity().startService(intent);
+        RequestServiceGrades.enqueueWork(getActivity(),new Intent());
         getActivity().setTitle("Grades");
         grd = (WebView)vi.findViewById(R.id.grd);
         progressBar = (ProgressBar)vi.findViewById(R.id.webl);
@@ -116,8 +115,7 @@ public class commapps extends Fragment {
                 retry.setVisibility(View.GONE);
                 fail.setVisibility(View.GONE);
                 progressBar.setVisibility(View.VISIBLE);
-                Intent intent = new Intent(getActivity(), RequestServiceGrades.class);
-                getActivity().startService(intent);
+                RequestServiceGrades.enqueueWork(getActivity(),new Intent());
             }
         });
 

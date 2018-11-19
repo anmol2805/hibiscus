@@ -88,11 +88,20 @@
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
-        <service android:name=".services.RequestService" />
-        <service android:name=".services.RequestServiceAttendance" />
-        <service android:name=".services.RequestServiceGrades" />
-        <service android:name=".services.RequestServiceCourses" />
-        <service android:name=".Rasoi.Services.NotifyService" />
+        <service android:name=".services.RequestService"
+            android:permission="android.permission.BIND_JOB_SERVICE"
+            >
+
+        </service>
+        <service android:name=".services.RequestServiceAttendance"
+            android:permission="android.permission.BIND_JOB_SERVICE"
+            />
+        <service android:name=".services.RequestServiceGrades"
+            android:permission="android.permission.BIND_JOB_SERVICE"
+            />
+        <service android:name=".services.RequestServiceCourses"
+            android:permission="android.permission.BIND_JOB_SERVICE"
+            />
 
         <activity
             android:name=".Courselistnotice"
@@ -123,7 +132,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".WebviewActivity" />
-        <activity android:name=".Rasoi.Book_Activity" />
+
 
     </application>
 

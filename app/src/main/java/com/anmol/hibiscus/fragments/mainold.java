@@ -120,8 +120,9 @@ public class mainold extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         View vi = inflater.inflate(R.layout.main,container,false);
         getActivity().setTitle("Notice Board");
-        Intent intent = new Intent(getActivity(), RequestService.class);
-        getActivity().startService(intent);
+        RequestService.enqueueWork(getActivity(), new Intent());
+//        Intent intent = new Intent(getActivity(), RequestService.class);
+//        getActivity().startService(intent);
         notices = new ArrayList<>();
         searchednotices =  new ArrayList<>();
         showstar = (CircleImageView)vi.findViewById(R.id.showstar);
