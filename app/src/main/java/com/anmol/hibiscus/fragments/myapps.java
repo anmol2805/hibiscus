@@ -148,7 +148,10 @@ public class myapps extends Fragment {
 
                                 }
                             });
-                            Mysingleton.getInstance(getActivity()).addToRequestqueue(jsonObjectRequesta);
+                            if(getActivity()!=null){
+                                Mysingleton.getInstance(getActivity()).addToRequestqueue(jsonObjectRequesta);
+                            }
+
 
 
 

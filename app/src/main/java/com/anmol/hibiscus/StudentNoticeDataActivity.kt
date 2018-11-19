@@ -119,7 +119,7 @@ class StudentNoticeDataActivity : AppCompatActivity() {
             i++
         }
         val auth = FirebaseAuth.getInstance()
-        val hibdatabase = FirebaseDatabase.getInstance().reference.child("Students").child(auth!!.currentUser!!.uid).child("hibiscus")
+        val hibdatabase = FirebaseDatabase.getInstance().reference.child("Students").child(auth.currentUser!!.uid).child("hibiscus")
         hibdatabase.addValueEventListener(object : ValueEventListener {
             override fun onCancelled(p0: DatabaseError) {
 

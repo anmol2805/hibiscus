@@ -55,6 +55,7 @@ import com.anmol.hibiscus.ExpandableSearchView;
 import com.anmol.hibiscus.Helpers.Dbbookshelper;
 import com.anmol.hibiscus.Helpers.Dbhelper;
 import com.anmol.hibiscus.Interfaces.ItemClickListener;
+import com.anmol.hibiscus.LoginActivity;
 import com.anmol.hibiscus.Model.Notice;
 import com.anmol.hibiscus.Mysingleton;
 import com.anmol.hibiscus.NoticeDataActivity;
@@ -224,122 +225,121 @@ public class mainold extends Fragment {
                 auth = FirebaseAuth.getInstance();
                 final DatabaseReference databaseReference,noticedatabase,attendancedatabase,gradesdatabase;
                 databaseReference = FirebaseDatabase.getInstance().getReference().getRoot();
-                noticedatabase = FirebaseDatabase.getInstance().getReference().child("Notice");
-                gradesdatabase = FirebaseDatabase.getInstance().getReference().child("Students").child(auth.getCurrentUser().getUid()).child("grades");
-                attendancedatabase = FirebaseDatabase.getInstance().getReference().child("Students").child(auth.getCurrentUser().getUid()).child("attendance");
+
                 final JSONObject jsonObject = new JSONObject();
-                databaseReference.child("Students").child(auth.getCurrentUser().getUid()).child("hibiscus").addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        if(dataSnapshot.child("sid").getValue(String.class)!=null && dataSnapshot.child("pwd").getValue(String.class)!=null){
-                            uid = dataSnapshot.child("sid").getValue(String.class);
-                            pwd = dataSnapshot.child("pwd").getValue(String.class);
-                            try {
-                                jsonObject.put("uid",uid);
-                                jsonObject.put("pwd",pwd);
-                                jsonObject.put("pass","encrypt");
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-                            System.out.println("noticeresponse null");
-                            try{
-                                JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, getResources().getString(R.string.notice_url), jsonObject, new Response.Listener<JSONObject>() {
-                                    @Override
-                                    public void onResponse(JSONObject response) {
-                                        noticerefresh.setRefreshing(false);
-                                        try {
+                if(auth.getCurrentUser()!=null){
+                    databaseReference.child("Students").child(auth.getCurrentUser().getUid()).child("hibiscus").addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            if(dataSnapshot.child("sid").getValue(String.class)!=null && dataSnapshot.child("pwd").getValue(String.class)!=null){
+                                uid = dataSnapshot.child("sid").getValue(String.class);
+                                pwd = dataSnapshot.child("pwd").getValue(String.class);
+                                try {
+                                    jsonObject.put("uid",uid);
+                                    jsonObject.put("pwd",pwd);
+                                    jsonObject.put("pass","encrypt");
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                                System.out.println("noticeresponse null");
+                                try{
+                                    JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, getResources().getString(R.string.notice_url), jsonObject, new Response.Listener<JSONObject>() {
+                                        @Override
+                                        public void onResponse(JSONObject response) {
+                                            noticerefresh.setRefreshing(false);
+                                            try {
 
-                                            int c = 0;
-                                            while (c<5){
-                                                System.out.println("noticeresponse" + response);
-                                                JSONObject object = response.getJSONArray("Notices").getJSONObject(c);
-
-
-                                                title = object.getString("title");
-                                                date = object.getString("date");
-                                                postedby = object.getString("posted_by");
-                                                attention = object.getString("attention");
-                                                id = object.getString("id");
-                                                Notice notice = new Notice(title,date,postedby,attention,id,false,false);
-                                                int k=0;
-                                                for(int j = 0;j<noticeids.size();j++){
-                                                    if(noticeids.get(j).equals(id)){
-                                                        k=1;
-                                                    }
-                                                }
-                                                if(k==0){
-                                                    System.out.print("noticestatus:newfeature entry");
-                                                    dbhelper.insertData(notice);
-                                                }
-                                                else{
-                                                    System.out.print("noticestatus:already present");
-                                                }
-                                                //dbhelper.insertData(notice);
-                                                dbhelper.updatenotice(notice);
-                                                //noticedatabase.child(String.valueOf(c)).setValue(notice);
-                                                c++;
-                                            }
-                                            notices.clear();
-                                            String query = "Select * from notice_table ORDER BY notice_id DESC";
-                                            notices = dbhelper.readData(query);
-                                            if (!notices.isEmpty()){
-                                                if(getActivity()!=null){
-                                                    progressBar.setVisibility(View.GONE);
-                                                    icoAdapter = new IcoAdapter(getActivity(),notices,itemClickListener);
-                                                    icoAdapter.notifyDataSetChanged();
-                                                    rv.setAdapter(icoAdapter);
-                                                }
+                                                int c = 0;
+                                                while (c<5){
+                                                    System.out.println("noticeresponse" + response);
+                                                    JSONObject object = response.getJSONArray("Notices").getJSONObject(c);
 
 
-                                            }
-                                            else {
-                                                mdatabase.addValueEventListener(new ValueEventListener() {
-                                                    @Override
-                                                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                                        notices.clear();
-                                                        for (DataSnapshot data : dataSnapshot.getChildren()) {
-
-                                                            String title = data.child("title").getValue().toString();
-                                                            String attention = data.child("attention").getValue().toString();
-                                                            String posted_by = data.child("posted_by").getValue().toString();
-                                                            String date = data.child("date").getValue().toString();
-                                                            String id = data.child("id").getValue().toString();
-                                                            Notice notice = new Notice(title, date, posted_by, attention, id,false,false);
-                                                            notices.add(notice);
-
-
+                                                    title = object.getString("title");
+                                                    date = object.getString("date");
+                                                    postedby = object.getString("posted_by");
+                                                    attention = object.getString("attention");
+                                                    id = object.getString("id");
+                                                    Notice notice = new Notice(title,date,postedby,attention,id,false,false);
+                                                    int k=0;
+                                                    for(int j = 0;j<noticeids.size();j++){
+                                                        if(noticeids.get(j).equals(id)){
+                                                            k=1;
                                                         }
-                                                        if (getActivity() != null) {
-                                                            progressBar.setVisibility(View.GONE);
+                                                    }
+                                                    if(k==0){
+                                                        System.out.print("noticestatus:newfeature entry");
+                                                        dbhelper.insertData(notice);
+                                                    }
+                                                    else{
+                                                        System.out.print("noticestatus:already present");
+                                                    }
+                                                    //dbhelper.insertData(notice);
+                                                    dbhelper.updatenotice(notice);
+                                                    //noticedatabase.child(String.valueOf(c)).setValue(notice);
+                                                    c++;
+                                                }
+                                                notices.clear();
+                                                String query = "Select * from notice_table ORDER BY notice_id DESC";
+                                                notices = dbhelper.readData(query);
+                                                if (!notices.isEmpty()){
+                                                    if(getActivity()!=null){
+                                                        progressBar.setVisibility(View.GONE);
+                                                        icoAdapter = new IcoAdapter(getActivity(),notices,itemClickListener);
+                                                        icoAdapter.notifyDataSetChanged();
+                                                        rv.setAdapter(icoAdapter);
+                                                    }
+
+
+                                                }
+                                                else {
+                                                    mdatabase.addValueEventListener(new ValueEventListener() {
+                                                        @Override
+                                                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                                            notices.clear();
+                                                            for (DataSnapshot data : dataSnapshot.getChildren()) {
+
+                                                                String title = data.child("title").getValue().toString();
+                                                                String attention = data.child("attention").getValue().toString();
+                                                                String posted_by = data.child("posted_by").getValue().toString();
+                                                                String date = data.child("date").getValue().toString();
+                                                                String id = data.child("id").getValue().toString();
+                                                                Notice notice = new Notice(title, date, posted_by, attention, id,false,false);
+                                                                notices.add(notice);
+
+
+                                                            }
+                                                            if (getActivity() != null) {
+                                                                progressBar.setVisibility(View.GONE);
 //                                                            adapter = newfeature NoticeAdapter(getActivity(), R.layout.notice, notices);
 //                                                            adapter.notifyDataSetChanged();
 //                                                            lv.setAdapter(adapter);
-                                                            icoAdapter = new IcoAdapter(getActivity(),notices,itemClickListener);
-                                                            icoAdapter.notifyDataSetChanged();
-                                                            rv.setAdapter(icoAdapter);
+                                                                icoAdapter = new IcoAdapter(getActivity(),notices,itemClickListener);
+                                                                icoAdapter.notifyDataSetChanged();
+                                                                rv.setAdapter(icoAdapter);
+
+                                                            }
+
 
                                                         }
 
+                                                        @Override
+                                                        public void onCancelled(DatabaseError databaseError) {
 
-                                                    }
+                                                        }
+                                                    });
+                                                }
+                                                if(getActivity()!=null){
+                                                    Toast.makeText(getActivity(),"Updated Successfully",Toast.LENGTH_SHORT).show();
+                                                }
 
-                                                    @Override
-                                                    public void onCancelled(DatabaseError databaseError) {
 
-                                                    }
-                                                });
+                                            } catch (JSONException e) {
+                                                e.printStackTrace();
                                             }
-                                            if(getActivity()!=null){
-                                                Toast.makeText(getActivity(),"Updated Successfully",Toast.LENGTH_SHORT).show();
+                                            catch (NullPointerException e){
+                                                e.printStackTrace();
                                             }
-
-
-                                        } catch (JSONException e) {
-                                            e.printStackTrace();
-                                        }
-                                        catch (NullPointerException e){
-                                            e.printStackTrace();
-                                        }
 //                                        try {
 //                                            JSONObject object0 = response.getJSONArray("Notices").getJSONObject(0);
 //
@@ -353,37 +353,47 @@ public class mainold extends Fragment {
 //                                        } catch (JSONException e) {
 //                                            e.printStackTrace();
 //                                        }
-                                    }
-                                }, new Response.ErrorListener() {
-                                    @Override
-                                    public void onErrorResponse(VolleyError error) {
-                                        noticerefresh.setRefreshing(false);
-                                        if(getActivity()!=null){
-                                            Toast.makeText(getActivity(),"Network Error",Toast.LENGTH_SHORT).show();
                                         }
+                                    }, new Response.ErrorListener() {
+                                        @Override
+                                        public void onErrorResponse(VolleyError error) {
+                                            noticerefresh.setRefreshing(false);
+                                            if(getActivity()!=null){
+                                                Toast.makeText(getActivity(),"Network Error",Toast.LENGTH_SHORT).show();
+                                            }
 
+                                        }
+                                    });
+                                    if(getActivity()!=null){
+                                        Mysingleton.getInstance(getActivity()).addToRequestqueue(jsonObjectRequest);
                                     }
-                                });
-                                if(getActivity()!=null){
-                                    Mysingleton.getInstance(getActivity()).addToRequestqueue(jsonObjectRequest);
+
+                                }
+                                catch (IllegalStateException e){
+                                    e.printStackTrace();
                                 }
 
-                            }
-                            catch (IllegalStateException e){
-                                e.printStackTrace();
-                            }
 
 
+                            }
 
                         }
 
-                    }
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
 
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
+                        }
+                    });
+                }else{
+                    FirebaseAuth.getInstance().signOut();
+                    Intent intent = new Intent(getActivity(),LoginActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(intent);
+                    getActivity().finish();
+                    getActivity().overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_down);
+                }
 
-                    }
-                });
             }
         });
 
