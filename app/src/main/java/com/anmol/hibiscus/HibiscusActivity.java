@@ -207,7 +207,8 @@ public class HibiscusActivity extends AppCompatActivity
         fm.executePendingTransactions();
         checkpassstatus();
         checkupdatestatus();
-
+        TextView view = (TextView) navigationView.getMenu().findItem(R.id.nav_others).getActionView();
+        view.setText("1");
     }
     private void checkpassstatus(){
         final JSONObject jsonObject = new JSONObject();

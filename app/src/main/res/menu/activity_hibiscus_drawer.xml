@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-    >
+    xmlns:app="http://schemas.android.com/apk/res-auto">
     <item android:title="NoticeBoards">
         <menu>
             <group
@@ -13,7 +13,9 @@
                 <item
                     android:id="@+id/nav_others"
                     android:icon="@drawable/note5"
-                    android:title="Student Noticeboard" />
+                    android:title="Student Noticeboard"
+                    app:actionLayout="@layout/menu_counter"
+                    />
             </group>
         </menu>
     </item>
