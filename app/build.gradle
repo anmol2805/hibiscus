@@ -16,10 +16,10 @@ android {
         applicationId "com.anmol.hibiscus"
         minSdkVersion 18
         targetSdkVersion 28
-        versionName '3.0.5'
+        versionName '3.0.6'
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
-        versionCode 17
+        versionCode 18
         signingConfig signingConfigs.config
     }
     buildTypes {

@@ -11,6 +11,7 @@ import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.support.design.widget.NavigationView
 import android.support.v4.app.ActivityOptionsCompat
 import android.support.v4.content.res.ResourcesCompat
 import android.support.v4.util.Pair
@@ -97,6 +98,7 @@ class IcoAdapter1(var c: Context?=null, internal var notices: MutableList<Notice
 
         holder.deletenotice!!.visibility = View.GONE
         holder.editnotice!!.visibility = View.GONE
+
         holder.noticelayout?.setOnClickListener {
 
             val intent2 = Intent(c, StudentNoticeDataActivity::class.java)
