@@ -37,6 +37,7 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.anmol.hibiscus.Helpers.Dbstudentnoticefirstopenhelper;
 import com.anmol.hibiscus.fragments.mainold;
 import com.anmol.hibiscus.fragments.privacypolicy;
 import com.bumptech.glide.Glide;
@@ -69,6 +70,7 @@ import org.json.JSONObject;
 
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -210,9 +212,51 @@ public class HibiscusActivity extends AppCompatActivity
         fm.executePendingTransactions();
         checkpassstatus();
         checkupdatestatus();
-        RelativeLayout view = (RelativeLayout) navigationView.getMenu().findItem(R.id.nav_others).getActionView();
-        Button btn = (Button) view.findViewById(R.id.badge);
-        btn.setText("1");
+        final RelativeLayout view = (RelativeLayout) navigationView.getMenu().findItem(R.id.nav_others).getActionView();
+        final Button btn = (Button) view.findViewById(R.id.badge);
+        view.setVisibility(View.GONE);
+        DatabaseReference studentdatabase = FirebaseDatabase.getInstance().getReference().child("Studentnoticeboard");
+        final Dbstudentnoticefirstopenhelper dbstudentnoticefirstopenhelper = new Dbstudentnoticefirstopenhelper(this);
+        studentdatabase.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                long size = dataSnapshot.getChildrenCount();
+                List<String> firstopens = dbstudentnoticefirstopenhelper.readbook();
+                int count = 0;
+
+                for(long i=size;i>0;i--){
+                    if(dataSnapshot.hasChild(String.valueOf(i))){
+                        Boolean deleted = dataSnapshot.child(String.valueOf(i)).child("deleted").getValue(Boolean.class);
+                        if(!deleted){
+                            int k=0;
+                            Boolean read = false;
+                            while (k<firstopens.size()){
+                                if(firstopens.get(k).equals(String.valueOf(i))){
+                                    read = true;
+                                }
+                                k++;
+                            }
+                            if (!read){
+                                count++;
+                            }
+                        }
+                    }
+                }
+                if(count>0){
+                    view.setVisibility(View.VISIBLE);
+                    btn.setText(String.valueOf(count));
+                }
+
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+
     }
     private void checkpassstatus(){
         final JSONObject jsonObject = new JSONObject();
