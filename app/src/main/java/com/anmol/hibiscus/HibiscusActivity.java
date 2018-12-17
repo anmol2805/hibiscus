@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -27,6 +28,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Button;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -207,8 +210,9 @@ public class HibiscusActivity extends AppCompatActivity
         fm.executePendingTransactions();
         checkpassstatus();
         checkupdatestatus();
-        TextView view = (TextView) navigationView.getMenu().findItem(R.id.nav_others).getActionView();
-        view.setText("1");
+        RelativeLayout view = (RelativeLayout) navigationView.getMenu().findItem(R.id.nav_others).getActionView();
+        Button btn = (Button) view.findViewById(R.id.badge);
+        btn.setText("1");
     }
     private void checkpassstatus(){
         final JSONObject jsonObject = new JSONObject();
@@ -326,7 +330,7 @@ public class HibiscusActivity extends AppCompatActivity
     }
 
 
-        private void checkupdatestatus() {
+    private void checkupdatestatus() {
         final DatabaseReference dtb = FirebaseDatabase.getInstance().getReference().getRoot();
         dtb.child("dynamiclocks").addValueEventListener(new ValueEventListener() {
             @Override
