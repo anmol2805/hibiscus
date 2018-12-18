@@ -86,6 +86,7 @@ public class HibiscusActivity extends AppCompatActivity
 
     DatabaseReference databaseReference;
     String url = "http://14.139.198.171/api/hibi/login_test";
+    NavigationView navigationView;
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -102,12 +103,7 @@ public class HibiscusActivity extends AppCompatActivity
         toggle.syncState();
         toggle.setDrawerIndicatorEnabled(false);
         auth = FirebaseAuth.getInstance();
-
-
-        setTitle("IIITcloud");
-        System.out.println("notiftoken" + FirebaseInstanceId.getInstance().getToken());
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-
+        navigationView = (NavigationView) findViewById(R.id.nav_view);
         View header = navigationView.getHeaderView(0);
         final CircleImageView imageView = (CircleImageView) header.findViewById(R.id.dph);
         final TextView sid = (TextView)header.findViewById(R.id.sid);
@@ -162,7 +158,7 @@ public class HibiscusActivity extends AppCompatActivity
                             );
                             AlertDialog dialog = new AlertDialog.Builder(HibiscusActivity.this)
                                     .setTitle(ssBuilder)
-                                    .setMessage("Canopy is only for students and work only with student ids. Canopy is not compatible with this id. Please logout and login as student to continue our services.")
+                                    .setMessage("Canopy is only for students and work only with student ids. It is not compatible with this id. Please logout and login as student to continue our services.")
                                     .setCancelable(false)
                                     .setPositiveButton("Logout", new DialogInterface.OnClickListener() {
                                         @Override
@@ -212,6 +208,12 @@ public class HibiscusActivity extends AppCompatActivity
         fm.executePendingTransactions();
         checkpassstatus();
         checkupdatestatus();
+        checknewnotice();
+
+
+    }
+
+    private void checknewnotice() {
         final RelativeLayout view = (RelativeLayout) navigationView.getMenu().findItem(R.id.nav_others).getActionView();
         final Button btn = (Button) view.findViewById(R.id.badge);
         view.setVisibility(View.GONE);
@@ -258,6 +260,7 @@ public class HibiscusActivity extends AppCompatActivity
 
 
     }
+
     private void checkpassstatus(){
         final JSONObject jsonObject = new JSONObject();
         if(auth.getCurrentUser()!=null){
@@ -458,6 +461,7 @@ public class HibiscusActivity extends AppCompatActivity
             finish();
             overridePendingTransition(R.anim.still,R.anim.slide_out_down);
         }else {
+            checknewnotice();
             FragmentManager fm = getFragmentManager();
             fm.beginTransaction().replace(R.id.content_hib,new mainold()).commitAllowingStateLoss();
             Toast.makeText(getBaseContext(), "Double tap to exit!", Toast.LENGTH_SHORT).show();
@@ -528,7 +532,6 @@ public class HibiscusActivity extends AppCompatActivity
 //                }
 //            },175);}
             else if (id == R.id.nav_myapps) {
-
                 handler.postDelayed(new Runnable() {
                     @Override
                     public void run() {
