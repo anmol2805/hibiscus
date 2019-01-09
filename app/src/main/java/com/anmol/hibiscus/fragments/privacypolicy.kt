@@ -26,7 +26,7 @@ class privacypolicy : Fragment() {
         privacyweb.settings.loadsImagesAutomatically = true
         privacyweb.settings.setSupportZoom(true)
         privacyweb.settings.builtInZoomControls = true
-        privacyweb.settings.setRenderPriority(WebSettings.RenderPriority.HIGH)
+        //privacyweb.settings.setRenderPriority(WebSettings.RenderPriority.HIGH)
         //privacyweb.getSettings().setCacheMode(WebSettings.LOAD_CACHE_ONLY);
         privacyweb.settings.domStorageEnabled = true
         privacyweb.settings.databaseEnabled = true

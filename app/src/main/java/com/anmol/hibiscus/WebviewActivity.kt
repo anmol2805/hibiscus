@@ -26,7 +26,7 @@ class WebviewActivity : AppCompatActivity() {
         webview.settings.loadsImagesAutomatically = true
         webview.settings.setSupportZoom(true)
         webview.settings.builtInZoomControls = true
-        webview.settings.setRenderPriority(WebSettings.RenderPriority.HIGH)
+        //webview.settings.setRenderPriority(WebSettings.RenderPriority.HIGH)
         //webview.getSettings().setCacheMode(WebSettings.LOAD_CACHE_ONLY);
         webview.settings.domStorageEnabled = true
         webview.settings.databaseEnabled = true

@@ -2,6 +2,7 @@ package com.anmol.hibiscus;
 
 import android.app.Dialog;
 import android.app.FragmentManager;
+import android.app.KeyguardManager;
 import android.content.ActivityNotFoundException;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -108,6 +109,17 @@ public class HibiscusActivity extends AppCompatActivity
         final CircleImageView imageView = (CircleImageView) header.findViewById(R.id.dph);
         final TextView sid = (TextView)header.findViewById(R.id.sid);
         if(auth.getCurrentUser()!=null){
+            KeyguardManager keyguardManager = (KeyguardManager) getSystemService(KEYGUARD_SERVICE);
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+                Intent i = keyguardManager.createConfirmDeviceCredentialIntent("title", "description");
+                try {
+                    //Start activity for result
+                    startActivityForResult(i, 1234);
+                } catch (Exception e) {
+                    //If some exception occurs means Screen lock is not set up please set screen lock
+
+                }
+            }
             databaseReference = FirebaseDatabase.getInstance().getReference().child("Students").child(auth.getCurrentUser().getUid()).child("hibiscus");
             databaseReference.addValueEventListener(new ValueEventListener() {
                 @Override
@@ -661,5 +673,18 @@ public class HibiscusActivity extends AppCompatActivity
     @Override
     protected void onPause() {
         super.onPause();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+                if (resultCode == RESULT_OK) {
+                    //If screen lock authentication is success update text
+                    
+                } else {
+                    //If screen lock authentication is failed update text
+
+                }
+
     }
 }

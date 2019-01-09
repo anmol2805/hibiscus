@@ -3,6 +3,7 @@ package com.anmol.hibiscus
 import android.os.Build
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.support.v4.content.ContextCompat
 import android.view.View
 import android.view.WindowManager
 import android.widget.EditText
@@ -24,7 +25,7 @@ class PostingActivity : AppCompatActivity() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             val window = window
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
-            window.statusBarColor = resources.getColor(R.color.colorAccent)
+            window.statusBarColor = ContextCompat.getColor(this,R.color.colorAccent)
         }
         setContentView(R.layout.activity_posting)
         this.window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN)

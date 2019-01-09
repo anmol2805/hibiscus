@@ -187,14 +187,14 @@ class IcoAdapter1(var c: Context?=null, internal var notices: MutableList<Notice
             val dialog = AlertDialog.Builder(c!!)
                     .setTitle("Confirm")
                     .setMessage("Are you sure you want to delete this notice?")
-                    .setPositiveButton("Delete") { dialogInterface, i ->
+                    .setPositiveButton("Delete") { dialogInterface, _ ->
                         val map = HashMap<String,Any>()
                         map["deleted"] = true
                         FirebaseDatabase.getInstance().reference.child("Studentnoticeboard").child(noticedata.id).updateChildren(map).addOnCompleteListener {
                             dialogInterface.dismiss()
                             Toast.makeText(c,"Deleted Successfully", Toast.LENGTH_SHORT).show()
                         }
-                    }.setNegativeButton("Cancel"){ dialogInterface, i ->
+                    }.setNegativeButton("Cancel"){ dialogInterface, _ ->
                         dialogInterface.dismiss()
                     }.create()
 

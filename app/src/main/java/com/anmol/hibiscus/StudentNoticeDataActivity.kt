@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Build
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.support.v4.content.ContextCompat
 import android.support.v7.app.AlertDialog
 import android.view.Menu
 import android.view.MenuItem
@@ -38,7 +39,7 @@ class StudentNoticeDataActivity : AppCompatActivity() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             val window = window
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
-            window.statusBarColor = resources.getColor(R.color.colorAccent)
+            window.statusBarColor = ContextCompat.getColor(this,R.color.colorAccent)
         }
         setContentView(R.layout.activity_student_notice_data)
         title = "Notices"
@@ -107,7 +108,7 @@ class StudentNoticeDataActivity : AppCompatActivity() {
         editmenu!!.isVisible = false
         bookmarksmenu!!.setIcon(R.drawable.starwhite)
 
-        var boomarks:List<String> = ArrayList()
+        val boomarks: List<String>
         boomarks = dbstudentnoticebookshelper!!.readbook()
         var i = 0
         booked = false
@@ -158,7 +159,7 @@ class StudentNoticeDataActivity : AppCompatActivity() {
                 val dialog = AlertDialog.Builder(this)
                         .setTitle("Confirm")
                         .setMessage("Are you sure you want to delete this notice?")
-                        .setPositiveButton("Delete") { dialogInterface, i ->
+                        .setPositiveButton("Delete") { dialogInterface, _ ->
                             val map = HashMap<String,Any>()
                             map["deleted"] = true
                             FirebaseDatabase.getInstance().reference.child("Studentnoticeboard").child(id!!).updateChildren(map).addOnCompleteListener {
@@ -166,7 +167,7 @@ class StudentNoticeDataActivity : AppCompatActivity() {
                                 Toast.makeText(this,"Deleted Successfully",Toast.LENGTH_SHORT).show()
                                 finish()
                             }
-                        }.setNegativeButton("Cancel"){ dialogInterface, i ->
+                        }.setNegativeButton("Cancel"){ dialogInterface, _ ->
                             dialogInterface.dismiss()
                         }.create()
 
