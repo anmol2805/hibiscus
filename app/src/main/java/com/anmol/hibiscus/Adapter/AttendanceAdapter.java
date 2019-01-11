@@ -79,7 +79,7 @@ public class AttendanceAdapter extends ArrayAdapter<Attendance> {
             if(ppi>= 75 ){
                 arcProgress.setFinishedStrokeColor(context.getResources().getColor(R.color.good));
             }
-            else if(ppi >= 65 && ppi<75){
+            else if(ppi >= 65){
                 arcProgress.setFinishedStrokeColor(context.getResources().getColor(R.color.warn));
             }
             else {
