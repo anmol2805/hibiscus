@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.app.FragmentManager;
 import android.app.KeyguardManager;
 import android.content.ActivityNotFoundException;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
@@ -533,6 +534,10 @@ public class HibiscusActivity extends AppCompatActivity
             },175);
 
         }
+        else if (id == R.id.nav_rasoi) {
+            startNewActivity(this,"com.anmol.rosei");
+        }
+
         else if (id == R.id.nav_others) {
             handler.postDelayed(new Runnable() {
                 @Override
@@ -694,5 +699,16 @@ public class HibiscusActivity extends AppCompatActivity
 
                 }
 
+    }
+
+    public void startNewActivity(Context context, String packageName) {
+        Intent intent = context.getPackageManager().getLaunchIntentForPackage(packageName);
+        if (intent == null) {
+            // Bring user to the market or let them choose an app?
+            intent = new Intent(Intent.ACTION_VIEW);
+            intent.setData(Uri.parse("market://details?id=" + packageName));
+        }
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        context.startActivity(intent);
     }
 }
