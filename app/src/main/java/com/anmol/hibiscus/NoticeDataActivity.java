@@ -149,7 +149,7 @@ public class NoticeDataActivity extends AppCompatActivity {
         nd.getSettings().setLoadsImagesAutomatically(true);
         nd.getSettings().setSupportZoom(true);
         nd.getSettings().setBuiltInZoomControls(true);
-        nd.getSettings().setRenderPriority(WebSettings.RenderPriority.HIGH);
+        //nd.getSettings().setRenderPriority(WebSettings.RenderPriority.HIGH);
         //nd.getSettings().setCacheMode(WebSettings.LOAD_CACHE_ONLY);
         nd.getSettings().setDomStorageEnabled(true);
         nd.getSettings().setDatabaseEnabled(true);

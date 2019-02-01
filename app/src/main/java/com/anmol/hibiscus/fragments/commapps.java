@@ -68,11 +68,11 @@ public class commapps extends Fragment {
         grd.getSettings().setLoadsImagesAutomatically(true);
         grd.getSettings().setSupportZoom(true);
         grd.getSettings().setBuiltInZoomControls(true);
-        grd.getSettings().setRenderPriority(WebSettings.RenderPriority.HIGH);
-        grd.getSettings().setCacheMode(WebSettings.LOAD_CACHE_ONLY);
+        //grd.getSettings().setRenderPriority(WebSettings.RenderPriority.HIGH);
+        //grd.getSettings().setCacheMode(WebSettings.LOAD_CACHE_ONLY);
         grd.getSettings().setDomStorageEnabled(true);
         grd.getSettings().setDatabaseEnabled(true);
-        grd.getSettings().setAppCacheEnabled(true);
+        //grd.getSettings().setAppCacheEnabled(true);
         grd.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
         grd.getSettings().setUseWideViewPort(true);
         grd.getSettings().setTextZoom(175);
