@@ -5,17 +5,11 @@
     android:layout_height="wrap_content"
     xmlns:custom="http://schemas.android.com/tools"
     android:padding="5dp">
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
 
-        >
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:layout_weight="1"
             >
 
             <TextView
@@ -34,12 +28,12 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:orientation="horizontal">
                 <LinearLayout
                     android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:orientation="vertical">
 
                     <TextView
@@ -89,7 +83,7 @@
 
                 <LinearLayout
                     android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:orientation="vertical"
                     >
 
@@ -172,6 +166,7 @@
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center"
                     >
                     <com.github.lzyzsd.circleprogress.ArcProgress
                         android:layout_alignParentEnd="true"
@@ -240,13 +235,14 @@
                 android:layout_marginLeft="10dp"
                 android:text="TextView"
                 android:padding="@dimen/textmargin"
+                android:layout_weight="1"
                 android:textSize="12sp"
                 app:fontFamily="@font/lato_regular" />
 
         </LinearLayout>
 
 
-    </LinearLayout>
+
 
 
 
