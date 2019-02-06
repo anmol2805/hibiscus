@@ -99,7 +99,8 @@ public class fees extends Fragment {
 
                                     if(!object.getString("html").isEmpty()){
                                         progressBar.setVisibility(View.GONE);
-                                        grd.loadData(object.getString("html"), "text/html; charset=utf-8", "UTF-8");
+                                        grd.loadDataWithBaseURL(null,object.getString("html"), "text/html; charset=utf-8", "UTF-8",null);
+                                        //grd.loadData(object.getString("html"), "text/html; charset=utf-8", "UTF-8");
                                     }
                                     else {
                                         if(getActivity()!=null && isAdded()){
@@ -157,7 +158,8 @@ public class fees extends Fragment {
 
                                         if(!object.getString("html").isEmpty()){
                                             progressBar.setVisibility(View.GONE);
-                                            grd.loadData(object.getString("html"), "text/html; charset=utf-8", "UTF-8");
+                                            grd.loadDataWithBaseURL(null,object.getString("html"), "text/html; charset=utf-8", "UTF-8",null);
+                                            //grd.loadData(object.getString("html"), "text/html; charset=utf-8", "UTF-8");
                                         }
                                         else {
                                             progressBar.setVisibility(View.GONE);

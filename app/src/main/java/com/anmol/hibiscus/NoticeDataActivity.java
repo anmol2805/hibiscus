@@ -84,7 +84,7 @@ public class NoticeDataActivity extends AppCompatActivity {
 
 
 
-            loadview();
+        loadview();
 
 
     }
@@ -203,9 +203,10 @@ public class NoticeDataActivity extends AppCompatActivity {
                                         && dataSnapshot.child(id).child("notice").getValue(String.class)!=null
                                         && dataSnapshot.child(id).child("notice")!=null
                                         && dataSnapshot.child(id).child("notice").exists()
-                                        ){
+                                ){
                                     System.out.println("notice:" + "firebase");
-                                    nd.loadData(dataSnapshot.child(id).child("notice").getValue(String.class), "text/html; charset=utf-8", "UTF-8");
+                                    nd.loadDataWithBaseURL(null,dataSnapshot.child(id).child("notice").getValue(String.class),"text/html; charset=utf-8","UTF-8",null);
+                                    //nd.loadData(dataSnapshot.child(id).child("notice").getValue(String.class), "text/html; charset=utf-8", "UTF-8");
                                     pn.setVisibility(View.GONE);
                                 }
                                 else {
@@ -305,7 +306,8 @@ public class NoticeDataActivity extends AppCompatActivity {
                             }
                         });
                         System.out.println("notice:" + "api");
-                        nd.loadData(notice, "text/html; charset=utf-8", "UTF-8");
+                        nd.loadDataWithBaseURL(null,notice,"text/html; charset=utf-8","UTF-8",null);
+                        //nd.loadData(notice, "text/html; charset=utf-8", "UTF-8");
                         pn.setVisibility(View.GONE);
                     }
                     else{

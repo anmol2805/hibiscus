@@ -100,7 +100,8 @@ public class commapps extends Fragment {
                     progressBar.setVisibility(View.GONE);
                     retry.setVisibility(View.GONE);
                     fail.setVisibility(View.GONE);
-                    grd.loadData(html, "text/html; charset=utf-8", "UTF-8");
+                    grd.loadDataWithBaseURL(null,html, "text/html; charset=utf-8", "UTF-8",null);
+                   // grd.loadData(html, "text/html; charset=utf-8", "UTF-8");
                 }
             }
 
