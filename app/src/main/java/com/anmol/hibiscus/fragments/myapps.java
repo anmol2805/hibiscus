@@ -142,7 +142,7 @@ public class myapps extends Fragment {
                                 public void onErrorResponse(VolleyError error) {
                                     swipeRefreshLayout.setRefreshing(false);
                                     if(getActivity()!=null){
-                                        Toast.makeText(getActivity(),"Netwrok error",Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(getActivity(),"Network error",Toast.LENGTH_SHORT).show();
                                     }
 
                                 }
