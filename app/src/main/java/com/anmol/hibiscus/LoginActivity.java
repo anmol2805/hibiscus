@@ -2,17 +2,15 @@ package com.anmol.hibiscus;
 
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.TextUtils;
 import android.text.style.ForegroundColorSpan;
-import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -20,7 +18,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -29,28 +26,15 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.anmol.hibiscus.Model.Students;
-import com.google.android.gms.auth.api.Auth;
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.google.android.gms.auth.api.signin.GoogleSignInResult;
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.api.GoogleApiClient;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.GoogleAuthProvider;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.messaging.FirebaseMessaging;
 
 import org.json.JSONException;
@@ -58,23 +42,20 @@ import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
-import java.util.HashMap;
-import java.util.Map;
 
 public class LoginActivity extends AppCompatActivity {
 
     private EditText inputEmail, inputPassword;
     private FirebaseAuth auth;
     private ProgressBar progressBar;
-    private Button  btnLogin, btnReset;
 
-    private static final String TAG = "Login";
+
     String email,sid,password;
     JSONObject object;
     String uid,pwd;
-    String url = "http://139.59.23.157/api/hibi/login_test";
+
     private static long back_pressed;
-    String crypt = "https://us-central1-iiitcloud-e9d6b.cloudfunctions.net/cryptr?pass=";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,8 +84,8 @@ public class LoginActivity extends AppCompatActivity {
         inputPassword = (EditText) findViewById(R.id.password);
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
 
-        btnLogin = (Button) findViewById(R.id.btn_login);
-        btnReset = (Button) findViewById(R.id.btn_reset_password);
+        Button btnLogin = (Button) findViewById(R.id.btn_login);
+        Button btnReset = (Button) findViewById(R.id.btn_reset_password);
 
 
 
@@ -205,7 +186,7 @@ public class LoginActivity extends AppCompatActivity {
                                 @Override
                                 public void onClick(final DialogInterface dialogInterface, int i) {
                                     String inputid = input.getText().toString();
-                                    if(inputid.isEmpty() || !(inputid.length() == 7)){
+                                    if(inputid.length() != 7){
                                         Toast.makeText(LoginActivity.this,"Please enter a valid Student id",Toast.LENGTH_SHORT).show();
                                     }
                                     else {
@@ -292,51 +273,30 @@ public class LoginActivity extends AppCompatActivity {
                                                                                     Toast.LENGTH_SHORT).show();
                                                                         } else {
                                                                             final DatabaseReference ref = FirebaseDatabase.getInstance().getReference().getRoot().child("Students").child(auth.getCurrentUser().getUid()).child("hibiscus");
-                                                                            if(FirebaseDatabase.getInstance().getReference().getRoot().child("Students").child(auth.getCurrentUser().getUid())!=null) {
-                                                                                FirebaseDatabase.getInstance().getReference().getRoot().child("Students").child(auth.getCurrentUser().getUid()).removeValue();
-                                                                            }
-                                                                            try {
-                                                                                String encode  = URLEncoder.encode(password,"UTF-8");
-                                                                                StringRequest str = new StringRequest(Request.Method.POST, crypt + encode, new Response.Listener<String>() {
-                                                                                    @Override
-                                                                                    public void onResponse(String response) {
+                                                                            FirebaseDatabase.getInstance().getReference().getRoot().child("Students").child(auth.getCurrentUser().getUid()).removeValue();
+                                                                            Students students = new Students(sid,password,true);
+                                                                            ref.setValue(students).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                                                @Override
+                                                                                public void onSuccess(Void aVoid) {
+                                                                                    progressBar.setVisibility(View.INVISIBLE);
+                                                                                    String yr = String.valueOf(email.charAt(2)) + String.valueOf(email.charAt(3));
+                                                                                    FirebaseMessaging.getInstance().subscribeToTopic(yr);
+                                                                                    Intent intent = new Intent(LoginActivity.this, SplashActivity.class);
 
-                                                                                        Students students = new Students(sid,response,true);
-                                                                                        ref.setValue(students).addOnSuccessListener(new OnSuccessListener<Void>() {
-                                                                                            @Override
-                                                                                            public void onSuccess(Void aVoid) {
-                                                                                                progressBar.setVisibility(View.INVISIBLE);
-                                                                                                String yr = String.valueOf(email.charAt(2)) + String.valueOf(email.charAt(3));
-                                                                                                FirebaseMessaging.getInstance().subscribeToTopic(yr);
-                                                                                                Intent intent = new Intent(LoginActivity.this, SplashActivity.class);
-
-                                                                                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                                                                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                                                                                startActivity(intent);
-                                                                                                finish();
-                                                                                                overridePendingTransition(R.anim.still,R.anim.slide_in_up);
-                                                                                            }
-                                                                                        }).addOnFailureListener(new OnFailureListener() {
-                                                                                            @Override
-                                                                                            public void onFailure(@NonNull Exception e) {
-                                                                                                progressBar.setVisibility(View.INVISIBLE);
-                                                                                                e.printStackTrace();
-                                                                                                Toast.makeText(LoginActivity.this,"Connection Error...Please try again!!!",Toast.LENGTH_LONG).show();
-                                                                                            }
-                                                                                        });
-
-                                                                                    }
-                                                                                }, new Response.ErrorListener() {
-                                                                                    @Override
-                                                                                    public void onErrorResponse(VolleyError error) {
-
-                                                                                    }
-                                                                                });
-                                                                                Mysingleton.getInstance(LoginActivity.this).addToRequestqueue(str);
-
-                                                                            } catch (UnsupportedEncodingException e) {
-                                                                                e.printStackTrace();
-                                                                            }
+                                                                                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                                                                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                                                                    startActivity(intent);
+                                                                                    finish();
+                                                                                    overridePendingTransition(R.anim.still,R.anim.slide_in_up);
+                                                                                }
+                                                                            }).addOnFailureListener(new OnFailureListener() {
+                                                                                @Override
+                                                                                public void onFailure(@NonNull Exception e) {
+                                                                                    progressBar.setVisibility(View.INVISIBLE);
+                                                                                    e.printStackTrace();
+                                                                                    Toast.makeText(LoginActivity.this,"Connection Error...Please try again!!!",Toast.LENGTH_LONG).show();
+                                                                                }
+                                                                            });
 
 
                                                                         }
@@ -344,52 +304,33 @@ public class LoginActivity extends AppCompatActivity {
                                                                 });
                                                     }
                                                 } else {
-                                                        if(FirebaseDatabase.getInstance().getReference().getRoot().child("Students").child(auth.getCurrentUser().getUid())!=null) {
-                                                            FirebaseDatabase.getInstance().getReference().getRoot().child("Students").child(auth.getCurrentUser().getUid()).removeValue();
+                                                    FirebaseDatabase.getInstance().getReference().getRoot().child("Students").child(auth.getCurrentUser().getUid()).removeValue();
+                                                    final DatabaseReference ref = FirebaseDatabase.getInstance().getReference().getRoot().child("Students").child(auth.getCurrentUser().getUid()).child("hibiscus");
+                                                    Students students = new Students(sid,password,true);
+                                                    ref.setValue(students).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                        @Override
+                                                        public void onSuccess(Void aVoid) {
+                                                            progressBar.setVisibility(View.INVISIBLE);
+                                                            String yr = String.valueOf(email.charAt(2)) + String.valueOf(email.charAt(3));
+                                                            FirebaseMessaging.getInstance().subscribeToTopic(yr);
+
+                                                            Intent intent = new Intent(LoginActivity.this, SplashActivity.class);
+
+                                                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                                            startActivity(intent);
+                                                            finish();
+                                                            overridePendingTransition(R.anim.still,R.anim.slide_in_up);
+
                                                         }
-                                                        final DatabaseReference ref = FirebaseDatabase.getInstance().getReference().getRoot().child("Students").child(auth.getCurrentUser().getUid()).child("hibiscus");
-                                                    try {
-                                                        String encode = URLEncoder.encode(password,"UTF-8");
-
-                                                        StringRequest str = new StringRequest(Request.Method.POST, crypt + encode, new Response.Listener<String>() {
-                                                            @Override
-                                                            public void onResponse(String response) {
-                                                                Students students = new Students(sid,response,true);
-                                                                ref.setValue(students).addOnSuccessListener(new OnSuccessListener<Void>() {
-                                                                    @Override
-                                                                    public void onSuccess(Void aVoid) {
-                                                                        progressBar.setVisibility(View.INVISIBLE);
-                                                                        String yr = String.valueOf(email.charAt(2)) + String.valueOf(email.charAt(3));
-                                                                        FirebaseMessaging.getInstance().subscribeToTopic(yr);
-
-                                                                        Intent intent = new Intent(LoginActivity.this, SplashActivity.class);
-
-                                                                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                                                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                                                        startActivity(intent);
-                                                                        finish();
-                                                                        overridePendingTransition(R.anim.still,R.anim.slide_in_up);
-
-                                                                    }
-                                                                }).addOnFailureListener(new OnFailureListener() {
-                                                                    @Override
-                                                                    public void onFailure(@NonNull Exception e) {
-                                                                        progressBar.setVisibility(View.INVISIBLE);
-                                                                        e.printStackTrace();
-                                                                        Toast.makeText(LoginActivity.this,"Connection Error...Please try again!!!",Toast.LENGTH_LONG).show();
-                                                                    }
-                                                                });
-                                                            }
-                                                        }, new Response.ErrorListener() {
-                                                            @Override
-                                                            public void onErrorResponse(VolleyError error) {
-
-                                                            }
-                                                        });
-                                                        Mysingleton.getInstance(LoginActivity.this).addToRequestqueue(str);
-                                                    } catch (UnsupportedEncodingException e) {
-                                                        e.printStackTrace();
-                                                    }
+                                                    }).addOnFailureListener(new OnFailureListener() {
+                                                        @Override
+                                                        public void onFailure(@NonNull Exception e) {
+                                                            progressBar.setVisibility(View.INVISIBLE);
+                                                            e.printStackTrace();
+                                                            Toast.makeText(LoginActivity.this,"Connection Error...Please try again!!!",Toast.LENGTH_LONG).show();
+                                                        }
+                                                    });
 
 
 

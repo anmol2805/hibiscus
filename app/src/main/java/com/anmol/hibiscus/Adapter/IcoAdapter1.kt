@@ -5,11 +5,11 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Build
-import android.support.v4.app.ActivityOptionsCompat
-import android.support.v4.content.res.ResourcesCompat
-import android.support.v4.util.Pair
-import android.support.v7.app.AlertDialog
-import android.support.v7.widget.RecyclerView
+import androidx.core.app.ActivityOptionsCompat
+import androidx.core.content.res.ResourcesCompat
+import androidx.core.util.Pair
+import androidx.appcompat.app.AlertDialog
+import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -35,7 +35,7 @@ import kotlin.collections.HashMap
 /**
  * Created by anmol on 2/27/2018.
  */
-class IcoAdapter1(var c: Context?=null, internal var notices: MutableList<Notice>, private val mitemClickListener: ItemClickListener): RecyclerView.Adapter<IcoAdapter1.MyViewHolder>(){
+class IcoAdapter1(var c: Context?=null, internal var notices: MutableList<Notice>, private val mitemClickListener: ItemClickListener): androidx.recyclerview.widget.RecyclerView.Adapter<IcoAdapter1.MyViewHolder>(){
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         val v = LayoutInflater.from(c).inflate(R.layout.notice1,parent,false)
@@ -195,7 +195,7 @@ class IcoAdapter1(var c: Context?=null, internal var notices: MutableList<Notice
 
     }
 
-    inner class MyViewHolder(itemView: View, private val mitemClickListener: ItemClickListener):RecyclerView.ViewHolder(itemView), View.OnClickListener {
+    inner class MyViewHolder(itemView: View, private val mitemClickListener: ItemClickListener): androidx.recyclerview.widget.RecyclerView.ViewHolder(itemView), View.OnClickListener {
         var dates:TextView?=null
         var pstdby:TextView?=null
         var mtitle:TextView?=null

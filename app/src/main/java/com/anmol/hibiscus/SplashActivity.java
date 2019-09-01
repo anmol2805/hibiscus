@@ -1,20 +1,15 @@
 package com.anmol.hibiscus;
 
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.PorterDuff;
-import android.os.Handler;
-import android.support.annotation.NonNull;
-import android.support.v7.app.AppCompatActivity;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.ProgressBar;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -23,10 +18,6 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.anmol.hibiscus.Helpers.Dbhelper;
 import com.bumptech.glide.Glide;
 import com.anmol.hibiscus.Model.Notice;
-import com.anmol.hibiscus.services.RequestService;
-import com.anmol.hibiscus.services.RequestServiceAttendance;
-import com.anmol.hibiscus.services.RequestServiceCourses;
-import com.anmol.hibiscus.services.RequestServiceGrades;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;

@@ -1,25 +1,18 @@
 package com.anmol.hibiscus.services;
 
-import android.app.IntentService;
 import android.content.Context;
 import android.content.Intent;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.app.JobIntentService;
-import android.view.View;
-import android.widget.Toast;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.core.app.JobIntentService;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.StringRequest;
-import com.anmol.hibiscus.Adapter.Grades;
 import com.anmol.hibiscus.LoginActivity;
-import com.anmol.hibiscus.Model.Attendance;
 import com.anmol.hibiscus.Model.Notice;
 import com.anmol.hibiscus.Mysingleton;
-import com.anmol.hibiscus.NoticeDataActivity;
 import com.anmol.hibiscus.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;

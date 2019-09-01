@@ -1,15 +1,16 @@
 package com.anmol.hibiscus;
 
 import android.graphics.Paint;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import android.widget.FrameLayout;
 import android.animation.*;
 import android.content.*;
 import android.content.res.*;
 import android.graphics.*;
 import android.graphics.Paint.*;
-import android.support.annotation.*;
-import android.support.v4.content.*;
+
+import androidx.annotation.Nullable;
+import androidx.core.content.*;
 import android.text.*;
 import android.util.*;
 import android.view.*;
@@ -509,7 +510,7 @@ public class ExpandableSearchView extends FrameLayout {
         void onSearchAction(String text);
     }
 
-    private final class SearchEditText extends android.support.v7.widget.AppCompatEditText {
+    private final class SearchEditText extends androidx.appcompat.widget.AppCompatEditText {
 
         public SearchEditText(@NonNull Context context) {
             super(context);

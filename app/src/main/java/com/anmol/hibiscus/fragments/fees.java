@@ -1,14 +1,11 @@
 package com.anmol.hibiscus.fragments;
 
 import android.app.Fragment;
-import android.graphics.Color;
-import android.graphics.PorterDuff;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -19,9 +16,6 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.StringRequest;
-import com.anmol.hibiscus.Adapter.ELibraryAdapter;
-import com.anmol.hibiscus.Model.ELibrary;
 import com.anmol.hibiscus.Mysingleton;
 import com.anmol.hibiscus.R;
 import com.google.firebase.auth.FirebaseAuth;

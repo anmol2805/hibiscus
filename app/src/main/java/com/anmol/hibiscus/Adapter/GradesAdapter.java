@@ -2,10 +2,10 @@ package com.anmol.hibiscus.Adapter;
 
 import android.app.Activity;
 import android.content.Context;
-import android.provider.ContactsContract;
-import android.support.annotation.LayoutRes;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+
+import androidx.annotation.LayoutRes;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,7 +20,6 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.anmol.hibiscus.Model.Mycourse;
 import com.anmol.hibiscus.Model.Mysubjectgrade;
 import com.anmol.hibiscus.Model.Subjectgrd;
 import com.anmol.hibiscus.Mysingleton;
@@ -35,7 +34,6 @@ import com.google.firebase.database.ValueEventListener;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**

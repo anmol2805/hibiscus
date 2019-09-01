@@ -2,8 +2,8 @@ package com.anmol.hibiscus.fragments;
 
 import android.app.Fragment;
 import android.os.Bundle;
-import android.provider.ContactsContract;
-import android.support.annotation.Nullable;
+
+import androidx.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,18 +14,13 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.StringRequest;
-import com.anmol.hibiscus.Adapter.CourseNoticeAdapter;
 import com.anmol.hibiscus.Adapter.LibraryAdapter;
-import com.anmol.hibiscus.Courselistnotice;
-import com.anmol.hibiscus.Model.Coursenotice;
 import com.anmol.hibiscus.Model.Library;
 import com.anmol.hibiscus.Mysingleton;
 import com.anmol.hibiscus.R;

@@ -3,7 +3,7 @@ package com.anmol.hibiscus.fragments;
 import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,16 +17,9 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
-import com.anmol.hibiscus.Adapter.CourseAdapter;
 import com.anmol.hibiscus.Adapter.GradesAdapter;
 import com.anmol.hibiscus.Model.Mycourse;
 import com.anmol.hibiscus.Model.Mysubjectgrade;
-import com.anmol.hibiscus.Model.Search;
-import com.anmol.hibiscus.Mysingleton;
 import com.anmol.hibiscus.R;
 import com.anmol.hibiscus.services.RequestServiceCourses;
 import com.google.firebase.auth.FirebaseAuth;
@@ -36,7 +29,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
