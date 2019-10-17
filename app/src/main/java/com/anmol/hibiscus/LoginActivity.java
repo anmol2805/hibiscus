@@ -315,6 +315,7 @@ public class LoginActivity extends AppCompatActivity {
                                                             FirebaseMessaging.getInstance().subscribeToTopic(yr);
 
                                                             Intent intent = new Intent(LoginActivity.this, SplashActivity.class);
+                                                            Toast.makeText(LoginActivity.this,"Login Successful ",Toast.LENGTH_SHORT).show();
 
                                                             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                                             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
