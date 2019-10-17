@@ -14,6 +14,8 @@ import android.os.Bundle;
 import android.os.Handler;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
+
+import android.text.Html;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.style.ForegroundColorSpan;
@@ -514,7 +516,7 @@ public class HibiscusActivity extends AppCompatActivity
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
-        Handler handler = new Handler();
+        final Handler handler = new Handler();
         int id = item.getItemId();
         final FragmentManager fm = getFragmentManager();
         if (id == R.id.nav_hibiscus) {
@@ -650,18 +652,32 @@ public class HibiscusActivity extends AppCompatActivity
             },200);
         }
         else if (id == R.id.nav_help) {
-            FirebaseAuth.getInstance().signOut();
-            handler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    Intent intent = new Intent(HibiscusActivity.this,LoginActivity.class);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                    startActivity(intent);
-                    finish();
-                    overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_down);
-                }
-            },100);
+
+            new AlertDialog.Builder(this)
+                    .setTitle("LOGOUT")
+                    .setMessage("Are you sure you want to logout ? I suggest spend some more time :) ")
+
+                    .setPositiveButton(Html.fromHtml("<font color='#FF7F27'>Yes</font>"), new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            FirebaseAuth.getInstance().signOut();
+                            handler.postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Intent intent = new Intent(HibiscusActivity.this,LoginActivity.class);
+                                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                    startActivity(intent);
+                                    finish();
+                                    overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_down);
+                                }
+                            },100);
+                        }
+                    })
+                    .setNegativeButton(Html.fromHtml("<font color='#FF7F27'>Cancel</font>"), null)
+                    .setIcon(R.drawable.download)
+                    .show();
+
+
 
         }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
